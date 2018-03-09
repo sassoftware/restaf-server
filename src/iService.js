@@ -101,6 +101,10 @@ module.exports = function iService( uTable, useDefault , asset, rootHandler ){
                 config: customConfig( getShared )
             }, {
                 method: [ 'GET' ],
+                path  : `/restafServerInfo`,
+                config: customConfig( serverInfo )
+        },{
+                method: [ 'GET' ],
                 path  : '/favicon.ico',
                 config: {
                     auth   : false,
@@ -306,4 +310,10 @@ function getApp2( req, reply ) {
 
 function getShared( req, reply ) {
     reply.file( `shared/${req.params.param}` );
+}
+function serverInfo( req, reply ) {
+    debugger;
+    let js = `let VIYA_HOST   = "${process.env.VIYA_SERVER}";
+              let SSL_ENABLED = "${process.env.SAS_SSL_ENABLED}";`;
+    reply.response( js );
 }
