@@ -313,7 +313,7 @@ function getShared( req, reply ) {
 }
 function serverInfo( req, reply ) {
     debugger;
-    let js = `let VIYA_HOST   = "${process.env.VIYA_SERVER}";
-              let SSL_ENABLED = "${process.env.SAS_SSL_ENABLED}";`;
+    let protocol = ( process.env.SAS_SSL_ENABLED === 'YES' ) ? 'https://' :'http://';
+    let js = `let VIYA_HOST   = "${protocol}${process.env.VIYA_SERVER}";`;
     reply.response( js );
 }
