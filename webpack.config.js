@@ -16,46 +16,46 @@
  *
  */
 
-'use strict' ;
+'use strict';
 
-var nodeExternals  = require( 'webpack-node-externals' );
-var webpack        = require( 'webpack' );
-var path           = require( 'path' );
-var library        = 'restaf-server';
-var APP_PATH       = path.resolve( __dirname, 'src' );
+var nodeExternals = require('webpack-node-externals');
+var webpack       = require('webpack');
+var path           = require('path');
+var library       = 'restaf-server';
+var APP_PATH = path.resolve(__dirname, 'src');
 
 
 var outputFile;
 
 outputFile = library + '.js';
 
-module.exports= {
+module.exports = {
     context: APP_PATH,
 
     entry: [
         'babel-polyfill',
         APP_PATH + '/index'
-     ],
+    ],
 
-    target   : 'node',
-    externals: [ nodeExternals() ],
-    output   : {
-        path          : path.join( __dirname, 'lib' ),
-        library       : library,
-        filename      : outputFile,
-        libraryTarget : 'umd',
+    target: 'node',
+    externals: [nodeExternals()],
+    output: {
+        path: path.join(__dirname, 'lib'),
+        library: library,
+        filename: outputFile,
+        libraryTarget: 'umd',
         umdNamedDefine: true
 
     },
     module: {
         rules: [
             { test: /\.(js|jsx)$/, use: "babel-loader" },
-            { test: /\.css$/, use: [ { loader: "style-loader/useable" }, { loader: "css-loader" } ] }
+            { test: /\.css$/, use: [{ loader: "style-loader/useable" }, { loader: "css-loader" }] }
         ]
 
     },
     resolve: {
-        extensions: [ '.js' ]
+        extensions: ['.js']
     }
 
 };
