@@ -1,8 +1,7 @@
+
 {
   "root": true,
-  "plugin": [
-    "eslint-plugin-react"
-  ],
+
   "env": {
     "browser": true,
     "node": true,
@@ -45,10 +44,14 @@
     ],
     "space-in-parens": [
       2,
+      "never"
+    ],
+    "space-before-function-paren": [
+      2,
       "always"
     ]
 
+
   }
 }
-
 

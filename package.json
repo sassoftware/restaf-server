@@ -35,6 +35,7 @@
     "bell": "latest",
     "boom": "^7.2.0",
     "debug": "^3.1.0",
+    "h2o2": "^8.1.0",
     "hapi": "^17.2.3",
     "hapi-auth-cookie": "^8.1.0",
     "inert": "^5.1.0",

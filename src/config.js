@@ -18,31 +18,32 @@
 
 'use strict';
 
-let fs = require( 'fs' );
+let fs = require('fs');
 
-module.exports = function config ( appEnv ) {
+module.exports = function config (appEnv) {
     debugger;
     try {
-        let data = fs.readFileSync( appEnv, 'utf8' );
-        let d = data.split( /\r?\n/ );
-        console.log( 'Configuration specified via raf.env' );
-        d.forEach( l => {
-            if ( l.length > 0 && l.indexOf( '#' ) === -1 ) {
-                let la = l.split( '=' );
-                if ( la.length > 0 ) {
-                    if ( la[1] === '' ) {
+        let data = fs.readFileSync(appEnv, 'utf8');
+        let d = data.split(/\r?\n/);
+        console.log('Configuration specified via raf.env');
+        d.forEach(l => {
+            if (l.length > 0 && l.indexOf('#') === -1) {
+                let la = l.split('=');
+                if (la.length > 0) {
+                    if (la[1] === '') {
                         delete process.env[la[1]]
                     } else {
                         process.env[la[0]] = la[1];
                     }
-                    console.log( `${la[0]}=${la[1]}` )
+                    console.log(`${la[0]}=${la[1]}`)
                 }
             }
-        } );
-        process.env.SAS_PROTOCOL = ( process.env.SAS_SSL_ENABLED === 'YES' ) ? 'https://' : 'http://';
+        });
+        process.env.SAS_PROTOCOL = (process.env.SAS_SSL_ENABLED === 'YES') ? 'https://' : 'http://';
+        process.env.HAPI_PROTOCOL = (process.env.SAS_SSL_ENABLED === 'YES') ? 'https' : 'http';
     }
-    catch ( err ) {
-        console.log( err );
-        process.exit( 0 );
+    catch (err) {
+        console.log(err);
+        process.exit(0);
     }
 };
