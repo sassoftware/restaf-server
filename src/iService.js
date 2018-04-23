@@ -53,6 +53,23 @@ module.exports = function iService (uTable, useDefault , asset, rootHandler){
     function checkProxy (a) {
         let handler = a;
         if (process.env.PROXYSERVER === 'YES') {
+            let proxyx = {
+                mapUri: function (req) {
+                    req.server.app.cache.get('edge')
+                    .then (credentials => {
+                        let token = credentials.token;
+                        req.Authorization = 'bearer ' + token;
+                        return req;
+                    })
+                    .catch (err => {
+                        console.log(err);
+                        return req;  
+                    })   
+                },
+                onResponse: function (err, res, request, reply, settings, ttl ){
+
+                }
+            }
             let proxy = {
                 host    : `${process.env.VIYA_SERVER}`,
                 protocol: process.env.HAPI_PROTOCOL
@@ -95,13 +112,14 @@ module.exports = function iService (uTable, useDefault , asset, rootHandler){
                 method: [ 'GET' ],
                 path  : `${appName}/{param*}`,
                 config: {
-                    handler: checkProxy(getApp2)
+                    handler: getApp2
                 }
 
             }, {
                 method: [ 'GET' ],
                 path  : `${appName}/callback${appName}`,
                 config: {
+                    auth   : false,
                     handler: AppCallback
                 }
 
@@ -178,11 +196,7 @@ async function testServer (req, h) {
     debugger;
     let token ;
     let url = 'testserver.html';
-    if (process.env.OAUTH2 === 'YES') {
-        token = await getToken(req, h);
-    } else {
-        url = 'testservernoauth.html';
-    }
+    console.log(req.auth.credentials);
     return h.file(url);
 }
 
@@ -280,8 +294,12 @@ function handleProxyRequest (req, h, token) {
 async function getApp (req, h) {
     debugger;
     console.log('in getApp');
-    let path = process.env.APPENTRY;
-    return h.file(path);
+    if (process.env.PROXYSERVER === 'YES') {
+        return getAuthApp(null, req,h)
+    } else { 
+        let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
+        return h.file(indexHTML);
+    }
 }
 
 async function getIcon (req, h) {

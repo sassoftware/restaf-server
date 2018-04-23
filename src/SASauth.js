@@ -48,6 +48,7 @@ async function SASauth (hapiServer) {
             auth         : authURL + '/SASLogon/oauth/authorize',
             token        : authURL + '/SASLogon/oauth/token'
         };
+        
         bellAuthOptions = {
             provider    : provider,
             password    : uuid.v4(),
@@ -56,8 +57,8 @@ async function SASauth (hapiServer) {
             isSecure    : false
         };
 
-        if (process.env.OAUTH_LOCATION != null) {
-            bellAuthOptions.location = process.env.OAUTH_LOCATION;
+        if (process.env.BELL_LOCATION != null) {
+            bellAuthOptions.location = process.env.BELL_LOCATION;
         }
 
         debugger;
