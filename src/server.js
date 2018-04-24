@@ -19,101 +19,101 @@
 'use strict';
 // proxy server
 
-var Hapi          = require( 'hapi' ),
-    inert         = require( 'inert' ),
-    SASauth       = require( './SASauth.js' ),
-    hapiServer    = new Hapi.Server( );
+var Hapi = require('hapi'),
+    inert = require('inert'),
+    SASauth = require('./SASauth.js'),
+    hapiServer = new Hapi.Server();
 
-module.exports = function( userRouterTable, asset, rootHandler ) {
+module.exports = function (userRouterTable, asset, rootHandler) {
     debugger;
 
     process.env.APPHOST_ADDR = process.env.APPHOST;
-    startServer( userRouterTable, asset );
+    startServer(userRouterTable, asset);
 
-    function startServer( userRouterTable, asset ) {
+    function startServer(userRouterTable, asset) {
         let sConfig = {
-            port  : process.env.APPPORT,
-            host  : process.env.APPHOST_ADDR,
+            port: process.env.APPPORT,
+            host: process.env.APPHOST_ADDR,
             routes: {
                 cors: {
-                    origin           : [ '*' ],
-                    credentials      : true,
-                    additionalHeaders: [ 'accept' ],
+                    origin: ['*'],
+                    credentials: true,
+                    additionalHeaders: ['accept'],
 
-                    additionalExposedHeaders: [ 'location' ]
+                    additionalExposedHeaders: ['location']
                 }
             }
         };
 
-        if ( asset !== null ) {
-            console.log( asset );
+        if (asset !== null) {
+            console.log(asset);
             sConfig.routes.files = { relativeTo: asset };
         }
 
-        console.log( JSON.stringify( sConfig, null, 4 ) );
-        hapiServer.connection( sConfig );
+        console.log(JSON.stringify(sConfig, null, 4));
+        hapiServer.connection(sConfig);
         // hapiServer.cache( {segment: 'credentials', expiresIn: 24*60*60*1000 } );
 
 
         // TBD: need to fix this async call for inert - ok for now
         // probably make them into promises
 
-        hapiServer.register( inert, () => {
-        } );
+        hapiServer.register(inert, () => {
+        });
 
-        if ( process.env.OAUTH2 !== 'YES' ) {
-            console.log( 'setting route' );
-            hapiServer.route( userRouterTable );
-            hapiServer.start( err => {
-                if ( err ) {
+        if (process.env.OAUTH2 !== 'YES') {
+            console.log('setting route');
+            hapiServer.route(userRouterTable);
+            hapiServer.start(err => {
+                if (err) {
                     throw err;
                 }
-                console.log( 'Server started at: ' + hapiServer.info.uri + '/' + process.env.APPNAME );
-            } );
+                console.log('Server started at: ' + hapiServer.info.uri + '/' + process.env.APPNAME);
+            });
         } else {
-            SASauth( hapiServer, ( err ) => {
-                if ( err ) {
-                    console.log( err );
-                    process.exit( 1 );
+            SASauth(hapiServer, (err) => {
+                if (err) {
+                    console.log(err);
+                    process.exit(1);
                 } else {
-                    hapiServer.route( userRouterTable );
+                    hapiServer.route(userRouterTable);
                     //noinspection JSUnusedLocalSymbols
-                    hapiServer.on( 'request-error', ( request, err ) => {
-                        console.log( request.info.remoteAddress + ': ' + request.method.toUpperCase() + ' ' +
-                                     request.url.path + ' --> ' + request.response.statusCode );
-                    } );
-                    hapiServer.ext( 'onPreResponse', ( request, reply ) => {
+                    hapiServer.on('request-error', (request, err) => {
+                        console.log(request.info.remoteAddress + ': ' + request.method.toUpperCase() + ' ' +
+                            request.url.path + ' --> ' + request.response.statusCode);
+                    });
+                    hapiServer.ext('onPreResponse', (request, reply) => {
                         const response = request.response;
-                        if ( !response.isBoom ) {
-                            return reply.continue( );
+                        if (!response.isBoom) {
+                            return reply.continue();
                         }
 
                         // log 400 and above
                         //noinspection JSUnresolvedVariable
-                        if ( response.output.statusCode >= 400 &&
-                             response.output.statusCode < 500 ) {
+                        if (response.output.statusCode >= 400 &&
+                            response.output.statusCode < 500) {
 
-                            console.log( 'Client error' );
-                            console.log( {
-                                             response   : response,
-                                             requestData: request.orig,
-                                             path       : request.path
-                                         } );
+                            console.log('Client error');
+                            console.log({
+                                response: response,
+                                requestData: request.orig,
+                                path: request.path
+                            });
                         }
 
                         reply.continue();
-                    } );
+                    });
                     process.env.HEALTH = 'OK';
-                    hapiServer.app.cache = hapiServer.cache( { segment: 'edge', expiresIn: 14 * 24 * 60 * 60 * 1000 } );
+                    hapiServer.app.cache = hapiServer.cache({ segment: 'edge', expiresIn: 14 * 24 * 60 * 60 * 1000 });
                     debugger;
-                    hapiServer.start( err => {
-                        if ( err ) {
+                    hapiServer.start(err => {
+                        if (err) {
                             throw err;
                         }
-                        console.log( 'Server started at: ' + hapiServer.info.uri + '/' + process.env.APPNAME );
-                    } );
+                        console.log('Server started at: ' + hapiServer.info.uri + '/' + process.env.APPNAME);
+                    });
                 }
-            } );
+            });
         }
     }
 };
