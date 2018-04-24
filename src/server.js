@@ -21,7 +21,6 @@
 
 let  Hapi  = require('hapi'),
     inert  = require('inert'),
-    h2o2   = require('h2o2'),
     hapiServer;
 import SASauth from './SASauth';
 
@@ -59,12 +58,11 @@ module.exports = function (userRouterTable, asset, rootHandler) {
     const init = async () => {
         await hapiServer.register(inert);
         await SASauth(hapiServer);
-        await hapiServer.register(h2o2);
         hapiServer.route(userRouterTable);
 
         hapiServer.app.cache = hapiServer.cache(
             {
-                segment  : 'edge',
+                segment  : 'session',
                 expiresIn: 14 * 24 * 60 * 60 * 1000
             });
 

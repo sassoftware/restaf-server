@@ -32,11 +32,8 @@
 
 <script>
 
-    function showDemo(w){
-        debugger;
-        let href = `${w}`;
-        return href;
-       //  window.open(href);
+    function showDemo(href){
+        window.open(href);
     }
 </script>
 </head>
@@ -51,7 +48,7 @@
 
 <h2> Listing items</h2>
 <ul>
-    <li> <a href="/uidemos/casserver.html" > List cas servers </a></li>
+    <li> <a href="javascript.showDemo(`/uidemos/casserver.html`)" > List cas servers </a></li>
     <li> <a href="javascript:showDemo(`/uidemos/computecontexts.html`)"> List of compute contexts</a></li>
     <li> <a href="javascript:showDemo(`/uidemos/paginate.html`)" > Paginates thru files using files service</a></li>
 </ul>

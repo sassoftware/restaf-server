@@ -49,48 +49,13 @@ module.exports = function iService (uTable, useDefault , asset, rootHandler){
     console.log(`asset ${asset} `);
     console.log(`uTable ${uTable}`);
 
-    debugger;
-    function checkProxy (a) {
-        let handler = a;
-        if (process.env.PROXYSERVER === 'YES') {
-            let proxyx = {
-                mapUri: function (req) {
-                    req.server.app.cache.get('edge')
-                    .then (credentials => {
-                        let token = credentials.token;
-                        req.Authorization = 'bearer ' + token;
-                        return req;
-                    })
-                    .catch (err => {
-                        console.log(err);
-                        return req;  
-                    })   
-                },
-                onResponse: function (err, res, request, reply, settings, ttl ){
-
-                }
-            }
-            let proxy = {
-                host    : `${process.env.VIYA_SERVER}`,
-                protocol: process.env.HAPI_PROTOCOL
-            }
-            if (process.env.HAPI_PROTOCOL === 'https') {
-                proxy.port= '443'
-            }
-            handler = {
-                proxy
-            }
-        } 
-        return handler;
-    }
-
     if (process.env.OAUTH2 === 'YES') {
         auth1 = {
             mode    : 'required',
             strategy: 'sas'
         };
         auth2 = {
-            mode    : 'try',
+            mode    : 'required',
             strategy: 'session'
         };
         auth2 = false;
@@ -119,7 +84,6 @@ module.exports = function iService (uTable, useDefault , asset, rootHandler){
                 method: [ 'GET' ],
                 path  : `${appName}/callback${appName}`,
                 config: {
-                    auth   : false,
                     handler: AppCallback
                 }
 
@@ -133,6 +97,7 @@ module.exports = function iService (uTable, useDefault , asset, rootHandler){
                 method: [ 'GET' ],
                 path  : `/restafServerInfo`,
                 config: {
+                    auth   : false,
                     handler: serverInfo
                 }
             },{
@@ -146,7 +111,6 @@ module.exports = function iService (uTable, useDefault , asset, rootHandler){
                 method: [ 'GET' ],
                 path  : '/testserver',
                 config: {
-                    auth   : auth2,
                     handler: testServer
                 }
             }
@@ -158,7 +122,7 @@ module.exports = function iService (uTable, useDefault , asset, rootHandler){
             method: [ '*' ],
             path  : '/{params*}',
             config: {
-                handler: checkProxy(handleProxy)
+                handler: handleProxy
             }
         };
         defaultTable = [ ...defaultTable, handleOthers ];
@@ -167,6 +131,7 @@ module.exports = function iService (uTable, useDefault , asset, rootHandler){
             method: [ 'GET' ],
             path  : '/{param*}',
             config: {
+                auth   : false,
                 handler: getApp2
             }
         };
@@ -200,16 +165,28 @@ async function testServer (req, h) {
     return h.file(url);
 }
 
-async function getToken (req, h) {
+
+
+
+async function getApp (req, h) {
     debugger;
-    if (req.auth.credentials !== null) {
-        return req.auth.credentials.session;
-    } else {
-        let credentials = await req.server.app.cache.get('edge');
-        debugger;
-        return credentials.token;
+    if (process.env.PROXYSERVER === 'YES') {
+        return getAuthApp(null, req,h)
+    } else { 
+        let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
+        return h.file(indexHTML);
     }
 }
+
+async function getAuthApp (rootHandler, req, h) {
+    debugger;
+    const sid = uuid.v4();
+    await req.server.app.cache.set(sid,  req.auth.credentials) ;
+    req.cookieAuth.set({sid});
+    let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
+    return h.file(`${indexHTML}`);
+}
+
 async function handleProxy (req, h) {
     debugger;
     let token;
@@ -228,7 +205,19 @@ async function handleProxy (req, h) {
         return boom.unauthorized(err)
     }
 }
+async function getToken (req, h) {
+    debugger;
+    if (req.auth.credentials !== null) {
+        debugger;
+        return req.auth.credentials.token;
 
+    } else {
+        debugger;
+        let sid = await req.server.app.cache.get(sid);
+        debugger;
+        return sid.credentials;
+    }
+}
 function handleProxyRequest (req, h, token) {
     return new Promise((resolve, reject) => {
         debugger;
@@ -291,32 +280,23 @@ function handleProxyRequest (req, h, token) {
 }
 
 
-async function getApp (req, h) {
-    debugger;
-    console.log('in getApp');
-    if (process.env.PROXYSERVER === 'YES') {
-        return getAuthApp(null, req,h)
-    } else { 
-        let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
-        return h.file(indexHTML);
-    }
-}
 
-async function getIcon (req, h) {
-    debugger;
-    return h.file('favicon.ico');
-}
-async function getAuthApp (rootHandler, req, h) {
-    debugger;
-    req.server.app.cache.set('edge',  req.auth.credentials) ;
-    let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
-    return h.file(`${indexHTML}`);
-}
+
+
 
 async function AppCallback (req, h) {
     proxyLogger('In callback');
     let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
     return h.file(`${indexHTML}`);
+}
+
+//
+// get app server files
+//
+
+async function getIcon (req, h) {
+    debugger;
+    return h.file('favicon.ico');
 }
 
 async function getApp2 (req, h) {
