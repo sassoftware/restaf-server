@@ -1,6 +1,6 @@
 {
   "name": "restaf-server",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Custom app server for Viya apps",
   "author": "Deva Kumaraswamy <deva.kumar@sas.com>",
   "license": "SEE LICENCE in LICENSE",
