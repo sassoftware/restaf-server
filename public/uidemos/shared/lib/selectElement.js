@@ -17,29 +17,11 @@
  */
 
 'use strict';
-
-let path     = require('path');
-let iService = require('./iService');
-let config   = require('./config');
-
-debugger;
-function UIapp (uTable, rootHandler, rafEnv){
-    debugger;
-    let asset = setup(rafEnv);
-    iService(uTable, (uTable !== null), asset, rootHandler);
+function selectElement( folder, elementId) {
+    let select = document.getElementById( elementId );
+    folder.itemsList().forEach( v => {
+        let option = document.createElement( "option" );
+        option.text = v;
+        select.options.add( option );
+    } );
 }
-
-function service (uTable, rootHandler, rafEnv){
-    let asset = setup(rafEnv);
-    iService(uTable, false, asset, rootHandler) ;
-}
-
-function setup (rafEnv){
-    debugger;
-    console.log(rafEnv);
-    config(rafEnv);
-    let asset = (process.env.APPLOC === '.') ? process.cwd() : process.env.APPLOC ;
-    process.env.APPASSET = asset;
-    return asset;
-}
-export { service, UIapp };

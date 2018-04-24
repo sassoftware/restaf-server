@@ -20,7 +20,7 @@
 
 let fs = require('fs');
 
-module.exports = function config(appEnv) {
+module.exports = function config (appEnv) {
     debugger;
     try {
         let data = fs.readFileSync(appEnv, 'utf8');
@@ -40,6 +40,7 @@ module.exports = function config(appEnv) {
             }
         });
         process.env.SAS_PROTOCOL = (process.env.SAS_SSL_ENABLED === 'YES') ? 'https://' : 'http://';
+        process.env.HAPI_PROTOCOL = (process.env.SAS_SSL_ENABLED === 'YES') ? 'https' : 'http';
     }
     catch (err) {
         console.log(err);

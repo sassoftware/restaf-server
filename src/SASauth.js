@@ -18,65 +18,68 @@
 
 'use strict';
 
-var request = require('request').defaults({
-    jar: true
-}),
-    bell = require('bell'),
-    debug = require('debug')('auth'),
-    qs = require('qs'),
-    uuid = require('uuid'),
-    authCookie = require('hapi-auth-cookie');
+let bell       = require('bell'),
+    debug      = require('debug')('auth'),
+    qs         = require('qs'),
+    uuid       = require('uuid'),
+    cookie     = require('hapi-auth-cookie');
 
-module.exports = function (hapiServer, cb) {
-    var authCookieOptions,
+async function SASauth (hapiServer) {
+
+    let authCookieOptions,
         bellAuthOptions,
         provider;
 
-    // TBD: need to add other options like keepalive after initial testing
+        //TBD: do we need keepalive?
     authCookieOptions = {
         password: uuid.v4(),
-        cookie: 'session',
-        domain: process.env.APPHOST,
-        isSecure: false
+        cookie  : 'authCookie',
+        domain  : process.env.APPHOST,
+        isSecure: false,
 
-    };
-
-    let authURL = process.env.SAS_PROTOCOL + process.env.VIYA_SERVER;
-    provider = {
-        name: 'sas',
-        protocol: 'oauth2',
-        useParamsAuth: false,
-        auth: authURL + '/SASLogon/oauth/authorize',
-        token: authURL + '/SASLogon/oauth/token'
-    };
-    bellAuthOptions = {
-        provider: provider,
-        password: uuid.v4(),
-        clientId: process.env.CLIENTID,
-        clientSecret: (process.env.CLIENTSECRET == null) ? ' ' : process.env.CLIENTSECRET,
-        isSecure: false
-    };
-
-
-    debug('Enabling authentication');
-    hapiServer.register([bell, authCookie], function (err) {
-        debugger;
-        if (err) {
-            cb(err);
+        validateFunc: async function (req, session) {
+            let credentials = await req.server.app.cache.get(session.sid);
+            return {
+                valid      : true,
+                credentials: credentials,
+            }
         }
-        /* set the cookie strategy */
+    }
+        
+    if (process.env.OAUTH2 === 'YES') {
+        let authURL = process.env.SAS_PROTOCOL + process.env.VIYA_SERVER;
+        provider = {
+            name         : 'sas',
+            protocol     : 'oauth2',
+            useParamsAuth: false,
+            auth         : authURL + '/SASLogon/oauth/authorize',
+            token        : authURL + '/SASLogon/oauth/token'
+        };
+        
+        bellAuthOptions = {
+            provider    : provider,
+            password    : uuid.v4(),
+            clientId    : process.env.CLIENTID,
+            clientSecret: (process.env.CLIENTSECRET == null) ? ' ' : process.env.CLIENTSECRET,
+            isSecure    : false
+        };
+
+        if (process.env.BELL_LOCATION != null) {
+            bellAuthOptions.location = process.env.BELL_LOCATION;
+        }
+
         debugger;
-        hapiServer.auth.strategy('session', 'cookie', true, authCookieOptions);
-        /* now set the SAS strategy */
-        debug(bellAuthOptions);
-        hapiServer.auth.strategy('sas', 'bell', false, bellAuthOptions);
+        await hapiServer.register(bell);
+        await hapiServer.register(cookie);
+       
+        hapiServer.auth.strategy('sas', 'bell', bellAuthOptions);
+        hapiServer.auth.strategy('session', 'cookie', authCookieOptions);
+        hapiServer.auth.default('session');
+        
+       
+    }
 
-        cb(null);
-    });
-
-};
-/*
-validateFunc: function( req, session, callback ) {
-    callback( null, true, session );
 }
-*/
+
+
+export default SASauth;

@@ -19,103 +19,66 @@
 'use strict';
 // proxy server
 
-var Hapi = require('hapi'),
-    inert = require('inert'),
-    SASauth = require('./SASauth.js'),
-    hapiServer = new Hapi.Server();
+let  Hapi  = require('hapi'),
+    inert  = require('inert'),
+    hapiServer;
+import SASauth from './SASauth';
 
 module.exports = function (userRouterTable, asset, rootHandler) {
     debugger;
 
     process.env.APPHOST_ADDR = process.env.APPHOST;
-    startServer(userRouterTable, asset);
 
-    function startServer(userRouterTable, asset) {
-        let sConfig = {
-            port: process.env.APPPORT,
-            host: process.env.APPHOST_ADDR,
-            routes: {
-                cors: {
-                    origin: ['*'],
-                    credentials: true,
-                    additionalHeaders: ['accept'],
+    let sConfig = {
+        port  : process.env.APPPORT,
+        host  : process.env.APPHOST_ADDR,
+        routes: {
+            cors: {
+                origin     : [ '*' ],
+                credentials: true,
 
-                    additionalExposedHeaders: ['location']
-                }
+                additionalHeaders       : [ 'accept' ],
+                additionalExposedHeaders: [ 'location' ]
             }
-        };
-
-        if (asset !== null) {
-            console.log(asset);
-            sConfig.routes.files = { relativeTo: asset };
         }
+    };
 
-        console.log(JSON.stringify(sConfig, null, 4));
-        hapiServer.connection(sConfig);
-        // hapiServer.cache( {segment: 'credentials', expiresIn: 24*60*60*1000 } );
-
-
-        // TBD: need to fix this async call for inert - ok for now
-        // probably make them into promises
-
-        hapiServer.register(inert, () => {
-        });
-
-        if (process.env.OAUTH2 !== 'YES') {
-            console.log('setting route');
-            hapiServer.route(userRouterTable);
-            hapiServer.start(err => {
-                if (err) {
-                    throw err;
-                }
-                console.log('Server started at: ' + hapiServer.info.uri + '/' + process.env.APPNAME);
-            });
-        } else {
-            SASauth(hapiServer, (err) => {
-                if (err) {
-                    console.log(err);
-                    process.exit(1);
-                } else {
-                    hapiServer.route(userRouterTable);
-                    //noinspection JSUnusedLocalSymbols
-                    hapiServer.on('request-error', (request, err) => {
-                        console.log(request.info.remoteAddress + ': ' + request.method.toUpperCase() + ' ' +
-                            request.url.path + ' --> ' + request.response.statusCode);
-                    });
-                    hapiServer.ext('onPreResponse', (request, reply) => {
-                        const response = request.response;
-                        if (!response.isBoom) {
-                            return reply.continue();
-                        }
-
-                        // log 400 and above
-                        //noinspection JSUnresolvedVariable
-                        if (response.output.statusCode >= 400 &&
-                            response.output.statusCode < 500) {
-
-                            console.log('Client error');
-                            console.log({
-                                response: response,
-                                requestData: request.orig,
-                                path: request.path
-                            });
-                        }
-
-                        reply.continue();
-                    });
-                    process.env.HEALTH = 'OK';
-                    hapiServer.app.cache = hapiServer.cache({ segment: 'edge', expiresIn: 14 * 24 * 60 * 60 * 1000 });
-                    debugger;
-                    hapiServer.start(err => {
-                        if (err) {
-                            throw err;
-                        }
-                        console.log('Server started at: ' + hapiServer.info.uri + '/' + process.env.APPNAME);
-                    });
-                }
-            });
-        }
+    if (asset !== null) {
+        console.log(asset);
+        sConfig.routes.files = {relativeTo: asset};
     }
-};
 
 
+    hapiServer = Hapi.server(sConfig);
+
+    if (process.env.OAUTH2 !== 'YES') {
+        let info = SASauth(hapiServer);
+    }
+
+    const init = async () => {
+        await hapiServer.register(inert);
+        await SASauth(hapiServer);
+        hapiServer.route(userRouterTable);
+
+        hapiServer.app.cache = hapiServer.cache(
+            {
+                segment  : 'session',
+                expiresIn: 14 * 24 * 60 * 60 * 1000
+            });
+
+        await hapiServer.start();
+        console.log('--------------------------------------------');
+        console.log(JSON.stringify(sConfig, null, 4));
+        console.log('--------------------------------------------');
+        console.log(` server started at: ${(hapiServer.info.uri)}/${process.env.APPNAME}`);
+    }
+
+    process.on('unhandledRejection', (err) => {
+
+        console.log(err);
+        process.exit(1);
+    });
+
+    init()
+    
+}

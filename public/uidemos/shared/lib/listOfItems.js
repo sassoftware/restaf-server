@@ -17,29 +17,8 @@
  */
 
 'use strict';
-
-let path     = require('path');
-let iService = require('./iService');
-let config   = require('./config');
-
-debugger;
-function UIapp (uTable, rootHandler, rafEnv){
-    debugger;
-    let asset = setup(rafEnv);
-    iService(uTable, (uTable !== null), asset, rootHandler);
+async function listOfItems(service) {
+    let r         = await store.addServices(service);
+    let listObj   = await store.apiCall( r[service].links(service) );
+    return listObj;
 }
-
-function service (uTable, rootHandler, rafEnv){
-    let asset = setup(rafEnv);
-    iService(uTable, false, asset, rootHandler) ;
-}
-
-function setup (rafEnv){
-    debugger;
-    console.log(rafEnv);
-    config(rafEnv);
-    let asset = (process.env.APPLOC === '.') ? process.cwd() : process.env.APPLOC ;
-    process.env.APPASSET = asset;
-    return asset;
-}
-export { service, UIapp };
