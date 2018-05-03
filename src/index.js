@@ -22,9 +22,9 @@ let path     = require('path');
 let iService = require('./iService');
 let config   = require('./config');
 
-debugger;
+
 function UIapp (uTable, rootHandler, rafEnv){
-    debugger;
+    
     let asset = setup(rafEnv);
     iService(uTable, (uTable !== null), asset, rootHandler);
 }
@@ -35,7 +35,7 @@ function service (uTable, rootHandler, rafEnv){
 }
 
 function setup (rafEnv){
-    debugger;
+    
     console.log(rafEnv);
     config(rafEnv);
     let asset = (process.env.APPLOC === '.') ? process.cwd() : process.env.APPLOC ;

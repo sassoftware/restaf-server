@@ -24,14 +24,16 @@ let  Hapi  = require('hapi'),
     hapiServer;
 import SASauth from './SASauth';
 
-module.exports = function (userRouterTable, asset, rootHandler) {
-    debugger;
 
+module.exports = function (userRouterTable, asset, rootHandler) {
+ 
     process.env.APPHOST_ADDR = process.env.APPHOST;
+    
 
     let sConfig = {
-        port  : process.env.APPPORT,
-        host  : process.env.APPHOST_ADDR,
+        port    : process.env.APPPORT,
+        host    : process.env.APPHOST_ADDR,
+        
         routes: {
             cors: {
                 origin     : [ '*' ],

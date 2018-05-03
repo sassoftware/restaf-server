@@ -21,7 +21,7 @@
 let fs = require('fs');
 
 module.exports = function config (appEnv) {
-    debugger;
+    
     try {
         let data = fs.readFileSync(appEnv, 'utf8');
         let d = data.split(/\r?\n/);
@@ -41,6 +41,13 @@ module.exports = function config (appEnv) {
         });
         process.env.SAS_PROTOCOL = (process.env.SAS_SSL_ENABLED === 'YES') ? 'https://' : 'http://';
         process.env.HAPI_PROTOCOL = (process.env.SAS_SSL_ENABLED === 'YES') ? 'https' : 'http';
+
+     
+        if (process.env.VIYA_SERVER != null) {
+            let t = process.env.VIYA_SERVER.split(' ');
+            console.log( t.length );
+            process.env.VIYASERVER=t[0];
+        }
     }
     catch (err) {
         console.log(err);

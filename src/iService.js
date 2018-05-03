@@ -34,13 +34,21 @@ let SASauth = require('./SASauth');
 let qs = require('qs');
 let uuid = require('uuid');
 
+
 module.exports = function iService(uTable, useDefault, asset, rootHandler) {
 
     process.env.APPHOST = (process.env.APPHOST === '*') ? os.hostname() : process.env.APPHOST;
     let appName = '/' + process.env.APPNAME;
     let auth1 = {};
-    let auth2 = {};
     let handleOthers;
+    let defaultMaxBytes = 10485760; 
+
+    let maxBytes;
+    if (isNaN(process.env.PAYLOADMAXBYTES) ) {
+        maxBytes = defaultMaxBytes;
+    } else {
+        maxBytes = Number(process.env.PAYLOADMAXBYTES);
+    }
 
     if (process.env.PROXYSERVER === 'YES') {
         process.env.OAUTH2 = 'YES';
@@ -53,16 +61,10 @@ module.exports = function iService(uTable, useDefault, asset, rootHandler) {
         auth1 = {
             mode: 'required',
             strategy: 'sas'
-        };
-        auth2 = {
-            mode: 'required',
-            strategy: 'session'
-        };
-        auth2 = false;
+        }; 
     }
     else {
         auth1 = false;
-        auth2 = false;
     }
 
     let defaultTable =
@@ -97,7 +99,7 @@ module.exports = function iService(uTable, useDefault, asset, rootHandler) {
             method: ['GET'],
             path: `/restafServerInfo`,
             config: {
-                auth: false,
+                auth   : false,
                 handler: serverInfo
             }
         }, {
@@ -118,16 +120,27 @@ module.exports = function iService(uTable, useDefault, asset, rootHandler) {
 
     // Tried payload.parse = false -- way too much code to handle payload
     if (process.env.PROXYSERVER === 'YES') {
-        handleOthers = {
-            method: ['*'],
+        let handleOthers = [
+            {
+            method: ['PUT', 'POST', 'PATCH'],
             path: '/{params*}',
+            config: {
+                payload: {
+                    maxBytes: maxBytes
+                 },
+                handler: handleProxy
+                }
+            }, {
+            method: ['GET'],
+            path  : '/{params*}',
             config: {
                 handler: handleProxy
             }
-        };
-        defaultTable = [ ...defaultTable, handleOthers ];
+        }
+        ];
+        defaultTable = [ ...defaultTable, ...handleOthers ];
     } else {
-        handleOthers = {
+        let handleOthers = {
             method: ['GET'],
             path: '/{param*}',
             config: {
@@ -148,7 +161,7 @@ module.exports = function iService(uTable, useDefault, asset, rootHandler) {
     } else {
         userRouterTable = [...defaultTable];
     }
-    debugger;
+    
     console.log(JSON.stringify(userRouterTable, null, 4));
     server(userRouterTable, asset);
 
@@ -158,15 +171,11 @@ module.exports = function iService(uTable, useDefault, asset, rootHandler) {
 // Had to add cache to handle Edge browser - must be a way not to have to do this.
 //
 async function testServer(req, h) {
-    debugger;
     let token;
     let url = 'testserver.html';
     console.log(req.auth.credentials);
     return h.file(url);
 }
-
-
-
 
 async function getApp(req, h) {
     debugger;
@@ -179,7 +188,6 @@ async function getApp(req, h) {
 }
 
 async function getAuthApp(rootHandler, req, h) {
-    debugger;
     const sid = uuid.v4();
     await req.server.app.cache.set(sid, req.auth.credentials);
     req.cookieAuth.set({ sid });
@@ -187,12 +195,11 @@ async function getAuthApp(rootHandler, req, h) {
     return h.file(`${indexHTML}`);
 }
 
-async function handleProxy(req, h) {
-    debugger;
+async function handleProxy(req, h) {  
     let token;
     try {
         token = await getToken(req, h);
-        debugger;
+        
         let proxyResponse = await handleProxyRequest(req, h, token);
 
         let response = h.response(proxyResponse.body);
@@ -205,22 +212,17 @@ async function handleProxy(req, h) {
         return boom.unauthorized(err)
     }
 }
-async function getToken(req, h) {
-    debugger;
-    if (req.auth.credentials !== null) {
-        debugger;
+async function getToken(req, h) {   
+    if (req.auth.credentials !== null) {     
         return req.auth.credentials.token;
-
-    } else {
-        debugger;
-        let sid = await req.server.app.cache.get(sid);
-        debugger;
+     } else {     
+        let sid = await req.server.app.cache.get(sid);     
         return sid.credentials;
     }
 }
 function handleProxyRequest(req, h, token) {
     return new Promise((resolve, reject) => {
-        debugger;
+        
         let uri = `${process.env.SAS_PROTOCOL}${process.env.VIYA_SERVER}/${req.params.params}`;
         let headers = { ...req.headers };
         delete headers.host;
@@ -231,7 +233,7 @@ function handleProxyRequest(req, h, token) {
         if (headers.cookie) {
             delete headers.cookie;
         }
-        debugger;
+        
         let config = {
             url: uri,
             method: req.method,
@@ -259,11 +261,11 @@ function handleProxyRequest(req, h, token) {
         debugProxy(JSON.stringify(config, null, 4));
         proxyLogger(config.url);
         request(config, (err, response, body) => {
-            debugger;
+            
             if (err) {
                 reject(err);
             } else {
-                debugger;
+                
                 responseLogger({ url: `------------------------------------------${config.url}` });
                 responseLogger(req.query);
                 responseLogger((typeof body === 'string' ? { body: body } : body));
@@ -271,7 +273,7 @@ function handleProxyRequest(req, h, token) {
                     delete response.headers['content-encoding'];
                 }
                 responseLogger(response.headers['content-coding']);
-                debugger;
+                
                 resolve({ headers: response.headers, body: body });
 
             }
@@ -280,12 +282,8 @@ function handleProxyRequest(req, h, token) {
 }
 
 
-
-
-
-
 async function AppCallback(req, h) {
-    debugger;
+    
     proxyLogger('In callback');
     let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
     return h.file(`${indexHTML}`);
@@ -296,7 +294,7 @@ async function AppCallback(req, h) {
 //
 
 async function getIcon(req, h) {
-    debugger;
+    
     return h.file('favicon.ico');
 }
 
@@ -305,13 +303,15 @@ async function getApp2(req, h) {
 }
 
 async function getShared(req, h) {
-    debugger;
+    
     return h.file(`shared/${req.params.param}`);
 }
 async function serverInfo(req, h) {
-    debugger;
-    let protocol = (process.env.SAS_SSL_ENABLED === 'YES') ? 'https://' : 'http://';
-    let js = `let VIYA_HOST   = "${protocol}${process.env.VIYA_SERVER}";`;
+    let js = `let VIYA_HOST=null;`;
+    if (process.env.EXPOSEHOST === 'YES') {
+        let protocol = (process.env.SAS_SSL_ENABLED === 'YES') ? 'https://' : 'http://';
+        let js = `let VIYA_HOST   = "${protocol}${process.env.VIYA_SERVER}";`;
+    } 
     return js;
 }
 

@@ -36,6 +36,7 @@ async function SASauth (hapiServer) {
         cookie  : 'authCookie',
         domain  : process.env.APPHOST,
         isSecure: false,
+        isSameSite: ( process.env.SAMESITE != null) ? process.env.SAMESITE : 'Strict',
 
         validateFunc: async function (req, session) {
             let credentials = await req.server.app.cache.get(session.sid);
@@ -68,7 +69,7 @@ async function SASauth (hapiServer) {
             bellAuthOptions.location = process.env.BELL_LOCATION;
         }
 
-        debugger;
+        
         await hapiServer.register(bell);
         await hapiServer.register(cookie);
        
