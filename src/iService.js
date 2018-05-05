@@ -19,8 +19,8 @@
 
 'use strict';
 
-let debug = require('debug');
-let debugProxy = debug('proxy');
+let debug       = require('debug');
+let debugProxy  = debug('proxy');
 let debugRouter = debug('router');
 let proxyLogger = debug('proxylogger');
 let responseLogger = debug('response');

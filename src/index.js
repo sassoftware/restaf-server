@@ -35,8 +35,6 @@ function service (uTable, rootHandler, rafEnv){
 }
 
 function setup (rafEnv){
-    
-    console.log(rafEnv);
     config(rafEnv);
     let asset = (process.env.APPLOC === '.') ? process.cwd() : process.env.APPLOC ;
     process.env.APPASSET = asset;

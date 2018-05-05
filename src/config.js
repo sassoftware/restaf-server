@@ -1,3 +1,4 @@
+
 /*
  *  ------------------------------------------------------------------------------------
  *  * Copyright (c) SAS Institute Inc.
@@ -21,7 +22,21 @@
 let fs = require('fs');
 
 module.exports = function config (appEnv) {
+    if ( appEnv !== null ) {
+        iconfig(appEnv);      
+    }
+    process.env.SAS_PROTOCOL = (process.env.SAS_SSL_ENABLED === 'YES') ? 'https://' : 'http://';
+    // process.env.HAPI_PROTOCOL = (process.env.SAS_SSL_ENABLED === 'YES') ? 'https' : 'http';    
     
+    // fixing usual user error of adding a space after the url
+    if (process.env.VIYA_SERVER != null) {
+        let t = process.env.VIYA_SERVER.split(' ');
+        process.env.VIYASERVER=t[0];
+    }
+};
+
+function iconfig(appEnv) {
+
     try {
         let data = fs.readFileSync(appEnv, 'utf8');
         let d = data.split(/\r?\n/);
@@ -29,28 +44,21 @@ module.exports = function config (appEnv) {
         d.forEach(l => {
             if (l.length > 0 && l.indexOf('#') === -1) {
                 let la = l.split('=');
+                let envName = la[0];
                 if (la.length > 0) {
                     if (la[1] === '') {
-                        delete process.env[la[1]]
+                        delete process.env[envName];
                     } else {
-                        process.env[la[0]] = la[1];
+                        process.env[envName] = la[1];
                     }
-                    console.log(`${la[0]}=${la[1]}`)
+                    console.log(`${envName}=${la[1]}`)
                 }
             }
         });
-        process.env.SAS_PROTOCOL = (process.env.SAS_SSL_ENABLED === 'YES') ? 'https://' : 'http://';
-        process.env.HAPI_PROTOCOL = (process.env.SAS_SSL_ENABLED === 'YES') ? 'https' : 'http';
-
-     
-        if (process.env.VIYA_SERVER != null) {
-            let t = process.env.VIYA_SERVER.split(' ');
-            console.log( t.length );
-            process.env.VIYASERVER=t[0];
-        }
+        
     }
     catch (err) {
         console.log(err);
         process.exit(0);
     }
-};
+}
