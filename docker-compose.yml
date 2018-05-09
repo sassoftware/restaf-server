@@ -1,5 +1,0 @@
-myapp: 
-   build: .
-   ports:  
-     - 5000:8080
-  

@@ -123,4 +123,32 @@ You can put such shared resources in this directory. Of course the idea way to g
 a sure thing for your homegrown shared libraries.
 
 
+## Running in docker using Dockerfile
+
+### Quick start 
+
+Assuming you have installed docker do the following
+
+```
+docker build -t myapp .
+```
+
+then to run it
+
+```
+docker run -p 5000:8080 -t myapp
+```
+
+In your browser you can access the myapp application in one of the following ways
+
+```
+http://localhost:5000/myapp
+
+or
+
+http://<your-client-machine-address>:5000/myapp
+
+```
+
+
 
