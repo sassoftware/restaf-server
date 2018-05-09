@@ -40,6 +40,7 @@ module.exports = function iService(uTable, useDefault, asset, rootHandler) {
     process.env.APPHOST = (process.env.APPHOST === '*') ? os.hostname() : process.env.APPHOST;
     let appName = '/' + process.env.APPNAME;
     let auth1 = {};
+    let auth2 = false;
     let handleOthers;
     let defaultMaxBytes = 10485760; 
 
@@ -79,6 +80,7 @@ module.exports = function iService(uTable, useDefault, asset, rootHandler) {
             method: ['GET'],
             path: `${appName}/{param*}`,
             config: {
+                auth    : auth2,
                 handler: getApp2
             }
 
@@ -93,6 +95,7 @@ module.exports = function iService(uTable, useDefault, asset, rootHandler) {
             method: ['GET'],
             path: `/shared/{param*}`,
             config: {
+                auth   :  false,
                 handler: getShared
             }
         }, {
@@ -144,7 +147,7 @@ module.exports = function iService(uTable, useDefault, asset, rootHandler) {
             method: ['GET'],
             path: '/{param*}',
             config: {
-                auth: false,
+                auth   : false,
                 handler: getApp2
             }
         };
@@ -179,7 +182,7 @@ async function testServer(req, h) {
 
 async function getApp(req, h) {
     debugger;
-    if (process.env.PROXYSERVER === 'YES') {
+    if (process.env.OAUTH2 === 'YES') {
         return getAuthApp(null, req, h)
     } else {
         let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
@@ -189,8 +192,12 @@ async function getApp(req, h) {
 
 async function getAuthApp(rootHandler, req, h) {
     const sid = uuid.v4();
+    debugger;
     await req.server.app.cache.set(sid, req.auth.credentials);
-    req.cookieAuth.set({ sid });
+    if (process.env.PROXYSERVER === 'YES' ) {
+        req.cookieAuth.set({sid});
+    } 
+    debugger;
     let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
     return h.file(`${indexHTML}`);
 }
@@ -213,6 +220,7 @@ async function handleProxy(req, h) {
     }
 }
 async function getToken(req, h) {   
+    debugger;
     if (req.auth.credentials !== null) {     
         return req.auth.credentials.token;
      } else {     
