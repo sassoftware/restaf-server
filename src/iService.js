@@ -254,7 +254,7 @@ function handleProxyRequest(req, h, token) {
 
 
         if (req.payload != null) {
-            debugProxy(console.log(headers['content-type']));
+            // debugProxy(headers['content-type']);
             if (headers['content-type'] === 'application/octet-stream') {
                 config.body = req.payload;
             } else {
