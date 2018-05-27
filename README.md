@@ -150,6 +150,8 @@ http://<your-client-machine-address>:5000/myapp
 
 ```
 
+# Additional features you can try
+
 ## TLS Support
 
 To turn on TLS support add the following line to your env file. Each item is separated by blanks. Embedded blanks in the values will cause errors.
@@ -160,6 +162,18 @@ To turn on TLS support add the following line to your env file. Each item is sep
       Ex:
 
       TLS=coolSASUsers ../myssl/cert.pem  ../myssl/key.pem
+
+## To Be Documented
+
+-  SAMESITE option
+
+-  User-defined routes
+      
+      - Adding to default routes
+
+      - Overriding the defaults with custom routes
+
+
 
 
 
