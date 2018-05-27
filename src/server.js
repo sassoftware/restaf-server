@@ -19,6 +19,7 @@
 'use strict';
 // proxy server
 
+let fs     = require('fs');
 let  Hapi  = require('hapi'),
     inert  = require('inert'),
     hapiServer;
@@ -28,6 +29,7 @@ import SASauth from './SASauth';
 module.exports = function (userRouterTable, asset, rootHandler) {
  
     process.env.APPHOST_ADDR = process.env.APPHOST;
+    let tls = null;
     
 
     let sConfig = {
@@ -39,17 +41,26 @@ module.exports = function (userRouterTable, asset, rootHandler) {
                 origin     : [ '*' ],
                 credentials: true,
 
-                additionalHeaders       : [ 'accept' ],
+                additionalHeaders       : [ 'multipart/form-data', 'content-disposition' ],
                 additionalExposedHeaders: [ 'location' ]
             }
         }
     };
 
+    if ( process.env.TLS != null ) {
+        let tlsInfo = process.env.TLS.split(' ');
+        let l = tlsInfo.length;
+        sConfig.tls = {
+            key : fs.readFileSync(tlsInfo[l-1]),
+            cert: fs.readFileSync(tlsInfo[l-2]),
+            passphrase: tlsInfo[l-3]
+        }
+    }
+
     if (asset !== null) {
         console.log(asset);
         sConfig.routes.files = {relativeTo: asset};
     }
-
 
     hapiServer = Hapi.server(sConfig);
 
