@@ -152,7 +152,14 @@ http://<your-client-machine-address>:5000/myapp
 
 ## TLS Support
 
-To turn on TLS support add the following line to your env file
+To turn on TLS support add the following line to your env file. Each item is separated by blanks. Embedded blanks in the values will cause errors.
 
-      TLS passphrase <cert location> <key location>
+
+      TLS=passphrase <cert location> <key location>
+
+      Ex:
+
+      TLS=coolSASUsers ../myssl/cert.pem  ../myssl/key.pem
+
+
 

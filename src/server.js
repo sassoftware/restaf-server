@@ -47,18 +47,22 @@ module.exports = function (userRouterTable, asset, rootHandler) {
         }
     };
 
+    console.log('--------------------------------------------');
+    console.log(JSON.stringify(sConfig, null, 4));
+    console.log('--------------------------------------------');
+
     if ( process.env.TLS != null ) {
-        let tlsInfo = process.env.TLS.split(' ');
-        let l = tlsInfo.length;
+        let inp = process.env.TLS.split(' ');
+        let tlsInfo = inp.filter( t => t.length > 0);
+       //  console.log(tlsInfo);
         sConfig.tls = {
-            key : fs.readFileSync(tlsInfo[l-1]),
-            cert: fs.readFileSync(tlsInfo[l-2]),
-            passphrase: tlsInfo[l-3]
+            key : fs.readFileSync(tlsInfo[2]),
+            cert: fs.readFileSync(tlsInfo[1]),
+            passphrase: tlsInfo[0]
         }
     }
 
     if (asset !== null) {
-        console.log(asset);
         sConfig.routes.files = {relativeTo: asset};
     }
 
@@ -80,9 +84,7 @@ module.exports = function (userRouterTable, asset, rootHandler) {
             });
 
         await hapiServer.start();
-        console.log('--------------------------------------------');
-        console.log(JSON.stringify(sConfig, null, 4));
-        console.log('--------------------------------------------');
+      
         console.log(` server started at: ${(hapiServer.info.uri)}/${process.env.APPNAME}`);
     }
 
