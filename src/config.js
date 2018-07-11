@@ -26,12 +26,15 @@ module.exports = function config (appEnv) {
         iconfig(appEnv);      
     }
     process.env.SAS_PROTOCOL = (process.env.SAS_SSL_ENABLED === 'YES') ? 'https://' : 'http://';
-    // process.env.HAPI_PROTOCOL = (process.env.SAS_SSL_ENABLED === 'YES') ? 'https' : 'http';    
     
     // fixing usual user error of adding a space after the url
     if (process.env.VIYA_SERVER != null) {
         let t = process.env.VIYA_SERVER.split(' ');
-        process.env.VIYASERVER=t[0];
+        process.env.VIYA_SERVER=t[0];
+    }
+
+    if ( process.env.VIYA_HOST == null ) {
+        process.env.VIYA_HOST = process.env.SAS_PROTOCOL + process.env.VIYA_SERVER;
     }
 };
 

@@ -44,18 +44,16 @@ ENV OAUTH2=NO
 #
 ENV PROXYSERVER=NO
 
-#
-# is SAS server SSL enabled
-# Does not work correctly mainly because I do not understand it fully :-)
-#
 ENV SAS_SSL_ENABLED=NO
 
 #
 # your Viya Server  without the http://
 #
 
+ENV VIYA_SERVER=
 
-ENV VIYA_SERVER=NONE
+
+ENV VIYA_HOST=
 
 #
 # Clientid and clientsecret
@@ -63,7 +61,7 @@ ENV VIYA_SERVER=NONE
 # Ignored if PROXYSERVER is NO
 #
 # ENV CLIENTID=
-# ENV CLIENTSECRET=none
+# ENV CLIENTSECRET=
 
 
 

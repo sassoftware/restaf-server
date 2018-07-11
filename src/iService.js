@@ -231,7 +231,8 @@ async function getToken(req, h) {
 function handleProxyRequest(req, h, token) {
     return new Promise((resolve, reject) => {
         
-        let uri = `${process.env.SAS_PROTOCOL}${process.env.VIYA_SERVER}/${req.params.params}`;
+       // let uri = `${process.env.SAS_PROTOCOL}${process.env.VIYA_SERVER}/${req.params.params}`;
+        let uri = `${process.env.VIYA_HOST}/${req.params.params}`;
         let headers = { ...req.headers };
         delete headers.host;
         delete headers['user-agent'];

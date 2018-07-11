@@ -57,7 +57,8 @@ async function SASauth (hapiServer) {
     }
         
     if (process.env.OAUTH2 === 'YES') {
-        let authURL = process.env.SAS_PROTOCOL + process.env.VIYA_SERVER;
+        // let authURL = (process.env.VIYA_HOST != null) ? process.env.VIYA_HOST : (process.env.SAS_PROTOCOL + process.env.VIYA_SERVER);
+        let authURL = process.env.VIYA_HOST ;
         provider = {
             name         : 'sas',
             protocol     : 'oauth2',
