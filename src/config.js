@@ -33,9 +33,9 @@ module.exports = function config (appEnv) {
         process.env.VIYA_SERVER=t[0];
     }
 
-    if ( process.env.VIYA_HOST == null ) {
-        process.env.VIYA_HOST = process.env.SAS_PROTOCOL + process.env.VIYA_SERVER;
-    }
+    if ( process.env.VIYA_SERVER.indexOf('http') < 0  ) {
+        process.env.VIYA_SERVER = process.env.SAS_PROTOCOL + process.env.VIYA_SERVER;
+    } 
 };
 
 function iconfig(appEnv) {

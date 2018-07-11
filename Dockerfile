@@ -45,7 +45,7 @@ ENV OAUTH2=NO
 ENV PROXYSERVER=NO
 
 
-ENV VIYA_HOST=
+ENV VIYA_VIYASERVER=
 
 #
 # Clientid and clientsecret

@@ -232,7 +232,7 @@ function handleProxyRequest(req, h, token) {
     return new Promise((resolve, reject) => {
         
        // let uri = `${process.env.SAS_PROTOCOL}${process.env.VIYA_SERVER}/${req.params.params}`;
-        let uri = `${process.env.VIYA_HOST}/${req.params.params}`;
+        let uri = `${process.env.VIYA_SERVER}/${req.params.params}`;
         let headers = { ...req.headers };
         delete headers.host;
         delete headers['user-agent'];
@@ -316,10 +316,9 @@ async function getShared(req, h) {
     return h.file(`shared/${req.params.param}`);
 }
 async function serverInfo(req, h) {
-    let js = `let VIYA_HOST=null;`;
+    let js = `let VIYA_SERVER=null;`;
     if (process.env.EXPOSEHOST === 'YES') {
-        let protocol = (process.env.SAS_SSL_ENABLED === 'YES') ? 'https://' : 'http://';
-        let js = `let VIYA_HOST   = "${protocol}${process.env.VIYA_SERVER}";`;
+        let js = `let VIYA_SERVER  = "${process.env.VIYA_SERVER}";`;
     } 
     return js;
 }

@@ -90,14 +90,8 @@ OAUTH2=YES
 PROXYSERVER=NO
 
 #
-# is SAS server SSL enabled
-# Does not work correctly mainly because I do not understand it fully :-)
-#
-SAS_SSL_ENABLED=NO
-
-#
 # your Viya Server
-# ex: project.openstack.sas.com
+# ex: http://project.openstack.sas.com
 #
 
 VIYA_SERVER=
