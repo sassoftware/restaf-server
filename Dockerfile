@@ -44,14 +44,6 @@ ENV OAUTH2=NO
 #
 ENV PROXYSERVER=NO
 
-ENV SAS_SSL_ENABLED=NO
-
-#
-# your Viya Server  without the http://
-#
-
-ENV VIYA_SERVER=
-
 
 ENV VIYA_HOST=
 
