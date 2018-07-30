@@ -31,10 +31,10 @@ module.exports = function config (appEnv) {
     if (process.env.VIYA_SERVER != null) {
         let t = process.env.VIYA_SERVER.split(' ');
         process.env.VIYA_SERVER=t[0];
-    }
 
-    if ( process.env.VIYA_SERVER.indexOf('http') < 0  ) {
-        process.env.VIYA_SERVER = process.env.SAS_PROTOCOL + process.env.VIYA_SERVER;
+       if ( process.env.VIYA_SERVER.indexOf('http') < 0  ) {
+           process.env.VIYA_SERVER = process.env.SAS_PROTOCOL + process.env.VIYA_SERVER;
+       }
     } 
 };
 
