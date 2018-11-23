@@ -19,12 +19,18 @@
 'use strict';
 
 let path     = require('path');
+/*
 let iService = require('./iService');
 let config   = require('./config');
+*/
+import iService from './iService';
+import config from './config';
 
 
 function UIapp (uTable, rootHandler, rafEnv){
-    
+    debugger;
+    console.log(config);
+
     let asset = setup(rafEnv);
     iService(uTable, (uTable !== null), asset, rootHandler);
 }
@@ -35,6 +41,7 @@ function service (uTable, rootHandler, rafEnv){
 }
 
 function setup (rafEnv){
+    debugger;
     config(rafEnv);
     let asset = (process.env.APPLOC === '.') ? process.cwd() : process.env.APPLOC ;
     process.env.APPASSET = asset;

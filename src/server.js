@@ -22,16 +22,16 @@
 let fs     = require('fs');
 let  Hapi  = require('hapi'),
     inert  = require('inert'),
+    WebpackPlugin = require('hapi-webpack-plugin'),/* for hot restart */
     hapiServer;
 import SASauth from './SASauth';
 
-
-module.exports = function (userRouterTable, asset, rootHandler) {
+function server (userRouterTable, asset, rootHandler) {
  
     process.env.APPHOST_ADDR = process.env.APPHOST;
     let tls = null;
     
-
+    debugger;
     let sConfig = {
         port    : process.env.APPPORT,
         host    : process.env.APPHOST_ADDR,
@@ -65,15 +65,24 @@ module.exports = function (userRouterTable, asset, rootHandler) {
     if (asset !== null) {
         sConfig.routes.files = {relativeTo: asset};
     }
-
+    debugger;
     hapiServer = Hapi.server(sConfig);
-
+    debugger;
     if (process.env.OAUTH2 !== 'YES') {
+        debugger;
         let info = SASauth(hapiServer);
     }
 
     const init = async () => {
         await hapiServer.register(inert);
+        // https://github.com/SimonDegraeve/hapi-webpack-plugin
+        if ( process.env.HMR != null) {
+           await hapiServer.register({
+               plugin: WebpackPlugin,
+               options: process.env.HMR
+           })
+        }
+        debugger;
         await SASauth(hapiServer);
         hapiServer.route(userRouterTable);
 
@@ -97,3 +106,4 @@ module.exports = function (userRouterTable, asset, rootHandler) {
     init()
     
 }
+export default server;

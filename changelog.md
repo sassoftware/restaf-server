@@ -7,4 +7,7 @@
   This simplifies the set up of applications.
 
 
-  
+## Verson 5.0.0
+
+  - Upgraded the packages and in particular Babel and Webpack.
+  - Added support for HMR

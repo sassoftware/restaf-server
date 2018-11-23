@@ -21,22 +21,19 @@
 
 let debug       = require('debug');
 let debugProxy  = debug('proxy');
-let debugRouter = debug('router');
+
 let proxyLogger = debug('proxylogger');
 let responseLogger = debug('response');
-let server = require('./server');
+import server from './server';
 let boom = require('boom');
 let request = require('request');
 /* require( 'request-debug' )( request ); */
 let os = require('os');
-let v8 = require('v8');
-let SASauth = require('./SASauth');
-let qs = require('qs');
 let uuid = require('uuid');
 
 
-module.exports = function iService(uTable, useDefault, asset, rootHandler) {
-
+function iService(uTable, useDefault, asset, rootHandler) {
+    debugger;
     process.env.APPHOST = (process.env.APPHOST === '*') ? os.hostname() : process.env.APPHOST;
     let appName = '/' + process.env.APPNAME;
     let auth1 = {};
@@ -322,4 +319,5 @@ async function serverInfo(req, h) {
     } 
     return js;
 }
+export default iService;
 

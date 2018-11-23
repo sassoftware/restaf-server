@@ -1,4 +1,3 @@
-
 /*
  *  ------------------------------------------------------------------------------------
  *  * Copyright (c) SAS Institute Inc.
@@ -21,7 +20,7 @@
 
 let fs = require('fs');
 
-module.exports = function config (appEnv) {
+function config (appEnv) {
     if ( appEnv !== null ) {
         iconfig(appEnv);      
     }
@@ -65,3 +64,4 @@ function iconfig(appEnv) {
         process.exit(0);
     }
 }
+export default config;

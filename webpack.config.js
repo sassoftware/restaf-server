@@ -24,13 +24,13 @@ var path           = require('path');
 var library       = 'restaf-server';
 var APP_PATH = path.resolve(__dirname, 'src');
 
-
 var outputFile;
 
 outputFile = library + '.js';
 
-module.exports = {
+let config = {
     context: APP_PATH,
+    mode: 'development',
 
     entry: [
         'babel-polyfill',
@@ -49,7 +49,12 @@ module.exports = {
     },
     module: {
         rules: [
-            { test: /\.(js|jsx)$/, use: "babel-loader" },
+            {
+                test   : /\.(js|jsx)$/,
+                use    : [ { loader: "babel-loader" } ],
+                include: APP_PATH,
+                exclude: /node_modules/
+            },
             { test: /\.css$/, use: [{ loader: "style-loader/useable" }, { loader: "css-loader" }] }
         ]
 
@@ -60,3 +65,4 @@ module.exports = {
 
 };
 
+module.exports = config;
