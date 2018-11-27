@@ -15,6 +15,9 @@
   "engines": {
     "node": ">=8.9.0"
   },
+  "bin": {
+    "restafserver": "cli.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/sassoftware/restaf-server.git"
@@ -25,13 +28,11 @@
   "scripts": {
     "start": "node app",
     "test": "node app myapp.env",
+    "testcli": "node cli --env=myapp.env --appenv=./x.js",
     "proxy": "node app proxy.env",
     "webpack": "webpack --config webpack.config.js",
     "build": "babel src --out-dir lib",
     "lint": "./node_modules/.bin/eslint --fix src/*.js"
-  },
-  "bin": {
-    "restaf-server": "app.js"
   },
   "dependencies": {
     "@babel/core": "^7.0.0",
@@ -48,6 +49,7 @@
     "qs": "^6.5.2",
     "request": "^2.88.0",
     "request-debug": "^0.2.0",
+    "restaf-server": "file:../../restaf-core/restaf-server",
     "shelljs": "^0.8.3",
     "tcp-ping": "^0.1.1",
     "uuid": "^3.3.2",

@@ -11,3 +11,4 @@
 
   - Upgraded the packages and in particular Babel and Webpack.
   - Added support for HMR
+  - Added new entry point of app to make it easier to launch an app

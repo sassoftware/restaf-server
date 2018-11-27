@@ -39,9 +39,14 @@ function service (uTable, rootHandler, rafEnv) {
 
 
 function app (appData) {
-    let appEnvb = getAppEnv.bind(null, appData);
+   
     let rafEnv = (process.argv.length === 3) ? process.argv[ 2 ] : null;
     console.log((rafEnv === null) ? 'NOTE: Using settings from environment variables' : `NOTE: env file is: ${rafEnv}`);
+    iapp(appData, rafEnv );
+}
+
+function iapp(appData, rafEnv) {
+    let appEnvb = getAppEnv.bind(null, appData);
     let asset = setup(rafEnv);
     let uTable =
         [
@@ -96,4 +101,4 @@ function setup (rafEnv) {
     return asset;
 }
 
-export { app, service, UIapp };
+export { iapp, app, service, UIapp };
