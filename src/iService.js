@@ -97,10 +97,10 @@ function iService(uTable, useDefault, asset, rootHandler) {
             }
         }, {
             method: ['GET'],
-            path: `/restafServerInfo`,
+            path: `/appdata`,
             config: {
                 auth   : false,
-                handler: serverInfo
+                handler: appdata
             }
         }, {
             method: ['GET'],
@@ -116,6 +116,7 @@ function iService(uTable, useDefault, asset, rootHandler) {
                 handler: testServer
             }
          }
+    
         ];
 
     // Tried payload.parse = false -- way too much code to handle payload
@@ -312,11 +313,9 @@ async function getShared(req, h) {
     
     return h.file(`shared/${req.params.param}`);
 }
-async function serverInfo(req, h) {
-    let js = `let VIYA_SERVER=null;`;
-    if (process.env.EXPOSEHOST === 'YES') {
-        let js = `let VIYA_SERVER  = "${process.env.VIYA_SERVER}";`;
-    } 
+async function appdata(req, h) {
+    let f = process.env.APPDATAJS;
+    let js = fs.readFileSync(f, 'utf8');
     return js;
 }
 export default iService;
