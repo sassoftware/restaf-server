@@ -28,7 +28,7 @@
   "scripts": {
     "start": "node app",
     "test": "node app myapp.env",
-    "cli": "node cli --env=myapp.env --appenv=./x.js",
+    "app": "node cli --env=myapp.env --appenv=./x.js",
     "proxy": "node app proxy.env",
     "webpack": "webpack --config webpack.config.js",
     "build": "babel src --out-dir lib",
