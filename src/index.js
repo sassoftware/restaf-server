@@ -18,16 +18,12 @@
 
 'use strict';
 
-let path     = require('path');
-/*
-let iService = require('./iService');
-let config   = require('./config');
-*/
+let path = require('path');
+
 import iService from './iService';
 import config from './config';
 
-
-function UIapp (uTable, rootHandler, rafEnv){
+function UIapp (uTable, rootHandler, rafEnv) {
     debugger;
     console.log(config);
 
@@ -35,16 +31,69 @@ function UIapp (uTable, rootHandler, rafEnv){
     iService(uTable, (uTable !== null), asset, rootHandler);
 }
 
-function service (uTable, rootHandler, rafEnv){
+function service (uTable, rootHandler, rafEnv) {
     let asset = setup(rafEnv);
-    iService(uTable, false, asset, rootHandler) ;
+    iService(uTable, false, asset, rootHandler);
 }
 
-function setup (rafEnv){
+
+
+function app (appData) {
+    let appEnvb = getAppEnv.bind(null, appData);
+    let rafEnv = (process.argv.length === 3) ? process.argv[ 2 ] : null;
+    console.log((rafEnv === null) ? 'NOTE: Using settings from environment variables' : `NOTE: env file is: ${rafEnv}`);
+    let asset = setup(rafEnv);
+    let uTable =
+        [
+            {
+                method: [ 'GET' ],
+                path: `/appenv`,
+                config: {
+                    auth: false,
+                    cors: true,
+                    handler: appEnvb
+
+                }
+            }
+
+        ];
+    iService(uTable, (uTable !== null), asset, null);
+}
+
+async function getAppEnv (userData, req, h) {
+    let env={};
+    let LOGONPAYLOAD;
+    if (process.env.AUTHFLOW === 'implicit') {
+
+        LOGONPAYLOAD = {
+            authType: process.env.AUTHFLOW,
+            host    : process.env.VIYA_SERVER,
+            clientID: process.env.CLIENTID,
+            redirect: `${process.env.APPNAME}/${process.env.REDIRECT}`
+        };
+    } else {
+       
+        LOGONPAYLOAD = {
+            authType: process.env.AUTHFLOW,
+            passThru: process.env.VIYA_SERVER
+        };
+        ;
+    }
+    env.LOGONPAYLOAD=LOGONPAYLOAD;
+    if (userData != null) {
+        env.appEnv = userData();
+    }
+    let envstr = JSON.stringify(env);
+    console.log(envstr);
+    return envstr;
+}
+
+function setup (rafEnv) {
     debugger;
     config(rafEnv);
-    let asset = (process.env.APPLOC === '.') ? process.cwd() : process.env.APPLOC ;
+    let asset = (process.env.APPLOC === '.') ? process.cwd() : process.env.APPLOC;
     process.env.APPASSET = asset;
     return asset;
 }
-export { service, UIapp };
+
+export { app, service, UIapp };

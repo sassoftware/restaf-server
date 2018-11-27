@@ -17,54 +17,13 @@
  *
  */
 
-
 'use strict';
 
 debugger;
-let rafserver = require ('./lib/restaf-server');
-let rafEnv    = (process.argv.length === 3) ? process.argv [ 2 ] : null ;
-console.log((rafEnv === null) ? 'NOTE: Using settings from environment variables': `NOTE: env file is: ${rafEnv}`);
-rafserver.UIapp (getCustomHandler(), null, rafEnv);
+let rafServer = require ('./lib/index.js')
+rafServer.app(appData);
 
-function getCustomHandler () {
-    let handler =
-    [
-        {
-            method: [ 'GET' ],
-            path  : `/appenv`,
-            config: {
-                auth   : false,
-                cors   : true,
-                handler: getAppEnv
-
-            }
-       }
-
-    ];
-    return handler;
-    }
-
-    async function getAppEnv (req, h) {
-        let env;
-        if ( process.env.AUTHFLOW === 'implicit') {
-           env = `
-    
-            let LOGONPAYLOAD = {
-                authType: '${process.env.AUTHFLOW}',
-                host    : '${process.env.VIYA_SERVER}',
-                clientID: '${process.env.CLIENTID}',
-                redirect: '${process.env.APPNAME}/${process.env.REDIRECT}'
-            };
-         `
-        } else {
-            env = `
-                let LOGONPAYLOAD = {
-                    authType: '${process.env.AUTHFLOW}',
-                    /*host    : '${process.env.VIYA_SERVER}',*/
-                    passThru: '${process.env.VIYA_SERVER}'
-                };
-                `;
-        }
-        console.log( env );
-    return env;
-    }
+function appData() {
+    console.log('---------- in appData');
+    return {x:1};
+}
