@@ -26,6 +26,8 @@ let argv    = require('yargs').argv;
 let env    = argv.env;
 let appenv = argv.appenv;
 debugger;
+console.log(env);
+console.log(appenv);
 if ( appenv != null ) {
    createPayload( appenv, ((err, appEnvSrc) => {
       if ( err ) {
@@ -33,10 +35,13 @@ if ( appenv != null ) {
           process.exit(1);
       } else {
           debugger;
+          console.log(env)
         rafServer.iapp(appEnvSrc, env);
       }
 
    }) )
+} else {
+    rafServer.iapp( null, env)
 }
 
 

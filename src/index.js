@@ -18,7 +18,7 @@
 
 'use strict';
 
-let path = require('path');
+// let path = require('path');
 
 import iService from './iService';
 import config from './config';
@@ -37,15 +37,14 @@ function service (uTable, rootHandler, rafEnv) {
 }
 
 
-
 function app (appData) {
-   
+
     let rafEnv = (process.argv.length === 3) ? process.argv[ 2 ] : null;
     console.log((rafEnv === null) ? 'NOTE: Using settings from environment variables' : `NOTE: env file is: ${rafEnv}`);
-    iapp(appData, rafEnv );
+    iapp(appData, rafEnv);
 }
 
-function iapp(appData, rafEnv) {
+function iapp (appData, rafEnv) {
     let appEnvb = getAppEnv.bind(null, appData);
     let asset = setup(rafEnv);
     let uTable =
@@ -66,31 +65,27 @@ function iapp(appData, rafEnv) {
 }
 
 async function getAppEnv (userData, req, h) {
-    let env={};
-    let LOGONPAYLOAD;
+    let env;
+    let l;
     if (process.env.AUTHFLOW === 'implicit') {
-
-        LOGONPAYLOAD = {
+        l = {
             authType: process.env.AUTHFLOW,
             host    : process.env.VIYA_SERVER,
             clientID: process.env.CLIENTID,
             redirect: `${process.env.APPNAME}/${process.env.REDIRECT}`
-        };
+        }
     } else {
-       
-        LOGONPAYLOAD = {
+        l = {
             authType: process.env.AUTHFLOW,
             passThru: process.env.VIYA_SERVER
         };
-        ;
     }
-    env.LOGONPAYLOAD=LOGONPAYLOAD;
+    env = `let LOGONPAYLOAD = ${JSON.stringify(l)};`;
     if (userData != null) {
-        env.appEnv = userData();
+        env += `let APPENV = ${JSON.stringify(userData())};`;
     }
-    let envstr = JSON.stringify(env);
-    console.log(envstr);
-    return envstr;
+    console.log(env);
+    return env;
 }
 
 function setup (rafEnv) {

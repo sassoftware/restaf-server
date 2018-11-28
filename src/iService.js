@@ -97,13 +97,6 @@ function iService(uTable, useDefault, asset, rootHandler) {
             }
         }, {
             method: ['GET'],
-            path: `/appdata`,
-            config: {
-                auth   : false,
-                handler: appdata
-            }
-        }, {
-            method: ['GET'],
             path: '/favicon.ico',
             config: {
                 auth: false,
