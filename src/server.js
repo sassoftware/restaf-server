@@ -20,9 +20,9 @@
 // proxy server
 
 let fs     = require('fs');
-let  Hapi  = require('hapi'),
+let Hapi  = require('hapi'),
     inert  = require('inert'),
-    WebpackPlugin = require('hapi-webpack-plugin'),/* for hot restart */
+   //  WebpackPlugin = require('hapi-webpack-plugin'),/* for hot restart */
     hapiServer;
 import SASauth from './SASauth';
 
@@ -56,9 +56,9 @@ function server (userRouterTable, asset, rootHandler) {
         let tlsInfo = inp.filter( t => t.length > 0);
        //  console.log(tlsInfo);
         sConfig.tls = {
-            key : fs.readFileSync(tlsInfo[2]),
-            cert: fs.readFileSync(tlsInfo[1]),
-            passphrase: tlsInfo[0]
+            key : fs.readFileSync(tlsInfo[1]),
+            cert: fs.readFileSync(tlsInfo[0]),
+            passphrase: tlsInfo[2]
         }
     }
 
@@ -76,12 +76,14 @@ function server (userRouterTable, asset, rootHandler) {
     const init = async () => {
         await hapiServer.register(inert);
         // https://github.com/SimonDegraeve/hapi-webpack-plugin
+        /*
         if ( process.env.HMR != null) {
            await hapiServer.register({
                plugin: WebpackPlugin,
                options: process.env.HMR
            })
         }
+        */
         debugger;
         await SASauth(hapiServer);
         hapiServer.route(userRouterTable);

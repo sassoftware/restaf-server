@@ -22,10 +22,10 @@
 let fs = require('fs');
 debugger;
 let rafServer = require ('./lib/index.js');
-let argv    = require('yargs').argv;
-let env    = argv.env;
-let appenv = argv.appenv;
-debugger;
+let argv      = require('yargs').argv;
+let env       = ( argv.env == null ) ? null : argv.env;
+let appenv    = argv.appenv;
+
 console.log(env);
 console.log(appenv);
 if ( appenv != null ) {
@@ -34,8 +34,8 @@ if ( appenv != null ) {
           console.log(err);
           process.exit(1);
       } else {
-          debugger;
-          console.log(env)
+        debugger;
+        console.log(env)
         rafServer.iapp(appEnvSrc, env);
       }
 

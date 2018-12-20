@@ -20,12 +20,11 @@
 
 // let path = require('path');
 
+import 'babel-polyfill';
 import iService from './iService';
 import config from './config';
 
 function UIapp (uTable, rootHandler, rafEnv) {
-    debugger;
-    console.log(config);
 
     let asset = setup(rafEnv);
     iService(uTable, (uTable !== null), asset, rootHandler);

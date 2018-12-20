@@ -31,9 +31,9 @@ ENV APPHOST=0.0.0.0
 # The port on which this app is expected to run
 # 8080 is probably taken so use any valid available port no.
 #
+
 ENV APPPORT=8080
 
-#
 # You can turn off OAUTH2 base authentication
 #
 ENV OAUTH2=NO
@@ -55,6 +55,11 @@ ENV VIYA_VIYASERVER=
 # ENV CLIENTID=
 # ENV CLIENTSECRET=
 
+#
+# APP env
+#
+
+# ENV APPENV=appEnv.js
 
 
 CMD [ "npm", "start"]
