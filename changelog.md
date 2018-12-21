@@ -17,3 +17,9 @@
     - The growing trend is to install packages locally and use npx to execute them.
   -  Under-development:
     - Support for Hot-Module Replacement
+
+## Version 6.0.0
+
+  - Fixed issues with depedencies
+  - Fixed issues with /appenv not being processed properly
+  - Removed includes for hot-module since it does not work yet.
