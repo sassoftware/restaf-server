@@ -47,6 +47,7 @@ function getCustomHandler () {
 
     async function getAppEnv (req, h) {
         let env;
+        console.log( 'in default appenv');
         if ( process.env.AUTHFLOW === 'implicit') {
            env = `
     

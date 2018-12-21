@@ -24,18 +24,19 @@ debugger;
 let rafServer = require ('./lib/index.js');
 let argv      = require('yargs').argv;
 let env       = ( argv.env == null ) ? null : argv.env;
-let appenv    = argv.appenv;
+let appenv    = ( argv.appenv == null ) ? null : argv.appenv;
 
-console.log(env);
-console.log(appenv);
-if ( appenv != null ) {
+console.log(`env: ${env}`);
+console.log(`env: ${appenv}`);
+
+if ( appenv !== null ) {
    createPayload( appenv, ((err, appEnvSrc) => {
       if ( err ) {
           console.log(err);
           process.exit(1);
       } else {
         debugger;
-        console.log(env)
+        console.log(appEnvSrc);
         rafServer.iapp(appEnvSrc, env);
       }
 
@@ -52,7 +53,9 @@ function createPayload( srcName, cb ) {
             cb(err);
         } else {
             try {
+                console.log(src);
                 let f = new Function( src );
+                console.log('compile completed');
                 cb( null, f);
             }
             catch ( err ) {

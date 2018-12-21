@@ -306,10 +306,6 @@ async function getShared(req, h) {
     
     return h.file(`shared/${req.params.param}`);
 }
-async function appdata(req, h) {
-    let f = process.env.APPDATAJS;
-    let js = fs.readFileSync(f, 'utf8');
-    return js;
-}
+
 export default iService;
 

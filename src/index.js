@@ -44,7 +44,6 @@ function app (appData) {
 }
 
 function iapp (appData, rafEnv) {
-    let appEnvb = getAppEnv.bind(null, appData);
     let asset = setup(rafEnv);
     let uTable =
         [
@@ -54,7 +53,7 @@ function iapp (appData, rafEnv) {
                 config: {
                     auth: false,
                     cors: true,
-                    handler: appEnvb
+                    handler: getAppEnv.bind(null, appData)
 
                 }
             }
@@ -66,17 +65,20 @@ function iapp (appData, rafEnv) {
 async function getAppEnv (userData, req, h) {
     let env;
     let l;
-    if (process.env.AUTHFLOW === 'implicit') {
+    console.log('in appenv');
+    let authflow = process.env.AUTHFLOW.trim();
+    console.log(authflow);
+    if (authflow === 'implicit') {
         l = {
-            authType: process.env.AUTHFLOW,
-            host    : process.env.VIYA_SERVER,
-            clientID: process.env.CLIENTID,
-            redirect: `${process.env.APPNAME}/${process.env.REDIRECT}`
+            authType: authflow,
+            host    : process.env.VIYA_SERVER.trim(),
+            clientID: process.env.CLIENTID.trim(),
+            redirect: `${process.env.APPNAME.trim()}/${process.env.REDIRECT.trim()}`
         }
     } else {
         l = {
-            authType: process.env.AUTHFLOW,
-            passThru: process.env.VIYA_SERVER
+            authType: authflow,
+            passThru: process.env.VIYA_SERVER.trim()
         };
     }
     env = `let LOGONPAYLOAD = ${JSON.stringify(l)};`;
