@@ -57,6 +57,9 @@ function getCustomHandler () {
                 clientID: '${process.env.CLIENTID}',
                 redirect: '${process.env.APPNAME}/${process.env.REDIRECT}'
             };
+            let APPENV = {
+                info: 'implicit case'
+            }
          `
         } else {
             env = `
@@ -65,6 +68,9 @@ function getCustomHandler () {
                     /*host    : '${process.env.VIYA_SERVER}',*/
                     passThru: '${process.env.VIYA_SERVER}'
                 };
+                let APPENV = {
+                    info: 'non-implicit case'
+                }
                 `;
         }
         console.log( env );
