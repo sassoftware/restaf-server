@@ -1,11 +1,10 @@
 # Changes
 
-## Version 4.4.0
+## Version 6.0.0
 
-  - Support specifing VIYA_SERVER with protocol
-
-  This simplifies the set up of applications.
-
+  - Fixed issues with depedencies
+  - Fixed issues with /appenv not being processed properly
+  - Removed includes for hot-module since it does not work yet.
 
 ## Verson 5.0.0
 
@@ -18,8 +17,10 @@
   -  Under-development:
     - Support for Hot-Module Replacement
 
-## Version 6.0.0
+## Version 4.4.0
 
-  - Fixed issues with depedencies
-  - Fixed issues with /appenv not being processed properly
-  - Removed includes for hot-module since it does not work yet.
+  - Support specifing VIYA_SERVER with protocol
+
+  This simplifies the set up of applications.
+
+
