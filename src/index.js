@@ -56,7 +56,8 @@ function iapp (appSrc, rafEnv) {
      
         }) )
     } else {
-       iService(uTable, (uTable !== null), asset, null, null);
+       let appEnv = getAllEnv(null);
+       iService(uTable, (uTable !== null), asset, null, appEnv );
     }
 
 }
