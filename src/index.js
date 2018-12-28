@@ -44,14 +44,13 @@ function app (appData) {
 
 function iapp (appSrc, rafEnv) {
     let asset = setup(rafEnv);
+    let uTable = null;
     if ( appSrc !== null ) {
         createPayload( appSrc, ((err, appEnv) => {
            if ( err ) {
                console.log(err);
                process.exit(1);
            } else {
-             
-             let uTable = null;
              iService(uTable, (uTable !== null), asset, null, appEnv );
            }
      
