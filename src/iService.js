@@ -19,12 +19,14 @@
 
 'use strict';
 
-let debug       = require('debug');
-let debugProxy  = debug('proxy');
-
-let proxyLogger = debug('proxylogger');
+let debug          = require('debug');
+let debugSetup     = debug('setup');
+let debugProxy     = debug('proxy');
+let proxyLogger    = debug('proxylogger');
 let responseLogger = debug('response');
+
 import server from './server';
+let fs = require('fs');
 let boom = require('boom');
 let request = require('request');
 /* require( 'request-debug' )( request ); */
@@ -32,8 +34,8 @@ let os = require('os');
 let uuid = require('uuid');
 
 
-function iService(uTable, useDefault, asset, rootHandler) {
-    debugger;
+function iService(uTable, useDefault, asset, rootHandler, allAppEnv) {
+    
     process.env.APPHOST = (process.env.APPHOST === '*') ? os.hostname() : process.env.APPHOST;
     let appName = '/' + process.env.APPNAME;
     let auth1 = {};
@@ -54,6 +56,11 @@ function iService(uTable, useDefault, asset, rootHandler) {
     console.log(`appName ${appName}`);
     console.log(`asset ${asset} `);
     console.log(`uTable ${uTable}`);
+    console.log( allAppEnv);
+
+    let getAppEnv = async (req, h) => {
+        return allAppEnv;
+    }
 
     if (process.env.OAUTH2 === 'YES') {
         auth1 = {
@@ -65,6 +72,14 @@ function iService(uTable, useDefault, asset, rootHandler) {
         auth1 = false;
     }
 
+    // see if appenv was overridden
+    
+    let hasAppEnv = false;
+    if (uTable !== null ) {
+        hasAppEnv = uTable.find( u => u.path === '/appenv');
+    }
+    console.log(hasAppEnv);
+    // end temp patch
     let defaultTable =
         [{
             method: ['GET'],
@@ -95,22 +110,23 @@ function iService(uTable, useDefault, asset, rootHandler) {
                 auth   :  false,
                 handler: getShared
             }
-        }, {
-            method: ['GET'],
-            path: '/favicon.ico',
-            config: {
-                auth: false,
-                handler: getIcon
-            }
-        }, {
-            method: ['GET'],
-            path: '/testserver',
-            config: {
-                handler: testServer
-            }
-         }
+        }
     
         ];
+
+    if ( hasAppEnv === false ){
+        console.log('Setting default /appenv')
+       defaultTable.push ( {
+        method: ['GET'],
+        path: '/appenv',
+        config: {
+            auth: false,
+            handler: getAppEnv
+        }
+        } );
+    } else {
+        console.log('Setting custom /appenv');
+    }
 
     // Tried payload.parse = false -- way too much code to handle payload
     if (process.env.PROXYSERVER === 'YES') {
@@ -156,23 +172,15 @@ function iService(uTable, useDefault, asset, rootHandler) {
         userRouterTable = [...defaultTable];
     }
     
-    console.log(JSON.stringify(userRouterTable, null, 4));
+    debugSetup(console.log(JSON.stringify(userRouterTable, null, 4)));
     server(userRouterTable, asset);
 
 };
 
-//
-// Had to add cache to handle Edge browser - must be a way not to have to do this.
-//
-async function testServer(req, h) {
-    let token;
-    let url = 'testserver.html';
-    console.log(req.auth.credentials);
-    return h.file(url);
-}
+
 
 async function getApp(req, h) {
-    debugger;
+    
     if (process.env.OAUTH2 === 'YES') {
         return getAuthApp(null, req, h)
     } else {
@@ -183,12 +191,12 @@ async function getApp(req, h) {
 
 async function getAuthApp(rootHandler, req, h) {
     const sid = uuid.v4();
-    debugger;
+    
     await req.server.app.cache.set(sid, req.auth.credentials);
     if (process.env.PROXYSERVER === 'YES' ) {
         req.cookieAuth.set({sid});
     } 
-    debugger;
+    
     let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
     return h.file(`${indexHTML}`);
 }
@@ -211,7 +219,7 @@ async function handleProxy(req, h) {
     }
 }
 async function getToken(req, h) {   
-    debugger;
+    
     if (req.auth.credentials !== null) {     
         return req.auth.credentials.token;
      } else {     
@@ -307,5 +315,24 @@ async function getShared(req, h) {
     return h.file(`shared/${req.params.param}`);
 }
 
+function createPayload( srcName, cb ) {
+    fs.readFile(srcName, 'utf8', (err, src) => {
+        if ( err ) {
+            console.log(`Failed to read ${srcName}`);
+            cb(err);
+        } else {
+            try {
+                console.log(src);
+                let f = new Function( src );
+                console.log('compile completed');
+                cb( null, f);
+            }
+            catch ( err ) {
+               console.log(' Failed to parse the javascript file');
+               cb(err);
+            }
+        }
+    })
+}
 export default iService;
 

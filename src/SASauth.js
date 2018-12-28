@@ -39,7 +39,7 @@ async function SASauth (hapiServer) {
         isSameSite: ( process.env.SAMESITE != null) ? process.env.SAMESITE : 'Strict',
 
         validateFunc: async function (req, session) {
-            debugger;
+            
             if (process.env.PROXYSERVER === 'YES') {
                 let credentials = await req.server.app.cache.get(session.sid);
                 return {
@@ -47,7 +47,7 @@ async function SASauth (hapiServer) {
                     credentials: credentials
                 }
             } else {
-                debugger;
+                
                 return {
                    valid      : true,
                    credentials: req.auth.credentials

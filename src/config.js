@@ -53,7 +53,7 @@ function iconfig(appEnv) {
                     } else {
                         process.env[envName] = la[1];
                     }
-                    console.log(`${envName}=${la[1]}`)
+                    // console.log(`${envName}=${la[1]}`)
                 }
             }
         });

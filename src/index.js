@@ -18,21 +18,20 @@
 
 'use strict';
 
-// let path = require('path');
-
 import 'babel-polyfill';
+import fs from 'fs';
 import iService from './iService';
 import config from './config';
 
 function UIapp (uTable, rootHandler, rafEnv) {
 
     let asset = setup(rafEnv);
-    iService(uTable, (uTable !== null), asset, rootHandler);
+    iService(uTable, (uTable !== null), asset, rootHandler, null);
 }
 
 function service (uTable, rootHandler, rafEnv) {
     let asset = setup(rafEnv);
-    iService(uTable, false, asset, rootHandler);
+    iService(uTable, false, asset, rootHandler, null);
 }
 
 
@@ -43,58 +42,81 @@ function app (appData) {
     iapp(appData, rafEnv);
 }
 
-function iapp (appData, rafEnv) {
+function iapp (appSrc, rafEnv) {
     let asset = setup(rafEnv);
-    let uTable =
-        [
-            {
-                method: [ 'GET' ],
-                path: `/appenv`,
-                config: {
-                    auth: false,
-                    cors: true,
-                    handler: getAppEnv.bind(null, appData)
-
-                }
-            }
-
-        ];
-    iService(uTable, (uTable !== null), asset, null);
-}
-
-async function getAppEnv (userData, req, h) {
-    let env;
-    let l;
-    console.log('in appenv');
-    let authflow = process.env.AUTHFLOW.trim();
-    console.log(authflow);
-    if (authflow === 'implicit') {
-        l = {
-            authType: authflow,
-            host    : process.env.VIYA_SERVER.trim(),
-            clientID: process.env.CLIENTID.trim(),
-            redirect: `${process.env.APPNAME.trim()}/${process.env.REDIRECT.trim()}`
-        }
+    if ( appSrc !== null ) {
+        createPayload( appSrc, ((err, appEnv) => {
+           if ( err ) {
+               console.log(err);
+               process.exit(1);
+           } else {
+             
+             let uTable = null;
+             iService(uTable, (uTable !== null), asset, null, appEnv );
+           }
+     
+        }) )
     } else {
-        l = {
-            authType: authflow,
-            passThru: process.env.VIYA_SERVER.trim()
-        };
+       iService(uTable, (uTable !== null), asset, null, null);
     }
-    env = `let LOGONPAYLOAD = ${JSON.stringify(l)};`;
-    if (userData != null) {
-        env += `let APPENV = ${JSON.stringify(userData())};`;
-    }
-    console.log(env);
-    return env;
+
 }
 
 function setup (rafEnv) {
-    debugger;
+    
     config(rafEnv);
     let asset = (process.env.APPLOC === '.') ? process.cwd() : process.env.APPLOC;
     process.env.APPASSET = asset;
     return asset;
 }
 
+function createPayload( srcName, cb ) {
+    let src = fs.readFileSync(srcName, 'utf8');
+    if ( src === null ) {
+        cb(`${srcName} read failed`);
+    }
+    try {
+        // console.log(src);
+        let f = new Function( src );
+        console.log(`${srcName} compile completed`);
+        let r = f();
+        f = null;
+        let ar = getAllEnv(r);
+        cb( null, ar);
+    }
+    catch ( err ) {
+        console.log(`${srcName} compile failed`);
+        cb(err);
+    }
+}
+function getAllEnv (userData) {
+    let env;
+    let l;
+    let authflow = trimit('AUTHFLOW');
+    if (authflow === 'implicit') {
+        l = {
+            authType: authflow,
+            host    : trimit('VIYA_SERVER'), 
+            clientID: trimit('CLIENTID'),
+            redirect: `${trimit('APPNAME')}/${trimit('REDIRECT')}`
+        }
+    } else {
+        l = {
+            authType: authflow,
+            passThru: trimit('VIYA_SERVER')
+        };
+    }
+    env = `let LOGONPAYLOAD = ${JSON.stringify(l)};`;
+    if (userData !== null) {
+        env += `let APPENV = ${JSON.stringify(userData)};`;
+    } else {
+        env += `let APPENV = {none: 'none'};`;
+    }
+    return env;
+}
+
+function trimit(e) {
+    let a = process.env[e];
+    return ( a == null) ?  null : a.trim();
+}
 export { iapp, app, service, UIapp };

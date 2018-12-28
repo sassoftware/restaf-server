@@ -27,42 +27,10 @@ let env       = ( argv.env == null ) ? null : argv.env;
 let appenv    = ( argv.appenv == null ) ? null : argv.appenv;
 
 console.log(`env: ${env}`);
-console.log(`env: ${appenv}`);
-
-if ( appenv !== null ) {
-   createPayload( appenv, ((err, appEnvSrc) => {
-      if ( err ) {
-          console.log(err);
-          process.exit(1);
-      } else {
-        debugger;
-        console.log(appEnvSrc);
-        rafServer.iapp(appEnvSrc, env);
-      }
-
-   }) )
-} else {
-    rafServer.iapp( null, env)
-}
+console.log(`appenv: ${appenv}`);
+rafServer.iapp( appenv, env);
 
 
-function createPayload( srcName, cb ) {
-    fs.readFile(srcName, 'utf8', (err, src) => {
-        if ( err ) {
-            console.log(`Failed to read ${srcName}`);
-            cb(err);
-        } else {
-            try {
-                console.log(src);
-                let f = new Function( src );
-                console.log('compile completed');
-                cb( null, f);
-            }
-            catch ( err ) {
-               console.log(' Failed to parse the javascript file');
-               cb(err);
-            }
-        }
-    })
-}
+
+
 

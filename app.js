@@ -25,7 +25,7 @@ let rafserver = require ('./lib/index.js');
 
 let rafEnv    = (process.argv.length === 3) ? process.argv [ 2 ] : null ;
 console.log((rafEnv === null) ? 'NOTE: Using settings from environment variables': `NOTE: env file is: ${rafEnv}`);
-rafserver.UIapp (getCustomHandler(), null, rafEnv);
+rafserver.UIapp (getCustomHandler (), null, rafEnv);
 
 function getCustomHandler () {
     let handler =
@@ -36,8 +36,7 @@ function getCustomHandler () {
             config: {
                 auth   : false,
                 cors   : true,
-                handler: getAppEnv
-
+                handler: getCustomAppEnv
             }
        }
 
@@ -45,7 +44,7 @@ function getCustomHandler () {
     return handler;
     }
 
-    async function getAppEnv (req, h) {
+    async function getCustomAppEnv (req, h) {
         let env;
         console.log( 'in default appenv');
         if ( process.env.AUTHFLOW === 'implicit') {
@@ -57,9 +56,7 @@ function getCustomHandler () {
                 clientID: '${process.env.CLIENTID}',
                 redirect: '${process.env.APPNAME}/${process.env.REDIRECT}'
             };
-            let APPENV = {
-                info: 'implicit case'
-            }
+    
          `
         } else {
             env = `
@@ -68,11 +65,26 @@ function getCustomHandler () {
                     /*host    : '${process.env.VIYA_SERVER}',*/
                     passThru: '${process.env.VIYA_SERVER}'
                 };
-                let APPENV = {
-                    info: 'non-implicit case'
-                }
+               
                 `;
         }
-        console.log( env );
+        let userData = `let APPENV = ${JSON.stringify(appEnv())};`;
+
+        env = env + ' ' + userData ;
+        console.log( '----- custom appenv');
+        console.log(env);
+
     return env;
+    }
+
+    function appEnv() {
+        let x = {
+            scoreModel: {
+                caslib: 'Public',
+                name: 'loanEvaluation',
+                z:10
+            }
+        };
+        console.log(x);
+        return x;
     }

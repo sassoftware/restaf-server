@@ -31,7 +31,7 @@ function server (userRouterTable, asset, rootHandler) {
     process.env.APPHOST_ADDR = process.env.APPHOST;
     let tls = null;
     
-    debugger;
+    
     let sConfig = {
         port    : process.env.APPPORT,
         host    : process.env.APPHOST_ADDR,
@@ -47,9 +47,11 @@ function server (userRouterTable, asset, rootHandler) {
         }
     };
 
+    /*
     console.log('--------------------------------------------');
     console.log(JSON.stringify(sConfig, null, 4));
     console.log('--------------------------------------------');
+    */
 
     if ( process.env.TLS != null ) {
         let inp = process.env.TLS.split(' ');
@@ -65,11 +67,10 @@ function server (userRouterTable, asset, rootHandler) {
     if (asset !== null) {
         sConfig.routes.files = {relativeTo: asset};
     }
-    debugger;
+    
     hapiServer = Hapi.server(sConfig);
-    debugger;
-    if (process.env.OAUTH2 !== 'YES') {
-        debugger;
+    
+    if (process.env.OAUTH2 !== 'YES') {   
         let info = SASauth(hapiServer);
     }
 
@@ -84,7 +85,7 @@ function server (userRouterTable, asset, rootHandler) {
            })
         }
         */
-        debugger;
+        
         await SASauth(hapiServer);
         hapiServer.route(userRouterTable);
 
@@ -100,7 +101,6 @@ function server (userRouterTable, asset, rootHandler) {
     }
 
     process.on('unhandledRejection', (err) => {
-
         console.log(err);
         process.exit(1);
     });
