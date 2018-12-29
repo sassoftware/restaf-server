@@ -31,7 +31,7 @@ if installed globally issue this command:
 restaf-server --env=your-env-file <--appenv=<name.js>>
 ```
 
-if installed locally issue this command:
+if installed locally(preferred way) issue this command:
 
 ```
 npx restaf-server --env=env-file <--appenv=<name.js>>
@@ -41,7 +41,7 @@ npx restaf-server --env=env-file <--appenv=<name.js>>
 
 - **env**   : Specify the env file.This is still the same as in previous releases (see notes below)
 
-- **appenv**: This is an optional parameters. This the name of a JS file that returns an object containing information specific to the application. See below notes on the /appenv endpoint on ow to retrieve this information in your web application.
+- **appenv**: This is an optional parameter. This the name of a JS file that returns an object containing information specific to the application. See below notes on the /appenv endpoint on how to retrieve this information in your web application.
 
 ### **Env file:**
 The  env file is a portable way to specify the configurations for restaf-server.
@@ -70,7 +70,7 @@ Below is an example that you can cut and paste into a file. Some recommendations
 #           If you are using restaf-server as a proxy make sure your appname is not same as onf ot the points
 #           in the  downstream server(ex: Do not name your app "reports', 'files' etc...
 #
-APPNAME=myapp
+APPNAME=<your app name like myapp, score etc...)
 
 #
 # Location of the application resources(html, shared resources etc...)
@@ -81,20 +81,19 @@ APPLOC=./public
 # Specify the html that is the entry point to your app.
 # A good standard is to use index.html
 #
-APPENTRY=index.html
+APPENTRY=<main entry hmtl -- logon.html, index.html etc...
 #
-# APPHOST - Leave this as specified below
-# The service will use the hostname where restaf-server is running.
+# APPHOST
 # Suggest localhost for most testing
 # To use your local server's DNS name specify this as *. 
-APPHOST=*|localhost|ip address| etc...
+# 
 
+APPHOST=*|localhost|ip address| etc...
 
 #
 # The port on which this app is expected to run
-# 8080 is probably taken so use any valid available port no.
 #
-APPPORT=5008
+APPPORT=(ex: 3000)
 
 #
 # You can turn off OAUTH2 base authentication
@@ -109,10 +108,10 @@ PROXYSERVER=YES|NO
 
 #
 # your Viya Server
-# ex: http://project.openstack.sas.com
+# ex: project.openstack.sas.com
 #
 
-VIYA_SERVER=https://sampleviya.com
+VIYA_SERVER=sampleviya.com
 
 #
 # Clientid and clientsecret
@@ -130,13 +129,15 @@ REDIRECT= < the html where the redirect will go>
 ### **appenv** 
 
 In many applications that we have developed there was a need to configure the web application for different users, scenarios etc..
-For example the application for user A might use scoring model A but for user B the scoring model will be B. This parameter allows the configuration of the application for both users.
+For example the application for user A might use scoring model A but for user B the scoring model will be B. This parameter allows the configuration of the application for both users on the app server.
+The env file is processed before the appenv file is executed. This allows you to use the environment variablees defined thru the env file.
 
 A js file might look like this:
 
 ```
 return {
     reportName: 'dial',  
+    output: process.env.OUTPUT,
     scoreModel: {
         caslib: 'Public',
         name  : 'loanEvaluation'
@@ -204,6 +205,8 @@ then to run it
 ```
 docker run -p 5000:8080 -t myapp
 ```
+
+The command above assumes EXPOSE is set to 8080.
 
 In your browser you can access the myapp application in one of the following ways
 
