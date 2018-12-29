@@ -35,6 +35,7 @@ function server (userRouterTable, asset, rootHandler) {
     let sConfig = {
         port    : process.env.APPPORT,
         host    : process.env.APPHOST_ADDR,
+        /* debug   : {request: ['*']},*/
         
         routes: {
             cors: {
