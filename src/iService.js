@@ -27,14 +27,14 @@ let responseLogger = debug('response');
 
 import server from './server';
 let fs = require('fs');
-let boom = require('boom');
+let boom = require('@hapi/boom');
 let request = require('request');
 /* require( 'request-debug' )( request ); */
 let os = require('os');
 let uuid = require('uuid');
 
 
-function iService(uTable, useDefault, asset, rootHandler, allAppEnv) {
+function iService (uTable, useDefault, asset, rootHandler, allAppEnv) {
     
     process.env.APPHOST = (process.env.APPHOST === '*') ? os.hostname() : process.env.APPHOST;
     let appName = '/' + process.env.APPNAME;
@@ -44,7 +44,7 @@ function iService(uTable, useDefault, asset, rootHandler, allAppEnv) {
     let defaultMaxBytes = 10485760; 
 
     let maxBytes;
-    if (isNaN(process.env.PAYLOADMAXBYTES) ) {
+    if (isNaN(process.env.PAYLOADMAXBYTES)) {
         maxBytes = defaultMaxBytes;
     } else {
         maxBytes = Number(process.env.PAYLOADMAXBYTES);
@@ -56,7 +56,7 @@ function iService(uTable, useDefault, asset, rootHandler, allAppEnv) {
     console.log(`appName ${appName}`);
     console.log(`asset ${asset} `);
     console.log(`uTable ${uTable}`);
-    console.log( allAppEnv);
+    console.log(allAppEnv);
 
     let getAppEnv = async (req, h) => {
         return allAppEnv;
@@ -64,7 +64,7 @@ function iService(uTable, useDefault, asset, rootHandler, allAppEnv) {
 
     if (process.env.OAUTH2 === 'YES') {
         auth1 = {
-            mode: 'required',
+            mode    : 'required',
             strategy: 'sas'
         }; 
     }
@@ -75,55 +75,55 @@ function iService(uTable, useDefault, asset, rootHandler, allAppEnv) {
     // see if appenv was overridden
     
     let hasAppEnv = false;
-    if (uTable !== null ) {
-        hasAppEnv = uTable.find( u => u.path === '/appenv');
+    if (uTable !== null) {
+        hasAppEnv = uTable.find(u => u.path === '/appenv');
     }
     console.log(hasAppEnv);
     // end temp patch
     let defaultTable =
-        [{
-            method: ['GET'],
-            path: `${appName}`,
+        [ {
+            method: [ 'GET' ],
+            path  : `${appName}`,
             config: {
-                auth: auth1,
+                auth   : auth1,
                 handler: getApp
             }
         }, {
-            method: ['GET'],
-            path: `${appName}/{param*}`,
+            method: [ 'GET' ],
+            path  : `${appName}/{param*}`,
             config: {
-                auth    : auth2,
+                auth   : auth2,
                 handler: getApp2
             }
 
         }, {
-            method: ['GET'],
-            path: `${appName}/callback${appName}`,
+            method: [ 'GET' ],
+            path  : `${appName}/callback${appName}`,
             config: {
                 handler: AppCallback
             }
 
         }, {
-            method: ['GET'],
-            path: `/shared/{param*}`,
+            method: [ 'GET' ],
+            path  : `/shared/{param*}`,
             config: {
-                auth   :  false,
+                auth   : false,
                 handler: getShared
             }
         }
     
         ];
 
-    if ( hasAppEnv === false ){
+    if (hasAppEnv === false){
         console.log('Setting default /appenv')
-       defaultTable.push ( {
-        method: ['GET'],
-        path: '/appenv',
+       defaultTable.push({
+        method: [ 'GET' ],
+        path  : '/appenv',
         config: {
-            auth: false,
+            auth   : false,
             handler: getAppEnv
         }
-        } );
+        });
     } else {
         console.log('Setting custom /appenv');
     }
@@ -132,8 +132,8 @@ function iService(uTable, useDefault, asset, rootHandler, allAppEnv) {
     if (process.env.PROXYSERVER === 'YES') {
         let handleOthers = [
             {
-            method: ['PUT', 'POST', 'PATCH'],
-            path: '/{params*}',
+            method: [ 'PUT', 'POST', 'PATCH' ],
+            path  : '/{params*}',
             config: {
                 payload: {
                     maxBytes: maxBytes
@@ -141,7 +141,7 @@ function iService(uTable, useDefault, asset, rootHandler, allAppEnv) {
                 handler: handleProxy
                 }
             }, {
-            method: ['GET'],
+            method: [ 'GET' ],
             path  : '/{params*}',
             config: {
                 handler: handleProxy
@@ -151,35 +151,35 @@ function iService(uTable, useDefault, asset, rootHandler, allAppEnv) {
         defaultTable = [ ...defaultTable, ...handleOthers ];
     } else {
         let handleOthers = {
-            method: ['GET'],
-            path: '/{param*}',
+            method: [ 'GET' ],
+            path  : '/{param*}',
             config: {
                 auth   : false,
                 handler: getApp2
             }
         };
-        defaultTable = [...defaultTable, handleOthers];
+        defaultTable = [ ...defaultTable, handleOthers ];
     }
 
     let userRouterTable;
     if (uTable !== null) {
         if (useDefault === true) {
-            userRouterTable = [...defaultTable, ...uTable];
+            userRouterTable = [ ...defaultTable, ...uTable ];
         } else {
-            userRouterTable = [...uTable];
+            userRouterTable = [ ...uTable ];
         }
     } else {
-        userRouterTable = [...defaultTable];
+        userRouterTable = [ ...defaultTable ];
     }
     
     debugSetup(console.log(JSON.stringify(userRouterTable, null, 4)));
     server(userRouterTable, asset);
 
-};
+}
 
 
 
-async function getApp(req, h) {
+async function getApp (req, h) {
     
     if (process.env.OAUTH2 === 'YES') {
         return getAuthApp(null, req, h)
@@ -189,11 +189,11 @@ async function getApp(req, h) {
     }
 }
 
-async function getAuthApp(rootHandler, req, h) {
+async function getAuthApp (rootHandler, req, h) {
     const sid = uuid.v4();
     
     await req.server.app.cache.set(sid, req.auth.credentials);
-    if (process.env.PROXYSERVER === 'YES' ) {
+    if (process.env.PROXYSERVER === 'YES') {
         req.cookieAuth.set({sid});
     } 
     
@@ -201,7 +201,7 @@ async function getAuthApp(rootHandler, req, h) {
     return h.file(`${indexHTML}`);
 }
 
-async function handleProxy(req, h) {  
+async function handleProxy (req, h) {  
     let token;
     try {
         token = await getToken(req, h);
@@ -218,7 +218,7 @@ async function handleProxy(req, h) {
         return boom.unauthorized(err)
     }
 }
-async function getToken(req, h) {   
+async function getToken (req, h) {   
     
     if (req.auth.credentials !== null) {     
         return req.auth.credentials.token;
@@ -227,7 +227,7 @@ async function getToken(req, h) {
         return sid.credentials;
     }
 }
-function handleProxyRequest(req, h, token) {
+function handleProxyRequest (req, h, token) {
     return new Promise((resolve, reject) => {
         
        // let uri = `${process.env.SAS_PROTOCOL}${process.env.VIYA_SERVER}/${req.params.params}`;
@@ -243,11 +243,11 @@ function handleProxyRequest(req, h, token) {
         }
         
         let config = {
-            url: uri,
-            method: req.method,
+            url    : uri,
+            method : req.method,
             headers: headers,
-            gzip: true,
-            auth: {
+            gzip   : true,
+            auth   : {
                 bearer: token
             }
         };
@@ -290,7 +290,7 @@ function handleProxyRequest(req, h, token) {
 }
 
 
-async function AppCallback(req, h) {
+async function AppCallback (req, h) {
     
     proxyLogger('In callback');
     let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
@@ -301,33 +301,33 @@ async function AppCallback(req, h) {
 // get app server files
 //
 
-async function getIcon(req, h) {
+async function getIcon (req, h) {
     
     return h.file('favicon.ico');
 }
 
-async function getApp2(req, h) {
+async function getApp2 (req, h) {
     return h.file(req.params.param);
 }
 
-async function getShared(req, h) {
+async function getShared (req, h) {
     
     return h.file(`shared/${req.params.param}`);
 }
 
-function createPayload( srcName, cb ) {
+function createPayload (srcName, cb) {
     fs.readFile(srcName, 'utf8', (err, src) => {
-        if ( err ) {
+        if (err) {
             console.log(`Failed to read ${srcName}`);
             cb(err);
         } else {
             try {
                 console.log(src);
-                let f = new Function( src );
+                let f = new Function(src);
                 console.log('compile completed');
-                cb( null, f);
+                cb(null, f);
             }
-            catch ( err ) {
+            catch (err) {
                console.log(' Failed to parse the javascript file');
                cb(err);
             }

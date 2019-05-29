@@ -18,11 +18,11 @@
 
 'use strict';
 
-let bell       = require('bell'),
+let bell       = require('@hapi/bell'),
     debug      = require('debug')('auth'),
     qs         = require('qs'),
     uuid       = require('uuid'),
-    cookie     = require('hapi-auth-cookie');
+    cookie     = require('@hapi/cookie');
 
 async function SASauth (hapiServer) {
 

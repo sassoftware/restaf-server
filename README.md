@@ -10,7 +10,7 @@ This release has breaking changes when used as a cli.
 
 ## Features
 
-*   Allow users to access your app with a friendly name. ex: http://myserver/dashboard
+*  Allow users to access your app with a friendly name. ex: http://myserver/dashboard
 *   Use the env file to manage the configurations in a portable manner.
 *   Supports SAS Viya OAUTH2 authentication
 *   Will work on windows and unix.
