@@ -20,8 +20,8 @@
 // proxy server
 
 let fs     = require('fs');
-let Hapi  = require('hapi'),
-    inert  = require('inert'),
+let Hapi  = require('@hapi/hapi'),
+    inert  = require('@hapi/inert'),
    //  WebpackPlugin = require('hapi-webpack-plugin'),/* for hot restart */
     hapiServer;
 import SASauth from './SASauth';
@@ -33,8 +33,8 @@ function server (userRouterTable, asset, rootHandler) {
     
     
     let sConfig = {
-        port    : process.env.APPPORT,
-        host    : process.env.APPHOST_ADDR,
+        port: process.env.APPPORT,
+        host: process.env.APPHOST_ADDR,
         /* debug   : {request: ['*']},*/
         
         routes: {

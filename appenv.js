@@ -2,8 +2,8 @@
     let x = {
         scoreModel: {
             caslib: 'Public',
-            name: 'loanEvaluation',
-            z:10
+            name  : 'loanEvaluation',
+            z     :10
         }
     };
     console.log(x);

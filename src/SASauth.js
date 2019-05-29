@@ -32,11 +32,12 @@ async function SASauth (hapiServer) {
 
         //TBD: do we need keepalive?
     authCookieOptions = {
-        password: uuid.v4(),
-        cookie  : 'authCookie',
-        domain  : process.env.APPHOST,
-        isSecure: false,
-        isSameSite: ( process.env.SAMESITE != null) ? process.env.SAMESITE : 'Strict',
+        cookie: { password: uuid.v4(),
+            name    : 'authCookie',
+            domain  : process.env.APPHOST,
+            isSecure: false,
+            isSameSite: ( process.env.SAMESITE != null) ? process.env.SAMESITE : 'Strict'
+        },
 
         validateFunc: async function (req, session) {
             
