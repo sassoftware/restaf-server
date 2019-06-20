@@ -16,50 +16,48 @@
  *
  */
 
-'use strict';
+"use strict";
 
-let fs = require('fs');
+let fs = require("fs");
 
 function config (appEnv) {
-    if ( appEnv !== null ) {
-        iconfig(appEnv);      
-    }
-    process.env.SAS_PROTOCOL = (process.env.SAS_SSL_ENABLED === 'YES') ? 'https://' : 'http://';
-    
-    // fixing usual user error of adding a space after the url
-    if (process.env.VIYA_SERVER != null) {
-        let t = process.env.VIYA_SERVER.split(' ');
-        process.env.VIYA_SERVER=t[0];
+  if (appEnv !== null) {
+    iconfig(appEnv);
+  }
+  process.env.SAS_PROTOCOL =
+    process.env.SAS_SSL_ENABLED === "YES" ? "https://" : "http://";
 
-       if ( process.env.VIYA_SERVER.indexOf('http') < 0  ) {
-           process.env.VIYA_SERVER = process.env.SAS_PROTOCOL + process.env.VIYA_SERVER;
-       }
-    } 
-};
+  // fixing usual user error of adding a space after the url
+  if (process.env.VIYA_SERVER != null) {
+    let t = process.env.VIYA_SERVER.split(" ");
+    process.env.VIYA_SERVER = t[0];
+
+    if (process.env.VIYA_SERVER.indexOf("http") < 0) {
+      process.env.VIYA_SERVER =
+        process.env.SAS_PROTOCOL + process.env.VIYA_SERVER;
+    }
+  }
+}
 
 function iconfig (appEnv) {
-
-    try {
-        let data = fs.readFileSync(appEnv, 'utf8');
-        let d = data.split(/\r?\n/);
-        console.log('Configuration specified via raf.env');
-        d.forEach(l => {
-            if (l.length > 0 && l.indexOf('#') === -1) {
-                let la = l.split('=');
-                let envName = la[0];
-                if (la.length === 2 && la[1].length > 0) {
-                    process.env[ envName ] = la[ 1 ];
-                    }
-                else {
-                    console.log(`${envName} is inherited as ${process.env[envName]}`)
-                }
-            }
-        });
-        
-    }
-    catch (err) {
-        console.log(err);
-        process.exit(0);
-    }
+  try {
+    let data = fs.readFileSync(appEnv, "utf8");
+    let d = data.split(/\r?\n/);
+    console.log("Configuration specified via raf.env");
+    d.forEach(l => {
+      if (l.length > 0 && l.indexOf("#") === -1) {
+        let la = l.split("=");
+        let envName = la[0];
+        if (la.length === 2 && la[1].length > 0) {
+          process.env[envName] = la[1];
+        } else {
+          console.log(`${envName} is inherited as ${process.env[envName]}`);
+        }
+      }
+    });
+  } catch (err) {
+    console.log(err);
+    process.exit(0);
+  }
 }
 export default config;

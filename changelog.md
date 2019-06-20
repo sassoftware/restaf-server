@@ -21,11 +21,12 @@
 - Added new entry point of app to accept named parameters just as the new cli version does
 - Recommendations:
   - The growing trend is to install packages locally and use npx to execute them.
--  Under-development:
+- Under-development:
   - Support for Hot-Module Replacement
 
 ## Version 4.4.0
 
   . Support specifing VIYA_SERVER with protocol
 
-  This simplifies the set up of applications.
+  This simplifies the set up of applications
+  
