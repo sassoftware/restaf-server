@@ -37,7 +37,7 @@ function config (appEnv) {
     } 
 };
 
-function iconfig(appEnv) {
+function iconfig (appEnv) {
 
     try {
         let data = fs.readFileSync(appEnv, 'utf8');
@@ -47,13 +47,11 @@ function iconfig(appEnv) {
             if (l.length > 0 && l.indexOf('#') === -1) {
                 let la = l.split('=');
                 let envName = la[0];
-                if (la.length > 0) {
-                    if (la[1] === '') {
-                        delete process.env[envName];
-                    } else {
-                        process.env[envName] = la[1];
+                if (la.length === 2 && la[1].length > 0) {
+                    process.env[ envName ] = la[ 1 ];
                     }
-                    // console.log(`${envName}=${la[1]}`)
+                else {
+                    console.log(`${envName} is inherited as ${process.env[envName]}`)
                 }
             }
         });
