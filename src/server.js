@@ -71,9 +71,11 @@ function server (userRouterTable, asset, rootHandler) {
     
     hapiServer = Hapi.server(sConfig);
     
+    /*
     if (process.env.OAUTH2 !== 'YES') {   
         let info = SASauth(hapiServer);
     }
+    */
 
     const init = async () => {
         await hapiServer.register(inert);

@@ -9,7 +9,9 @@
   },
   "parser": "babel-eslint",
   "extends": [
-    "eslint:recommended"
+    "eslint:recommended",
+    "prettier",
+    "prettier/react"
   ],
   "parserOptions": {
     "ecmaVersion": 6,

@@ -32,57 +32,28 @@ function getCustomHandler () {
     [
         {
             method: [ 'GET' ],
-            path  : `/appenv`,
+            path  : `/userenv`,
             config: {
                 auth   : false,
                 cors   : true,
                 handler: getCustomAppEnv
             }
        }
-
     ];
     return handler;
     }
 
     async function getCustomAppEnv (req, h) {
-        let env;
-        console.log( 'in default appenv');
-        if ( process.env.AUTHFLOW === 'implicit') {
-           env = `
-    
-            let LOGONPAYLOAD = {
-                authType: '${process.env.AUTHFLOW}',
-                host    : '${process.env.VIYA_SERVER}',
-                clientID: '${process.env.CLIENTID}',
-                redirect: '${process.env.APPNAME}/${process.env.REDIRECT}'
-            };
-    
-         `
-        } else {
-            env = `
-                let LOGONPAYLOAD = {
-                    authType: '${process.env.AUTHFLOW}',
-                    /*host    : '${process.env.VIYA_SERVER}',*/
-                    passThru: '${process.env.VIYA_SERVER}'
-                };
-               
-                `;
-        }
-        let userData = `let APPENV = ${JSON.stringify(appEnv())};`;
-
-        env = env + ' ' + userData ;
-        console.log( '----- custom appenv');
-        console.log(env);
-
+        let env = `let note = "This is custom user env";`;
     return env;
     }
 
-    function appEnv() {
+    function appEnv () {
         let x = {
             scoreModel: {
                 caslib: 'Public',
-                name: 'loanEvaluation',
-                z:10
+                name  : 'loanEvaluation',
+                z     : 10
             }
         };
         console.log(x);

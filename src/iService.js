@@ -75,10 +75,13 @@ function iService (uTable, useDefault, asset, rootHandler, allAppEnv) {
     // see if appenv was overridden
     
     let hasAppEnv = false;
+    
     if (uTable !== null) {
         hasAppEnv = uTable.find(u => u.path === '/appenv');
     }
     console.log(hasAppEnv);
+    
+
     // end temp patch
     let defaultTable =
         [ {
@@ -191,14 +194,19 @@ async function getApp (req, h) {
 
 async function getAuthApp (rootHandler, req, h) {
     const sid = uuid.v4();
+    let credentials = req.auth.credentials;
     
-    await req.server.app.cache.set(sid, req.auth.credentials);
-    if (process.env.PROXYSERVER === 'YES') {
-        req.cookieAuth.set({sid});
-    } 
-    
-    let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
-    return h.file(`${indexHTML}`);
+    await req.server.app.cache.set(sid, credentials);
+    req.cookieAuth.set({sid});
+
+    if (credentials.query.hasOwnProperty('next') === true) {
+        console.log(`NOTE: Redirecting to: ${credentials.query.next}`);
+        return h.response().redirect(credentials.query.next);
+    } else {
+        let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
+          return h.file(`${indexHTML}`);
+       //  return h.response().redirect(indexHTML);
+    }
 }
 
 async function handleProxy (req, h) {  
