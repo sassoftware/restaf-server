@@ -26,7 +26,7 @@
     "url": "https://github.com/sassoftware/restaf-server/issues"
   },
   "scripts": {
-    "debug"  : "node --inspect-brk cli.js --env=./session/app.env --docker=./session/Dockerfile --appenv=appenv.js",
+    "start": "node cli --env=myapp.env --appenv=appenv.js",
     "implicit": "node cli --env=./implicit/app.env --docker=./implicit/Dockerfile --appenv=appenv.js",
     "proxy"  : "node cli --env=./proxy/app.env --docker=./proxy/Dockerfile --appenv=appenv.js",
     "webpack": "webpack --config webpack.config.js",
