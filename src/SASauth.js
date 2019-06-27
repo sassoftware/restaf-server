@@ -39,14 +39,8 @@ async function SASauth (hapiServer) {
         },
         
         validateFunc: async function (req, session) {
-            debugger;
-            console.log('req.auth.credentials');
-            console.log(req.auth.credentials);
-            console.log(session.sid);
-
             if (process.env.PROXYSERVER === 'YES') {
                 let credentials = await req.server.app.cache.get(session.sid);
-                console.log(credentials);
                 return {
                     valid      : true,
                     credentials: credentials

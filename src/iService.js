@@ -21,18 +21,10 @@
 
 let debug          = require('debug');
 let debugSetup     = debug('setup');
-let debugProxy     = debug('proxy');
-let proxyLogger    = debug('proxylogger');
-let responseLogger = debug('response');
 
 import server from './server';
-let fs = require('fs');
-let boom = require('@hapi/boom');
-let request = require('request');
-/* require( 'request-debug' )( request ); */
+import {getApp, handleProxy, reDirector, appCallback} from './handlers'
 let os = require('os');
-let uuid = require('uuid');
-
 
 function iService (uTable, useDefault, asset, rootHandler, allAppEnv) {
     
@@ -40,7 +32,6 @@ function iService (uTable, useDefault, asset, rootHandler, allAppEnv) {
     let appName = '/' + process.env.APPNAME;
     let auth1 = {};
     let auth2 = false;
-    let handleOthers;
     let defaultMaxBytes = 10485760; 
 
     let maxBytes;
@@ -103,7 +94,7 @@ function iService (uTable, useDefault, asset, rootHandler, allAppEnv) {
             method: [ 'GET' ],
             path  : `${appName}/callback${appName}`,
             config: {
-                handler: AppCallback
+                handler: appCallback
             }
 
         }, {
@@ -112,6 +103,13 @@ function iService (uTable, useDefault, asset, rootHandler, allAppEnv) {
             config: {
                 auth   : false,
                 handler: getShared
+            }
+        }, {
+            method: [ 'GET' ],
+            path  : `/reDirector`,
+            config: {
+                auth   : false,
+                handler: reDirector
             }
         }
     
@@ -182,136 +180,8 @@ function iService (uTable, useDefault, asset, rootHandler, allAppEnv) {
 
 }
 
-async function getApp (req, h) {
-    debugger;
-    if (process.env.OAUTH2 === 'YES') {
-        return getAuthApp(null, req, h)
-    } else {
-        let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
-        return h.file(indexHTML);
-    }
-}
-
-async function getAuthApp (rootHandler, req, h) {
-    debugger;
-    const sid = uuid.v4();
-    let credentials = req.auth.credentials;
-    
-    await req.server.app.cache.set(sid, credentials);
-    
-    if (process.env.PROXYSERVER === 'YES'){
-       req.cookieAuth.set({sid});
-    }
-
-
-    let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
-    return h.file(`${indexHTML}`);
-    
-}
-
-async function reDirector (req,h) {
-    debugger;
-    return h.file(`${process.env.REDIRECT}`);
-}
-async function handleProxy (req, h) {  
-    let token;
-    try {
-        token = await getToken(req, h);
-        console.log(token);
-        let proxyResponse = await handleProxyRequest(req, h, token);
-
-        let response = h.response(proxyResponse.body);
-        for (let hkey in proxyResponse.headers) {
-            response.header(hkey, proxyResponse.headers[hkey]);
-        }
-        return response;
-    }
-    catch (err) {
-        console.log(err);
-        return boom.unauthorized(err)
-    }
-}
-async function getToken (req, h) {   
-    
-    if (req.auth.credentials !== null) {     
-        return req.auth.credentials.token;
-     } else {     
-        let sid = await req.server.app.cache.get(sid);     
-        return sid.credentials;
-    }
-}
-function handleProxyRequest (req, h, token) {
-    return new Promise((resolve, reject) => {
-        
-       // let uri = `${process.env.SAS_PROTOCOL}${process.env.VIYA_SERVER}/${req.params.params}`;
-        let uri = `${process.env.VIYA_SERVER}/${req.params.params}`;
-        let headers = { ...req.headers };
-        delete headers.host;
-        delete headers['user-agent'];
-        delete headers.origin;
-        delete headers.referer;
-        delete headers.connection;
-        if (headers.cookie) {
-            delete headers.cookie;
-        }
-        
-        let config = {
-            url    : uri,
-            method : req.method,
-            headers: headers,
-            gzip   : true,
-            auth   : {
-                bearer: token
-            }
-        };
-
-
-        if (req.payload != null) {
-            // debugProxy(headers['content-type']);
-            if (headers['content-type'] === 'application/octet-stream') {
-                config.body = req.payload;
-            } else {
-                config.body = (typeof req.payload === 'object') ? JSON.stringify(req.payload) : req.payload;
-            }
-        }
-
-        if (req.query !== null && Object.keys(req.query).length > 0) {
-            config.qs = req.query;
-        }
-
-        debugProxy(JSON.stringify(config, null, 4));
-        proxyLogger(config.url);
-        request(config, (err, response, body) => {
-            
-            if (err) {
-                reject(err);
-            } else {
-                
-                responseLogger({ url: `------------------------------------------${config.url}` });
-                responseLogger(req.query);
-                responseLogger((typeof body === 'string' ? { body: body } : body));
-                if (response.headers.hasOwnProperty('content-encoding')) {
-                    delete response.headers['content-encoding'];
-                }
-                responseLogger(response.headers['content-coding']);
-                
-                resolve({ headers: response.headers, body: body });
-
-            }
-        });
-    });
-}
-
-
-async function AppCallback (req, h) {
-    
-    proxyLogger('In callback');
-    let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
-    return h.file(`${indexHTML}`);
-}
-
 //
-// get app server files
+// get app server files - too small 
 //
 
 async function getIcon (req, h) {
@@ -328,24 +198,6 @@ async function getShared (req, h) {
     return h.file(`shared/${req.params.param}`);
 }
 
-function createPayload (srcName, cb) {
-    fs.readFile(srcName, 'utf8', (err, src) => {
-        if (err) {
-            console.log(`Failed to read ${srcName}`);
-            cb(err);
-        } else {
-            try {
-                console.log(src);
-                let f = new Function(src);
-                console.log('compile completed');
-                cb(null, f);
-            }
-            catch (err) {
-               console.log(' Failed to parse the javascript file');
-               cb(err);
-            }
-        }
-    })
-}
+
 export default iService;
 
