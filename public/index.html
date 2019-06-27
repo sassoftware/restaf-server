@@ -70,6 +70,7 @@
         }
     async function initSession() {
         debugger;
+        console.log(LOGONPAYLOAD);
         let msg = await store.logon(null);
         let services = await store.addServices('casManagement', 'files');
         console.log( services );

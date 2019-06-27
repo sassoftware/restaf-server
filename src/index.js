@@ -99,16 +99,17 @@ function getAllEnv (userData) {
       authType: authflow,
       host    : trimit('VIYA_SERVER'),
       clientID: trimit('CLIENTID'),
-      redirect: `${trimit('APPNAME')}/${trimit('REDIRECT')}`,
-      appName : trimit('APPNAME')
+      redirect: (process.env.REDIRECT != null) ? `${trimit('APPNAME')}/${trimit('REDIRECT')}` : null,
+      appName : trimit('APPNAME'),
+      
     };
-  } else if (authflow === 'server' && process.env.PROXYSERVER !== 'YES') {
+  } else {
     l = {
       authType: authflow,
-      host    : trimit('VIYA_SERVER'),
       appName : trimit('APPNAME'),
-      passThru: trimit('VIYA_SERVER')/* redundant - remove when safe */
+      passThru: trimit('VIYA_SERVER')
     };
+
   }
 
   env =

@@ -15,12 +15,10 @@
  * ----------------------------------------------------------------------------------------
  *
  */
-
 'use strict';
 
 let bell       = require('@hapi/bell'),
-    debug      = require('debug')('auth'),
-    qs         = require('qs'),
+// eslint-disable-next-line no-unused-vars
     uuid       = require('uuid'),
     cookie     = require('@hapi/cookie');
 
@@ -32,33 +30,39 @@ async function SASauth (hapiServer) {
 
         //TBD: do we need keepalive?
     authCookieOptions = {
-        cookie: { 
+        cookie: {
             password  : uuid.v4(),
             name      : 'authCookie',
             domain    : process.env.APPHOST,
             isSecure  : false,
             isSameSite: (process.env.SAMESITE != null) ? process.env.SAMESITE : 'Strict'
         },
-
+        
         validateFunc: async function (req, session) {
-            
+            debugger;
+            console.log('req.auth.credentials');
+            console.log(req.auth.credentials);
+            console.log(session.sid);
+
             if (process.env.PROXYSERVER === 'YES') {
                 let credentials = await req.server.app.cache.get(session.sid);
+                console.log(credentials);
                 return {
                     valid      : true,
                     credentials: credentials
                 }
             } else {
-                
                 return {
                    valid      : true,
                    credentials: req.auth.credentials
                 }
             }
         }
-    }
         
-    if (process.env.OAUTH2 === 'YES') {
+    };
+    
+    
+    if (process.env.OAUTH2 == 'YES') {
         let authURL = process.env.VIYA_SERVER ;
         provider = {
             name         : 'sas',
@@ -80,18 +84,16 @@ async function SASauth (hapiServer) {
             bellAuthOptions.location = process.env.BELL_LOCATION;
         }
 
-        
         await hapiServer.register(bell);
         await hapiServer.register(cookie);
        
         hapiServer.auth.strategy('sas', 'bell', bellAuthOptions);
         hapiServer.auth.strategy('session', 'cookie', authCookieOptions);
         hapiServer.auth.default('session');
-        
-       
+    
     }
 
 }
 
 
-export default SASauth;
+module.exports =  SASauth;

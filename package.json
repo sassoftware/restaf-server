@@ -26,10 +26,9 @@
     "url": "https://github.com/sassoftware/restaf-server/issues"
   },
   "scripts": {
-    "impl": "node cli --env=impl.env --appenv=appenv.js",
-    "code": "node cli --env=code.env --appenv=appenv.js",
-    "proxy": "node cli --env=proxy.env --appenv=appenv.js ",
-    "proxy2": "node cli --docker=proxyDockerfile --appenv=appenv.js ",
+    "debug"  : "node --inspect-brk cli.js --env=./session/app.env --docker=./session/Dockerfile --appenv=appenv.js",
+    "implicit": "node cli --env=./implicit/app.env --docker=./implicit/Dockerfile --appenv=appenv.js",
+    "proxy"  : "node cli --env=./proxy/app.env --docker=./proxy/Dockerfile --appenv=appenv.js",
     "webpack": "webpack --config webpack.config.js",
     "build": "babel src --out-dir lib",
     "lint": "./node_modules/.bin/eslint --fix src/*.js"
@@ -45,6 +44,8 @@
     "babel-polyfill": "^6.26.0",
     "debug": "^4.1.1",
     "docker-file-parser": "^1.0.4",
+    "eslint-config-prettier": "^6.0.0",
+    "is-docker": "^2.0.0",
     "minimist": "^1.2.0",
     "qs": "^6.7.0",
     "request": "^2.88.0",

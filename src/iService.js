@@ -91,7 +91,7 @@ function iService (uTable, useDefault, asset, rootHandler, allAppEnv) {
                 auth   : auth1,
                 handler: getApp
             }
-        }, {
+        },  {
             method: [ 'GET' ],
             path  : `${appName}/{param*}`,
             config: {
@@ -138,6 +138,7 @@ function iService (uTable, useDefault, asset, rootHandler, allAppEnv) {
             method: [ 'PUT', 'POST', 'PATCH' ],
             path  : '/{params*}',
             config: {
+                auth   : auth1,
                 payload: {
                     maxBytes: maxBytes
                  },
@@ -147,6 +148,7 @@ function iService (uTable, useDefault, asset, rootHandler, allAppEnv) {
             method: [ 'GET' ],
             path  : '/{params*}',
             config: {
+                auth   : auth1,
                 handler: handleProxy
             }
         }
@@ -180,10 +182,8 @@ function iService (uTable, useDefault, asset, rootHandler, allAppEnv) {
 
 }
 
-
-
 async function getApp (req, h) {
-    
+    debugger;
     if (process.env.OAUTH2 === 'YES') {
         return getAuthApp(null, req, h)
     } else {
@@ -193,27 +193,31 @@ async function getApp (req, h) {
 }
 
 async function getAuthApp (rootHandler, req, h) {
+    debugger;
     const sid = uuid.v4();
     let credentials = req.auth.credentials;
     
     await req.server.app.cache.set(sid, credentials);
-    req.cookieAuth.set({sid});
-
-    if (credentials.query.hasOwnProperty('next') === true) {
-        console.log(`NOTE: Redirecting to: ${credentials.query.next}`);
-        return h.response().redirect(credentials.query.next);
-    } else {
-        let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
-          return h.file(`${indexHTML}`);
-       //  return h.response().redirect(indexHTML);
+    
+    if (process.env.PROXYSERVER === 'YES'){
+       req.cookieAuth.set({sid});
     }
+
+
+    let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
+    return h.file(`${indexHTML}`);
+    
 }
 
+async function reDirector (req,h) {
+    debugger;
+    return h.file(`${process.env.REDIRECT}`);
+}
 async function handleProxy (req, h) {  
     let token;
     try {
         token = await getToken(req, h);
-        
+        console.log(token);
         let proxyResponse = await handleProxyRequest(req, h, token);
 
         let response = h.response(proxyResponse.body);
@@ -223,6 +227,7 @@ async function handleProxy (req, h) {
         return response;
     }
     catch (err) {
+        console.log(err);
         return boom.unauthorized(err)
     }
 }
