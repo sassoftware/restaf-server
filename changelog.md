@@ -1,5 +1,51 @@
 # Changes
 
+## Version 7.0.0
+
+- Added support for using Dockerfile + pre-set environment variables with the following precedence order
+
+### Installation
+
+In your application do an **npm install restaf-server**
+
+### Install
+
+npm install restaf-server
+
+## Usage
+
+```script
+npx restaf-server  <--env=envfile> <--docker=dockerfile> <--appenv=appenvfile>
+```
+
+You must specify one or both of env and docker arguments. The values are overridden in this order:
+
+1. env file (see note below)
+2. docker files
+3. preset environment variables - used if not specified by the previous two files.
+
+---
+
+  **The env option is supported for backward compatability. In new applications use the dockerfile and preset environment variables. This will make it easier to test and deploy the application either in Docker or as a bare OS application.**
+
+---
+
+The recommended approach is:
+
+1. Use dockerfile  to specify values that are best not overriden by users. To indicate that you are expecting the value to be specified in the environment variable use the following syntax
+
+```docker
+ENV optionName=
+
+For example
+ENV VIYA_SERVER=
+
+In the environment variable set the value of VIYA_SERVER
+
+SET VIYA_SERVER=http://yourViyaServer
+
+```
+
 ## Version 6.10.0
 
 - Removed dependency on shelljs - not used any more.

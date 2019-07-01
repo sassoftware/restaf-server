@@ -21,11 +21,11 @@
 let fs = require('fs');
 import parseDocker from './parseDocker';
 
-function config(appEnv, dockerFile) {
-	if (appEnv !== null) {
+function config (appEnv, dockerFile) {
+	if (appEnv != null) {
 		iconfig(appEnv);
 	}
-	if (dockerFile !== null) {
+	if (dockerFile !=null) {
 		parseDocker(dockerFile);
 	}
 
@@ -44,7 +44,7 @@ function config(appEnv, dockerFile) {
 	}
 }
 
-function iconfig(appEnv) {
+function iconfig (appEnv) {
 	try {
 		let data = fs.readFileSync(appEnv, 'utf8');
 		let d = data.split(/\r?\n/);

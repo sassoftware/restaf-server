@@ -21,18 +21,13 @@
 
 let fs = require('fs');
 debugger;
-let rafServer = require ('./lib/index.js');
+let rafServer = require('./lib/index.js');
 let argv      = require('yargs').argv;
-let env       = ( argv.env == null ) ? null : argv.env;
-let appenv    = ( argv.appenv == null ) ? null : argv.appenv;
-let docker    = ( argv.docker == null ) ? null : argv.docker;
+let env       = argv.env == null ? null : argv.env;
+let appenv    = argv.appenv == null ? null : argv.appenv;
+let docker    = argv.docker == null ? null : argv.docker;
 
 console.log(`env: ${env}`);
-console.log('docker: ${docker}')
+console.log('docker: ${docker}');
 console.log(`appenv: ${appenv}`);
-rafServer.iapp( appenv, env, docker);
-
-
-
-
-
+rafServer.iapp(appenv, env, docker);
