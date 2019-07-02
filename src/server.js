@@ -91,6 +91,7 @@ function server (userRouterTable, asset, rootHandler) {
 
 		if (isDocker() === false) {
 			// console.log(` server started at: ${(hapiServer.info.uri)}/${process.env.APPNAME}`);
+			
 			if (process.env.APPHOST === '0.0.0.0') {
 				console.log(
 					`To access application visit http://localhost:${process.env.APPPORT}/${process.env.APPNAME}`
@@ -100,6 +101,7 @@ function server (userRouterTable, asset, rootHandler) {
 					`To access application visit ${hapiServer.info.uri}/${process.env.APPNAME}`
 				);
 			}
+			
 		} else {
 			console.log(`Application started in docker`);
 			if (process.env.APPHOST === '0.0.0.0') {

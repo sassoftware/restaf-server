@@ -65,7 +65,10 @@
     let servers = null;
     function setup() {
         initSession() 
-        .then ( r => console.log(r))
+        .then ( r => {
+            document.getElementById('head').innerHTML = LOGONPAYLOAD.authType;
+            console.log(r)
+        })
         .catch( e => console.log(e))
         }
     async function initSession() {
@@ -79,6 +82,6 @@
 </script>
 </head>
 <body onload="setup()">
-<h1> Hi proxy</h1>
+<h1 id="head"> Hi proxy</h1>
 </body>
 </html>
