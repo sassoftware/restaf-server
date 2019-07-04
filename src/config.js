@@ -22,13 +22,15 @@ let fs = require('fs');
 import parseDocker from './parseDocker';
 
 function config (appEnv, dockerFile) {
-	if (appEnv != null) {
-		iconfig(appEnv);
-	}
+	
 	if (dockerFile !=null) {
 		parseDocker(dockerFile);
 	}
 
+	if (appEnv != null) {
+		iconfig(appEnv);
+	}
+	
 	process.env.SAS_PROTOCOL =
 		process.env.SAS_SSL_ENABLED === 'YES' ? 'https://' : 'http://';
 

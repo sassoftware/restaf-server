@@ -25,6 +25,8 @@ async function getAuthApp (rootHandler, req, h) {
     
     if (process.env.PROXYSERVER === 'YES'){
        req.cookieAuth.set({sid});
+    } else {
+       console.log(req)
     }
 
 
