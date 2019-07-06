@@ -10,7 +10,10 @@ function parseDocker (dockerFile) {
 	let d = fs.readFileSync(dockerFile, 'utf8');
 	let data = parser.parse(d);
 	data.forEach(d => {
-		if (d.name === 'ENV') {
+		if (d.name === 'EXPOSE') {
+			process.env.EXPOSEDPORT = d.args[0];
+			console.log(`Exposed port: ${process.env.EXPOSEDPORT}`);
+		} else if (d.name === 'ENV') {
 			for (let key in d.args) {
 				let v = d.args[key];
 				if (v.length === 0) {

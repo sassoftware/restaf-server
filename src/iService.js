@@ -75,7 +75,8 @@ function iService (uTable, useDefault, asset, rootHandler, allAppEnv) {
 
     // end temp patch
     let defaultTable =
-        [ {
+        [
+        {
             method: [ 'GET' ],
             path  : `${appName}`,
             config: {
@@ -104,14 +105,15 @@ function iService (uTable, useDefault, asset, rootHandler, allAppEnv) {
                 auth   : false,
                 handler: getShared
             }
-        }, {
+        } /*, {
             method: [ 'GET' ],
             path  : `/reDirector`,
             config: {
                 auth   : false,
                 handler: reDirector
             }
-        }
+            
+        }*/
     
         ];
 

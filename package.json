@@ -29,7 +29,6 @@
     "start": "node cli --env=myapp.env --appenv=appenv.js",
     "implicit": "node cli --env=./implicit/app.env --docker=./implicit/Dockerfile --appenv=appenv.js",
     "proxy": "node cli --env=./proxy/app.env --docker=./proxy/Dockerfile --appenv=appenv.js",
-    "webpack": "webpack --config webpack.config.js",
     "build": "babel src --out-dir lib",
     "lint": "./node_modules/.bin/eslint --fix src/*.js"
   },

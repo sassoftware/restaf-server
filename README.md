@@ -24,9 +24,13 @@ If you do not specify atleast one of these, you MUST set the preset the environm
 
 The runtime environment variables are set in this order
 
-1. env file (see note below)
-2. dockerfile
-3. preset environment variables
+1. If specified the dockerfile is processed and the ENV variables are used to set the appropriate environment variables.
+
+2. If the env file is specified it is processed and the ENV variables are set. If the same values are set in the dockerfile then the values in the enc file takes precedence. 
+
+3. If you want to set the values of some or all environment variables using some system script then do not specify then in either the dockerfile or env file.
+
+4. A note on EXPOSE. If you use dockerfile I recommend that you not set the APPPORT and set only the EXPOSE. The server will ue the EXPOSE as the APPPORT.
 
 ---
 
@@ -36,8 +40,8 @@ The runtime environment variables are set in this order
 
 The recommended approach is:
 
-1. Use dockerfile  to specify values that are best not overriden by users. 
-2. Use environment To indicate that you are expecting the value to be specified in the environment variable use the following syntax
+1. Use dockerfile  to specify values that are usually not overriden by users.
+2. Use the env file of the environment variables to override the defaults in the Dockerfile. 
 
 ```docker
 ENV optionName=

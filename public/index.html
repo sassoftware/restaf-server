@@ -64,6 +64,7 @@
     let session = null;
     let servers = null;
     function setup() {
+        debugger;
         initSession() 
         .then ( r => {
             document.getElementById('head').innerHTML = LOGONPAYLOAD.authType;
