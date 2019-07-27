@@ -70,14 +70,28 @@
             document.getElementById('head').innerHTML = LOGONPAYLOAD.authType;
             console.log(r)
         })
-        .catch( e => console.log(e))
+        .catch( e => {
+           
+            console.log(e)
+        })
         }
     async function initSession() {
         debugger;
         console.log(LOGONPAYLOAD);
-        let msg = await store.logon(null);
-        let services = await store.addServices('casManagement', 'files');
+        let msg = await store.logon(LOGONPAYLOAD);
+        debugger;
+        /*
+        let p = {
+            url: "http://localhost:8080/keepalive",
+            method: 'GET'
+        }
+        let r = await store.request(p);
+        console.log(r.data);
+        */
+       
+        let services = await store.addServices('files');
         console.log( services );
+        
         return 'done';
     }
 </script>

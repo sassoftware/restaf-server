@@ -105,15 +105,15 @@ function iService (uTable, useDefault, asset, rootHandler, allAppEnv) {
                 auth   : false,
                 handler: getShared
             }
-        } /*, {
-            method: [ 'GET' ],
-            path  : `/reDirector`,
+        } , {
+            method: [ 'GET', 'POST' ],
+            path  : `/keepalive`,
             config: {
                 auth   : false,
                 handler: reDirector
             }
             
-        }*/
+        }
     
         ];
 

@@ -22,6 +22,24 @@ import 'babel-polyfill';
 import fs from 'fs';
 import iService from './iService';
 import config from './config';
+  let argv      = require('yargs').argv;
+
+function icli (uTable) {
+  let fs = require('fs');
+  debugger;
+  
+  let env       = argv.env == null ? null : argv.env;
+  let appenv    = argv.appenv == null ? null : argv.appenv;
+  let docker    = argv.docker == null ? null : argv.docker;
+
+  console.log('------------------------------------------');
+  console.log(`docker: ${docker}`);
+  console.log(`env: ${env}`);
+  console.log(`appenv: ${appenv}`);
+  console.log('------------------------------------------');
+
+  iapp(appenv, env, docker, uTable);
+}
 
 function UIapp (uTable, rootHandler, rafEnv) {
   let asset = setup(rafEnv);
@@ -43,9 +61,9 @@ function app (appData) {
   iapp(appData, rafEnv);
 }
 
-function iapp (appSrc, rafEnv, dockerFile) {
+function iapp (appSrc, rafEnv, dockerFile, iuTable) {
   let asset = setup(rafEnv, dockerFile);
-  let uTable = null;
+  let uTable = (iuTable == null) ? null : iuTable;
   if (appSrc !== null) {
     createPayload(appSrc, (err, appEnv) => {
       if (err) {
@@ -106,6 +124,7 @@ function getAllEnv (userData) {
   } else {
     l = {
       authType: authflow,
+      host    : trimit('VIYA_SERVER'),
       appName : trimit('APPNAME'),
       passThru: trimit('VIYA_SERVER')
     };
@@ -129,4 +148,4 @@ function trimit (e) {
   let a = process.env[e];
   return a == null ? null : a.trim();
 }
-export { iapp, app, service, UIapp };
+export { iapp, app, service, UIapp, icli };

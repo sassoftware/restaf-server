@@ -26,9 +26,12 @@
     "url": "https://github.com/sassoftware/restaf-server/issues"
   },
   "scripts": {
-    "start": "node cli --env=myapp.env --appenv=appenv.js",
+    "start": "node cli --env=./env/myapp.env --appenv=appenv.js",
+    "app" : "node app --env=./env/y
+    myapp.env --appenv=appenv.js",
     "implicit": "node cli --env=./implicit/app.env --docker=./implicit/Dockerfile --appenv=appenv.js",
     "proxy": "node cli --env=./proxy/app.env --docker=./proxy/Dockerfile --appenv=appenv.js",
+    "code": "node cli --env=./code/app.env --docker=./code/Dockerfile --appenv=appenv.js",
     "build": "babel src --out-dir lib",
     "lint": "./node_modules/.bin/eslint --fix src/*.js"
   },

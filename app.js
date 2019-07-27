@@ -22,10 +22,7 @@
 
 debugger;
 let rafserver = require ('./lib/index.js');
-
-let rafEnv    = (process.argv.length === 3) ? process.argv [ 2 ] : null ;
-console.log((rafEnv === null) ? 'NOTE: Using settings from environment variables': `NOTE: env file is: ${rafEnv}`);
-rafserver.UIapp (getCustomHandler (), null, rafEnv);
+rafserver.icli (getCustomHandler ());
 
 function getCustomHandler () {
     let handler =

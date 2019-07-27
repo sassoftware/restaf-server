@@ -69,10 +69,12 @@ function iconfig (appEnv) {
 				}
 			}
 		});
+
 	} catch (err) {
 		console.log(err);
 		process.exit(0);
 	}
 }
+
 
 export default config;

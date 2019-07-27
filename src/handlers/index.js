@@ -4,7 +4,7 @@
 */
 'use strict';
 import getApp from './getApp';
-import reDirector from './';
+import reDirector from './reDirector';
 import handleProxy from './handleProxy';
 import appCallback from './appCallback';
 import logon       from './logon'
