@@ -23,11 +23,11 @@ let debug          = require('debug');
 let debugSetup     = debug('setup');
 
 import server from './server';
-import {getApp, handleProxy, reDirector, appCallback} from './handlers'
+import {getApp, handleProxy, keepAlive, appCallback} from './handlers'
 let os = require('os');
 
-function iService (uTable, useDefault, asset, rootHandler, allAppEnv) {
-    
+function iService (uTable, useDefault, asset, allAppEnv) {
+    debugger;
     process.env.APPHOST = (process.env.APPHOST === '*') ? os.hostname() : process.env.APPHOST;
     let appName = '/' + process.env.APPNAME;
     let auth1 = {};
@@ -65,12 +65,11 @@ function iService (uTable, useDefault, asset, rootHandler, allAppEnv) {
 
     // see if appenv was overridden
     
-    let hasAppEnv = false;
-    
+    let hasAppEnv = null;
+    debugger;
     if (uTable !== null) {
         hasAppEnv = uTable.find(u => u.path === '/appenv');
     }
-    console.log(hasAppEnv);
     
 
     // end temp patch
@@ -110,14 +109,14 @@ function iService (uTable, useDefault, asset, rootHandler, allAppEnv) {
             path  : `/keepalive`,
             config: {
                 auth   : false,
-                handler: reDirector
+                handler: keepAlive
             }
             
         }
     
         ];
 
-    if (hasAppEnv === false){
+    if (hasAppEnv == null){
         console.log('Setting default /appenv')
        defaultTable.push({
         method: [ 'GET' ],

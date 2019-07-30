@@ -45,7 +45,7 @@ function getCustomHandler () {
     return env;
     }
 
-    function appEnv () {
+    function appEnv (req, h) {
         let x = {
             scoreModel: {
                 caslib: 'Public',

@@ -4,14 +4,14 @@
 */
 'use strict';
 import getApp from './getApp';
-import reDirector from './reDirector';
 import handleProxy from './handleProxy';
 import appCallback from './appCallback';
 import logon       from './logon'
+import keepAlive   from './keepAlive';
 
 export {
     getApp,
-    reDirector,
+    keepAlive,
     handleProxy,
     appCallback,
     logon

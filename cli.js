@@ -22,4 +22,4 @@
 let fs = require('fs');
 debugger;
 let rafServer = require('./lib/index.js');
-rafServer.icli(null);
+rafServer.icli(null, true);

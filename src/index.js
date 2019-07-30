@@ -22,60 +22,36 @@ import 'babel-polyfill';
 import fs from 'fs';
 import iService from './iService';
 import config from './config';
-  let argv      = require('yargs').argv;
 
-function icli (uTable) {
-  let fs = require('fs');
-  debugger;
-  
+function icli (uTable, useDefault){
+  let argv      = require('yargs').argv;
   let env       = argv.env == null ? null : argv.env;
   let appenv    = argv.appenv == null ? null : argv.appenv;
   let docker    = argv.docker == null ? null : argv.docker;
-
-  console.log('------------------------------------------');
+  if (useDefault == null) {
+     useDefault = true;
+  }
   console.log(`docker: ${docker}`);
   console.log(`env: ${env}`);
   console.log(`appenv: ${appenv}`);
-  console.log('------------------------------------------');
-
-  iapp(appenv, env, docker, uTable);
+  iapp(appenv, env, docker, uTable, useDefault);
 }
 
-function UIapp (uTable, rootHandler, rafEnv) {
-  let asset = setup(rafEnv);
-  iService(uTable, uTable !== null, asset, rootHandler, null);
-}
 
-function service (uTable, rootHandler, rafEnv) {
-  let asset = setup(rafEnv);
-  iService(uTable, false, asset, rootHandler, null);
-}
-
-function app (appData) {
-  let rafEnv = process.argv.length === 3 ? process.argv[2] : null;
-  console.log(
-    rafEnv === null
-      ? 'NOTE: Using settings from environment variables'
-      : `NOTE: env file is: ${rafEnv}`
-  );
-  iapp(appData, rafEnv);
-}
-
-function iapp (appSrc, rafEnv, dockerFile, iuTable) {
+function iapp (appSrc, rafEnv, dockerFile, uTable, useDefault) {
   let asset = setup(rafEnv, dockerFile);
-  let uTable = (iuTable == null) ? null : iuTable;
   if (appSrc !== null) {
     createPayload(appSrc, (err, appEnv) => {
       if (err) {
         console.log(err);
         process.exit(1);
       } else {
-        iService(uTable, uTable !== null, asset, null, appEnv);
+        iService(uTable, useDefault, asset, appEnv);
       }
     });
   } else {
     let appEnv = getAllEnv(null);
-    iService(uTable, uTable !== null, asset, null, appEnv);
+    iService(uTable, useDefault, asset, appEnv);
   }
 }
 
@@ -123,10 +99,10 @@ function getAllEnv (userData) {
     };
   } else {
     l = {
-      authType: authflow,
-      host    : trimit('VIYA_SERVER'),
-      appName : trimit('APPNAME'),
-      passThru: trimit('VIYA_SERVER')
+      authType : authflow,
+      appName  : trimit('APPNAME'),
+      passThru : trimit('VIYA_SERVER'),
+      keepAlive: `${process.env.APPHOST}:${process.env.APPPORT}/keepAlive`
     };
 
   }
@@ -148,4 +124,4 @@ function trimit (e) {
   let a = process.env[e];
   return a == null ? null : a.trim();
 }
-export { iapp, app, service, UIapp, icli };
+export { iapp,  icli };

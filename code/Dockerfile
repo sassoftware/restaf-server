@@ -17,8 +17,9 @@ ENV APPHOST=0.0.0.0
 # ENV APPPORT=8080
 ENV APPNAME=cms
 ENV APPLOC=./public
-ENV APPENTRY=index.html
+ENV APPENTRY=logon.html
 ENV APPENV=appenv.js
+ENV REDIRECT=index.html
 
 ENV AUTHFLOW=server
 
