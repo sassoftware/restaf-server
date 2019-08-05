@@ -71,7 +71,7 @@ function iService (uTable, useDefault, asset, allAppEnv) {
         hasAppEnv = uTable.find(u => u.path === '/appenv');
     }
     
-
+console.log(appCallback);
     // end temp patch
     let defaultTable =
         [
@@ -94,6 +94,7 @@ function iService (uTable, useDefault, asset, allAppEnv) {
             method: [ 'GET' ],
             path  : `${appName}/callback${appName}`,
             config: {
+                auth   : false,
                 handler: appCallback
             }
 
@@ -106,7 +107,7 @@ function iService (uTable, useDefault, asset, allAppEnv) {
             }
         } , {
             method: [ 'GET', 'POST' ],
-            path  : `/keepalive`,
+            path  : `/keepAlive`,
             config: {
                 auth   : false,
                 handler: keepAlive

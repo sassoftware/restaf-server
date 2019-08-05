@@ -32,9 +32,8 @@
     "proxy": "node cli --env=./proxy/app.env --docker=./proxy/Dockerfile --appenv=appenv.js",
     "code": "node cli --env=./code/app.env --docker=./code/Dockerfile --appenv=appenv.js",
     "build": "babel src --out-dir lib",
-    "indocker": "npx restaf-server",
-    "buildapp": "docker build -f Dockerfile -t cms .",
-    "runapp": "docker run  --env-file app.env  -t cms",
+    "buildapp": "docker build -f Dockerfile -t viyaapp .",
+    "runapp": "docker run -p 4000:8080  --env-file overrides.env  -t castablebrowser"
     "lint": "./node_modules/.bin/eslint --fix src/*.js"
   },
   "dependencies": {

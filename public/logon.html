@@ -21,24 +21,28 @@
 
     <head>
         <meta charset="UTF-8">
-        <!-- script src="https://unpkg.com/restaf/dist/restaf.min.js"></script> -->
-        <script src="./restaf.js"></script>
+        <!-- script src="https://unpkg.com/restaf@alpha200/dist/restaf.min.js"></script> -->
+        <script src="./restaf.js"></script> 
         <script type="text/javascript" src="/appenv"></script>
         
         <script>
+            let files;
             function logonButton() {
                 debugger;
                 let store = restaf.initStore();
                 store.logon(LOGONPAYLOAD)
-                   .then ( r => console.log(r))
+                   .then ( r => {
+                     console.log(r);
+                   })
                    .catch( err => alert(JSON.stringify(err, null, 4)))
             }
+           
         </script>
+        
     </head>
 
     <body onload="logonButton()">
-        <div>
-        </div>
+       
         </script>
     </body>
 

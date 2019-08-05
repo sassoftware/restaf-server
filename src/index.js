@@ -100,9 +100,10 @@ function getAllEnv (userData) {
   } else {
     l = {
       authType : authflow,
+      host     : trimit('VIYA_SERVER'),
       appName  : trimit('APPNAME'),
       passThru : trimit('VIYA_SERVER'),
-      keepAlive: `${process.env.APPHOST}:${process.env.APPPORT}/keepAlive`
+      keepAlive: null /*`http://${process.env.APPHOST}:${process.env.APPPORT}/keepAlive`*/
     };
 
   }

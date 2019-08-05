@@ -25,8 +25,9 @@
     <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"></script>
-      <!-- script src="https://unpkg.com/restaf/dist/restaf.min.js"></script> -->
-      <script src="./restaf.js"></script>
+    <!--script src="https://unpkg.com/restaf@alpha200/dist/restaf.min.js"></script>
+    -->
+    <script src="./restaf.js"></script> 
     <script src="/appenv"></script>
 
    
@@ -64,6 +65,7 @@
     let store   = restaf.initStore();
     let session = null;
     let servers = null;
+    let files;
     function setup() {
         debugger;
         initSession() 
@@ -81,14 +83,26 @@
         console.log(LOGONPAYLOAD);
         let msg = await store.logon(LOGONPAYLOAD);
         debugger;
-        let services = await store.addServices('files');
+        let services = await store.addServices('reports');
+        debugger;
         console.log( services );
+        reports = services.reports;
         
         return 'done';
+    }
+    function runit() {
+        console.log('calling files');
+        debugger;
+        store.apiCall(reports.links('reports'))
+        .then (r => console.log('reports done'))
+        .catch(err => alert(err));
     }
 </script>
 </head>
 <body onload="setup()">
 <h1 id="head"> Hi proxy</h1>
+<div>
+        <button id='checkkeepalive' onclick="runit()"> Press to force a keepalive call</button>
+</div>
 </body>
 </html>
