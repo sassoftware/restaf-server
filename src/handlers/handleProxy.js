@@ -13,7 +13,6 @@ async function handleProxy (req, h) {
     let token;
     try {
         token = await getToken(req, h);
-        console.log(token);
         let proxyResponse = await handleProxyRequest(req, h, token);
 
         let response = h.response(proxyResponse.body);

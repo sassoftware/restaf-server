@@ -31,10 +31,10 @@
     "implicit": "node cli --env=./implicit/app.env --docker=./implicit/Dockerfile --appenv=appenv.js",
     "proxy": "node cli --env=./proxy/app.env --docker=./proxy/Dockerfile --appenv=appenv.js",
     "code": "node cli --env=./code/app.env --docker=./code/Dockerfile --appenv=appenv.js",
-    "build": "babel src --out-dir lib",
-    "indocker": "npx restaf-server",
-    "buildapp": "docker build -f Dockerfile -t cms .",
-    "runapp": "docker run  --env-file app.env  -t cms",
+    "build": "rimraf lib && babel src --out-dir lib",
+    "indocker": "node cli",
+    "dkrbuild": "docker build -f Dockerfile -t cms .",
+    "dkrapp": "docker run -p 8080:8080 --env-file app.env  -t cms",
     "lint": "./node_modules/.bin/eslint --fix src/*.js"
   },
   "dependencies": {
@@ -51,6 +51,7 @@
     "eslint-config-prettier": "^6.0.0",
     "is-docker": "^2.0.0",
     "minimist": "^1.2.0",
+    "only": "0.0.2",
     "qs": "^6.7.0",
     "request": "^2.88.0",
     "request-debug": "^0.2.0",
@@ -82,6 +83,7 @@
     "babel-loader": "^8.0.6",
     "eslint": "^5.16.0",
     "prettyjson": "^1.2.1",
+    "rimraf": "^2.6.3",
     "webpack-cli": "^3.3.2"
   }
 }

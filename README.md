@@ -1,12 +1,11 @@
 # restaf-server - web server in nodejs for SAS Viya Applications
 
-
 Please see READMEv6.md for documentation on earlier releases.
 
-## Version 
+## Version
 
 ```text
-Version 7.0.0
+Version 6.11.x
 ```
 
 ### Installation
@@ -26,22 +25,22 @@ The runtime environment variables are set in this order
 
 1. If specified the dockerfile is processed and the ENV variables are used to set the appropriate environment variables.
 
-2. If the env file is specified it is processed and the ENV variables are set. If the same values are set in the dockerfile then the values in the enc file takes precedence. 
+2. If the env file is specified it is processed and the ENV variables are set. If the same values are set in the dockerfile then the values in the env file takes precedence.
 
 3. If you want to set the values of some or all environment variables using some system script then do not specify then in either the dockerfile or env file.
 
-4. A note on EXPOSE. If you use dockerfile I recommend that you not set the APPPORT and set only the EXPOSE. The server will ue the EXPOSE as the APPPORT.
+4. A note on EXPOSE - When running in docker specify both EXPOSE and APPPORT to be the same. restaf-server has no way to detect the value of EXPOSE - so APPPORT has to be specified at all times
 
 ---
 
-  **The env option is supported for backward compatability. In new applications use the dockerfile and preset environment variables. This will make it easier to test and deploy the application either in Docker or as a bare OS application.**
+  **The env option is supported for backward compatability. In new applications use the dockerfile and preset environment variables. Use preset environment variables for variables you do not want to be saved in the docker container. This will make it easier to test and deploy the application either in Docker or as a bare OS application.**
 
 ---
 
 The recommended approach is:
 
-1. Use dockerfile  to specify values that are usually not overriden by users.
-2. Use the env file of the environment variables to override the defaults in the Dockerfile. 
+1. Use dockerfile  to specify values that are usually not overriden by users and not a violation of security policies.
+2. Use the env file(or environment variables set thru the system SET/EXPORT cmnds)for runtime environment variables
 
 ```docker
 ENV optionName=

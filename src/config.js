@@ -31,6 +31,7 @@ function config (appEnv, dockerFile) {
 		iconfig(appEnv);
 	}
 	
+
 	if (process.env.APPPORT == null && process.env.EXPOSEDPORT != null) {
 		process.env.APPPORT = process.env.EXPOSEDPORT;
 		console.log(`APPPORT set to value of exposed port ${process.env.APPPORT}`)

@@ -25,7 +25,7 @@ let Hapi = require('@hapi/hapi'),
 	inert = require('@hapi/inert'),
 	//  WebpackPlugin = require('hapi-webpack-plugin'),/* for hot restart */
 	hapiServer;
-import SASauth from './SASauthold';
+import SASauth from './SASauth';
 
 function server (userRouterTable, asset, rootHandler) {
 	process.env.APPHOST_ADDR = process.env.APPHOST;
@@ -89,34 +89,14 @@ function server (userRouterTable, asset, rootHandler) {
 
 		await hapiServer.start();
 
-		if (isDocker() === false) {
-			// console.log(` server started at: ${(hapiServer.info.uri)}/${process.env.APPNAME}`);
-			
-			if (process.env.APPHOST === '0.0.0.0') {
-				console.log(
-					`To access application visit http://localhost:${process.env.APPPORT}/${process.env.APPNAME}`
-				);
-			} else {
-				console.log(
-					`To access application visit ${hapiServer.info.uri}/${process.env.APPNAME}`
-				);
-			}
-			
-		} else {
-			console.log(`Application started in docker`);
-			if (process.env.APPHOST === '0.0.0.0') {
-				console.log(
-					`To access application visit http://localhost:${process.env.APPPORT}/${process.env.APPNAME}`
-				);
-			} else {
-				console.log(
-					`To access application visit ${hapiServer.info.uri}/${process.env.APPNAME}`
-				);
-			}
-			console.log(
-				'Please replace the port in the url above with the port number it was mapped to.'
-			);
+		if (isDocker() === true) {
+			console.log('Application is now running in docker');
 		}
+		
+		console.log(
+			`To access application visit ${hapiServer.info.uri}/${process.env.APPNAME}`
+		);
+			
 	};
 
 	process.on('unhandledRejection', err => {

@@ -71,7 +71,7 @@ function iService (uTable, useDefault, asset, allAppEnv) {
         hasAppEnv = uTable.find(u => u.path === '/appenv');
     }
     
-console.log(appCallback);
+
     // end temp patch
     let defaultTable =
         [
