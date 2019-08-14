@@ -28,6 +28,7 @@ function icli (uTable, useDefault){
   let env       = argv.env == null ? null : argv.env;
   let appenv    = argv.appenv == null ? null : argv.appenv;
   let docker    = argv.docker == null ? null : argv.docker;
+  
   if (useDefault == null) {
      useDefault = true;
   }
@@ -40,6 +41,9 @@ function icli (uTable, useDefault){
 
 function iapp (appSrc, rafEnv, dockerFile, uTable, useDefault) {
   let asset = setup(rafEnv, dockerFile);
+  if (appSrc === null) {
+    appSrc = (process.env.APPENV == null) ? null: process.env.APPENV;
+  }
   if (appSrc !== null) {
     createPayload(appSrc, (err, appEnv) => {
       if (err) {

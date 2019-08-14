@@ -28,7 +28,7 @@
   "scripts": {
     "start": "node cli --env=./env/myapp.env --appenv=appenv.js",
     "app": "node app --env=./env/myapp.env --appenv=appenv.js",
-    "implicit": "node cli --env=./implicit/app.env --docker=./implicit/Dockerfile --appenv=appenv.js",
+    "implicit": "node cli --env=./implicit/app.env --docker=./implicit/Dockerfile",
     "proxy": "node cli --env=./proxy/app.env --docker=./proxy/Dockerfile --appenv=appenv.js",
     "code": "node cli --env=./code/app.env --docker=./code/Dockerfile --appenv=appenv.js",
     "build": "rimraf lib && babel src --out-dir lib",
@@ -83,7 +83,7 @@
     "babel-loader": "^8.0.6",
     "eslint": "^5.16.0",
     "prettyjson": "^1.2.1",
-    "rimraf": "^2.6.3",
+    "rimraf": "^2.7.0",
     "webpack-cli": "^3.3.2"
   }
 }
