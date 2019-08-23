@@ -32,15 +32,15 @@ async function SASauth (hapiServer) {
     authCookieOptions = {
         cookie: {
             password  : uuid.v4(),
-            name      : 'authCookie',
+            name      : 'JSESSIONID',
             domain    : process.env.APPHOST,
             isSecure  : false,
             isSameSite: (process.env.SAMESITE != null) ? process.env.SAMESITE : 'Strict'
         },
         
         validateFunc: async function (req, session) {
-            if (process.env.PROXYSERVER === 'YES') {
-                let credentials = await req.server.app.cache.get(session.sid);
+            if (process.env.OAUTH2 === 'YES') {
+                let credentials = await req.server.app.cache.get(session.JSESSIONID);
                 return {
                     valid      : true,
                     credentials: credentials

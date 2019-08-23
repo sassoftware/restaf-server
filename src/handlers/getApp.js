@@ -20,13 +20,9 @@ async function getAuthApp (rootHandler, req, h) {
     const sid = uuid.v4();
     let credentials = req.auth.credentials;
     await req.server.app.cache.set(sid, credentials);
-    req.cookieAuth.set({sid});
-    /*
-    if (process.env.PROXYSERVER === 'YES'){
-       req.cookieAuth.set({sid});
-    } 
-    */
+    req.cookieAuth.set({JSESSIONID: sid});
+    
     let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
-    return h.file(`${indexHTML}`);
+    return h.redirect(`/${indexHTML}`);
 }
 export default getApp;

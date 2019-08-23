@@ -22,6 +22,10 @@
     "type": "git",
     "url": "https://github.com/sassoftware/restaf-server.git"
   },
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "bugs": {
     "url": "https://github.com/sassoftware/restaf-server/issues"
   },
