@@ -74,9 +74,14 @@
         console.log('calling files');
         debugger;
         let payload = {
-            url: `${LOGONPAYLOAD.host}/files/`
+            url: `${LOGONPAYLOAD.host}/files/`,
+            method: 'GET',
+            withCredentials: true,
+            headers: {
+                'accept': 'application/vnd.sas.api+json,application/json'
             }
-            /*withCredentials: true,*/
+        }
+           
         console.log(payload);
 
         store.request(payload)
@@ -90,7 +95,7 @@
 <body onload="setup()">
 <h1 id="head"> Hi proxy</h1>
 <div>
-        <button id='checkkeepalive' onclick="runit()"> Press to force a keepalive call</button>
+        <button id='checkkeepalive' onclick="runit()"> Press to test call to a service</button>
 </div>
 </body>
 </html>

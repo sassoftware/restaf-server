@@ -65,7 +65,8 @@
     let store   = restaf.initStore();
     let session = null;
     let servers = null;
-    let files;
+    let files = null;
+    let reports = null;
     function setup() {
         debugger;
         initSession() 
@@ -81,20 +82,26 @@
     async function initSession() {
         debugger;
         console.log(LOGONPAYLOAD);
-        let msg = await store.logon(null);
+        let msg = await store.logon(LOGONPAYLOAD);
         debugger;
-        let services = await store.addServices('reports');
+        let services = await store.addServices('reports', 'files');
         debugger;
         console.log( services );
         reports = services.reports;
+        files   = services.files;
         
         return 'done';
     }
     function runit() {
-        console.log('calling files');
+        console.log('calling reports');
         debugger;
-        store.apiCall(reports.links('reports'))
-        .then (r => console.log('reports done'))
+        let repo
+        store.apiCall(files.links('files'))
+        .then (r => {
+            debugger;
+            console.log(JSON.stringify(r.items(), null,4));
+            console.log('reports done');
+        })
         .catch(err => alert(err));
     }
 </script>
@@ -102,7 +109,7 @@
 <body onload="setup()">
 <h1 id="head"> Hi proxy</h1>
 <div>
-        <button id='checkkeepalive' onclick="runit()"> Press to force a keepalive call</button>
+        <button id='checkkeepalive' onclick="runit()"> Press to make a call to service</button>
 </div>
 </body>
 </html>
