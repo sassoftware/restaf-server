@@ -63,6 +63,7 @@
     let store   = restaf.initStore();
     let session = null;
     let servers = null;
+    let services = null;
     let files = null;
     let reports = null;
     function setup() {
@@ -82,19 +83,17 @@
         console.log(LOGONPAYLOAD);
         let msg = await store.logon(LOGONPAYLOAD);
         debugger;
-        let services = await store.addServices('reports', 'files');
+        services = await store.addServices('reports', 'files', 'compute');
         debugger;
         console.log( services );
-        reports = services.reports;
-        files   = services.files;
-        
+        console.log((JSON.stringify(services.compute.links(), null, 4)));
         return 'done';
     }
     function runit() {
         console.log('calling reports');
         debugger;
-        let repo
-        store.apiCall(files.links('files'))
+        
+        store.apiCall(services.files.links('files'))
         .then (r => {
             debugger;
             console.log(JSON.stringify(r.items(), null,4));

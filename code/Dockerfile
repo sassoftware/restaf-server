@@ -17,7 +17,7 @@ ENV APPHOST=localhost
 # ENV APPPORT=8080
 ENV APPNAME=viyaapp
 ENV APPLOC=./public
-ENV APPENTRY=index1.html
+# ENV APPENTRY=index.html
 ENV APPENV=appenv.js
 ENV REDIRECT=index.html
 
