@@ -82,6 +82,7 @@ function server (userRouterTable, asset, rootHandler) {
 	
 		hapiServer.route(userRouterTable);
 
+		// eslint-disable-next-line require-atomic-updates
 		hapiServer.app.cache = hapiServer.cache({
 			segment  : 'session',
 			expiresIn: 14 * 24 * 60 * 60 * 1000

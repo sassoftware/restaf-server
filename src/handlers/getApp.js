@@ -23,6 +23,8 @@ async function getAuthApp (rootHandler, req, h) {
     req.cookieAuth.set({JSESSIONID: sid});
     
     let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
+    console.log(`redirecting to /${indexHTML}`);
+    
     return h.redirect(`/${indexHTML}`);
 }
 export default getApp;
