@@ -69,7 +69,7 @@ function setup (rafEnv, dockeFile) {
 function createPayload (srcName, cb) {
   let src = fs.readFileSync(srcName, 'utf8');
   if (src === null) {
-    cb(`${srcName} read failed`);
+    cb(`Error: ${srcName} was not found. `); 
   }
   try {
     // console.log(src);
