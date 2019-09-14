@@ -18,7 +18,7 @@
 
 'use strict';
 
-import 'babel-polyfill';
+import '@babel/polyfill';
 import fs from 'fs';
 import iService from './iService';
 import config from './config';
