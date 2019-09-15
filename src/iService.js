@@ -192,6 +192,7 @@ async function getIcon (req, h) {
 }
 
 async function getApp2 (req, h) {
+    console.log(`returning ${req.params.param}`);
     return h.file(req.params.param);
 }
 

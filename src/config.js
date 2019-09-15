@@ -56,7 +56,7 @@ function iconfig (appEnv) {
 	try {
 		let data = fs.readFileSync(appEnv, 'utf8');
 		let d = data.split(/\r?\n/);
-		console.log('Configuration specified via raf.env');
+		console.log(`Configuration specified via ${appEnv}`);
 		d.forEach(l => {
 			if (l.length > 0 && l.indexOf('#') === -1) {
 				let la = l.split('=');

@@ -19,7 +19,7 @@ ENV APPNAME=viyaapp
 ENV APPLOC=./public
 # ENV APPENTRY=logon.html
 ENV REDIRECT=index.html
-ENV APPENV=appenv.js
+# ENV APPENV=appenv.js
 ENV APPURI=viyapp
 
 ENV AUTHFLOW=implicit
