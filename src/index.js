@@ -41,12 +41,10 @@ function icli (uTable, useDefault){
 
 function iapp (appSrc, rafEnv, dockerFile, uTable, useDefault) {
   let asset = setup(rafEnv, dockerFile);
-  console.log(`process.env.APPENV = ${process.env.APPENV}`);
   if (appSrc === null) {
     appSrc = (process.env.APPENV == null) ? null: process.env.APPENV;
   }
   if (appSrc != null) {
-    console.log(appSrc);
     createPayload(appSrc, (err, appEnv) => {
       if (err) {
         console.log(err);

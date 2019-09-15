@@ -187,12 +187,10 @@ function iService (uTable, useDefault, asset, allAppEnv) {
 //
 
 async function getIcon (req, h) {
-    
     return h.file('favicon.ico');
 }
 
 async function getApp2 (req, h) {
-    console.log(`returning ${req.params.param}`);
     return h.file(req.params.param);
 }
 
