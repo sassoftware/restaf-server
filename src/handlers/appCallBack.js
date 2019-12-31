@@ -4,6 +4,7 @@
 */
 'use strict';
 let uuid = require('uuid');
+// handles all callbacks
 
 async function appCallback (req, h) {
     debugger;
