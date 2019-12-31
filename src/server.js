@@ -23,6 +23,8 @@ let fs = require('fs');
 let isDocker = require('is-docker');
 let Hapi = require('@hapi/hapi'),
 	inert = require('@hapi/inert'),
+	vision = require('vision'),
+	HapiSwagger = require('hapi-swagger'),
 	//  WebpackPlugin = require('hapi-webpack-plugin'),/* for hot restart */
 	hapiServer;
 import SASauth from './SASauth';
@@ -50,12 +52,6 @@ function server (userRouterTable, asset, rootHandler) {
 		}
 	};
 
-	/*
-    console.log('--------------------------------------------');
-    console.log(JSON.stringify(sConfig, null, 4));
-    console.log('--------------------------------------------');
-    */
-
 	if (process.env.TLS != null) {
 		let inp = process.env.TLS.split(' ');
 		let tlsInfo = inp.filter(t => t.length > 0);
@@ -77,8 +73,24 @@ function server (userRouterTable, asset, rootHandler) {
 
 		if (process.env.OAUTH2 === 'YES') {   
      	   let info = await SASauth(hapiServer);
-	    };
-		await hapiServer.register(inert);
+		};
+		
+		let swaggerOptions = {
+			info: {
+				title  : `API Documentation for ${process.env.APPNAME}`,
+				version: (process.env.APPVERSION == null) ? '1.0.0' : process.env.APPVERSION
+			},
+			grouping: 'tags'
+		};
+
+		await hapiServer.register([
+			 inert, 
+			 vision,
+			 {
+				 plugin : HapiSwagger,
+				 options: swaggerOptions
+			 }
+			]);
 	
 		hapiServer.route(userRouterTable);
 
@@ -90,14 +102,20 @@ function server (userRouterTable, asset, rootHandler) {
 
 		await hapiServer.start();
 
-		if (isDocker() === true) {
-			console.log('Application is now running in docker');
-		}
+		console.log(`Visit ${hapiServer.info.uri}/documentation for documentation on the API`);
 		
-		console.log(
-			`To access application visit ${hapiServer.info.uri}/${process.env.APPNAME}`
-		);
-			
+		if (process.env.AUTHFLOW === 'implicit') {
+			console.log(`To logon to the application visit ${hapiServer.info.uri}/${process.env.APPNAME}`);
+		} else {
+		   console.log(`To access application visit ${hapiServer.info.uri}/${process.env.APPNAME}`);
+		};
+		if (isDocker() === true) {
+			console.log ( 
+				`
+			   Application is running in Docker
+				  Use the exposed port ${process.env.EXPOSEDPORT}`
+			);
+		}
 	};
 
 	process.on('unhandledRejection', err => {

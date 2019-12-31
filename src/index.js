@@ -32,9 +32,14 @@ function icli (uTable, useDefault){
   if (useDefault == null) {
      useDefault = true;
   }
-  console.log(`docker: ${docker}`);
-  console.log(`env: ${env}`);
-  console.log(`appenv: ${appenv}`);
+  console.log(
+      `Configuration:
+          Dockerfile: ${docker}
+          env file  : ${env}
+          app env   : ${appenv}
+          `
+          );
+          
   iapp(appenv, env, docker, uTable, useDefault);
 }
 
@@ -84,20 +89,24 @@ function createPayload (srcName, cb) {
     cb(err);
   }
 }
+
 function getAllEnv (userData) {
   let env;
   let l = null;
   let authflow = trimit('AUTHFLOW');
-  if (authflow === 'authorization_code') {
+  if (authflow === 'authorization_code' ||authflow === 'code') {
     authflow = 'server';
   }
+
+  let redirect = process.env.REDIRECT;
+  redirect = (redirect == null) ? 'callback' : `${process.env.APPNAME}/${redirect}`;
 
   if (authflow === 'implicit') {
     l = {
       authType: authflow,
       host    : trimit('VIYA_SERVER'),
       clientID: trimit('CLIENTID'),
-      redirect: (process.env.REDIRECT != null) ? `${trimit('APPNAME')}/${trimit('REDIRECT')}` : null,
+      redirect: redirect,
       appName : trimit('APPNAME'),
       
     };

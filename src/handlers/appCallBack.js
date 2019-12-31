@@ -3,12 +3,29 @@
 * SPDX-License-Identifier: Apache-2.0
 */
 'use strict';
-let debug       = require('debug');
-let proxyLogger = debug('proxylogger');
+let uuid = require('uuid');
+
 async function appCallback (req, h) {
+    debugger;
+    if (process.env.OAUTH2 === 'YES') {
+        return getAuthApp(null, req, h)
+    } else {
+        let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
+        console.log(`Successful Authentication(implicit). Redirecting to /${indexHTML}`);
+        return h.file(indexHTML);
+    }
+}
+
+async function getAuthApp (rootHandler, req, h) {
+    debugger;
+    const sid = uuid.v4();
+    let credentials = req.auth.credentials;
+    await req.server.app.cache.set(sid, credentials);
+    req.cookieAuth.set({JSESSIONID: sid});
     
-    proxyLogger('In callback');
     let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
-    return h.file(`${indexHTML}`);
+    console.log(`Successful Authentication(authorization_code). Redirecting to /${indexHTML}`);
+    
+    return h.redirect(`/${indexHTML}`);
 }
 export default appCallback;

@@ -85,6 +85,7 @@ function handleProxyRequest (req, h, token) {
                 responseLogger({ url: `------------------------------------------${config.url}` });
                 responseLogger(req.query);
                 responseLogger((typeof body === 'string' ? { body: body } : body));
+                // eslint-disable-next-line no-prototype-builtins
                 if (response.headers.hasOwnProperty('content-encoding')) {
                     delete response.headers['content-encoding'];
                 }

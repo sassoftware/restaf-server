@@ -6,16 +6,20 @@ RUN npm install
 COPY . .
 RUN npm run build
 EXPOSE 8080
+ENV OAUTH2=NO
 
-ENV APPHOST=0.0.0.0
-ENV APPPORT=8080
-ENV AUTHFLOW=implicit
-ENV CLIENTID=callback
+ENV APPHOST=localhost
+# ENV APPPORT=8080
 ENV APPNAME=viyaapp
+ENV APPVERSION=1.0.0
 ENV APPLOC=./public
 ENV APPENTRY=index.html
-ENV APPENV=appenv.js
 
+ENV AUTHFLOW=implicit
 
+CMD [ "npm", "start"]
 
-CMD ["npm", "run", "indocker"]
+# ENV SAS_SSL_ENABLED=NO
+# ENV EXPOSEHEADER=YES
+# ENV SAMESITE=Lax
+# ENV PROXYSERVER=NO

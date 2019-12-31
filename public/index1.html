@@ -20,13 +20,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
-    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"></script>
-    <script src="https://unpkg.com/restaf@dev/dist/restaf.min.js"></script> 
+    <script src="/shared/apiCall.js"></script>
     <script src="/appenv"></script>
+    <script src="/myapp/test.js"></script>
 
    
 
@@ -59,41 +55,17 @@
             height: 200px;
         }
     </style>
-<script>
-    let store   = restaf.initStore();
-    let session = null;
-    let servers = null;
-    let files;
-    function setup() {
-        debugger;
-        document.getElementById('head').innerHTML = 'Hello';
+    <script>
+        function setup(){
+            console.log('set up here');
         }
-    function runit() {
-        console.log('calling files');
-        debugger;
-        let payload = {
-            url: `${LOGONPAYLOAD.host}/files/`,
-            method: 'GET',
-            withCredentials: true,
-            headers: {
-                'accept': 'application/vnd.sas.api+json,application/json'
-            }
-        }
-           
-        console.log(payload);
+    </script>
 
-        store.request(payload)
-        .then (r => {
-            console.log(r.data);
-        })
-        .catch(err => alert(err));
-    }
-</script>
 </head>
 <body onload="setup()">
-<h1 id="head"> Hi proxy</h1>
+<h1 id="head"> Simple page</h1>
 <div>
-        <button id='checkkeepalive' onclick="runit()"> Press to test call to a service</button>
+ <p> Something here</p>
 </div>
 </body>
 </html>
