@@ -4,14 +4,14 @@
 */
 'use strict';
 let uuid = require('uuid');
+import logon from './logon.js';
 
 async function getApp (req, h) {
     debugger;
     if (process.env.OAUTH2 === 'YES') {
         return getAuthApp(null, req, h)
     } else {
-        let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
-        return h.file(indexHTML);
+        return logon(req,h);
     }
 }
 

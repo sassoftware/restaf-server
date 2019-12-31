@@ -29,13 +29,17 @@ async function SASauth (hapiServer) {
         provider;
 
         //TBD: do we need keepalive?
+    let isSameSite = process.env.SAMESITE;
+    isSameSite = (isSameSite == null) ? 'Strict' 
+               : (isSameSite === 'none') ? false
+               : isSameSite;
     authCookieOptions = {
         cookie: {
             password  : uuid.v4(),
             name      : 'JSESSIONID',
             domain    : process.env.APPHOST,
             isSecure  : false,
-            isSameSite: (process.env.SAMESITE != null) ? process.env.SAMESITE : 'Strict'
+            isSameSite: isSameSite
         },
         
         validateFunc: async function (req, session) {
@@ -54,8 +58,6 @@ async function SASauth (hapiServer) {
         }
         
     };
-    
-    
     if (process.env.OAUTH2 == 'YES') {
         let authURL = process.env.VIYA_SERVER ;
         provider = {

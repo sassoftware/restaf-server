@@ -20,11 +20,12 @@
 'use strict';
 
 let debug          = require('debug');
-let debugSetup     = debug('setup');
+// let debugSetup     = debug('setup');
 
 import server from './server';
-import {getApp, handleProxy, keepAlive, appCallback} from './handlers'
+import {getApp, handleProxy, keepAlive, appCallback, logon} from './handlers'
 let os = require('os');
+let Joi = require('@hapi/joi');
 
 function iService (uTable, useDefault, asset, allAppEnv) {
     debugger;
@@ -44,10 +45,14 @@ function iService (uTable, useDefault, asset, allAppEnv) {
     if (process.env.PROXYSERVER === 'YES') {
         process.env.OAUTH2 = 'YES';
     }
-    console.log(`appName ${appName}`);
-    console.log(`asset ${asset} `);
-    console.log(`uTable ${uTable}`);
-    console.log(allAppEnv);
+    console.log(`
+      appName  : ${appName}
+      asset    : ${asset}
+      uTable   : ${uTable}
+      appenv   : 
+    `);
+
+    console.log(JSON.stringify(allAppEnv, null,4));
 
     let getAppEnv = async (req, h) => {
         return allAppEnv;
@@ -79,6 +84,17 @@ function iService (uTable, useDefault, asset, allAppEnv) {
             method: [ 'GET' ],
             path  : `${appName}`,
             config: {
+                description: 'Start the Application',
+                notes      : [ 'Invoke this end point to start your application',
+                               'Will redirect to asset named in APPENTRY',
+                               'If logging on with authentication make sure you have set the following in the configuration files',
+                                'VIYA_SERVER to your Viya Server url',
+                                'AUTHFLOW to implicit',
+                                'CLIENTID to your implicit flow client ID',
+                                'APPENTRY to the apps main html'
+                             ],
+                tags: [ 'api', 'Application' ],
+
                 auth   : auth1,
                 handler: getApp
             }
@@ -86,29 +102,37 @@ function iService (uTable, useDefault, asset, allAppEnv) {
             method: [ 'GET' ],
             path  : `${appName}/{param*}`,
             config: {
+                description: 'Returns the specified asset',
+                validate   : {
+                    params: Joi.object({
+                        param: Joi.string().required()
+                    })
+                },
+                tags: [ 'api', 'Assets' ],
+
                 auth   : auth2,
                 handler: getApp2
             }
 
         }, {
             method: [ 'GET' ],
-            path  : `${appName}/callback${appName}`,
+            path  : `/callback`,
             config: {
+               
+                description: 'This is used by the /logon - do not call this directly',
+        
                 auth   : false,
                 handler: appCallback
+                
             }
 
-        }, {
-            method: [ 'GET' ],
-            path  : `/shared/{param*}`,
-            config: {
-                auth   : false,
-                handler: getShared
-            }
-        } , {
+        },  {
             method: [ 'GET', 'POST' ],
             path  : `/keepAlive`,
             config: {
+                description: 'Keeps the session active',
+                notes      : [ 'Place holder waiting for authorization_code support'
+                            ],
                 auth   : false,
                 handler: keepAlive
             }
@@ -118,18 +142,20 @@ function iService (uTable, useDefault, asset, allAppEnv) {
         ];
 
     if (hasAppEnv == null){
-        console.log('Setting default /appenv')
        defaultTable.push({
         method: [ 'GET' ],
         path  : '/appenv',
         config: {
+            description: 'Returns APPENV and LOGONPAYLOAD',
+            notes      : [ 'Returns application specific information'
+                            ],
+            tags: [ 'api', 'Configuration' ],
+            
             auth   : false,
             handler: getAppEnv
         }
         });
-    } else {
-        console.log('Setting custom /appenv');
-    }
+    };
 
     // Tried payload.parse = false -- way too much code to handle payload
     if (process.env.PROXYSERVER === 'YES') {
@@ -159,6 +185,10 @@ function iService (uTable, useDefault, asset, allAppEnv) {
             method: [ 'GET' ],
             path  : '/{param*}',
             config: {
+                description: 'Return specified static asset',
+                tags       : [ 'api', 'Assets' ], 
+
+
                 auth   : false,
                 handler: getApp2
             }
@@ -177,7 +207,7 @@ function iService (uTable, useDefault, asset, allAppEnv) {
         userRouterTable = [ ...defaultTable ];
     }
     
-    debugSetup(console.log(JSON.stringify(userRouterTable, null, 4)));
+    console.log(JSON.stringify(userRouterTable, null, 4));
     server(userRouterTable, asset);
 
 }
@@ -191,11 +221,10 @@ async function getIcon (req, h) {
 }
 
 async function getApp2 (req, h) {
-    return h.file(req.params.param);
+    return h.file(`${req.params.param}`);
 }
 
 async function getShared (req, h) {
-    
     return h.file(`shared/${req.params.param}`);
 }
 

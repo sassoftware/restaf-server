@@ -63,7 +63,7 @@
 		</style>
 		<script>
 			let store = restaf.initStore( 
-				LOGONPAYLOAD.authType === 'server' ? { casProxy: true } : null
+				LOGONPAYLOAD.authType === 'server' ? { casProxy: true} : null
 			);
 			let session = null;
 			let servers = null;
@@ -157,6 +157,7 @@
 			async function SASfileService(store) {
 				debugger;
 				let files = services.files;
+				console.log(JSON.stringify(files.links(), null, 4));
 				let payload = {
 					data: { x: 1, y: 'This was saved earlier in the step' },
 					headers: { 'content-type': 'application/json' }

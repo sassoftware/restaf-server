@@ -1,16 +1,29 @@
-# restaf-server - web server in nodejs for SAS Viya Applications
+# @sassoftware/restaf-server - web server in nodejs for SAS Viya Applications
 
-Please see READMEv6.md for documentation on earlier releases.
+This server is designed for use with SAS Viya. It is customized using the env file and the Dockerfile.
+
+The following authentication schemes are supported:
+
+1. No authentication - the pages are served up as static pages.
+2. Implicit flow     - Implicit flow authentication flow is supported.
+3. Authorization_code - (coming soon). This will be supported with a planned SAS Viya 3.5 maintenance release.
+
+---
+
+**Note: The current production version of restaf-server is restaf-server@6.11.2. All future versions will be scoped to sassoftware.
+There are no known breaking changes with this re-organization of the package. Please report if you see any issues and it will be addressed immediately.**
+
+---
 
 ## Version
 
 ```text
-Version 6.11.x
+Version 7.1.x
 ```
 
 ### Installation
 
-npm install restaf-server
+npm install @sassoftware/restaf-server
 
 ## Usage
 
@@ -23,24 +36,19 @@ If you do not specify atleast one of these, you MUST set the preset the environm
 
 The runtime environment variables are set in this order
 
-1. If specified the dockerfile is processed and the ENV variables are used to set the appropriate environment variables.
+1. Dockerfile - The ENV value are set as enviroment variables.
 
-2. If the env file is specified it is processed and the ENV variables are set. If the same values are set in the dockerfile then the values in the env file takes precedence.
+2. env file - The values in this file are used to override the defaults set through dockerfile
 
-3. If you want to set the values of some or all environment variables using some system script then do not specify then in either the dockerfile or env file.
+3. If you want to set the values of some or all environment variables using some system script(ex: your Viya Server url) then do not specify them in either the dockerfile or env file.
 
-4. A note on EXPOSE - When running in docker specify both EXPOSE and APPPORT to be the same. restaf-server has no way to detect the value of EXPOSE - so APPPORT has to be specified at all times
-
----
-
-  **The env option is supported for backward compatability. In new applications use the dockerfile and preset environment variables. Use preset environment variables for variables you do not want to be saved in the docker container. This will make it easier to test and deploy the application either in Docker or as a bare OS application.**
-
----
+   A note on EXPOSE and APPPORT - If APPPORT is not set then it is set to EXPOSE.
 
 The recommended approach is:
 
-1. Use dockerfile  to specify values that are usually not overriden by users and not a violation of security policies.
-2. Use the env file(or environment variables set thru the system SET/EXPORT cmnds)for runtime environment variables
+1. Use dockerfile  to specify values that are usually not overridden by users and is not a violation of **security policies**.
+2. Use the env file for runtime environment variables
+3. Use system SET commands to set the values - make sure you do not set the values in dockerfile or env file.
 
 ```docker
 ENV optionName=
@@ -54,33 +62,70 @@ SET VIYA_SERVER=http://yourViyaServer
 
 ```
 
-## Version 6.10.0
+## Examples of authentication flows
 
-- Removed dependency on shelljs - not used any more.
-- Allow inherting of env variables while processing th env file if the following. Inheriting is done if the variable is either not set in the env file or
-         SET NAME
-         SET NAME=
+## NO authentication
 
-## Version 6.0.0
+The env and Dockerfile for this scenario is in /env/static directory.
 
-- Fixed issues with depedencies
-  - Fixed issues with /appenv not being processed properly
-  - Removed includes for hot-module since it does not work yet.
+## Implicit flow
 
-## Verson 5.0.0
+The env and Docker file for this scenario is in /env/implicit directory
 
-- Changes to the cli version are **breaking changes**. Stay with pre 5.* version if you want the previous behavior.
-- Upgraded the packages and in particular Babel and Webpack.
-    . Using Babel to build the code in this release but the webpack config is left intact for reference.
-- Added new entry point of app to accept named parameters just as the new cli version does
-- Recommendations:
-  - The growing trend is to install packages locally and use npx to execute them.
-- Under-development:
-  - Support for Hot-Module Replacement
+To use this scenario modify these files as follows:
 
-## Version 4.4.0
+### env file
 
-  . Support specifing VIYA_SERVER with protocol
+This is primarily used to override the values set in Dockerfile. Setting CLIENTID here is a good practice.
 
-  This simplifies the set up of applications
-  
+1. Set the CLIENTID to your implicit flow clientid
+
+### Docker file
+
+1. Set the EXPOSE port to your desired port no.
+2. Set the following to suit your needs
+
+```docker
+ENV APPHOST=localhost
+ENV APPNAME=viyaapp
+ENV APPLOC=./public
+ENV APPENTRY=index.html
+```
+
+### APPNAME
+
+Assign a meaninful name for your app.
+
+### APPHOST
+
+This can be one of the following values:
+
+localhost|*|ipAddress|dns-name-of-server
+
+If set to *, restaf-server will resolve it to the dns name using nodejs function os.hostname.
+
+### APPLOC
+
+This is the directory where restaf can find the static assets of your app. This is relative to the root of your application. Typically this is ./public
+
+### APPENTRY
+
+After a successful logon restaf will redirect to this entry specified via APPLOC.
+
+## Invoking the application
+
+To start the server use the following command
+
+```script
+npx restaf-server --env=your-env-file --docker=your-docker-file
+```
+
+## Documentation of API
+
+To view the API documentation visit this site
+
+```script
+https://localhost:8080/documentation
+```
+
+Enter this command after the app is up and running.
