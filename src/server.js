@@ -23,7 +23,7 @@ let fs = require('fs');
 let isDocker = require('is-docker');
 let Hapi = require('@hapi/hapi'),
 	inert = require('@hapi/inert'),
-	vision = require('vision'),
+	vision = require('@hapi/vision'),
 	HapiSwagger = require('hapi-swagger'),
 	//  WebpackPlugin = require('hapi-webpack-plugin'),/* for hot restart */
 	hapiServer;

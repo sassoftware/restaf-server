@@ -47,6 +47,7 @@
     "@hapi/hapi": "^18.4.0",
     "@hapi/inert": "^5.2.2",
     "@hapi/joi": "^16.1.8",
+    "@hapi/vision": "^5.5.4",
     "debug": "^4.1.1",
     "docker-file-parser": "^1.0.4",
     "eslint-config-prettier": "^6.8.0",
@@ -59,7 +60,6 @@
     "request-debug": "^0.2.0",
     "tcp-ping": "^0.1.1",
     "uuid": "^3.3.3",
-    "vision": "^5.4.4",
     "yargs": "^15.0.2"
   },
   "devDependencies": {
