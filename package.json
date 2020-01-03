@@ -37,6 +37,9 @@
     "dkrapp": "docker run -p 4000:8080 --env-file app.env  -t viyaapp",
     "lint": "./node_modules/.bin/eslint --fix src/*.js"
   },
+  "resolutions": {
+    "core-js": "^3.6.1"
+  },
   "dependencies": {
     "@babel/core": "^7.7.7",
     "@babel/polyfill": "^7.7.0",
