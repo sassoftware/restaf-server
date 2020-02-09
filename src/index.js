@@ -100,27 +100,33 @@ function getAllEnv (userData) {
     authflow = 'server';
   }
 
-  let redirect = process.env.REDIRECT;
+  let redirect = trimit('REDIRECT');
   redirect = (redirect == null) ? 'callback' : `${process.env.APPNAME}/${redirect}`;
 
-  if (authflow === 'implicit') {
-    l = {
-      authType: authflow,
-      host    : trimit('VIYA_SERVER'),
-      clientID: trimit('CLIENTID'),
-      redirect: redirect,
-      appName : trimit('APPNAME'),
-      
-    };
-  } else {
-    l = {
-      authType : authflow,
-      host     : trimit('VIYA_SERVER'),
-      appName  : trimit('APPNAME'),
-      passThru : trimit('VIYA_SERVER'),
-      keepAlive: null /*`http://${process.env.APPHOST}:${process.env.APPPORT}/keepAlive`*/
-    };
+  let host = trimit('VIYA_SERVER');
+  let clientID  = trimit('CLIENTID');
+  let keepAlive = trimit('KEEPALIVE');
+  let appName   = trimit('APPNAME');
 
+  if (authflow === 'server' || authflow === 'implicit') {
+     l = {
+      authType : authflow,
+      redirect : redirect,
+      host     : host,
+      clientID : clientID,
+      appName  : appName,
+      passThru : host,
+      keepAlive: null
+    };
+    if (authflow === 'server' && keepAlive !== null)
+      l.keepAlive = `http://${process.env.APPHOST}:${process.env.APPPORT}/keepAlive`
+    ;
+    console.log(
+      `Authorization configuration
+         ${JSON.stringify(l, null,4)}
+         ${process.env.CLIENTSECRET}
+       `  
+         );
   }
 
   env =

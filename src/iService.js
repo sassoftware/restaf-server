@@ -89,8 +89,9 @@ function iService (uTable, useDefault, asset, allAppEnv) {
                                'Will redirect to asset named in APPENTRY',
                                'If logging on with authentication make sure you have set the following in the configuration files',
                                 'VIYA_SERVER to your Viya Server url',
-                                'AUTHFLOW to implicit',
-                                'CLIENTID to your implicit flow client ID',
+                                'AUTHFLOW to implicit or authorization_code',
+                                'CLIENTID to your client ID',
+                                'CLIENTSECRET if you are using authorization_code',
                                 'APPENTRY to the apps main html'
                              ],
                 tags: [ 'api', 'Application' ],

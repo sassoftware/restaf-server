@@ -43,6 +43,7 @@ async function SASauth (hapiServer) {
         },
         
         validateFunc: async function (req, session) {
+            debugger;
             if (process.env.OAUTH2 === 'YES') {
                 let credentials = await req.server.app.cache.get(session.JSESSIONID);
                 return {
@@ -68,11 +69,14 @@ async function SASauth (hapiServer) {
             token        : authURL + '/SASLogon/oauth/token'
         };
         
+        if (process.env.CLIENTID == null) {
+            throw 'Error: Please specify CLIENTID';
+        } 
         bellAuthOptions = {
             provider    : provider,
             password    : uuid.v4(),
-            clientId    : process.env.CLIENTID,
-            clientSecret: (process.env.CLIENTSECRET == null) ? ' ' : process.env.CLIENTSECRET,
+            clientId    : process.env.CLIENTID.trim(),
+            clientSecret: (process.env.CLIENTSECRET == null) ? ' ' : process.env.CLIENTSECRET.trim(),
             isSecure    : false
         };
 
