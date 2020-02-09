@@ -12,6 +12,7 @@ COPY . .
 RUN npm run build
 EXPOSE 8080
 ENV OAUTH2=YES
+ENV PROXYSERVER=NO
 ENV SAMESITE=none
 
 ENV APPHOST=localhost
@@ -21,6 +22,7 @@ ENV APPVERSION=1.0.0
 ENV APPLOC=./public
 ENV APPENTRY=index.html
 ENV AUTHFLOW=authorization_code
+ENV APPENV=
 
 CMD [ "npm", "start"]
 

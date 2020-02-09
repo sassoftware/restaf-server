@@ -100,15 +100,20 @@ function getAllEnv (userData) {
     authflow = 'server';
   }
 
-  let redirect = trimit('REDIRECT');
-  redirect = (redirect == null) ? 'callback' : `${process.env.APPNAME}/${redirect}`;
+  let redirect = "Set when clientid was created";
 
+  
   let host = trimit('VIYA_SERVER');
   let clientID  = trimit('CLIENTID');
   let keepAlive = trimit('KEEPALIVE');
   let appName   = trimit('APPNAME');
 
   if (authflow === 'server' || authflow === 'implicit') {
+    if (authflow === 'implicit') {
+      redirect = trimit('REDIRECT');
+      redirect = (redirect == null) ? 'callback' : `${process.env.APPNAME}/${redirect}`;
+      };
+
      l = {
       authType : authflow,
       redirect : redirect,

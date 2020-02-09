@@ -8,7 +8,7 @@ let uuid = require('uuid');
 
 async function appCallback (req, h) {
     debugger;
-    console.log(`OAUTH2: ${process.env.OAUTH2}`);
+    console.log(`..... OAUTH2: ${process.env.OAUTH2}`);
     if (process.env.OAUTH2 === 'YES') {
         return getAuthApp(null, req, h)
     } else {

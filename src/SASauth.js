@@ -76,13 +76,18 @@ async function SASauth (hapiServer) {
             provider    : provider,
             password    : uuid.v4(),
             clientId    : process.env.CLIENTID.trim(),
-            clientSecret: (process.env.CLIENTSECRET == null) ? ' ' : process.env.CLIENTSECRET.trim(),
+            clientSecret: (process.env.CLIENTSECRET == null) ? ' ' : process.env.CLIENTSECRET,
             isSecure    : false
         };
 
         if (process.env.BELL_LOCATION != null) {
             bellAuthOptions.location = process.env.BELL_LOCATION;
         }
+
+        console.log(
+             `Bell Options
+                ${JSON.stringify(bellAuthOptions, null,4)}
+                `);
 
         await hapiServer.register(bell);
         await hapiServer.register(cookie);

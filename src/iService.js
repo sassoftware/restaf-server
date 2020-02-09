@@ -120,7 +120,7 @@ function iService (uTable, useDefault, asset, allAppEnv) {
             path  : `/callback`,
             config: {
                
-                description: 'This is used by the /logon - do not call this directly',
+                description: 'This is used by the authentication - do not call this directly',
         
                 auth   : false,
                 handler: appCallback
