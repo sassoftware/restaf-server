@@ -71,7 +71,7 @@ function server (userRouterTable, asset, rootHandler) {
 
 	const init = async () => {
 
-		if (process.env.OAUTH2 === 'YES') {   
+		if (process.env.AUTHFLOW === 'authorization_code' || process.env.AUTHFLOW === 'code') {   
      	   let info = await SASauth(hapiServer);
 		};
 		

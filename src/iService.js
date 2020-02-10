@@ -42,23 +42,18 @@ function iService (uTable, useDefault, asset, allAppEnv) {
         maxBytes = Number(process.env.PAYLOADMAXBYTES);
     }
 
-    if (process.env.PROXYSERVER === 'YES') {
-        process.env.OAUTH2 = 'YES';
-    }
     console.log(`
       appName  : ${appName}
       asset    : ${asset}
       uTable   : ${uTable}
-      appenv   : 
+      appenv   : ${JSON.stringify(allAppEnv, null,4)}
     `);
-
-    console.log(JSON.stringify(allAppEnv, null,4));
 
     let getAppEnv = async (req, h) => {
         return allAppEnv;
     }
 
-    if (process.env.OAUTH2 === 'YES') {
+    if (process.env.AUTHFLOW === 'authorization_code'|| process.env.AUTHFLOW === 'code') {
         auth1 = {
             mode    : 'required',
             strategy: 'sas'

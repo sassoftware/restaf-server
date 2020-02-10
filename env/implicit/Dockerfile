@@ -6,7 +6,6 @@ RUN npm install
 COPY . .
 RUN npm run build
 EXPOSE 8080
-ENV OAUTH2=NO
 
 ENV APPHOST=localhost
 # ENV APPPORT=8080

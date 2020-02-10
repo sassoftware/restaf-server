@@ -44,7 +44,7 @@ async function SASauth (hapiServer) {
         
         validateFunc: async function (req, session) {
             debugger;
-            if (process.env.OAUTH2 === 'YES') {
+            if (process.env.AUTHFLOW === 'authorizaton_code' || process.env.AUTHFLOW === 'code') {
                 let credentials = await req.server.app.cache.get(session.JSESSIONID);
                 return {
                     valid      : true,
@@ -59,7 +59,7 @@ async function SASauth (hapiServer) {
         }
         
     };
-    if (process.env.OAUTH2 == 'YES') {
+    if (process.env.AUTHFLOW == 'authorization_code' || process.env.AUTHFLOW === 'code') {
         let authURL = process.env.VIYA_SERVER ;
         provider = {
             name         : 'sas',

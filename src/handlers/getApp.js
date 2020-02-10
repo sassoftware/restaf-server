@@ -8,7 +8,7 @@ import logon from './logon.js';
 
 async function getApp (req, h) {
     debugger;
-    if (process.env.OAUTH2 === 'YES') {
+    if (process.env.AUTHFLOW === 'authorization_code' || process.env.AUTHFLOW === 'code') {
         return getAuthApp(null, req, h)
     } else {
         return logon(req,h);

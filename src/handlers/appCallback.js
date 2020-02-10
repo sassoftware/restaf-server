@@ -8,8 +8,8 @@ let uuid = require('uuid');
 
 async function appCallback (req, h) {
     debugger;
-    console.log(`..... OAUTH2: ${process.env.OAUTH2}`);
-    if (process.env.OAUTH2 === 'YES') {
+    console.log(`..... AUTHFLOW: ${process.env.AUTHFLOW}`);
+    if (process.env.AUTHFLOW === 'authorization_code' || process.env.AUTHFLOW === 'code') {
         return getAuthApp(null, req, h)
     } else {
         let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
