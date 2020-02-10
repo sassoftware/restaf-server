@@ -7,7 +7,7 @@ let uuid = require('uuid');
 import logon from './logon.js';
 
 async function getApp (req, h) {
-    debugger;
+    ;
     if (process.env.AUTHFLOW === 'authorization_code' || process.env.AUTHFLOW === 'code') {
         return getAuthApp(null, req, h)
     } else {
@@ -16,7 +16,7 @@ async function getApp (req, h) {
 }
 
 async function getAuthApp (rootHandler, req, h) {
-    debugger;
+    ;
     const sid = uuid.v4();
     let credentials = req.auth.credentials;
     await req.server.app.cache.set(sid, credentials);

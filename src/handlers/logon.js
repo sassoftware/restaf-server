@@ -4,7 +4,7 @@
 */
 
 async function logon (req, h) {
-    debugger;
+    ;
     if (process.env.AUTHFLOW === 'implicit' && process.env.REDIRECT == null){
        let html = logonHTML();
        return html;
@@ -30,7 +30,7 @@ function logonHTML () {
                     
                     <script>
                         function logonButton() {
-                            debugger;
+                            ;
                             let store = restaf.initStore();
                             store.logon(LOGONPAYLOAD)
                             .then ( r => {

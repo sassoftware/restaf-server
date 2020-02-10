@@ -7,7 +7,7 @@ let parser = require('docker-file-parser');
 let fs = require('fs');
 
 function parseDocker (dockerFile) {
-	debugger;
+	;
 	let d = fs.readFileSync(dockerFile, 'utf8');
 	let data = parser.parse(d);
 	data.forEach(d => {
