@@ -28,7 +28,6 @@ async function SASauth (hapiServer) {
         bellAuthOptions,
         provider;
 
-        //TBD: do we need keepalive?
     let isSameSite = process.env.SAMESITE;
     isSameSite = (isSameSite == null) ? 'Strict' 
                : (isSameSite === 'none') ? false

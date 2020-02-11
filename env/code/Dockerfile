@@ -11,7 +11,6 @@ RUN npm install
 COPY . .
 RUN npm run build
 EXPOSE 8080
-ENV OAUTH2=YES
 ENV PROXYSERVER=NO
 ENV SAMESITE=none
 
