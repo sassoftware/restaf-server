@@ -20,12 +20,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <script src="/shared/apiCall.js"></script>
-    <script src="/appenv"></script>
-    <script src="/myapp/test.js"></script>
-
-   
-
+    <script async src="https://unpkg.com/@sassoftware/va-report-components@0.3/dist/umd/va-report-components.js"></script>
+    <script src="https://unpkg.com/@webcomponents/custom-elements"></script>
     <style>
         .container {
             display: flex;
@@ -54,18 +50,42 @@
             background: lightskyblue;
             height: 200px;
         }
+
+        sas-report {
+            width: 75%;
+            height: 75%;
+            --sas-report-padding: 10px;
+            display: block;
+          }
     </style>
     <script>
-        function setup(){
-            console.log('set up here');
-        }
+        
+        let  config = {
+                "authenticationType": "credentials",
+                "url": "",
+                "reportUri": "/reports/reports/ecec39ad-994f-4055-8e40-4360f410bc6e",
+                "style": {
+                    "width": "80vh",
+                    "height": "80vh",
+                    "display": "block"
+                }
+            } ;
+
     </script>
 
 </head>
-<body onload="setup()">
+<body>
 <h1 id="head"> Simple page</h1>
-<div>
- <p> Something here</p>
+<div class="wrapper-2">
+    <div id="left">
+        <p id="tabereport"> </p>
+        <div id="report0" class="imagediv">
+            <sas-report url="http://kdkv3508.fbi.sashq-d.openstack.sas.com" 
+                reportUri="/reports/reports/ecec39ad-994f-4055-8e40-4360f410bc6e"
+                authenticationType="credentials"></sas-report>
+
+        </div>
+    </div>
 </div>
 </body>
 </html>

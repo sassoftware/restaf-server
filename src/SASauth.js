@@ -58,6 +58,13 @@ async function SASauth (hapiServer) {
         }
         
     };
+
+
+    const getLocation = (req) => {
+        let route =  (process.env.REDIRECT == null) ? '/callback' : '/' + process.env.REDIRECT;
+        let location =  req.server.info.uri + route;
+        return location;
+    }
     if (process.env.AUTHFLOW == 'authorization_code' || process.env.AUTHFLOW === 'code') {
         let authURL = process.env.VIYA_SERVER ;
         provider = {
@@ -76,12 +83,11 @@ async function SASauth (hapiServer) {
             password    : uuid.v4(),
             clientId    : process.env.CLIENTID.trim(),
             clientSecret: (process.env.CLIENTSECRET == null) ? ' ' : process.env.CLIENTSECRET,
+            location    : getLocation,
             isSecure    : false
         };
 
-        if (process.env.BELL_LOCATION != null) {
-            bellAuthOptions.location = process.env.BELL_LOCATION;
-        }
+        if (process.env.REDIRECT)
 
         console.log(
              `Bell Options

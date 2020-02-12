@@ -25,9 +25,7 @@
         <script type="text/javascript" src="/appenv"></script>
         
         <script>
-            let files;
             function logonButton() {
-                debugger;
                 let store = restaf.initStore();
                 store.logon(LOGONPAYLOAD)
                    .then ( r => {
@@ -35,14 +33,10 @@
                    })
                    .catch( err => alert(JSON.stringify(err, null, 4)))
             }
-           
         </script>
-        
     </head>
 
     <body onload="logonButton()">
-       
         </script>
     </body>
-
 </html>

@@ -70,6 +70,8 @@ The env and Dockerfile for this scenario is in /env/static directory.
 
 ## Implicit flow
 
+On successful authentication the server will redirect the user to the entry specified in the APPENTRY variable.
+
 The env and Docker file for this scenario is in /env/implicit directory
 
 To use this scenario modify these files as follows:

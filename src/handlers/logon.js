@@ -4,7 +4,6 @@
 */
 
 async function logon (req, h) {
-    ;
     if (process.env.AUTHFLOW === 'implicit' && process.env.REDIRECT == null){
        let html = logonHTML();
        return html;
