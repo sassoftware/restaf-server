@@ -30,14 +30,15 @@
     "custom": "node cli --env=./env/implicitCustom/overrides.env --docker=./Dockerfile",
     "implicit": "node cli --env=./env/implicit/overrides.env --docker=./Dockerfile",
     "proxy": "node cli --env=./proxy/overrides.env --docker=./Dockerfile --appenv=appenv.js",
-    "code": "node cli --env=./env/code/overrides.env --docker=./Dockerfile --appenv=appenv.js",
+    "code": "node cli --env=./env/code/overrides.env --docker=./Dockerfile",
     "debug": "node --inspect-brk cli --env=./env/code/overrides.env --docker=./Dockerfile --appenv=appenv.js",
     "login": "node cli --env=./env/login/overrides.env --docker=./Dockerfile --appenv=appenv.js",
     "build": "rimraf lib && babel src --out-dir lib",
     "bundle": "webpack --config webpack.config.js",
     "indocker": "node cli",
     "dkrbuild": "docker build -f Dockerfile -t viyaapp .",
-    "dkrapp": "docker run -p 4000:8080 --env-file overrides.env  -t viyaapp",
+    "dkrapp": "docker run -p 8080:8080 --env-file overridescode.env  -t viyaapp",
+    "dkrappi": "docker run -p 8080:8080 --env-file overridesimplicit.env  -t viyaapp",
     "lint": "./node_modules/.bin/eslint --fix src/*.js"
   },
   "dependencies": {

@@ -61,8 +61,14 @@ async function SASauth (hapiServer) {
 
 
     const getLocation = (req) => {
-        let route =  (process.env.REDIRECT == null) ? '/callback' : '/' + process.env.REDIRECT;
-        let location =  req.server.info.uri + route;
+        let route = (process.env.REDIRECT == null) ? '/callback' : '/' + process.env.REDIRECT;
+        let info = req.server.info;
+        let location = info.uri + route;
+        // Need to do this for docker deployment
+        if (info.host === '0.0.0.0') {
+            location = `${info.protocol}://localhost:${info.port}${route}`;
+        }
+        
         console.log(`redirect set to: ${location}`);
         return location;
     }
@@ -87,9 +93,6 @@ async function SASauth (hapiServer) {
             location    : getLocation,
             isSecure    : false
         };
-
-        if (process.env.REDIRECT)
-
         console.log(
              `Bell Options
                 ${JSON.stringify(bellAuthOptions, null,4)}

@@ -103,17 +103,19 @@ function server (userRouterTable, asset, rootHandler) {
 		await hapiServer.start();
 
 		console.log(`Visit ${hapiServer.info.uri}/documentation for documentation on the API`);
+		let uri = hapiServer.info.uri;
 		
-		if (process.env.AUTHFLOW === 'implicit') {
-			console.log(`To logon to the application visit ${hapiServer.info.uri}/${process.env.APPNAME}`);
-		} else {
-		   console.log(`To access application visit ${hapiServer.info.uri}/${process.env.APPNAME}`);
-		};
+		// Need to do this for docker deployment
+		if (hapiServer.info.host === '0.0.0.0') {
+			uri = `${hapiServer.info.protocol}://localhost:${hapiServer.info.port}`;
+		}
+		console.log(`To access application visit ${uri}/${process.env.APPNAME}`);
+	
 		if (isDocker() === true) {
 			console.log ( 
 				`
 			   Application is running in Docker
-				  Use the exposed port ${process.env.EXPOSEDPORT}`
+				  Use the port in your docker run command or docker compose file`
 			);
 		}
 	};
