@@ -7,7 +7,6 @@ let uuid = require('uuid');
 // handles all callbacks
 
 async function appCallback (req, h) {
-    ;
     console.log(`..... AUTHFLOW: ${process.env.AUTHFLOW}`);
     if (process.env.AUTHFLOW === 'authorization_code' || process.env.AUTHFLOW === 'code') {
         return getAuthApp(null, req, h)

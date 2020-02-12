@@ -63,6 +63,7 @@ async function SASauth (hapiServer) {
     const getLocation = (req) => {
         let route =  (process.env.REDIRECT == null) ? '/callback' : '/' + process.env.REDIRECT;
         let location =  req.server.info.uri + route;
+        console.log(`redirect set to: ${location}`);
         return location;
     }
     if (process.env.AUTHFLOW == 'authorization_code' || process.env.AUTHFLOW === 'code') {
