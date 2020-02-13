@@ -16,7 +16,7 @@
     "node": ">=8.9.0"
   },
   "bin": {
-    "restaf-server": "cli.js"
+    "@sassoftware/restaf-server": "cli.js"
   },
   "repository": {
     "type": "git",

@@ -63,9 +63,13 @@ function server (userRouterTable, asset, rootHandler) {
 		};
 	}
 
+	let fullpath = require('path').resolve(asset);
+	console.log(fullpath);
+
 	if (asset !== null) {
 		sConfig.routes.files = { relativeTo: asset };
 	}
+	console.log(sConfig);
 
 	hapiServer = Hapi.server(sConfig);
 
