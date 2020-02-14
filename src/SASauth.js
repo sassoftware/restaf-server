@@ -15,13 +15,15 @@
  * ----------------------------------------------------------------------------------------
  *
  */
-'use strict';
+
 
 let bell       = require('@hapi/bell'),
 // eslint-disable-next-line no-unused-vars
     uuid       = require('uuid'),
-    cookie     = require('@hapi/cookie');
-
+    cookie = require('@hapi/cookie');
+    
+let debug = require('debug');
+let debugAuth = debug('proxy');
 async function SASauth (hapiServer) {
 
     let authCookieOptions,
@@ -35,26 +37,23 @@ async function SASauth (hapiServer) {
     authCookieOptions = {
         cookie: {
             password  : uuid.v4(),
-            name      : 'JSESSIONID',
+            name      : 'authCookie',
             domain    : process.env.APPHOST,
             isSecure  : false,
             isSameSite: isSameSite
         },
         
         validateFunc: async function (req, session) {
-            ;
-            if (process.env.AUTHFLOW === 'authorizaton_code' || process.env.AUTHFLOW === 'code') {
-                let credentials = await req.server.app.cache.get(session.JSESSIONID);
-                return {
-                    valid      : true,
-                    credentials: credentials
+            debugger;
+            let credentials = await req.server.app.cache.get(session.sid);
+
+            debugAuth(credentials);
+            let cred =  {
+                valid      : true,
+                credentials: credentials
                 }
-            } else {
-                return {
-                   valid      : true,
-                   credentials: req.auth.credentials
-                }
-            }
+    
+            return cred;
         }
         
     };
@@ -75,23 +74,35 @@ async function SASauth (hapiServer) {
     if (process.env.AUTHFLOW == 'authorization_code' || process.env.AUTHFLOW === 'code') {
         let authURL = process.env.VIYA_SERVER ;
         provider = {
-            name         : 'sas',
-            protocol     : 'oauth2',
-            useParamsAuth: false,
-            auth         : authURL + '/SASLogon/oauth/authorize',
-            token        : authURL + '/SASLogon/oauth/token'
-        };
+			name         : 'sas',
+			protocol     : 'oauth2',
+			useParamsAuth: false,
+			auth         : authURL + '/SASLogon/oauth/authorize',
+            token        : authURL + '/SASLogon/oauth/token',
+
+            profileMethod: 'get',
+            profile      : async function (credentials, params, get) {
+                debugger;
+                console.log('in bell profile');
+                debugAuth(credentials);
+                debugAuth(params);
+                debug(get);
+            }
+		};
         
         if (process.env.CLIENTID == null) {
             throw 'Error: Please specify CLIENTID';
         } 
+
         bellAuthOptions = {
             provider    : provider,
             password    : uuid.v4(),
             clientId    : process.env.CLIENTID.trim(),
             clientSecret: (process.env.CLIENTSECRET == null) ? ' ' : process.env.CLIENTSECRET,
             location    : getLocation,
-            isSecure    : false
+            
+            isSecure: false
+        
         };
         console.log(
              `Bell Options

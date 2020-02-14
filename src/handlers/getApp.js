@@ -3,8 +3,9 @@
 * SPDX-License-Identifier: Apache-2.0
 */
 'use strict';
-let uuid = require('uuid');
+
 import logon from './logon.js';
+import getAuthApp from './getAuthApp';
 
 async function getApp (req, h) {
 
@@ -14,18 +15,5 @@ async function getApp (req, h) {
         debugger;
         return logon(req,h);
     }
-}
-
-async function getAuthApp (rootHandler, req, h) {
-    ;
-    const sid = uuid.v4();
-    let credentials = req.auth.credentials;
-    await req.server.app.cache.set(sid, credentials);
-    req.cookieAuth.set({JSESSIONID: sid});
-    
-    let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
-    console.log(`redirecting to /${indexHTML}`);
-    
-    return h.redirect(`/${indexHTML}`);
 }
 export default getApp;

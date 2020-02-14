@@ -8,7 +8,11 @@ let debugProxy     = debug('proxy');
 let proxyLogger    = debug('proxylogger');
 let responseLogger = debug('response');
 let boom           = require('@hapi/boom');
-let request        = require('request');
+let request = require('request');
+//
+// Warning: This section is here for historical reasons since authorization_code works
+// properly since the first maintenance of Viya 3.5
+//
 async function handleProxy (req, h) {  
     let token;
     try {
@@ -23,7 +27,7 @@ async function handleProxy (req, h) {
     }
     catch (err) {
         console.log(err);
-        return boom.unauthorized(err)
+        return boom.unauthorized(err);
     }
 }
 async function getToken (req, h) {   

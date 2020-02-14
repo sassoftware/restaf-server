@@ -31,7 +31,9 @@
     "implicit": "node cli --env=./env/implicit/overrides.env --docker=./Dockerfile",
     "proxy": "node cli --env=./proxy/overrides.env --docker=./Dockerfile --appenv=appenv.js",
     "code": "node cli --env=./env/code/overrides.env --docker=./Dockerfile",
-    "debug": "node --inspect-brk cli --env=./env/implicit/overrides.env --docker=./Dockerfile --appenv=appenv.js",
+    "debugimplicit": "node --inspect-brk cli --env=./env/implicit/overrides.env --docker=./Dockerfile --appenv=appenv.js",
+    "debugcode": "node --inspect-brk cli --env=./env/code/overrides.env --docker=./Dockerfile --appenv=appenv.js",
+        
     "login": "node cli --env=./env/login/overrides.env --docker=./Dockerfile --appenv=appenv.js",
     "build": "rimraf lib && babel src --out-dir lib",
     "bundle": "webpack --config webpack.config.js",
