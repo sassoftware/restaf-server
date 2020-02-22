@@ -23,7 +23,7 @@ npm install @sassoftware/restaf-server
 ## Usage
 
 ```script
-npx @sassoftware/restaf-server  --env=your-env-envfile --docker=your-DockerFile --appenv=your-appenv.js file
+npx @sassoftware/restaf-server  --env=your-env-envfile --docker=your-DockerFile --appenv=your-appenv.js-file
 ```
 
 The arguments env and docker are used to specify environment variables in a portable manner.
@@ -57,6 +57,46 @@ In the environment variable set the value of VIYA_SERVER
 SET VIYA_SERVER=http://yourViyaServer
 
 ```
+
+### appenv option and the /appenv route  
+
+There is a builtin route /appenv that the application can use to obtain two objects.
+
+1. LOGONPAYLOAD has the information needed for logging on Viya. Please see this link for detail on the LOGONPAYLOAD.
+
+2. It also returns an object APPENV whose value is set to the javascript object returned from appenv.js 
+   
+Let us consider an example:
+
+A sample appenv.js file is shown below
+
+```js
+let myinfo = {
+    caslib: 'casuser',
+    table : 'foo'
+}
+return myinfo;
+```
+
+In your index.html you will have a script tag as follows:
+
+```html
+<script src="/appenv'><script>
+```
+
+In your javascript you now have access to two variables
+
+1. LOGONPAYLOAD - this has information related to authentication
+
+2. APPENV - a javascript object that has the values returned by the appenv.js file. In this example the APPENV variable will look as follows:
+
+```js
+APPENV = {
+    caslib: 'casuser',
+    table : 'foo'
+}
+
+
 
 ## Quick start Examples of authentication flows
 

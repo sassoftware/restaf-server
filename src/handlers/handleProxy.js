@@ -8,7 +8,7 @@ let debugProxy     = debug('proxy');
 let proxyLogger    = debug('proxylogger');
 let responseLogger = debug('response');
 let boom           = require('@hapi/boom');
-let request = require('request');
+// let request = require('request');
 //
 // Warning: This section is here for historical reasons since authorization_code works
 // properly since the first maintenance of Viya 3.5
@@ -39,6 +39,11 @@ async function getToken (req, h) {
         return sid.credentials;
     }
 }
+
+async function handleProxyRequest (req, h, token) {
+    throw 'Proxy Handling temporarily disabled';
+}
+/*
 function handleProxyRequest (req, h, token) {
     return new Promise((resolve, reject) => {
         
@@ -80,6 +85,7 @@ function handleProxyRequest (req, h, token) {
 
         debugProxy(JSON.stringify(config, null, 4));
         proxyLogger(config.url);
+        
         request(config, (err, response, body) => {
             
             if (err) {
@@ -99,7 +105,10 @@ function handleProxyRequest (req, h, token) {
 
             }
         });
+        
     });
+   
 }
+*/
 
 export default handleProxy;
