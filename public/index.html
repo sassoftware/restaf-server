@@ -31,7 +31,7 @@
 		></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"></script>
-		<script src="https://unpkg.com/@sassoftware/restaf@dev/dist/restaf.min.js"></script>
+		<script src="https://unpkg.com/@sassoftware/restaf@test/dist/restaf.min.js"></script>
 		<script src="/appenv"></script>
 
 		<style>
@@ -62,9 +62,7 @@
 			}
 		</style>
 		<script>
-			let store = restaf.initStore( 
-				LOGONPAYLOAD.authType === 'server' ? { casProxy: true} : null
-			);
+			let store = restaf.initStore();
 			let session = null;
 			let servers = null;
 			let services = null;
@@ -115,6 +113,10 @@
 						testcase = runCas;
 						break;
 					}
+						case 'upload': {
+						testcase = runUpload;
+						break;
+					}
 					default: {
 						testcase = fileService;
 						break;
@@ -154,6 +156,31 @@
 				return r.items();
 			}
 
+			async function runUpload(store){
+				let casManagement = services.casManagement;
+				let servers = await store.apiCall(
+					casManagement.links('servers')
+				);
+				let serverName = servers.itemsList(0);
+				let session = await store.apiCall(
+					servers.itemsCmd(serverName, 'createSession')
+				);
+				let payload = {
+					method: 'GET',
+					url   : `${window.location.protocol}//${window.location.host}/viyaapp/getfiles/data/gradBoost.sashdat`,
+					headers: {
+						accept: 'binary/octet-stream'
+					}
+				}
+				debugger;
+				let d = await store.request(payload);
+				debugger;
+				let r = await restaflib.casUpload(store, session, 'gradBoost.sashdat', 'casuser.gradBoost', true, d.data);
+				debugger;
+				console.log(r);
+				uploaded = true;
+
+			}
 			async function SASfileService(store) {
 				debugger;
 				let files = services.files;
@@ -229,6 +256,11 @@
 			<br />
 			<button onclick="runit('cas')">
 				Press to make a call to cas echo
+			</button>
+			<br />
+			<br />
+				<button onclick="runit('upload')">
+				upload a sashdat
 			</button>
 			<br />
 			<br />

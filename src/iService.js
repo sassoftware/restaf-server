@@ -122,7 +122,19 @@ function iService (uTable, useDefault, asset, allAppEnv) {
                 
             }
 
-        },  {
+        }, {
+            method: [ 'GET' ],
+            path  : `${appName}/getfiles/{param*}`,
+            config: {
+               
+                description: 'This is used to get binary files',
+        
+                auth   : false,
+                handler: getFiles
+                
+            }
+
+        }, {
             method: [ 'GET', 'POST' ],
             path  : `/keepAlive`,
             config: {
@@ -217,11 +229,12 @@ async function getIcon (req, h) {
 }
 
 async function getApp2 (req, h) {
-    return h.file(`${req.params.param}`);
+   return h.file(`${req.params.param}`);
 }
 
-async function getShared (req, h) {
-    return h.file(`shared/${req.params.param}`);
+async function getFiles (req, h) {
+    let r = h.file(`${req.params.param}`).header('content-type', 'binary/octet-stream');
+    return r;
 }
 
 
