@@ -113,10 +113,6 @@
 						testcase = runCas;
 						break;
 					}
-						case 'upload': {
-						testcase = runUpload;
-						break;
-					}
 					default: {
 						testcase = fileService;
 						break;
@@ -156,31 +152,6 @@
 				return r.items();
 			}
 
-			async function runUpload(store){
-				let casManagement = services.casManagement;
-				let servers = await store.apiCall(
-					casManagement.links('servers')
-				);
-				let serverName = servers.itemsList(0);
-				let session = await store.apiCall(
-					servers.itemsCmd(serverName, 'createSession')
-				);
-				let payload = {
-					method: 'GET',
-					url   : `${window.location.protocol}//${window.location.host}/viyaapp/getfiles/data/gradBoost.sashdat`,
-					headers: {
-						accept: 'binary/octet-stream'
-					}
-				}
-				debugger;
-				let d = await store.request(payload);
-				debugger;
-				let r = await restaflib.casUpload(store, session, 'gradBoost.sashdat', 'casuser.gradBoost', true, d.data);
-				debugger;
-				console.log(r);
-				uploaded = true;
-
-			}
 			async function SASfileService(store) {
 				debugger;
 				let files = services.files;
@@ -256,11 +227,6 @@
 			<br />
 			<button onclick="runit('cas')">
 				Press to make a call to cas echo
-			</button>
-			<br />
-			<br />
-				<button onclick="runit('upload')">
-				upload a sashdat
 			</button>
 			<br />
 			<br />

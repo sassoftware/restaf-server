@@ -4,7 +4,7 @@
 */
 
  import jwtDecode from 'jwt-decode';
- function decodeJwt(token) {
+ function decodeJwt (token) {
 		let jwt = jwtDecode(token);
 		return jwt;
  }

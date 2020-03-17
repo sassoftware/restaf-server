@@ -51,7 +51,7 @@ async function SASauth (hapiServer) {
             let cred =  {
                 valid      : true,
                 credentials: credentials
-                }
+                };
     
             return cred;
         }
@@ -70,7 +70,7 @@ async function SASauth (hapiServer) {
         
         console.log(`redirect set to: ${location}`);
         return location;
-    }
+    };
     if (process.env.AUTHFLOW == 'authorization_code' || process.env.AUTHFLOW === 'code') {
         let authURL = process.env.VIYA_SERVER ;
         provider = {

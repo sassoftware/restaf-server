@@ -10,7 +10,7 @@ import getAuthApp from './getAuthApp';
 async function appCallback (req, h) {
     console.log(`..... AUTHFLOW: ${process.env.AUTHFLOW}`);
     if (process.env.AUTHFLOW === 'authorization_code' || process.env.AUTHFLOW === 'code') {
-        return getAuthApp(null, req, h)
+        return getAuthApp(null, req, h);
     } else {
         let indexHTML = (process.env.APPENTRY == null) ? 'index.html' : process.env.APPENTRY;
         console.log(`Successful Authentication(implicit). Redirecting to /${indexHTML}`);

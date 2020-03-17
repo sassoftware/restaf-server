@@ -34,7 +34,7 @@ function config (appEnv, dockerFile) {
 
 	if (process.env.APPPORT == null && process.env.EXPOSEDPORT != null) {
 		process.env.APPPORT = process.env.EXPOSEDPORT;
-		console.log(`APPPORT set to value of exposed port ${process.env.APPPORT}`)
+		console.log(`APPPORT set to value of exposed port ${process.env.APPPORT}`);
 	}
 
 	process.env.SAS_PROTOCOL =

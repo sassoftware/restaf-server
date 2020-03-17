@@ -23,7 +23,7 @@ let debug          = require('debug');
 // let debugSetup     = debug('setup');
 
 import server from './server';
-import {getApp, handleProxy, keepAlive, appCallback, logon} from './handlers'
+import {getApp, handleProxy, keepAlive, appCallback, logon} from './handlers';
 let os = require('os');
 let Joi = require('@hapi/joi');
 
@@ -51,7 +51,7 @@ function iService (uTable, useDefault, asset, allAppEnv) {
 
     let getAppEnv = async (req, h) => {
         return allAppEnv;
-    }
+    };
 
     if (process.env.AUTHFLOW === 'authorization_code'|| process.env.AUTHFLOW === 'code') {
         auth1 = {
@@ -76,11 +76,11 @@ function iService (uTable, useDefault, asset, allAppEnv) {
     let defaultTable =
         [
         {
-            method: [ 'GET' ],
+            method: ['GET'],
             path  : `${appName}`,
             config: {
                 description: 'Start the Application',
-                notes      : [ 'Invoke this end point to start your application',
+                notes      : ['Invoke this end point to start your application',
                                'Will redirect to asset named in APPENTRY',
                                'If logging on with authentication make sure you have set the following in the configuration files',
                                 'VIYA_SERVER to your Viya Server url',
@@ -89,13 +89,13 @@ function iService (uTable, useDefault, asset, allAppEnv) {
                                 'CLIENTSECRET if you are using authorization_code',
                                 'APPENTRY to the apps main html'
                              ],
-                tags: [ 'api', 'Application' ],
+                tags: ['api', 'Application'],
 
                 auth   : auth1,
                 handler: getApp
             }
         },  {
-            method: [ 'GET' ],
+            method: ['GET'],
             path  : `${appName}/{param*}`,
             config: {
                 description: 'Returns the specified asset',
@@ -104,14 +104,14 @@ function iService (uTable, useDefault, asset, allAppEnv) {
                         param: Joi.string().required()
                     })
                 },
-                tags: [ 'api', 'Assets' ],
+                tags: ['api', 'Assets'],
 
                 auth   : auth2,
                 handler: getApp2
             }
 
         }, {
-            method: [ 'GET' ],
+            method: ['GET'],
             path  : `/callback`,
             config: {
                
@@ -123,7 +123,7 @@ function iService (uTable, useDefault, asset, allAppEnv) {
             }
 
         }, {
-            method: [ 'GET' ],
+            method: ['GET'],
             path  : `${appName}/getfiles/{param*}`,
             config: {
                
@@ -135,11 +135,11 @@ function iService (uTable, useDefault, asset, allAppEnv) {
             }
 
         }, {
-            method: [ 'GET', 'POST' ],
+            method: ['GET', 'POST'],
             path  : `/keepAlive`,
             config: {
                 description: 'Keeps the session active',
-                notes      : [ 'Place holder waiting for authorization_code support'
+                notes      : ['Place holder waiting for authorization_code support'
                             ],
                 auth   : false,
                 handler: keepAlive
@@ -151,13 +151,13 @@ function iService (uTable, useDefault, asset, allAppEnv) {
 
     if (hasAppEnv == null){
        defaultTable.push({
-        method: [ 'GET' ],
+        method: ['GET'],
         path  : '/appenv',
         config: {
             description: 'Returns APPENV and LOGONPAYLOAD',
-            notes      : [ 'Returns application specific information'
+            notes      : ['Returns application specific information'
                             ],
-            tags: [ 'api', 'Configuration' ],
+            tags: ['api', 'Configuration'],
             
             auth   : false,
             handler: getAppEnv
@@ -169,7 +169,7 @@ function iService (uTable, useDefault, asset, allAppEnv) {
     if (process.env.PROXYSERVER === 'YES') {
         let handleOthers = [
             {
-            method: [ 'PUT', 'POST', 'PATCH' ],
+            method: ['PUT', 'POST', 'PATCH'],
             path  : '/{params*}',
             config: {
                 auth   : auth1,
@@ -179,7 +179,7 @@ function iService (uTable, useDefault, asset, allAppEnv) {
                 handler: handleProxy
                 }
             }, {
-            method: [ 'GET' ],
+            method: ['GET'],
             path  : '/{params*}',
             config: {
                 auth   : auth1,
@@ -187,32 +187,32 @@ function iService (uTable, useDefault, asset, allAppEnv) {
             }
         }
         ];
-        defaultTable = [ ...defaultTable, ...handleOthers ];
+        defaultTable = [...defaultTable, ...handleOthers];
     } else {
         let handleOthers = {
-            method: [ 'GET' ],
+            method: ['GET'],
             path  : '/{param*}',
             config: {
                 description: 'Return specified static asset',
-                tags       : [ 'api', 'Assets' ], 
+                tags       : ['api', 'Assets'], 
 
 
                 auth   : false,
                 handler: getApp2
             }
         };
-        defaultTable = [ ...defaultTable, handleOthers ];
+        defaultTable = [...defaultTable, handleOthers];
     }
 
     let userRouterTable;
     if (uTable !== null) {
         if (useDefault === true) {
-            userRouterTable = [ ...defaultTable, ...uTable ];
+            userRouterTable = [...defaultTable, ...uTable];
         } else {
-            userRouterTable = [ ...uTable ];
+            userRouterTable = [...uTable];
         }
     } else {
-        userRouterTable = [ ...defaultTable ];
+        userRouterTable = [...defaultTable];
     }
     
     console.log(JSON.stringify(userRouterTable, null, 4));

@@ -40,14 +40,14 @@ function server (userRouterTable, asset, rootHandler) {
 
 		routes: {
 			cors: {
-				origin     : [ '*' ],
+				origin     : ['*'],
 				credentials: true,
 
 				additionalHeaders: [
 					'multipart/form-data',
 					'content-disposition'
 				],
-				additionalExposedHeaders: [ 'location' ]
+				additionalExposedHeaders: ['location']
 			}
 		}
 	};

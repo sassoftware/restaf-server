@@ -6,7 +6,7 @@
 import getApp from './getApp';
 import handleProxy from './handleProxy';
 import appCallback from './appCallback';
-import logon       from './logon'
+import logon       from './logon';
 import keepAlive   from './keepAlive';
 
 export {
@@ -15,6 +15,6 @@ export {
     handleProxy,
     appCallback,
     logon
-}
+};
 
 
