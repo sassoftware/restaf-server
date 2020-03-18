@@ -124,10 +124,10 @@ function iService (uTable, useDefault, asset, allAppEnv) {
 
         }, {
             method: ['GET'],
-            path  : `${appName}/getfiles/{param*}`,
+            path  : `/getfiles/{param*}`,
             config: {
                
-                description: 'This is used to get binary files',
+                description: 'This is used to data files',
         
                 auth   : false,
                 handler: getFiles
@@ -162,6 +162,17 @@ function iService (uTable, useDefault, asset, allAppEnv) {
             auth   : false,
             handler: getAppEnv
         }
+       });
+        defaultTable.push({
+            method: ['GET'],
+            path  : `${appName}/appenv`,
+            config: {
+                description: 'Returns APPENV and LOGONPAYLOAD',
+                notes      : ['Returns application specific information'],
+                tags       : ['api', 'Configuration'],
+                auth       : false,
+                handler    : getAppEnv
+            }
         });
     };
 
@@ -233,8 +244,11 @@ async function getApp2 (req, h) {
 }
 
 async function getFiles (req, h) {
-    let r = h.file(`${req.params.param}`).header('content-type', 'binary/octet-stream');
+    return 'not ready for primetime';
+    /*
+    let r = h.file(`${process.env.DATALOC}/${req.params.param}`).header('content-type', 'binary/octet-stream');
     return r;
+    */
 }
 
 

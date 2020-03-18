@@ -32,6 +32,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"></script>
 		<script src="https://unpkg.com/@sassoftware/restaf@test/dist/restaf.min.js"></script>
+		<script src="https://unpkg.com/@sassoftware/restaflib@test/dist/restaflib.min.js"></script>
 		<script src="/appenv"></script>
 
 		<style>
@@ -79,6 +80,7 @@
 						document.getElementById('output').innerHTML = 'ready';
 					})
 					.catch(e => {
+						debugger;
 						console.log(e);
 					});
 			}
@@ -113,8 +115,12 @@
 						testcase = runCas;
 						break;
 					}
+					case 'download': {
+						testcase = getFiles;
+						break;
+					}
 					default: {
-						testcase = fileService;
+						testcase = SASfileService;
 						break;
 					}
 				}
@@ -126,12 +132,30 @@
 						).innerHTML = JSON.stringify(r, null, 4);
 					})
 					.catch(err => {
+						debugger;
 						document.getElementById(
 							'output'
 						).innerHTML = JSON.stringify(err, null, 4);
 					});
 			}
 
+			async function getFiles(store) {
+				let {session} = await restaflib.casSetup(store, null);
+
+				let fname = document.getElementById('filename').value;
+				let payload = {
+					url    : `${window.location.protocol}//${window.location.host}/getfiles/${fname}`,
+					method : 'GET',
+					responseType: "blob"
+				}
+				let [name, type] = fname.split('.');
+				let d = await store.request(payload);
+				debugger;
+				// let r = await restaflib.casUpload(store, session,fname,'casuser.'+name, true, d.data );
+				// await session.links('delete');
+
+				return d.data;
+			}
 			async function runCas(store) {
 				debugger;
 				let casManagement = services.casManagement;
@@ -227,6 +251,12 @@
 			<br />
 			<button onclick="runit('cas')">
 				Press to make a call to cas echo
+			</button>
+			<br />
+			<br />
+			<input id='filename'> </input>
+			<button onclick="runit('download')">
+				Press to download file
 			</button>
 			<br />
 			<br />
