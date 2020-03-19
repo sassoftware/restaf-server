@@ -28,7 +28,7 @@ function getCustomHandler () {
     let handler =
     [
         {
-            method: [ 'GET' ],
+            method: ['GET'],
             path  : `/userenv`,
             config: {
                 auth   : false,
