@@ -35,7 +35,6 @@
 		"space-in-parens": [2, "never"],
 		"space-before-function-paren": [2, "always"],
 		"semi": [2, "always"],
-		"no-prototype-builtins": 0,
-		"linebreak-style": ["error", "unix"]
+		"no-prototype-builtins": 0
 	}
 }

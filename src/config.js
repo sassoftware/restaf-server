@@ -41,15 +41,18 @@ function config (appEnv, dockerFile) {
 		process.env.SAS_SSL_ENABLED === 'YES' ? 'https://' : 'http://';
 
 	// fixing usual user error of adding a space after the url
-	if (process.env.VIYA_SERVER != null) {
-		let t = process.env.VIYA_SERVER.split(' ');
-		process.env.VIYA_SERVER = t[0];
+	let vserver = process.env.VIYA_SERVER;
+	if (vserver != null) {
+		let vserver = vserver.trim();
+		if (vserver.endsWith('/') === true) {
+			vserver = vserver.substring(0, vserver.length - 1);
+		}
 
-		if (process.env.VIYA_SERVER.indexOf('http') < 0) {
-			process.env.VIYA_SERVER =
-				process.env.SAS_PROTOCOL + process.env.VIYA_SERVER;
+		if (vserver.indexOf('http') < 0) {
+			vserver = process.env.SAS_PROTOCOL + vserver;
 		}
 	}
+	process.env.VIYA_SERVER = vserver;
 }
 
 function iconfig (appEnv) {
