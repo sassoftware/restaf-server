@@ -55,6 +55,7 @@ function iapp (appSrc, rafEnv, dockerFile, uTable, useDefault) {
     createPayload(appSrc, (err, appEnv) => {
       if (err) {
         console.log(err);
+        console.log('createPayload failed');
         process.exit(1);
       } else {
         iService(uTable, useDefault, asset, appEnv);

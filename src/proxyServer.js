@@ -88,7 +88,8 @@ function proxyServer () {
 
 	process.on('unhandledRejection', err => {
 		console.log(err);
-		process.exit(1);
+		console.log('unhandled exception');
+		process.exit(2);
 	});
 
 	init();

@@ -111,7 +111,8 @@ function server (userRouterTable, asset, rootHandler) {
 
 	process.on('unhandledRejection', err => {
 		console.log(err);
-		process.exit(1);
+		console.log('unhandled exception in server.js');
+		process.exit(2);
 	});
 
 	init();

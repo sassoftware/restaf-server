@@ -20,6 +20,8 @@
 
 let fs = require('fs');
 import parseDocker from './parseDocker';
+import debug from 'debug';
+let configDebug = debug('config');
 
 function config (appEnv, dockerFile) {
 	
@@ -66,6 +68,7 @@ function iconfig (appEnv) {
 				if (la.length === 2 && la[1].length > 0) {
 					process.env[envName] = la[1];
 				} 
+				configDebug(la[ 1 ]);
 			}
 		});
 
