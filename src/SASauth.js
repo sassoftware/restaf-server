@@ -90,10 +90,6 @@ async function SASauth (hapiServer) {
             }
 		};
         
-        if (process.env.CLIENTID == null) {
-            throw 'Error: Please specify CLIENTID';
-        } 
-
         bellAuthOptions = {
             provider    : provider,
             password    : uuid.v4(),
@@ -104,11 +100,6 @@ async function SASauth (hapiServer) {
             isSecure: false
         
         };
-        console.log(
-             `Bell Options
-                ${JSON.stringify(bellAuthOptions, null,4)}
-                `);
-
         await hapiServer.register(bell);
         await hapiServer.register(cookie);
        

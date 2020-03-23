@@ -23,10 +23,8 @@ let fs = require('fs');
 let isDocker = require('is-docker');
 let Hapi = require('@hapi/hapi'),
 	inert = require('@hapi/inert'),
-	vision = require('@hapi/vision'),
-	HapiSwagger = require('hapi-swagger'),
+	vision = require('@hapi/vision');
 	//  WebpackPlugin = require('hapi-webpack-plugin'),/* for hot restart */
-	hapiServer;
 import SASauth from './SASauth';
 
 function server (userRouterTable, asset, rootHandler) {
@@ -71,7 +69,7 @@ function server (userRouterTable, asset, rootHandler) {
 	}
 	console.log(sConfig);
 
-	hapiServer = Hapi.server(sConfig);
+	let hapiServer = Hapi.server(sConfig);
 
 	const init = async () => {
 
@@ -79,21 +77,9 @@ function server (userRouterTable, asset, rootHandler) {
      	   let info = await SASauth(hapiServer);
 		};
 		
-		let swaggerOptions = {
-			info: {
-				title  : `API Documentation for ${process.env.APPNAME}`,
-				version: (process.env.APPVERSION == null) ? '1.0.0' : process.env.APPVERSION
-			},
-			grouping: 'tags'
-		};
-
 		await hapiServer.register([
 			 inert, 
-			 vision,
-			 {
-				 plugin : HapiSwagger,
-				 options: swaggerOptions
-			 }
+			 vision
 			]);
 	
 		hapiServer.route(userRouterTable);
@@ -106,7 +92,6 @@ function server (userRouterTable, asset, rootHandler) {
 
 		await hapiServer.start();
 
-		console.log(`Visit ${hapiServer.info.uri}/documentation for documentation on the API`);
 		let uri = hapiServer.info.uri;
 		
 		// Need to do this for docker deployment
