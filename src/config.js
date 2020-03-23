@@ -43,7 +43,7 @@ function config (appEnv, dockerFile) {
 	// fixing usual user error of adding a space after the url
 	let vserver = process.env.VIYA_SERVER;
 	if (vserver != null) {
-		let vserver = vserver.trim();
+		vserver = vserver.trim();
 		if (vserver.endsWith('/') === true) {
 			vserver = vserver.substring(0, vserver.length - 1);
 		}
