@@ -21,38 +21,27 @@
 'use strict';
 
 debugger;
-let rafserver = require ('./lib/index.js');
+let rafserver = require('./lib/index.js');
+
 rafserver.icli (getCustomHandler ());
 
 function getCustomHandler () {
     let handler =
     [
         {
-            method: ['GET'],
-            path  : `/userenv`,
+            method: ['POST'],
+            path  : `/startDB`,
             config: {
                 auth   : false,
                 cors   : true,
-                handler: getCustomAppEnv
+                handler: startDB
             }
        }
     ];
     return handler;
     }
 
-    async function getCustomAppEnv (req, h) {
-        let env = `let note = "This is custom user env";`;
-    return env;
+    async function startDB (req, h) {
+        return 'in startdb';
     }
 
-    function appEnv (req, h) {
-        let x = {
-            scoreModel: {
-                caslib: 'Public',
-                name  : 'loanEvaluation',
-                z     : 10
-            }
-        };
-        console.log(x);
-        return x;
-    }

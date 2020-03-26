@@ -57,7 +57,8 @@ async function iSASauth (hapiServer) {
             debugAuth(credentials);
             let cred =  {
                 valid      : true,
-                credentials: credentials
+                credentials: credentials,
+                sid        : session.sid
                 };
     
             return cred;
