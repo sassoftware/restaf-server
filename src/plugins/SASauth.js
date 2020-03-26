@@ -31,7 +31,7 @@ exports.plugin = {
     register: iSASauth
 };
 
-async function iSASauth (hapiServer) {
+async function iSASauth (hapiServer, options) {
 
     let authCookieOptions,
         bellAuthOptions,
@@ -68,15 +68,13 @@ async function iSASauth (hapiServer) {
 
 
     const getLocation = (req) => {
-        let route = (process.env.REDIRECT == null) ? '/callback' : '/' + process.env.REDIRECT;
+        let route = (process.env.REDIRECT == null) ? `/callback` : '/' + process.env.REDIRECT;
         let info = req.server.info;
         let location = info.uri + route;
         // Need to do this for docker deployment
         if (info.host === '0.0.0.0') {
-            location = `${info.protocol}://localhost:${info.port}${route}`;
+            location = `${info.protocol}://${process.env.APPHOST}:${info.port}${route}`;
         }
-        
-        console.log(`redirect set to: ${location}`);
         return location;
     };
     if (process.env.AUTHFLOW == 'authorization_code' || process.env.AUTHFLOW === 'code') {
@@ -91,7 +89,6 @@ async function iSASauth (hapiServer) {
             profileMethod: 'get',
             profile      : async function (credentials, params, get) {
                 debugger;
-                console.log('in bell profile');
                 debugAuth(credentials);
                 debugAuth(params);
                 debug(get);

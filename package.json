@@ -52,6 +52,7 @@
     "@hapi/inert": "^5.2.2",
     "@hapi/joi": "^16.1.8",
     "@hapi/vision": "^5.5.4",
+    "axios": "^0.19.2",
     "core-js": "^3.6.1",
     "debug": "^4.1.1",
     "docker-file-parser": "^1.0.4",
