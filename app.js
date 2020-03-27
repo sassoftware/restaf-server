@@ -26,22 +26,35 @@ let rafserver = require('./lib/index.js');
 rafserver.icli (getCustomHandler ());
 
 function getCustomHandler () {
-    let handler =
-    [
-        {
-            method: ['POST'],
-            path  : `/startDB`,
-            config: {
-                auth   : false,
-                cors   : true,
-                handler: startDB
-            }
-       }
-    ];
+    let handler = [
+		{
+			method: ['POST'],
+			path  : `/startDB`,
+			config: {
+				auth   : false,
+				cors   : true,
+				handler: startDB
+			}
+		},
+		{
+			method: ['POST'],
+			path  : `/updateDB`,
+			config: {
+				auth   : false,
+				cors   : true,
+				handler: updateDB			}
+		}
+	];
     return handler;
-    }
+}
 
-    async function startDB (req, h) {
-        return 'in startdb';
-    }
+async function startDB (req, h) {
+    return 'in startDB';
+}
+
+async function updateDB (req, h) {
+    return 'in updateDB';
+}
+
+
 
