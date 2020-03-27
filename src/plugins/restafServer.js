@@ -19,6 +19,7 @@
 'use strict';
 let inert = require('@hapi/inert'),
 	vision = require('@hapi/vision');
+let NodeCache = require("node-cache-promise");
 	//  WebpackPlugin = require('hapi-webpack-plugin'),/* for hot restart */
 
 
@@ -43,10 +44,15 @@ async function appServer (server, options) {
 
 	server.route(routes);
 
-	// eslint-disable-next-line require-atomic-updates
-	server.app.cache = server.cache({
-		segment  : 'session',
-		expiresIn: 14 * 24 * 60 * 60 * 1000
-	});
+  let nodeCacheOptions = {
+		stdTTL        : 36000,
+		checkPeriod   : 3600,
+		errorOnMissing: true,
+		useClones     : false,
+		deleteOnExpire: true
+  };
+  let storeCache = new NodeCache(nodeCacheOptions);
+
+  server.app.cache = storeCache;
 };
 
