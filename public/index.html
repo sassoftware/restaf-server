@@ -84,6 +84,24 @@
 						console.log(e);
 					});
 			}
+			function logoff() {
+			
+				let p = {
+					url: `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/logoff`,
+					method: 'GET'
+				}
+				console.log(p);
+				store.request(p)
+					.then ( r => {
+						debugger;
+					   let callbackUrl = `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}`;
+
+			           let url = `${LOGONPAYLOAD.host}/SASLogon/logout?callbackUrl=${callbackUrl}`;
+			            window.location.replace(url);
+					    })
+					.catch(err => console.log(err));
+					
+			}
 			async function initSession() {
 				debugger;
 				console.log(LOGONPAYLOAD);
@@ -259,6 +277,10 @@
 				Press to download file
 			</button>
 			<br />
+			<br />
+			<button onclick="logoff()">
+				logoff
+			</button>
 			<br />
 		</div>
 		<div>

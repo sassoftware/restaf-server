@@ -1,5 +1,6 @@
 # @sassoftware/restaf-server - web server in nodejs for SAS Viya Applications
 
+http://sww.sas.com/saspedia/Authentication_in_SAS_Viya#Logout
 This server is designed for use with SAS Viya. It is customized using the env file and the Dockerfile.
 
 The following authentication schemes are supported:

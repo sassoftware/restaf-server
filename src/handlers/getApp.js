@@ -6,9 +6,12 @@
 
 import logon from './logon.js';
 import getAuthApp from './getAuthApp';
+let debug = require('debug')('getapp');
 
 async function getApp (req, h) {
-
+    debug(req.state);
+    let authCred = req.auth.credentials;
+    debug(authCred);
     if (process.env.AUTHFLOW === 'authorization_code' || process.env.AUTHFLOW === 'code') {
         return getAuthApp(null, req, h);
     } else {

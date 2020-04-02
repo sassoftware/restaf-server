@@ -23,8 +23,9 @@ let bell       = require('@hapi/bell'),
     cookie = require('@hapi/cookie');
     
 let debug = require('debug');
-let debugAuth = debug('proxy');
-
+let debugbell = debug('bell');
+let debugCookie = debug('cookie');
+let debugloc = debug('loc');
 exports.plugin = {
     name    : 'SASauth',
     version : '1.0.0',
@@ -51,30 +52,35 @@ async function iSASauth (hapiServer, options) {
         },
         
         validateFunc: async function (req, session) {
+            // https://hapi.dev/module/cookie/api/?v=11.0.1
             debugger;
-            let credentials = await req.server.app.cache.get(session.sid);
-
-            debugAuth(credentials);
-            let cred =  {
-                valid      : true,
+            debugCookie('------------------------------------------------');
+            let sid = session.sid; /* set in getAuthApp */
+            debugCookie(sid);
+            let credentials = await req.server.app.cache.get(sid);
+     
+            debugCookie(credentials);
+            let cred = {
+                valid      : credentials != null ? true : false,
                 credentials: credentials,
-                sid        : session.sid
-                };
-    
+                sid        : sid
+            };
+
+            debugCookie('------------------------------------------------');
             return cred;
         }
-        
     };
 
 
     const getLocation = (req) => {
-        let route = (process.env.REDIRECT == null) ? `/callback` : '/' + process.env.REDIRECT;
+        let route = (process.env.REDIRECT == null) ? `/${process.env.APPNAME}/callback` : '/' + process.env.REDIRECT;
         let info = req.server.info;
         let location = info.uri + route;
         // Need to do this for docker deployment
         if (info.host === '0.0.0.0') {
             location = `${info.protocol}://${process.env.APPHOST}:${info.port}${route}`;
         }
+        debugloc(location);
         return location;
     };
     if (process.env.AUTHFLOW == 'authorization_code' || process.env.AUTHFLOW === 'code') {
@@ -87,12 +93,16 @@ async function iSASauth (hapiServer, options) {
             token        : authURL + '/SASLogon/oauth/token',
 
             profileMethod: 'get',
-            profile      : async function (credentials, params, get) {
+            
+            profile: async function (credentials, params, get) {
                 debugger;
-                debugAuth(credentials);
-                debugAuth(params);
-                debug(get);
+                debugbell('processing bell profile..........................');
+                debugbell(credentials);
+                debugbell(params);
+                debugbell(get);
+                debugbell('processing bell profile..........................');
             }
+            
 		};
         
         bellAuthOptions = {
@@ -108,8 +118,9 @@ async function iSASauth (hapiServer, options) {
         await hapiServer.register(bell);
         await hapiServer.register(cookie);
        
-        hapiServer.auth.strategy('sas', 'bell', bellAuthOptions);
         hapiServer.auth.strategy('session', 'cookie', authCookieOptions);
+        hapiServer.auth.strategy('sas', 'bell', bellAuthOptions);
+        
         hapiServer.auth.default('session');
     
     }

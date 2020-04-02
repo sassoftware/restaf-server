@@ -5,10 +5,12 @@
 'use strict';
 let uuid = require('uuid');
 import getAuthApp from './getAuthApp';
+let debug = require('debug')('callback');
 // handles all callbacks
 
 async function appCallback (req, h) {
     console.log(`..... AUTHFLOW: ${process.env.AUTHFLOW}`);
+    debug('passing thru appCallback');
     if (process.env.AUTHFLOW === 'authorization_code' || process.env.AUTHFLOW === 'code') {
         return getAuthApp(null, req, h);
     } else {

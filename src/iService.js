@@ -23,7 +23,7 @@ let debug          = require('debug');
 // let debugSetup     = debug('setup');
 
 import server from './server';
-import {getApp, handleProxy, keepAlive, appCallback, logon} from './handlers';
+import {getApp, handleProxy, keepAlive, appCallback, logoff} from './handlers';
 let os = require('os');
 let Joi = require('@hapi/joi');
 
@@ -32,6 +32,7 @@ function iService (uTable, useDefault, asset, allAppEnv) {
     process.env.APPHOST = (process.env.APPHOST === '*') ? os.hostname() : process.env.APPHOST;
     let appName = '/' + process.env.APPNAME;
     let auth1 = {};
+    let auth1a = {};
     let auth2 = false;
     let defaultMaxBytes = 10485760; 
 
@@ -53,14 +54,18 @@ function iService (uTable, useDefault, asset, allAppEnv) {
         return allAppEnv;
     };
 
-    if (process.env.AUTHFLOW === 'authorization_code'|| process.env.AUTHFLOW === 'code') {
+    if (process.env.AUTHFLOW === 'authorization_code' || process.env.AUTHFLOW === 'code') {
         auth1 = {
             mode    : 'required',
             strategy: 'sas'
-        }; 
-    }
-    else {
-        auth1 = false;
+        };
+        auth1a = {
+            mode    : 'try',
+            strategy: 'session'
+        };
+    } else {
+        auth1  = false;
+        auth1a = false;
     }
 
     // see if appenv was overridden
@@ -79,22 +84,10 @@ function iService (uTable, useDefault, asset, allAppEnv) {
             method: ['GET'],
             path  : `${appName}`,
             config: {
-                description: 'Start the Application',
-                notes      : ['Invoke this end point to start your application',
-                               'Will redirect to asset named in APPENTRY',
-                               'If logging on with authentication make sure you have set the following in the configuration files',
-                                'VIYA_SERVER to your Viya Server url',
-                                'AUTHFLOW to implicit or authorization_code',
-                                'CLIENTID to your client ID',
-                                'CLIENTSECRET if you are using authorization_code',
-                                'APPENTRY to the apps main html'
-                             ],
-                tags: ['api', 'Application'],
-
                 auth   : auth1,
                 handler: getApp
             }
-        },  {
+            },{
             method: ['GET'],
             path  : `${appName}/{param*}`,
             config: {
@@ -112,17 +105,41 @@ function iService (uTable, useDefault, asset, allAppEnv) {
 
         }, {
             method: ['GET'],
+            path  : `${appName}/callback`,
+            config: {
+               
+                description: 'This is used by the authentication - do not call this directly',
+        
+                auth   : auth1,
+                handler: appCallback
+                
+            }
+
+        },{
+            method: ['GET'],
             path  : `/callback`,
             config: {
                
                 description: 'This is used by the authentication - do not call this directly',
         
-                auth   : false,
+                auth   : auth1,
                 handler: appCallback
                 
             }
 
         }, {
+            method: ['GET'],
+            path  : `${appName}/logoff`,
+            config: {
+               
+                description: 'This is used by the authentication - do not call this directly',
+        
+                auth   : auth1a,
+                handler: logoff
+                
+            }
+
+        },{
             method: ['GET'],
             path  : `/getfiles/{param*}`,
             config: {
