@@ -1,6 +1,5 @@
 # @sassoftware/restaf-server - web server in nodejs for SAS Viya Applications
 
-http://sww.sas.com/saspedia/Authentication_in_SAS_Viya#Logout
 This server is designed for use with SAS Viya. It is customized using the env file and the Dockerfile.
 
 The following authentication schemes are supported:
@@ -11,11 +10,15 @@ The following authentication schemes are supported:
 
 ---
 
-**Note: The previous version of restaf-server is restaf-server@6.11.2. All future versions will be scoped to **sassoftware**.
+## Note for users of restaf-server@6.11.2
 
-There are no known breaking changes with this re-organization of the package. Please report if you see any issues and it will be addressed asap.
+The handling of authentication is handled differently in this version.
 
----
+1. Implicit flow authentication is handled differently. The redirect for an implicit flow clientid **must** follow this pattern
+
+```text
+if APPHOST is localhost, APPPORT is 8080 and APPNAME is viyaapp then the redirect must http://localhost:8080/viyaapp/callback
+```
 
 ## Installation
 
@@ -154,10 +157,10 @@ APPENTRY=index.html
 #### clientid redirect
 
 Recommend the following:
-Set the clientid redirect_uri to always be **callback**
+Set the clientid redirect_uri to always be **{appName}/callback**
 
 Example:
- If your APPHOST is localhost and APPPORT=8080, then set the redirect to <http://localhost:8080/callback>
+ If your APPNAME=viyaapp, APPHOST is localhost and APPPORT=8080, then set the redirect to <http://localhost:8080/viyaapp/callback>
 
 restaf-server will handle the callback and redirect to APPENTRY.
 
@@ -167,7 +170,15 @@ restaf-server will handle the callback and redirect to APPENTRY.
 
 ---
 
-Your env file should like something like this. See implicit flow above on setting the redirect
+Your env file should like something like this. The redirect for this flow is as follows:
+
+```js
+ If your APPNAME=viyaapp, APPHOST is localhost and APPPORT=8080, then set the redirect to <http://localhost:8080/viyaapp>
+
+restaf-server will handle the callback and redirect to APPENTRY.
+
+
+```
 
 ```env
 VIYA_SERVER=your-viya-server(http://...)
@@ -264,4 +275,28 @@ function getCustomHandler () {
 async function myRouteHandler(req, h) {
    ...
 }
+```
+
+## keepAlive
+
+This is only needed if you are using authorization_code flow.
+In your call you can call this end point to keep your current session alive.
+
+If the KEEPALIVE environment variable is set, restaf-server will set the keepAlive key in the LOGONPAYLOAD object to the url to call for keeping your session alive. You can call it at anytime in your app.
+
+### A note for restaf users
+
+restaf automatically calls this end point everytime a call is made to any Viya Service. If you wish to mimic the behavior of Viya Applications like SASVisualAnalytics you can call it everytime the user moves the mouse.
+
+## Notes on configuring SAS Viya for user applications
+
+1. sas.commons.web.security.cors- Turn on allowCredentials and set the allowed origins to meet your needs.
+
+2. sas.common.web.security:  set samesite based on where you are deploying your application. Users of VA SDK should consult its documentation.
+
+3. sas.commons.web.security - Set the allowed uri's appropriately. A sample setting is shown below. This allows running your app from localhost or from anywhere in your company network(sas in the example)
+
+```script
+http(s)*:\/\/localhost[:]\d*,http:\/\/([^\.]+\.)*sas\.com
+
 ```
