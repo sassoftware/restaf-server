@@ -20,6 +20,7 @@
 let inert = require('@hapi/inert'),
 	vision = require('@hapi/vision');
 let NodeCache = require("node-cache-promise");
+let SASauth = require('./SASauth');
 	//  WebpackPlugin = require('hapi-webpack-plugin'),/* for hot restart */
 
 
@@ -30,11 +31,17 @@ exports.plugin = {
 };
 
 async function appServer (server, options) {
-	let {routes} = options; 
+	let {routes, appenv} = options; 
 	process.env.APPHOST_ADDR = process.env.APPHOST;
 	if (process.env.AUTHFLOW === 'authorization_code' ||
 		process.env.AUTHFLOW === 'code') {
-		await server.register(require('./SASauth'));
+		let p = {
+			plugin : SASauth,
+			options: {
+				appenv: appenv
+			}
+		};
+		await server.register(p);
 	}
 
 	await server.register([

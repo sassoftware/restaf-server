@@ -85,7 +85,9 @@
 					});
 			}
 			function logoff() {
-			
+				let url = `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/logout?callbackUrl=onlogoff.html`;
+				window.location.replace(url);
+				/*
 				let p = {
 					url: `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/logoff`,
 					method: 'GET'
@@ -96,10 +98,11 @@
 						debugger;
 					   let callbackUrl = `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}`;
 
-			           let url = `${LOGONPAYLOAD.host}/SASLogon/logout?callbackUrl=${callbackUrl}`;
+			           let url = `${LOGONPAYLOAD.host}/SASLogon/logout?callbackUrl=${callbackUrl}/`;
 			            window.location.replace(url);
 					    })
 					.catch(err => console.log(err));
+					*/
 					
 			}
 			async function initSession() {

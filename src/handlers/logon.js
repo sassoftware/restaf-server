@@ -9,7 +9,7 @@ async function logon (req, h) {
     debug('redirect', process.env.REDIRECT);
     debug('authflow', process.env.AUTHFLOW);
 
-    if (process.env.AUTHFLOW === 'implicit' && process.env.REDIRECT == null) {
+    if (process.env.AUTHFLOW === 'implicit') {
         let x = `${process.env.VIYA_SERVER}/SASLogon/oauth/authorize?response_type=token&client_id=${process.env.CLIENTID}`;
 		let redirectUri = `http://${process.env.APPHOST}:${process.env.APPPORT}/callback?host=${process.env.VIYA_SERVER}`;
 		let url = `${x}&redirect_uri=${redirectUri}`;

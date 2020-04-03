@@ -7,7 +7,7 @@ let debug = require('debug')('getauthapp');
 
 
 
-async function getAuthApp (rootHandler, req, h) {
+async function setCookies (req, h) {
   
     debugger;
     debug(req.state);
@@ -28,13 +28,11 @@ async function getAuthApp (rootHandler, req, h) {
     //
 
     req.cookieAuth.set({sid});
-
-    // Now redirect
-	let indexHTML = process.env.APPENTRY == null ? 'index.html' : process.env.APPENTRY;
-	console.log(`redirecting to /${indexHTML}`);
-  
-	return h.redirect(`/${indexHTML}`);
+    return true;
 }
+
+
+export default setCookies;
 
 /* 
  save for future reference - not used at this time
@@ -73,5 +71,3 @@ async function getCredentials (req) {
     }
 }
 */
-export default getAuthApp;
-

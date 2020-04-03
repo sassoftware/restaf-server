@@ -112,7 +112,7 @@ function getAllEnv (userData) {
   if (authflow === 'server' || authflow === 'implicit') {
     if (authflow === 'implicit') {
       redirect = trimit('REDIRECT');
-      redirect = (redirect == null) ? 'callback' : `${process.env.APPNAME}/${redirect}`;
+      redirect = (redirect == null) ? `${appName}/callback` : `${process.env.APPNAME}/${redirect}`;
       };
 
      l = {

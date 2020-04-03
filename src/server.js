@@ -23,7 +23,7 @@ let fs = require('fs');
 // let isDocker = require('is-docker');
 let Hapi = require('@hapi/hapi');
 
-function server (userRouterTable, asset) {
+function server (userRouterTable, asset, allAppEnv) {
 	process.env.APPHOST_ADDR = process.env.APPHOST;
 
 	let sConfig = {
@@ -70,7 +70,8 @@ function server (userRouterTable, asset) {
 		let pluginSpec = {
 			plugin : require('./plugins/restafServer'),
 			options: {
-				routes: userRouterTable
+				routes: userRouterTable,
+				appenv: allAppEnv
 			}
 		};
 		await hapiServer.register(pluginSpec);

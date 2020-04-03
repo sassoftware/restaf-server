@@ -6,10 +6,10 @@
 
 import axios from 'axios';
 
-let debug = require('debug')('logoff');
+let debug = require('debug')('logout');
 
-async function logoff (req, h) {
-   
+async function logout (req, h) {
+    let q = req.query;
     debug(req.state);
     if (process.env.AUTHFLOW === 'code' || process.env.AUTHFLOW === 'authorization_code') {
         let credentials = req.auth.credentials;
@@ -18,11 +18,15 @@ async function logoff (req, h) {
         debug(sid);
         await req.server.app.cache.del(sid);
         req.cookieAuth.clear('authCookie');
-        await ViyaLogout(); 
+        //await ViyaLogout(); 
         debug(req.state);
-            return h.response('Server session cleared').unstate('authCookie');
-	} else {
-            return h.response('Server session cleared');
+        let callbackUrl=`${req.server.info.uri}/${process.env.APPNAME}/${q.callbackUrl}`;
+        let url = `${process.env.VIYA_SERVER}/SASLogon/logout?callbackUrl=${callbackUrl}`;
+
+        return h.redirect(url).unstate('authCookie');
+    } else {
+         let callbackUrl = `${req.server.info.uri}/${process.env.APPNAME}/${q.callbackUrl}`;
+         return h.redirect(callbackUrl);
 	}
 }
 async function ViyaLogout () {
@@ -34,4 +38,4 @@ async function ViyaLogout () {
     let r = await axios(p);
     debug(r);
 }
-export default logoff;
+export default logout;

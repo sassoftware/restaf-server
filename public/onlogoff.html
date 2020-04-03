@@ -40,12 +40,12 @@
 
 		function startapp() {
 			// window.location.replace(`${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}`);
-			 let callbackUrl = `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}`
+			 let url = `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}`
 			 window.location.replace(url);
 
 		}
 	</script>
-	<body onload="startup()">
+	<body>
 		<h1 id="head">What is next?</h1>
 		<button onclick="startapp()">Logon</button>
 		
