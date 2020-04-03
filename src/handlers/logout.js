@@ -20,7 +20,10 @@ async function logout (req, h) {
         req.cookieAuth.clear('authCookie');
         //await ViyaLogout(); 
         debug(req.state);
-        let callbackUrl=`${req.server.info.uri}/${process.env.APPNAME}/${q.callbackUrl}`;
+        let callbackUrl = `${req.server.info.uri}/${process.env.APPNAME}`;
+        if (q.callbackUrl != null) {
+            callbackUrl = `${callbackUrl}/${q.callbackUrl}`;
+        };
         let url = `${process.env.VIYA_SERVER}/SASLogon/logout.do?callbackUrl=${callbackUrl}`;
 
         return h.redirect(url).unstate('authCookie');

@@ -85,24 +85,10 @@
 					});
 			}
 			function logoff() {
-				let url = `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/logout?callbackUrl=onlogoff.html`;
+				// let url = `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/logout?callbackUrl=onlogoff.html`;
+				let url = `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/logout`;
 				window.location.replace(url);
-				/*
-				let p = {
-					url: `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/logoff`,
-					method: 'GET'
-				}
-				console.log(p);
-				store.request(p)
-					.then ( r => {
-						debugger;
-					   let callbackUrl = `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}`;
 
-			           let url = `${LOGONPAYLOAD.host}/SASLogon/logout?callbackUrl=${callbackUrl}/`;
-			            window.location.replace(url);
-					    })
-					.catch(err => console.log(err));
-					*/
 					
 			}
 			async function initSession() {
