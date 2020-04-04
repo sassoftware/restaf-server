@@ -4,6 +4,7 @@
 */
 let uuid      = require('uuid');
 let debug = require('debug')('getauthapp');
+import decodeJwt from './decodeJwt';
 
 
 
@@ -15,10 +16,12 @@ async function setCookies (req, h) {
     debug(authCred);
     // create a session id and save credentials in cache
     const sid = uuid.v4();
+    let jwt = decodeJwt(authCred.token);
     let credentials = {
         token       : authCred.token,
         refreshToken: authCred.refreshToken,
-        sid         : sid
+        sid         : sid,
+        user_name   : jwt.user_name
     };
 
     await req.server.app.cache.set(sid, credentials);
@@ -27,7 +30,8 @@ async function setCookies (req, h) {
     // save unique cache segment name in cookieAuth - sent to browser as cookie
     //
 
-    req.cookieAuth.set({sid});
+    req.cookieAuth.set({ sid });
+
     return true;
 }
 

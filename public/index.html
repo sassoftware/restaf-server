@@ -34,6 +34,7 @@
 		<script src="https://unpkg.com/@sassoftware/restaf@rc1/dist/restaf.js"></script>
 		<script src="https://unpkg.com/@sassoftware/restaflib@rc1/dist/restaflib.min.js"></script>
 		<script src="/appenv"></script>
+		<script src="/viyaapp/user"></script>
 
 		<style>
 			.container {
@@ -73,10 +74,10 @@
 			function setup() {
 				debugger;
 				document.getElementById('output').innerHTML = '...initializing';
+				console.log(USER_NAME);
 				initSession()
 					.then(r => {
-						document.getElementById('head').innerHTML =
-							LOGONPAYLOAD.authType;
+						document.getElementById('head').innerHTML = `Hello ${USER_NAME}`;
 						document.getElementById('output').innerHTML = 'ready';
 					})
 					.catch(e => {

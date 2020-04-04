@@ -22,7 +22,7 @@ let debug = require('debug');
 // let debugSetup     = debug('setup');
 
 import server from './server';
-import { getApp, handleProxy, keepAlive, appCallback, logout } from './handlers';
+import { getApp, keepAlive, appCallback, logout, getUser} from './handlers';
 let os = require('os');
 let Joi = require('@hapi/joi');
 
@@ -55,11 +55,11 @@ function iService (uTable, useDefault, asset, allAppEnv) {
 	if (process.env.AUTHFLOW === 'authorization_code' || process.env.AUTHFLOW === 'code') {
 		auth1 = {
 			mode    : 'try',
-			strategy: 'sas'
+			strategy: 'sas',
 		};
 		auth1a = {
 			mode    : 'try',
-			strategy: 'session'
+			strategy: 'session',
 		};
 	} else {
 		auth1 = false;
@@ -71,7 +71,7 @@ function iService (uTable, useDefault, asset, allAppEnv) {
 
 	let hasAppEnv = null;
 	if (uTable !== null) {
-		hasAppEnv = uTable.find(u => u.path === '/appenv');
+		hasAppEnv = uTable.find((u) => u.path === '/appenv');
 	}
 
 	// end temp patch
@@ -84,73 +84,81 @@ function iService (uTable, useDefault, asset, allAppEnv) {
 				handler: async (req, h) => {
 					console.log('In root handler');
 					return getApp(req, h);
-				}
-			}
+				},
+			},
 		},
 		{
 			method: ['GET'],
 			path  : `${appName}/appenv`,
 			config: {
 				auth   : auth2,
-				handler: getAppEnv
-			}
+				handler: getAppEnv,
+			},
 		},
 		{
 			method: ['GET'],
 			path  : `${appName}/callback`,
 			config: {
 				auth   : auth2,
-				handler: appCallback
-			}
+				handler: appCallback,
+			},
 		},
 		{
 			method: ['GET'],
 			path  : `/appenv`,
 			config: {
 				auth   : auth2,
-				handler: getAppEnv
-			}
+				handler: getAppEnv,
+			},
 		},
 		{
 			method: ['GET'],
 			path  : `${appName}/{param*}`,
 			config: {
 				auth   : auth2,
-				handler: getApp2
-			}
+				handler: getApp2,
+			},
 		},
 		{
 			method: ['GET'],
 			path  : `${appName}/logout`,
 			config: {
 				auth   : auth1a,
-				handler: logout
-			}
+				handler: logout,
+			},
 		},
 		{
 			method: ['GET'],
 			path  : `${appName}/getfiles/{param*}`,
 			config: {
 				auth   : auth1a,
-				handler: getFiles
-			}
+				handler: getFiles,
+			},
 		},
 		{
 			method: ['GET', 'POST'],
 			path  : `${appName}/keepAlive`,
 			config: {
 				auth   : auth1a,
-				handler: keepAlive
-			}
+				handler: keepAlive,
+			},
 		},
 		{
 			method: ['GET', 'POST'],
 			path  : `/{param*}`,
 			config: {
 				auth   : false,
-				handler: keepAlive
-			}
-		}
+				handler: keepAlive,
+			},
+		},
+		{
+			method: ['GET'],
+			path  : `${appName}/user`,
+			config: {
+				auth   : auth1a,
+				handler: getUser
+			},
+		},
 	];
 
 	let userRouterTable;
