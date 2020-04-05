@@ -8,7 +8,7 @@ import decodeJwt from './decodeJwt';
 
 async function setCookies (req, h) {
   
-    debugger;
+    ;
     debug(req.state);
     let authCred = req.auth.credentials;
     debug(authCred);

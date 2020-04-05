@@ -65,7 +65,6 @@
     "should-send-same-site-none": "^2.0.4",
     "tcp-ping": "^0.1.1",
     "uuid": "^7.0.3",
-    "win-ca": "^3.1.1",
     "yargs": "^15.3.1"
   },
   "devDependencies": {

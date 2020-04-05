@@ -23,6 +23,7 @@ ENV CLIENTID=rafdemos
 ENV CLIENTSECRET=secret
 ENV KEEPALIVE=YES
 ENV APPENV=appenv.js
+ENV COOKIE=None,false
 
 ENV APPENV=appenv.js
 CMD ["npm", "run", "indocker"]

@@ -40,7 +40,7 @@ async function SASauth (hapiServer, options) {
         },
         
         validateFunc: async function (req, session) {
-            debugger;
+            ;
             let credentials = await req.server.app.cache.get(session.sid);
 
             debugAuth(credentials);
@@ -79,7 +79,7 @@ async function SASauth (hapiServer, options) {
 
             profileMethod: 'get',
             profile      : async function (credentials, params, get) {
-                debugger;
+                ;
                 console.log('in bell profile');
                 debugAuth(credentials);
                 debugAuth(params);

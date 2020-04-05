@@ -50,7 +50,7 @@ async function iSASauth (hapiServer, options) {
         
         validateFunc: async function (req, session) {
             // https://hapi.dev/module/cookie/api/?v=11.0.1
-            debugger;
+            ;
             debugCookie('------------------------------------------------');
             let sid = session.sid; /* set in getAuthApp */
             debugCookie(sid);
@@ -92,7 +92,7 @@ async function iSASauth (hapiServer, options) {
             profileMethod: 'get',
             
             profile: async function (credentials, params, get) {
-                debugger;
+                ;
                 debugbell('processing bell profile..........................');
                 debugbell(credentials);
                 debugbell(params);
