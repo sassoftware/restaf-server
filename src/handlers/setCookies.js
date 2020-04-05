@@ -3,39 +3,41 @@
 * SPDX-License-Identifier: Apache-2.0
 */
 let uuid      = require('uuid');
-let debug     = require('debug');
-let debugAuth = debug('auth');
-let axios     = require('axios');
-let qs        = require('qs');
+let debug = require('debug')('cookies');
+import decodeJwt from './decodeJwt';
 
-async function getAuthApp (rootHandler, req, h) {
+async function setCookies (req, h) {
   
     debugger;
-    
-    // let credentials = req.auth.credentials;
-    let credentials = await getCredentials(req);
-
-    //use an unique name for the saved credentials
+    debug(req.state);
+    let authCred = req.auth.credentials;
+    debug(authCred);
+    // create a session id and save credentials in cache
     const sid = uuid.v4();
+    let jwt = decodeJwt(authCred.token);
+    let credentials = {
+        token       : authCred.token,
+        refreshToken: authCred.refreshToken,
+        sid         : sid,
+        user_name   : jwt.user_name
+    };
+
     await req.server.app.cache.set(sid, credentials);
-    debugAuth(credentials);
-    
+ 
     //
-    // save unique cache segment name in cookieAuth
-    // the credentials are never sent back to client
+    // save unique cache segment name in cookieAuth - sent to browser as cookie
     //
-    req.cookieAuth.set({ JSESSIONID: sid });
 
-    // Now redirect
-	let indexHTML = process.env.APPENTRY == null ? 'index.html' : process.env.APPENTRY;
-	console.log(`redirecting to /${indexHTML}`);
+    req.cookieAuth.set({ sid });
 
-	return h.redirect(`/${indexHTML}`);
+    return true;
 }
-//
-// Note: Do not understand why bell.js is not setting the req.auth. Need to debug this.
-// so patching it here 
 
+
+export default setCookies;
+
+/* 
+ save for future reference - not used at this time
 async function getCredentials (req) {
     let route = process.env.REDIRECT == null ? `/callback` : '/' + process.env.REDIRECT;
     let info = req.server.info;
@@ -70,5 +72,4 @@ async function getCredentials (req) {
 
     }
 }
-export default getAuthApp;
-
+*/

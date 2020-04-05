@@ -8,13 +8,17 @@ import handleProxy from './handleProxy';
 import appCallback from './appCallback';
 import logon       from './logon';
 import keepAlive   from './keepAlive';
+import logout      from './logout';
+import getUser from './getUser';
 
 export {
     getApp,
     keepAlive,
     handleProxy,
     appCallback,
-    logon
+    logon,
+    logout,
+    getUser
 };
 
 

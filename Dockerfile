@@ -1,4 +1,4 @@
-FROM node:12.4.0-alpine
+FROM node:12.16.1-alpine
 LABEL maintainer="deva.kumar@sas.com"
 WORKDIR /usr/src/app
 COPY package*.json ./
@@ -17,5 +17,13 @@ ENV APPNAME=viyaapp
 ENV APPLOC=./public
 ENV APPENTRY=index.html
 
+ENV AUTHFLOW=code
+ENV CLIENTID=rafdemos
+
+ENV CLIENTSECRET=secret
+ENV KEEPALIVE=YES
+ENV APPENV=appenv.js
+
 ENV APPENV=appenv.js
 CMD ["npm", "run", "indocker"]
+# samesite: https://github.com/hapijs/hapi/issues/3987
