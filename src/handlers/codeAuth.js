@@ -12,6 +12,8 @@ async function codeAuth (req, h) {
     debug(req.state);
 		await setCookies(req, h);
 		let indexHTML = process.env.APPENTRY == null ? 'index.html' : process.env.APPENTRY;
-		return h.redirect(`/${process.env.APPNAME}/${indexHTML}`);
+		// return h.redirect(`/${process.env.APPNAME}/${indexHTML}`);
+	   
+	return h.file(indexHTML);
 }
 export default codeAuth;

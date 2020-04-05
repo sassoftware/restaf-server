@@ -23,24 +23,20 @@ let bell       = require('@hapi/bell'),
     cookie = require('@hapi/cookie');
     
 let debug = require('debug');
-let debugAuth = debug('proxy');
-async function SASauth (hapiServer) {
-
+let debugAuth = debug('auth');
+async function SASauth (hapiServer, options) {
+    console.log(options);
     let authCookieOptions,
         bellAuthOptions,
         provider;
-
-    let isSameSite = process.env.SAMESITE;
-    isSameSite = (isSameSite == null) ? 'Strict' 
-               : (isSameSite === 'none') ? false
-               : isSameSite;
+  
     authCookieOptions = {
         cookie: {
             password  : uuid.v4(),
             name      : 'authCookie',
             domain    : process.env.APPHOST,
-            isSecure  : false,
-            isSameSite: isSameSite
+            isSecure  : options.isSecure,
+            isSameSite: options.isSameSite
         },
         
         validateFunc: async function (req, session) {
@@ -58,7 +54,7 @@ async function SASauth (hapiServer) {
         
     };
 
-
+  
     const getLocation = (req) => {
         let route = (process.env.REDIRECT == null) ? '/callback' : '/' + process.env.REDIRECT;
         let info = req.server.info;
@@ -71,6 +67,7 @@ async function SASauth (hapiServer) {
         console.log(`redirect set to: ${location}`);
         return location;
     };
+    
     if (process.env.AUTHFLOW == 'authorization_code' || process.env.AUTHFLOW === 'code') {
         let authURL = process.env.VIYA_SERVER ;
         provider = {
@@ -95,7 +92,7 @@ async function SASauth (hapiServer) {
             password    : uuid.v4(),
             clientId    : process.env.CLIENTID.trim(),
             clientSecret: (process.env.CLIENTSECRET == null) ? ' ' : process.env.CLIENTSECRET,
-            location    : getLocation,
+           // location    : getLocation,
             
             isSecure: false
         
@@ -103,6 +100,8 @@ async function SASauth (hapiServer) {
         await hapiServer.register(bell);
         await hapiServer.register(cookie);
        
+        debugAuth(authCookieOptions);
+
         hapiServer.auth.strategy('sas', 'bell', bellAuthOptions);
         hapiServer.auth.strategy('session', 'cookie', authCookieOptions);
         hapiServer.auth.default('session');

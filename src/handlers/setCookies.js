@@ -3,10 +3,8 @@
 * SPDX-License-Identifier: Apache-2.0
 */
 let uuid      = require('uuid');
-let debug = require('debug')('getauthapp');
+let debug = require('debug')('cookies');
 import decodeJwt from './decodeJwt';
-
-
 
 async function setCookies (req, h) {
   

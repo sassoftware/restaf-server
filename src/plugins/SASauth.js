@@ -38,17 +38,14 @@ async function iSASauth (hapiServer, options) {
         bellAuthOptions,
         provider;
 
-    let isSameSite = process.env.SAMESITE;
-    isSameSite = (isSameSite == null) ? 'Strict' 
-               : (isSameSite === 'none') ? false
-               : isSameSite;
+   
     authCookieOptions = {
         cookie: {
             password  : uuid.v4(),
             name      : 'authCookie',
             domain    : process.env.APPHOST,
-            isSecure  : false,
-            isSameSite: isSameSite
+            isSecure  : options.isSecure,
+            isSameSite: options.isSameSite
         },
         
         validateFunc: async function (req, session) {

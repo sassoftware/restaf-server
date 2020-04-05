@@ -38,7 +38,8 @@ async function appServer (server, options) {
 		let p = {
 			plugin : SASauth,
 			options: {
-				appenv: appenv
+				isSameSite: options.isSameSite,
+				isSecure  : options.isSecure
 			}
 		};
 		await server.register(p);

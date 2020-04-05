@@ -14,13 +14,16 @@ async function logout (req, h) {
     if (process.env.AUTHFLOW === 'code' || process.env.AUTHFLOW === 'authorization_code') {
         let credentials = req.auth.credentials;
         debug(credentials);
-        let sid = credentials.sid;
-        debug(sid);
-        await req.server.app.cache.del(sid);
-        req.cookieAuth.clear('authCookie');
-        //await ViyaLogout(); 
-        debug(req.state);
-        let callbackUrl = `${req.server.info.uri}/${process.env.APPNAME}`;
+        if (credentials != null) {
+            let sid = credentials.sid;
+            debug(sid);
+            await req.server.app.cache.del(sid);
+            req.cookieAuth.clear('authCookie');
+        } else {
+            console.log('Warning: No cookie returned by the browser - probably related to sameSite settings');
+        }
+        let hh = req.server.info.uri.replace(/0.0.0.0/, 'localhost');
+        let callbackUrl = `${hh}/${process.env.APPNAME}`;
         if (q.callbackUrl != null) {
             callbackUrl = `${callbackUrl}/${q.callbackUrl}`;
         };
@@ -28,8 +31,9 @@ async function logout (req, h) {
 
         return h.redirect(url).unstate('authCookie');
     } else {
-         let callbackUrl = `${req.server.info.uri}/${process.env.APPNAME}/${q.callbackUrl}`;
-         return h.redirect(callbackUrl);
+        let hh = req.server.info.uri.replace(/0.0.0.0/, 'localhost');
+        let callbackUrl = `${hh}/${process.env.APPNAME}/${q.callbackUrl}`;
+        return h.redirect(callbackUrl);
 	}
 }
 async function ViyaLogout () {
