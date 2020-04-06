@@ -8,8 +8,8 @@ import decodeJwt from './decodeJwt';
 
 async function setCookies (req, h) {
   
-    ;
     debug(req.state);
+    debug(req.auth);
     let authCred = req.auth.credentials;
     debug(authCred);
     // create a session id and save credentials in cache

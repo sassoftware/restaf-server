@@ -105,6 +105,14 @@ function iService (uTable, useDefault, asset, allAppEnv) {
 		},
 		{
 			method: ['GET'],
+			path  : `/callback`,/* need to retire after users switch to appname/callback*/
+			config: {
+				auth   : auth2,
+				handler: appCallback,
+			},
+		},
+		{
+			method: ['GET'],
 			path  : `/appenv`,
 			config: {
 				auth   : auth2,
@@ -156,7 +164,7 @@ function iService (uTable, useDefault, asset, allAppEnv) {
 			path  : `${appName}/user`,
 			config: {
 				auth   : auth1a,
-				handler: getUser
+				handler: getUser,
 			},
 		},
 	];

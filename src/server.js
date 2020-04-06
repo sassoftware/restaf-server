@@ -32,8 +32,8 @@ function server (userRouterTable, asset, allAppEnv) {
 	let isSameSite = 'None';
 	let isSecure   = false;
 
-	if (process.env.COOKIE != null) {
-		let [s1, s2] = process.env.COOKIE.split(',');
+	if (process.env.SAMESITE != null) {
+		let [s1, s2] = process.env.SAMESITE.split(',');
 		console.log(s1, s2);
 		isSameSite = s1;
 		isSecure = s2 === 'secure' ? true : false;
@@ -74,11 +74,11 @@ function server (userRouterTable, asset, allAppEnv) {
 	};
 
 	if (process.env.TLS != null) {
-		let inp = process.env.TLS.split(' ');
+		let inp = process.env.TLS.split(',');
 		let tlsInfo = inp.filter(t => t.length > 0);
 		//  console.log(tlsInfo);
 		sConfig.tls = {
-			key : fs.readFileSync(tlsInfo[ 1 ]),
+			key : fs.readFileSync(tlsInfo[ 1 ], 'UTF8'),
 			cert: fs.readFileSync(tlsInfo[ 0 ]),
 
 			passphrase: tlsInfo[ 2 ]
