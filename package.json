@@ -51,6 +51,7 @@
     "@hapi/joi": "^17.1.1",
     "@hapi/vision": "^6.0.0",
     "axios": "^0.19.2",
+    "core-js": "^3.6.4",
     "debug": "^4.1.1",
     "docker-file-parser": "^1.0.4",
     "eslint-config-prettier": "^6.10.1",
@@ -94,7 +95,6 @@
     "@babel/preset-env": "^7.9.0",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
-    "core-js": "^3.6.4",
     "eslint": "^6.8.0",
     "rimraf": "^3.0.2"
   }
