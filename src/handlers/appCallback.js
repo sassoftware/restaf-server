@@ -15,9 +15,10 @@ async function appCallback (req, h) {
     // if authorization code process the auth info from saslogon via SASauth
     if (process.env.AUTHFLOW === 'authorization_code' || process.env.AUTHFLOW === 'code') {
         return codeAuth(req, h);
-    } 
-    let indexHTML = process.env.APPENTRY == null ? 'index.html' : process.env.APPENTRY;
-    console.log(`Redirecting to default ${indexHTML}`);
-    return h.file(indexHTML);
+    } else {
+        let indexHTML = process.env.APPENTRY == null ? 'index.html' : process.env.APPENTRY;
+        console.log(`Redirecting to default ${indexHTML}`);
+        return h.file(`${indexHTML}`);
+    }
 }
 export default appCallback;

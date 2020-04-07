@@ -156,7 +156,7 @@ function iService (uTable, useDefault, asset, allAppEnv) {
 			path  : `/{param*}`,
 			config: {
 				auth   : false,
-				handler: keepAlive,
+				handler: getApp2,
 			},
 		},
 		{
