@@ -22,10 +22,10 @@ let bell       = require('@hapi/bell'),
     uuid       = require('uuid'),
     cookie = require('@hapi/cookie');
     
-let debug = require('debug');
-let debugAuth = debug('auth');
+
 async function SASauth (hapiServer, options) {
-    console.log(options);
+    let debug = require('debug');
+	let debugAuth = debug('auth');
     let authCookieOptions,
         bellAuthOptions,
         provider;
@@ -79,8 +79,6 @@ async function SASauth (hapiServer, options) {
 
             profileMethod: 'get',
             profile      : async function (credentials, params, get) {
-                ;
-                console.log('in bell profile');
                 debugAuth(credentials);
                 debugAuth(params);
                 debug(get);

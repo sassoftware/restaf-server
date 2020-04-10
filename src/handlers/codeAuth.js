@@ -8,12 +8,12 @@ import setCookies from './setCookies';
 let debug = require('debug')('getapp');
 
 async function codeAuth (req, h) {
+	debugger;
     debug('passing thru codeAuth');
-    debug(req.state);
-		await setCookies(req, h);
-		let indexHTML = process.env.APPENTRY == null ? 'index.html' : process.env.APPENTRY;
-		// return h.redirect(`/${process.env.APPNAME}/${indexHTML}`);
-	   
+	debug(req.state);
+	await setCookies(req, h);
+	let indexHTML = process.env.APPENTRY == null ? 'index.html' : process.env.APPENTRY;
+	// return h.redirect(`/${process.env.APPNAME}/${indexHTML}`);
 	return h.file(indexHTML);
 }
 export default codeAuth;

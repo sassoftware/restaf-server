@@ -24,7 +24,10 @@ let fs = require('fs');
 let Hapi = require('@hapi/hapi');
 const { isSameSiteNoneCompatible } = require('should-send-same-site-none');
 
+
+
 function server (userRouterTable, asset, allAppEnv) {
+	let debug = require('debug')('server');
     
 	// process.env.APPHOST_ADDR = process.env.APPHOST;
 
@@ -34,7 +37,6 @@ function server (userRouterTable, asset, allAppEnv) {
 
 	if (process.env.SAMESITE != null) {
 		let [s1, s2] = process.env.SAMESITE.split(',');
-		console.log(s1, s2);
 		isSameSite = s1;
 		isSecure = s2 === 'secure' ? true : false;
 	}
@@ -73,16 +75,27 @@ function server (userRouterTable, asset, allAppEnv) {
 		}
 	};
 
-	if (process.env.TLS != null) {
-		let inp = process.env.TLS.split(',');
-		let tlsInfo = inp.filter(t => t.length > 0);
-		//  console.log(tlsInfo);
-		sConfig.tls = {
-			key : fs.readFileSync(tlsInfo[ 1 ], 'UTF8'),
-			cert: fs.readFileSync(tlsInfo[ 0 ]),
+	let tls = {};
 
-			passphrase: tlsInfo[ 2 ]
-		};
+	if (process.env.TLS_CERT != null) {
+		tls.cert = fs.readFileSync(process.env.TLS_CERT);
+	}
+
+	if (process.env.TLS_CERT != null) {
+		tls.key = fs.readFileSync(process.env.TLS_KEY);
+	}
+	
+	if (process.env.TLS_CABUNDLE != null) {
+		tls.CA = fs.readFileSync(process.env.TLS_CABUNDLE);
+	}
+
+	if (process.env.TLS_PFX != null) {
+		tls.pfx = fs.readFileSync(process.env.TLS_PFX);
+	}
+
+	if (Object.keys(tls).length > 0) {
+		sConfig.tls = tls;
+
 	}
 
 	if (asset !== null) {
@@ -106,6 +119,7 @@ function server (userRouterTable, asset, allAppEnv) {
 			}
 		};
 		await hapiServer.register(pluginSpec);
+		await hapiServer.register({ plugin: require('hapi-require-https'), options: {}})
 		await hapiServer.start();
 		let hh = hapiServer.info.uri.replace(/0.0.0.0/, 'localhost');
 		console.log(
@@ -118,7 +132,8 @@ function server (userRouterTable, asset, allAppEnv) {
 		console.log(err);
 		process.exit(1);
 	});
-
+	debug(process.env.DEBUG);
+	debugger;
 	init();
 }
 

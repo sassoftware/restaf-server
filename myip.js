@@ -7,7 +7,9 @@ usage: node myipd your-machine-fullname(ex: d1111111111.us.acme.com)
 */
 
 let dns = require('dns');
-let os  = require('os');
+let os = require('os');
+
+
 let f   = process.argv[2];
 console.log(`server name = ${f}`);
 

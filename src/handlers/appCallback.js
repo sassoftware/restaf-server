@@ -4,12 +4,14 @@
 */
 'use strict';
 
-let debug = require('debug')('callback');
+
 import codeAuth from './codeAuth';
 
 // handle all callback
 
 async function appCallback (req, h) {
+    debugger;
+    let debug = require('debug')('callback');
     console.log(`..... AUTHFLOW: ${process.env.AUTHFLOW}`);
     debug('passing thru appCallback');
     // if authorization code process the auth info from saslogon via SASauth

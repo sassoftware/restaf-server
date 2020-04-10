@@ -18,15 +18,13 @@
 
 'use strict';
 
-let debug = require('debug');
-// let debugSetup     = debug('setup');
 
 import server from './server';
 import { getApp, keepAlive, appCallback, logout, getUser} from './handlers';
 let os = require('os');
-let Joi = require('@hapi/joi');
 
 function iService (uTable, useDefault, asset, allAppEnv) {
+
 	process.env.APPHOST = process.env.APPHOST === '*' ? os.hostname() : process.env.APPHOST;
 	let appName = '/' + process.env.APPNAME;
 	let auth1 = {};
@@ -82,7 +80,7 @@ function iService (uTable, useDefault, asset, allAppEnv) {
 			config: {
 				auth   : auth1,
 				handler: async (req, h) => {
-					console.log('In root handler');
+					debugger;
 					return getApp(req, h);
 				},
 			},

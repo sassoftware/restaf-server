@@ -37,8 +37,6 @@ async function iSASauth (hapiServer, options) {
     let authCookieOptions,
         bellAuthOptions,
         provider;
-
-   
     authCookieOptions = {
         cookie: {
             password  : uuid.v4(),
@@ -70,8 +68,10 @@ async function iSASauth (hapiServer, options) {
 
 
     const getLocation = (req) => {
-        let route = (process.env.REDIRECT == null) ? `/${process.env.APPNAME}/callback` : '/' + process.env.REDIRECT;
+        debugger;
+        let route =  (process.env.REDIRECT == null) ? `/${process.env.APPNAME}` : '/' + process.env.REDIRECT;
         let info = req.server.info;
+        console.log(req.server.info);
         let location = info.uri + route;
         // Need to do this for docker deployment
         if (info.host === '0.0.0.0') {
@@ -107,14 +107,14 @@ async function iSASauth (hapiServer, options) {
             password    : uuid.v4(),
             clientId    : process.env.CLIENTID.trim(),
             clientSecret: (process.env.CLIENTSECRET == null) ? ' ' : process.env.CLIENTSECRET,
-            /*location    : getLocation,*/
+            location    : getLocation,
             
             isSecure: false
         
         };
         await hapiServer.register(bell);
         await hapiServer.register(cookie);
-       
+        debugger;
         hapiServer.auth.strategy('session', 'cookie', authCookieOptions);
         hapiServer.auth.strategy('sas', 'bell', bellAuthOptions);
         

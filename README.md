@@ -297,6 +297,10 @@ restaf automatically calls this end point everytime a call is made to any Viya S
 3. sas.commons.web.security - Set the allowed uri's appropriately. A sample setting is shown below. This allows running your app from localhost or from anywhere in your company network(sas in the example)
 
 ```script
-http(s)*:\/\/localhost[:]\d*,http:\/\/([^\.]+\.)*sas\.com
+http(s?)[:]\/\/([^\.]+\.)*sas\.com,http(s)*[:]\/\/localhost([:])*\d*
 
 ```
+
+## Some useful links
+
+[Test url regular expressions](https://regex101.com/)
