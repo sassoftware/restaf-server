@@ -119,7 +119,7 @@ function server (userRouterTable, asset, allAppEnv) {
 			}
 		};
 		await hapiServer.register(pluginSpec);
-		await hapiServer.register({ plugin: require('hapi-require-https'), options: {}})
+		await hapiServer.register({ plugin: require('hapi-require-https'), options: {} });
 		await hapiServer.start();
 		let hh = hapiServer.info.uri.replace(/0.0.0.0/, 'localhost');
 		console.log(
@@ -133,7 +133,6 @@ function server (userRouterTable, asset, allAppEnv) {
 		process.exit(1);
 	});
 	debug(process.env.DEBUG);
-	debugger;
 	init();
 }
 

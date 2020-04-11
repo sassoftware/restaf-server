@@ -10,7 +10,6 @@ import codeAuth from './codeAuth';
 // handle all callback
 
 async function appCallback (req, h) {
-    debugger;
     let debug = require('debug')('callback');
     console.log(`..... AUTHFLOW: ${process.env.AUTHFLOW}`);
     debug('passing thru appCallback');

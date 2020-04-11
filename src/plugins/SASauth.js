@@ -68,7 +68,6 @@ async function iSASauth (hapiServer, options) {
 
 
     const getLocation = (req) => {
-        debugger;
         let route =  (process.env.REDIRECT == null) ? `/${process.env.APPNAME}` : '/' + process.env.REDIRECT;
         let info = req.server.info;
         console.log(req.server.info);
@@ -114,7 +113,6 @@ async function iSASauth (hapiServer, options) {
         };
         await hapiServer.register(bell);
         await hapiServer.register(cookie);
-        debugger;
         hapiServer.auth.strategy('session', 'cookie', authCookieOptions);
         hapiServer.auth.strategy('sas', 'bell', bellAuthOptions);
         

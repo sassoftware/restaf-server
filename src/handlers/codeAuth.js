@@ -8,7 +8,6 @@ import setCookies from './setCookies';
 let debug = require('debug')('getapp');
 
 async function codeAuth (req, h) {
-	debugger;
     debug('passing thru codeAuth');
 	debug(req.state);
 	await setCookies(req, h);

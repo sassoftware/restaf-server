@@ -25,6 +25,6 @@ ENV APPENV=appenv.js
 ENV SAMESITE=None,false
 
 ENV APPENV=appenv.js
-ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+# ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 CMD ["npm", "run", "indocker"]
 # samesite: https://github.com/hapijs/hapi/issues/3987

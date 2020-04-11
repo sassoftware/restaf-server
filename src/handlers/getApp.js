@@ -24,8 +24,6 @@ async function getApp (req, h) {
         debug(url);
         return h.redirect(url);
     } else if (process.env.AUTHFLOW === 'authorization_code' || process.env.AUTHFLOW === 'code') {
-        debugger;
-        debug('calling codeAuth');
         return codeAuth(req, h);
     } else {
         debug('default getapp');

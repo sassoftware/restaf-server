@@ -80,7 +80,6 @@ function iService (uTable, useDefault, asset, allAppEnv) {
 			config: {
 				auth   : auth1,
 				handler: async (req, h) => {
-					debugger;
 					return getApp(req, h);
 				},
 			},
