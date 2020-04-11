@@ -13,12 +13,7 @@ The following authentication schemes are supported:
 ## Note for users of restaf-server@6.11.2
 
 The handling of authentication is handled differently in this version.
-
-1. Implicit flow authentication is handled differently. The redirect for an implicit flow clientid **must** follow this pattern
-
-```text
-if APPHOST is localhost, APPPORT is 8080 and APPNAME is viyaapp then the redirect must http://localhost:8080/viyaapp/callback
-```
+Please see notes below.
 
 ## Installation
 
@@ -42,7 +37,7 @@ The runtime environment variables are set in this order
 
 3. If you want to set the values of some or all environment variables using some system script(ex: your Viya Server url) then do not specify them in either the dockerfile or env file.
 
-   A note on EXPOSE and APPPORT - If APPPORT is not set then it is set to EXPOSE. If you want to run in a container leave APPPORT to be the same as EXPOSE and use docker runtime options to redirect to other ports.
+   A note on EXPOSE and APPPORT - If APPPORT is not set then it is set to EXPOSE. If you want to run in a container leave APPPORT to be the same as EXPOSE and use docker runtime options to redirect to other ports. I personally like to leave EXPOSE as 8080.
 4. appenv is used to specify application specific values that are available to the application at run time(see appenv below)
 
 The recommended approach is:
@@ -65,7 +60,7 @@ SET VIYA_SERVER=http://yourViyaServer
 
 ## appenv option and the /appenv route  
 
-There is a builtin route **/appenv** that the application can use to obtain two objects.
+There is a builtin route **/{appName}/appenv** that the application can use to obtain two objects.
 
 1. LOGONPAYLOAD has the information related to the VIYA_SERVER. Please see below for details.
 
@@ -288,19 +283,43 @@ If the KEEPALIVE environment variable is set, restaf-server will set the keepAli
 
 restaf automatically calls this end point everytime a call is made to any Viya Service. If you wish to mimic the behavior of Viya Applications like SASVisualAnalytics you can call it everytime the user moves the mouse.
 
-## Notes on configuring SAS Viya for user applications
+## TLS Support
 
-1. sas.commons.web.security.cors- Turn on allowCredentials and set the allowed origins to meet your needs.
+You enable TLS using the following environment variables
 
-2. sas.common.web.security:  set samesite based on where you are deploying your application. Users of VA SDK should consult its documentation.
+### **KEY and CERTIFICATE**
 
-3. sas.commons.web.security - Set the allowed uri's appropriately. A sample setting is shown below. This allows running your app from localhost or from anywhere in your company network(sas in the example)
+TLS_KEY=path to the KEY
+TLS_CERT= path to certificate
 
-```script
-http(s?)[:]\/\/([^\.]+\.)*sas\.com,http(s)*[:]\/\/localhost([:])*\d*
+### CA Bundle
 
+If you wish the server to use a different CA bundle than what is on the host specific the path to the bundle as follows:
+
+TLS_CABUNDLE=path
+
+### SAMESITE
+
+Specify the SAMESITE values as follows:
+
+SAMESITE=value,secureflag
+
+where
+
+```js
+    value = None | Lax | Strict
+
+    secureflag = secure|false
 ```
+
+The default is None,false
+
+### Issue
+
+We are still chasing an issue with some services like CasManagement failing with a 403. Hopefully this is a short-term issue.
 
 ## Some useful links
 
 [Test url regular expressions](https://regex101.com/)
+
+samesite: <https://github.com/hapijs/hapi/issues/3987>
