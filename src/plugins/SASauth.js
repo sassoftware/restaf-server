@@ -74,7 +74,7 @@ async function iSASauth (hapiServer, options) {
         let location = info.uri + route;
         // Need to do this for docker deployment
         if (info.host === '0.0.0.0') {
-            location = `${info.protocol}://${process.env.APPHOST}:${info.port}${route}`;
+            location = `${info.protocol}://localhost:${info.port}${route}`;
         }
         debugloc(location);
         return location;

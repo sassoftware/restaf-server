@@ -38,7 +38,7 @@
     "build": "rimraf lib && babel src --out-dir lib",
     "indocker": "node cli",
     "dkrbuild": "docker build -f Dockerfile -t viyaapp .",
-    "dkrapp": "docker run -p 8080:8080 --env-file /env/code/overrides.env  -t viyaapp",
+    "dkrapp": "docker run -p 8080:8080 --env-file app.env  -t viyaapp",
     "dkrappi": "docker run -p 8080:8080 --env-file overridesimplicit.env  -t viyaapp",
     "lint": "npx eslint --fix src/*.js"
   },
