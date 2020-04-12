@@ -37,7 +37,8 @@ The runtime environment variables are set in this order
 
 3. If you want to set the values of some or all environment variables using some system script(ex: your Viya Server url) then do not specify them in either the dockerfile or env file.
 
-   A note on EXPOSE and APPPORT - If APPPORT is not set then it is set to EXPOSE. If you want to run in a container leave APPPORT to be the same as EXPOSE and use docker runtime options to redirect to other ports. I personally like to leave EXPOSE as 8080.
+   A note on EXPOSE and APPPORT - If you want to run in a container set APPPORT to be the same as EXPOSE and use docker runtime options to redirect to other ports. Usually 8080 (or 443 if running with tls) works fine.
+
 4. appenv is used to specify application specific values that are available to the application at run time(see appenv below)
 
 The recommended approach is:
