@@ -70,7 +70,7 @@ async function iSASauth (hapiServer, options) {
     const getLocation = (req) => {
         let route =  (process.env.REDIRECT == null) ? `/${process.env.APPNAME}` : '/' + process.env.REDIRECT;
         let info = req.server.info;
-        console.log(req.server.info);
+        debugloc(req.server.info);
         let location = info.uri + route;
         // Need to do this for docker deployment
         if (info.host === '0.0.0.0') {

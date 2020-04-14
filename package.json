@@ -13,7 +13,7 @@
     "RESTAPI"
   ],
   "engines": {
-    "node": ">=8.9.0"
+    "node": ">=12.14.0"
   },
   "bin": {
     "@sassoftware/restaf-server": "cli.js"

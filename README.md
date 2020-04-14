@@ -225,11 +225,7 @@ Assign a meaninful name for your app.
 
 ### APPHOST
 
-This can be one of the following values:
-
-localhost|*|ipAddress|dns-name-of-server
-
-If set to *, restaf-server will resolve it to the dns name using nodejs function os.hostname. This is usually the short name which might not be sufficient in some situations.
+Do not specify this - let the docker default it to localhost.
 
 ### APPLOC
 
@@ -288,10 +284,24 @@ restaf automatically calls this end point everytime a call is made to any Viya S
 
 You enable TLS using the following environment variables
 
-### **KEY and CERTIFICATE**
+### KEY and CERTIFICATE
 
 TLS_KEY=path to the KEY
 TLS_CERT= path to certificate
+
+### PFX
+
+Instead of key and certificate you can also use the pfx form and specify it as follows:
+
+TLS_PFX=path to pfx file
+
+### Passphrase
+
+This can be specified as follows
+
+TLS_PW=somevalue
+
+It appears that for pfx this is a necessity(not really sure but my experience says so)
 
 ### CA Bundle
 

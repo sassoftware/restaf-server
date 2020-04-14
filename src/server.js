@@ -23,11 +23,12 @@ let fs = require('fs');
 // let isDocker = require('is-docker');
 let Hapi = require('@hapi/hapi');
 const { isSameSiteNoneCompatible } = require('should-send-same-site-none');
+let debug = require('debug')('server');
 
 
 
 function server (userRouterTable, asset, allAppEnv) {
-	let debug = require('debug')('server');
+	
     
 	// process.env.APPHOST_ADDR = process.env.APPHOST;
 
@@ -93,6 +94,9 @@ function server (userRouterTable, asset, allAppEnv) {
 		tls.pfx = fs.readFileSync(process.env.TLS_PFX);
 	}
 
+	if (process.env.TLS_PW != null) {
+		tls.passphrase = process.env.TLS_PW;
+	}
 	if (Object.keys(tls).length > 0) {
 		sConfig.tls = tls;
 
@@ -101,7 +105,7 @@ function server (userRouterTable, asset, allAppEnv) {
 	if (asset !== null) {
 		sConfig.routes.files = { relativeTo: asset };
 	}
-	console.log(sConfig);
+	debug(sConfig);
 
 	let hapiServer = Hapi.server(sConfig);
 	
