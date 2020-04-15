@@ -8,6 +8,8 @@ The following authentication schemes are supported:
 2. Implicit flow
 3. Authorization_code
 
+TLS is also supported.
+
 ---
 
 ## Note for users of restaf-server@6.11.2
@@ -102,18 +104,15 @@ APPENV = {
 
 The general form of this object is:
 {
-      authType : <your authflow value>,
+      authType : <your authflow type>,
       redirect : <the redirect url>
       host     : <your viya server>
       clientID : <useful if using implicit flow and custom handling logon to Viya Server>,
       appName  : <APPNAME>,
-      host     : <same as VIYA_SERVER - left here for backward compatability>
+      host     : <same as VIYA_SERVER>
       keepAlive: < see notes below>
     };
 }
-
-### keepAlive
-## Quick start Examples of authentication flows
 
 ---
 
@@ -145,7 +144,7 @@ To use this scenario modify these files as follows:
 VIYA_SERVER=your-viya-server(http://...)
 AUTHFLOW=implicit
 CLIENTID=your implicit flow clientid with a redirect as described below)
-APPNAME= < A name for your app. The app will start at APPHOST:APPPORT/APP
+APPNAME= < A name for your app. The app will start at APPHOST:APPPORT/APPNAME
 APPPORT=some port number
 APPENTRY=index.html
 ```
@@ -165,11 +164,9 @@ For backward compatability the following are currently supported. Please switch 
 
 The following will also work(for backward compatability):
 
-In earlier versions restaf-server required the user to specify REDIRECT as the main entry point of the application. In the clientid definition the redirectUri looked like this:
+<http://localhost:8080/viyaapp/index.html> where index.html is the value of REDIRECT setting in the enc file.
 
-<http://localhost:8080/viyaapp/index.html> where index.html is the value of REDIRECT.
-
-All this is unnecessary confusion for flexibility not really required
+All this is unnecessary confusion for flexibility not really required - so switch to the simpler configuration discussed earlier.
 
 ---
 
@@ -182,10 +179,9 @@ Your env file should like something like this. The redirect for this flow is as 
 ```js
  If your APPNAME=viyaapp, APPHOST is localhost and APPPORT=8080, then set the redirect to <http://localhost:8080/viyaapp>
 
-restaf-server will handle the callback and redirect to APPENTRY.
-
-
 ```
+
+restaf-server will handle the callback and redirect to APPENTRY. The server will set the cookie to CookieAuth. The authorization token is not returned with the cookie.
 
 ```env
 VIYA_SERVER=your-viya-server(http://...)
@@ -283,9 +279,9 @@ async function myRouteHandler(req, h) {
 ## keepAlive
 
 This is only needed if you are using authorization_code flow.
-In your call you can call this end point to keep your current session alive.
+In your web app you can call this end point to keep your current session alive.
 
-If the KEEPALIVE environment variable is set, restaf-server will set the keepAlive key in the LOGONPAYLOAD object to the url to call for keeping your session alive. You can call it at anytime in your app.
+If the KEEPALIVE environment variable is set, restaf-server will set the keepAlive key in the LOGONPAYLOAD object to the url to call for keeping your session alive. You can call it anytime in your app.
 
 ### A note for restaf users
 
@@ -335,10 +331,6 @@ where
 ```
 
 The default is None,false
-
-### Issue
-
-We are still chasing an issue with some services like CasManagement failing with a 403. Hopefully this is a short-term issue.
 
 ## Some useful links
 
