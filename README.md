@@ -162,8 +162,6 @@ Example:
 
 For backward compatability the following are currently supported. Please switch to the recommended redirect above.
 
-The following will also work(for backward compatability):
-
 <http://localhost:8080/viyaapp/index.html> where index.html is the value of REDIRECT setting in the enc file.
 
 All this is unnecessary confusion for flexibility not really required - so switch to the simpler configuration discussed earlier.
