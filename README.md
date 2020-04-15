@@ -156,9 +156,20 @@ Recommend the following:
 Set the clientid redirect_uri to always be **{appName}/callback**
 
 Example:
- If your APPNAME=viyaapp, APPHOST is localhost and APPPORT=8080, then set the redirect to <http://localhost:8080/viyaapp/callback>
+ If your APPNAME=viyaapp, APPHOST is localhost and APPPORT=8080
+  
+   <http://localhost:8080/viyaapp/callback>
+   restaf-server will handle the callback and redirect to APPENTRY.
 
-restaf-server will handle the callback and redirect to APPENTRY.
+For backward compatability the following are currently supported. Please switch to the recommended redirect above.
+
+The following will also work(for backward compatability):
+
+In earlier versions restaf-server required the user to specify REDIRECT as the main entry point of the application. In the clientid definition the redirectUri looked like this:
+
+<http://localhost:8080/viyaapp/index.html> where index.html is the value of REDIRECT.
+
+All this is unnecessary confusion for flexibility not really required
 
 ---
 

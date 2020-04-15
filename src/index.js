@@ -119,7 +119,7 @@ function getAllEnv (userData) {
       authType : authflow,
       redirect : redirect,
       host     : host,
-      clientID : (authflow === 'server') ? null :clientID,
+      clientID : clientID,
       appName  : appName,
       keepAlive: null
     };

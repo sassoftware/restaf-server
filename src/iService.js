@@ -73,6 +73,10 @@ function iService (uTable, useDefault, asset, allAppEnv) {
 	}
 
 	// end temp patch
+
+	//
+	// TBD: Move route definition into the plugin
+	//
 	let defaultTable = [
 		{
 			method: ['GET'],
