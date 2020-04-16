@@ -20,11 +20,7 @@ async function getApp (req, h) {
         }
         let redirectUri = `http://${process.env.APPHOST}:${process.env.APPPORT}/${redirect}?host=${process.env.VIYA_SERVER}`;
         debug(process.env.REDIRECT);
-        /*
-        if (process.env.REDIRECT != null) {
-            redirectUri = `http://${process.env.APPHOST}:${process.env.APPPORT}/${process.env.APPNAME}/${process.env.REDIRECT}?host=${process.env.VIYA_SERVER}`;
-        }
-        */
+        
         let url = `${x}&redirect_uri=${redirectUri}`;
         debug(url);
         return h.redirect(url);
