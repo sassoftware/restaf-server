@@ -1,5 +1,10 @@
 # @sassoftware/restaf-server - web server in nodejs for SAS Viya Applications
 
+---
+
+Version 8
+
+---
 This server is designed for use with SAS Viya. It is customized using the env file and the Dockerfile.
 
 The following authentication schemes are supported:
@@ -11,6 +16,10 @@ The following authentication schemes are supported:
 TLS is also supported.
 
 ---
+
+## SAS Viya Configuration
+
+Please see <https://github.com/sassoftware/restaf/wiki/usefulTips> for key SAS Viya configurations for your app to work properly.
 
 ## Note for users of restaf-server@6.11.2
 
@@ -329,6 +338,7 @@ where
 ```
 
 The default is None,false
+
 
 ## Some useful links
 

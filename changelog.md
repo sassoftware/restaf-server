@@ -1,5 +1,18 @@
 # Changes
 
+## Version 8.0.0
+
+- requires nodejs 12.16.x or greater
+
+- **implicit flow authentication:**
+  - Remove the REDIRECT env variable
+  - set your redirectUri in the clientid to {yourserver}/{yourappname}/callback
+
+- **authorization code authentication**
+  - This is now supported and is the recommended way. Requires SAS Viya 3.5 maintainance release(Feb 2020) or higher.
+  - See the README file for details
+  - TLS is now supported - please see README file. Note the configurations required in SAS Viya to enable this.
+
 ## Version 7.0.0
 
 - Added support for using Dockerfile + pre-set environment variables with the following precedence order
