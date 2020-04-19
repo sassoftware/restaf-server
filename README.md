@@ -70,7 +70,7 @@ SET VIYA_SERVER=http://yourViyaServer
 
 ```
 
-## appenv option and the /appenv route  
+## appenv option and the {yourappname}/appenv route  
 
 There is a builtin route **/{appName}/appenv** that the application can use to obtain two objects.
 
@@ -93,7 +93,7 @@ return myinfo;
 In your index.html you will have a script tag as follows:
 
 ```html
-<script src="/appenv'><script>
+<script src="/{yourAppName}/appenv'><script>
 ```
 
 In your javascript you now have access to two variables
@@ -338,7 +338,6 @@ where
 ```
 
 The default is None,false
-
 
 ## Some useful links
 
