@@ -106,7 +106,7 @@ async function iSASauth (hapiServer, options) {
             password    : uuid.v4(),
             clientId    : process.env.CLIENTID.trim(),
             clientSecret: (process.env.CLIENTSECRET == null) ? ' ' : process.env.CLIENTSECRET,
-            location    : getLocation,
+            /*location    : getLocation,*/
             
             isSecure: false
         
