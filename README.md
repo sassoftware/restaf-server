@@ -5,17 +5,112 @@
 Version 8
 
 ---
-This server is designed for use with SAS Viya. It is customized using the env file and the Dockerfile.
+restaf-server is an app server designed for rapid development and deployment of SAS Viya applications.
 
-The following authentication schemes are supported:
+The key features are:
 
-1. No authentication - the pages are served up as static pages.
-2. Implicit flow
-3. Authorization_code
+1. Supports authentication  using authorization_code and implicit flow.
+2. Supports serving up static content
+3. Can be extended with custom routes
+4. Supports TLS
 
-TLS is also supported.
+## Basic usage
 
----
+1. Build your app
+2. Configure the server using a combination of environment variables, env files and Dockerfile
+3. Start the server with a simple command
+
+```sh
+npx @sassoftware/restaf-server  --env=your-env-envfile --docker=your-DockerFile --appenv=your-appenv.js-file
+```
+
+## Quick start example
+
+Let us assume that your application directory structure is:
+
+```text
+  appdir/
+    public/
+      index.html
+    override.env
+    Dockerfile
+    appenv.js
+```
+
+The env file is(call it override.env)
+
+```ini
+VIYA_SERVER=http://your-viya-server
+# authorization_code clientid
+AUTHFLOW=code
+CLIENTID=appc
+CLIENTSECRET=secret
+APPHOST=localhost
+```
+
+A typical Dockerfile looks as follows
+
+```docker
+FROM node:12.16.1-alpine
+LABEL maintainer="your-email"
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 8080
+ENV APPHOST=0.0.0.0
+
+#
+# You can override these(but in container leave APPHOST as shown below)
+#
+
+
+ENV APPNAME=viyaapp
+ENV APPLOC=./public
+ENV APPENTRY=index.html
+ENV APPPORT=8080
+ENV KEEPALIVE=YES
+ENV APPENV=appenv.js
+ENV SAMESITE=None,false
+
+ENV APPENV=appenv.js
+
+```
+
+Build a placeholder appenv.js file with this content
+
+```js
+ let x= {hi: 'hi there'};
+ return x;
+```
+
+You then start the server with the following command
+
+```sh
+npx @sassoftware/restaf-server  --env=./override.env --docker=./DockerFile --appenv=./appenv.js
+```
+
+The server will start at <http://localhost:8080/viyaapp> (http:{APPHOST}:{APPPORT}/APPNAME).
+
+When you visit this link you will be prompted for userid and password.
+On successful authentication the html listed for APPENTRY(index.html in this example) will be displayed in an authenticated browser session.
+
+From your html you can make API calls to Viya. Below is sample javascript to get the root links for the files service using axios.(Note: host is the url for the Viya server)
+
+```js
+async function makeViyaCall () {
+            let config = {
+                url         : host + '/files/',
+                method      : 'GET',
+                withCredentials: true,
+                headers     : {
+                    'accept': 'application/json, application/vnd.sas.api+json',
+                }
+            };
+            let r = await axios(config);
+            return r.data;
+        };
+```
 
 ## SAS Viya Configuration
 
@@ -30,11 +125,7 @@ Please see notes below.
 
 npm install @sassoftware/restaf-server
 
-## Usage
-
-```script
-npx @sassoftware/restaf-server  --env=your-env-envfile --docker=your-DockerFile --appenv=your-appenv.js-file
-```
+## Configuration
 
 The arguments env and docker are used to specify environment variables in a portable manner.
 
@@ -107,12 +198,14 @@ APPENV = {
     caslib: 'casuser',
     table : 'foo'
 }
-
+```
 
 ## LOGONPAYLOAD
 
 The general form of this object is:
-{
+
+```js
+LOGONPAYLOAD = {
       authType : <your authflow type>,
       redirect : <the redirect url>
       host     : <your viya server>
@@ -121,7 +214,7 @@ The general form of this object is:
       host     : <same as VIYA_SERVER>
       keepAlive: < see notes below>
     };
-}
+```
 
 ---
 
@@ -130,7 +223,7 @@ The general form of this object is:
 ---
 The env file is:
 
-```env
+```ini
 APPENTRY=index.html
 APPLOC=./public
 ```
@@ -149,7 +242,7 @@ To use this scenario modify these files as follows:
 
 ### env file
 
-```env
+```ini
 VIYA_SERVER=your-viya-server(http://...)
 AUTHFLOW=implicit
 CLIENTID=your implicit flow clientid with a redirect as described below)
@@ -171,7 +264,7 @@ Example:
 
 For backward compatability the following are currently supported. Please switch to the recommended redirect above.
 
-<http://localhost:8080/viyaapp/index.html> where index.html is the value of REDIRECT setting in the enc file.
+<http://localhost:8080/viyaapp/index.html> where index.html is the value of REDIRECT setting in the env file.
 
 All this is unnecessary confusion for flexibility not really required - so switch to the simpler configuration discussed earlier.
 
@@ -183,14 +276,14 @@ All this is unnecessary confusion for flexibility not really required - so switc
 
 Your env file should like something like this. The redirect for this flow is as follows:
 
-```js
+```text
  If your APPNAME=viyaapp, APPHOST is localhost and APPPORT=8080, then set the redirect to <http://localhost:8080/viyaapp>
 
 ```
 
-restaf-server will handle the callback and redirect to APPENTRY. The server will set the cookie to CookieAuth. The authorization token is not returned with the cookie.
+restaf-server will handle the callback and redirect to APPENTRY. The server will set the cookie to CookieAuth. The authorization token is not returned to client with the cookie.
 
-```env
+```ini
 VIYA_SERVER=your-viya-server(http://...)
 AUTHFLOW=code
 CLIENTID=your authorization_code flow clientid with a redirect as described below)
@@ -259,7 +352,7 @@ But for most common cases there is no need to do this.
 Create an app.js that looks as shown below. See <https://hapi.dev/> on details on how to define your routes.
 
 ```js
-let rafserver = require ('./lib/index.js');
+let rafserver = require ('@sassoftware/restaf-server');
 rafserver.icli (getCustomHandler ());
 
 function getCustomHandler () {
@@ -309,17 +402,17 @@ Instead of key and certificate you can also use the pfx form and specify it as f
 
 TLS_PFX=path to pfx file
 
-### Passphrase
+### Passphrase for PFX
 
 This can be specified as follows
 
 TLS_PW=somevalue
 
-It appears that for pfx this is a necessity(not really sure but my experience says so)
+It appears that for pfx this is a necessity
 
 ### CA Bundle
 
-If you wish the server to use a different CA bundle than what is on the host specific the path to the bundle as follows:
+If you wish the server to use a different CA bundle than what is on the host specify the path to the bundle as follows:
 
 TLS_CABUNDLE=path
 
