@@ -22,11 +22,20 @@
 
 debugger;
 let rafserver = require('./lib/index.js');
-
+debugger;
 rafserver.icli (getCustomHandler ());
 
 function getCustomHandler () {
-    let handler = [
+	let handler = [
+		{
+			method: ['GET'],
+			path  : `/viyaapp/testroute`,
+			config: {
+				auth   : false,
+				cors   : true,
+				handler: testroute
+			}
+		},
 		{
 			method: ['POST'],
 			path  : `/startDB`,
@@ -54,6 +63,9 @@ async function startDB (req, h) {
 
 async function updateDB (req, h) {
     return 'in updateDB';
+}
+async function testroute (req, h) {
+	return 'In testroute';
 }
 
 

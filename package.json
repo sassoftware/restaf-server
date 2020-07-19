@@ -28,7 +28,8 @@
   },
   "scripts": {
     "build": "rimraf lib && babel src --out-dir lib",
-    "static": "node cli --env=.overrides.env --docker=./Dockerfile",
+    "tapp": "node app --env=./env/route/overrides.env --docker=./Dockerfile",
+    "static": "node cli --env=./env/static/overrides.env --docker=./Dockerfile",
     "implicit": "node cli --env=./env/implicit/overrides.env --docker=./Dockerfile",
     "implcallback": "node cli --env=./env/implicit/overridescallback.env --docker=./Dockerfile",
     "implcustom": "node cli --env=./env/implicit/overridescustom.env --docker=./Dockerfile",
