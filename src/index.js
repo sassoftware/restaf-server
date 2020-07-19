@@ -35,7 +35,7 @@ function icli (uTable, useDefault){
      useDefault = true;
   }
   console.log(
-      `Configuration:
+      `\nConfiguration:
           Dockerfile: ${docker}
           env file  : ${env}
           app env   : ${appenv}
@@ -127,21 +127,30 @@ function getAllEnv (userData) {
       l.keepAlive = `http://${process.env.APPHOST}:${process.env.APPPORT}/${appName}/keepAlive`
     ;
     console.log(
-      `Authorization configuration
+      `\nAuthorization configuration
          ${JSON.stringify(l, null,4)}
-         ${process.env.CLIENTSECRET}
        `  
          );
   }
 
+  if (l !== null) {
+    console.log(`\nLOGONPAYLOAD
+                  ${JSON.stringify(l, null, 4)}`);
+  } else {
+    console.log('\nNo LOGONPAYLOAD specified');
+  }
+ 
   env =
     l !== null
       ? `let LOGONPAYLOAD = ${JSON.stringify(l)};`
       : `let LOGONPAYLOAD=null;`;
 
   if (userData !== null) {
+    console.log(`\nAPPENV 
+                 ${JSON.stringify(userData, null, 4)}`);
     env += `let APPENV = ${JSON.stringify(userData)};`;
   } else {
+    console.log('No APPENV information specified');
     env += `let APPENV = {none: 'none'};`;
   }
   return env;

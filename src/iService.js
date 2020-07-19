@@ -39,13 +39,6 @@ function iService (uTable, useDefault, asset, allAppEnv) {
 		maxBytes = Number(process.env.PAYLOADMAXBYTES);
 	}
 
-	console.log(`
-      appName  : ${appName}
-      asset    : ${asset}
-      uTable   : ${uTable}
-      appenv   : ${JSON.stringify(allAppEnv, null, 4)}
-    `);
-
 	let getAppEnv = async (req, h) => {
 		return allAppEnv;
 	};
@@ -180,8 +173,7 @@ function iService (uTable, useDefault, asset, allAppEnv) {
 	} else {
 		userRouterTable = [...defaultTable];
 	}
-
-	console.log(JSON.stringify(userRouterTable, null, 4));
+	console.table(userRouterTable);
 	server(userRouterTable, asset, allAppEnv);
 }
 
