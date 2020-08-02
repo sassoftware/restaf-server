@@ -3,14 +3,21 @@
 * SPDX-License-Identifier: Apache-2.0
 */
 let uuid      = require('uuid');
-let debug = require('debug')('cookies');
+let debug = require('debug')('setcookies');
 import decodeJwt from './decodeJwt';
+import Boom  from '@hapi/boom';
 
 async function setCookies (req, h) {
+
+    console.log('state');
     debug(req.state);
     debug(req.auth);
     let authCred = req.auth.credentials;
     debug(authCred);
+    if (authCred != null && req.auth.error != null) {
+        debug('logon failed');
+        return false;
+		}
     // create a session id and save credentials in cache
     const sid = uuid.v4();
     let jwt = decodeJwt(authCred.token);

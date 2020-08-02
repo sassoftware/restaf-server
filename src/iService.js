@@ -73,9 +73,9 @@ function iService (uTable, useDefault, asset, allAppEnv) {
 	let defaultTable = [
 		{
 			method: ['GET'],
-			path  : `${appName}`,
+			path: `${appName}`,
 			config: {
-				auth   : auth1,
+				auth: auth1,
 				handler: async (req, h) => {
 					return getApp(req, h);
 				},
@@ -83,81 +83,93 @@ function iService (uTable, useDefault, asset, allAppEnv) {
 		},
 		{
 			method: ['GET'],
-			path  : `${appName}/appenv`,
+			path  : `/logonError`,
 			config: {
 				auth   : auth2,
+				handler: async (req, h) => {
+					console.log('inerror');
+					console.log(req.auth.error);
+					return `Logon failed with ${JSON.stringify(req.auth.error, null, 4)}`;
+				},
+			}
+		},
+		{
+			method: ['GET'],
+			path: `${appName}/appenv`,
+			config: {
+				auth: auth2,
 				handler: getAppEnv,
 			},
 		},
 		{
 			method: ['GET'],
-			path  : `${appName}/callback`,
+			path: `${appName}/callback`,
 			config: {
-				auth   : auth2,
+				auth: auth2,
 				handler: appCallback,
 			},
 		},
 		{
 			method: ['GET'],
-			path  : `/callback`,/* need to retire after users switch to appname/callback*/
+			path: `/callback` /* need to retire after users switch to appname/callback*/,
 			config: {
-				auth   : auth2,
+				auth: auth2,
 				handler: appCallback,
 			},
 		},
 		{
 			method: ['GET'],
-			path  : `/appenv`,
+			path: `/appenv`,
 			config: {
-				auth   : auth2,
+				auth: auth2,
 				handler: getAppEnv,
 			},
 		},
 		{
 			method: ['GET'],
-			path  : `${appName}/{param*}`,
+			path: `${appName}/{param*}`,
 			config: {
-				auth   : auth2,
+				auth: auth2,
 				handler: getApp2,
 			},
 		},
 		{
 			method: ['GET'],
-			path  : `${appName}/logout`,
+			path: `${appName}/logout`,
 			config: {
-				auth   : auth1a,
+				auth: auth1a,
 				handler: logout,
 			},
 		},
 		{
 			method: ['GET'],
-			path  : `${appName}/getfiles/{param*}`,
+			path: `${appName}/getfiles/{param*}`,
 			config: {
-				auth   : auth1a,
+				auth: auth1a,
 				handler: getFiles,
 			},
 		},
 		{
 			method: ['GET', 'POST'],
-			path  : `${appName}/keepAlive`,
+			path: `${appName}/keepAlive`,
 			config: {
-				auth   : auth1a,
+				auth: auth1a,
 				handler: keepAlive,
 			},
 		},
 		{
 			method: ['GET', 'POST'],
-			path  : `/{param*}`,
+			path: `/{param*}`,
 			config: {
-				auth   : false,
+				auth: false,
 				handler: getApp2,
 			},
 		},
 		{
 			method: ['GET'],
-			path  : `${appName}/user`,
+			path: `${appName}/user`,
 			config: {
-				auth   : auth1a,
+				auth: auth1a,
 				handler: getUser,
 			},
 		},

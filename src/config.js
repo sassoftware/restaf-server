@@ -39,8 +39,8 @@ function config (appEnv, dockerFile) {
 		console.log(`APPPORT set to value of exposed port ${process.env.APPPORT}`);
 	}
 
-	process.env.SAS_PROTOCOL =
-		process.env.SAS_SSL_ENABLED === 'YES' ? 'https://' : 'http://';
+	process.env.SAS_SSL_PROTOCOL =
+		process.env.HTTPS === 'true' ? 'https://' : 'http://';
 
 	// fixing usual user error of adding a space after the url
 	let vserver = process.env.VIYA_SERVER;

@@ -57,6 +57,7 @@
     "debug": "^4.1.1",
     "docker-file-parser": "^1.0.4",
     "eslint-config-prettier": "^6.10.1",
+    "handlebars": "^4.7.6",
     "hapi-require-https": "^5.0.0",
     "is-docker": "^2.0.0",
     "jwt-decode": "^2.2.0",
