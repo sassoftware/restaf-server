@@ -26,7 +26,7 @@ let fs = require('fs');
 // let isDocker = require('is-docker');
 let Hapi = require('@hapi/hapi');
 const { isSameSiteNoneCompatible } = require('should-send-same-site-none');
-// let Vision = require('@hapi/vision');
+let Vision = require('@hapi/vision');
 let debug = require('debug')('server');
 
 
@@ -109,12 +109,11 @@ function server (userRouterTable, asset, allAppEnv) {
 	const preResponse = async (req, h) => {
 		console.log('in preresponse');
 		console.log(`isBoom:  ${req.response.isBoom}`);
-		
+		debugger;
 		if (req.response.isBoom === true && req.response.output.statusCode >= 500) {
 			console.log('calling h.view');
 			console.log(req.response.output.statusCode);
-			let error = req.response;
-			throw error;
+			return h.view('visionIndex', { title: req.response.output.payload.custom, message: JSON.stringify(req.response.output.payload, null,4) });
 		} else {
 			return h.continue;
 		}
@@ -131,16 +130,16 @@ function server (userRouterTable, asset, allAppEnv) {
 				isSecure  : isSecure,
 			},
 		};
-		/*
+		
 		let visionOptions = {
-			engines   : { html: handlebars },
+			engines   : { html: require('handlebars')},
 			relativeTo: __dirname,
-			path      : 'visionIndex.js',
+			path      : '.',
 		};
 		await hapiServer.register(Vision);
-		hapiServer.views(visionOptions)*/
+		hapiServer.views(visionOptions);
 
-		// hapiServer.ext('onPreResponse', preResponse);
+		hapiServer.ext('onPreResponse', preResponse);
 
 		await hapiServer.register(pluginSpec);
 		await hapiServer.register({ plugin: require('hapi-require-https'), options: {} });

@@ -27,7 +27,7 @@
     "url": "https://github.com/sassoftware/restaf-server/issues"
   },
   "scripts": {
-    "build": "rimraf lib && babel src --out-dir lib",
+    "build": "rimraf lib && babel src --out-dir lib && npx shx cp ./src/visionIndex.html ./lib/visionIndex.html",
     "app": "node app --env=./env/route/overrides.env --docker=./Dockerfile",
     "static": "node cli --env=./env/static/overrides.env --docker=./Dockerfile",
     "implicit": "node cli --env=./env/implicit/overrides.env --docker=./Dockerfile",
@@ -68,6 +68,7 @@
     "regenerator-runtime": "^0.13.5",
     "request-debug": "^0.2.0",
     "should-send-same-site-none": "^2.0.4",
+    "shx": "^0.3.2",
     "tcp-ping": "^0.1.1",
     "uuid": "^7.0.3",
     "yargs": "^15.3.1"

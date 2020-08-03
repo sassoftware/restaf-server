@@ -16,7 +16,7 @@ async function setCookies (req, h) {
     debug(authCred);
     if (authCred != null && req.auth.error != null) {
         debug('logon failed');
-        return false;
+        return { status: false, error: req.auth.error };
 		}
     // create a session id and save credentials in cache
     const sid = uuid.v4();
@@ -36,7 +36,7 @@ async function setCookies (req, h) {
 
     req.cookieAuth.set({ sid });
 
-    return true;
+    return { status: true, error: null };
 }
 
 
