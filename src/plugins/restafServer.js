@@ -49,6 +49,15 @@ async function appServer (server, options) {
 		inert,
 		vision,
 	]);
+	// use hapi's builtin cookie management
+	server.state('ocookie', {
+		ttl         : null,
+		isSecure    : options.isSecure,
+		isHttpOnly  : true,
+		encoding    : 'base64json',
+		clearInvalid: true,
+		strictHeader: true,
+	});
 
 	server.route(routes);
 

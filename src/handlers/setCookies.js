@@ -9,9 +9,6 @@ import Boom  from '@hapi/boom';
 
 async function setCookies (req, h) {
 
-    console.log('state');
-    debug(req.state);
-    debug(req.auth);
     let authCred = req.auth.credentials;
     debug(authCred);
     if (authCred != null && req.auth.error != null) {
@@ -19,6 +16,7 @@ async function setCookies (req, h) {
         return { status: false, error: req.auth.error };
 		}
     // create a session id and save credentials in cache
+    
     const sid = uuid.v4();
     let jwt = decodeJwt(authCred.token);
     let credentials = {
@@ -27,14 +25,12 @@ async function setCookies (req, h) {
         sid         : sid,
         user_name   : jwt.user_name
     };
-
+      
     await req.server.app.cache.set(sid, credentials);
  
-    //
-    // save unique cache segment name in cookieAuth - sent to browser as cookie
-    //
-
-    req.cookieAuth.set({ sid });
+      
+    h.state('ocookie', { "sid": sid });
+  
 
     return { status: true, error: null };
 }

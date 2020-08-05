@@ -19,19 +19,16 @@ async function logout (req, h) {
     };
     
 	let url = `${process.env.VIYA_SERVER}/SASLogon/logout.do?callbackUrl=${callbackUrl}`;
-    if (process.env.AUTHFLOW === 'code' || process.env.AUTHFLOW === 'authorization_code') {
-		let credentials = req.auth.credentials;
-		debug(credentials);
-		if (credentials != null) {
-			let sid = credentials.sid;
-			debug(sid);
+	if (process.env.AUTHFLOW === 'code' || process.env.AUTHFLOW === 'authorization_code') {
+		if (req.state.ocookie != null) {
+			let sid = req.state.ocookie.sid;
+			  
 			await req.server.app.cache.del(sid);
-			req.cookieAuth.clear('authCookie');
 		} else {
-			console.log('Warning: No cookie returned by the browser - probably related to sameSite settings');
+			console.log('Warning: No cookie returned by the browser');
 		}
     } 
-    return h.redirect(url).unstate('authCookie');
+    return h.redirect(url).unstate('ocookie');
 }
 async function ViyaLogout () {
     let p = {

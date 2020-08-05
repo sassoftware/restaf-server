@@ -123,9 +123,10 @@ function getAllEnv (userData) {
       appName  : appName,
       keepAlive: null
     };
-    if (authflow === 'server' && keepAlive !== null)
-      l.keepAlive = `http://${process.env.APPHOST}:${process.env.APPPORT}/${appName}/keepAlive`
-    ;
+    if (authflow === 'server' && keepAlive === 'YES') {
+      l.keepAlive = `http://${process.env.APPHOST}:${process.env.APPPORT}/${appName}/keepAlive`;
+      l.keepAlive = l.keepAlive.replace(/0.0.0.0/, 'localhost');
+    } ;
     console.log(
       `\nAuthorization configuration
          ${JSON.stringify(l, null,4)}

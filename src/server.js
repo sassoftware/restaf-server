@@ -107,11 +107,7 @@ function server (userRouterTable, asset, allAppEnv) {
 	//https://hapi.dev/api/?v=19.2.0#request.preResponses
 
 	const preResponse = async (req, h) => {
-		console.log('in preresponse');
-		console.log(`isBoom:  ${req.response.isBoom}`);
-		debugger;
-		if (req.response.isBoom === true && req.response.output.statusCode >= 500) {
-			console.log('calling h.view');
+		if (req.response.isBoom === true) {
 			console.log(req.response.output.statusCode);
 			return h.view('visionIndex', { title: req.response.output.payload.custom, message: JSON.stringify(req.response.output.payload, null,4) });
 		} else {

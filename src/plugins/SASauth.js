@@ -17,15 +17,12 @@
  */
 
 
-let bell       = require('@hapi/bell'),
-// eslint-disable-next-line no-unused-vars
-    uuid       = require('uuid'),
-    cookie = require('@hapi/cookie');
+let bell = require('@hapi/bell'),
+    // eslint-disable-next-line no-unused-vars
+    uuid = require('uuid');
     
-let debug = require('debug');
-let debugbell = debug('bell');
-let debugCookie = debug('cookie');
-let debugloc = debug('loc');
+let debug = require('debug')('SASauth');
+
 exports.plugin = {
     name    : 'SASauth',
     version : '1.0.0',
@@ -34,51 +31,9 @@ exports.plugin = {
 
 async function iSASauth (hapiServer, options) {
 
-    let authCookieOptions,
-        bellAuthOptions,
+    let bellAuthOptions,
         provider;
-    authCookieOptions = {
-        cookie: {
-            password  : uuid.v4(),
-            name      : 'authCookie',
-            domain    : process.env.APPHOST,
-            isSecure  : options.isSecure,
-            isSameSite: options.isSameSite
-        },
-        
-        validateFunc: async function (req, session) {
-            // https://hapi.dev/module/cookie/api/?v=11.0.1
-            ;
-            debugCookie('------------------------------------------------');
-            let sid = session.sid; /* set in getAuthApp */
-            debugCookie(sid);
-            let credentials = await req.server.app.cache.get(sid);
-     
-            debugCookie(credentials);
-            let cred = {
-                valid      : credentials != null ? true : false,
-                credentials: credentials,
-                sid        : sid
-            };
 
-            debugCookie('------------------------------------------------');
-            return cred;
-        }
-    };
-
-
-    const getLocation = (req) => {
-        let route =  (process.env.REDIRECT == null) ? `/${process.env.APPNAME}` : '/' + process.env.REDIRECT;
-        let info = req.server.info;
-        debugloc(req.server.info);
-        let location = info.uri + route;
-        // Need to do this for docker deployment
-        if (info.host === '0.0.0.0') {
-            location = `${info.protocol}://localhost:${info.port}${route}`;
-        }
-        debugloc(location);
-        return location;
-    };
     if (process.env.AUTHFLOW == 'authorization_code' || process.env.AUTHFLOW === 'code') {
         let authURL = process.env.VIYA_SERVER ;
         provider = {
@@ -90,14 +45,11 @@ async function iSASauth (hapiServer, options) {
 
             profileMethod: 'get',
             
+            /*
             profile: async function (credentials, params, get) {
-                ;
-                debugbell('processing bell profile..........................');
-                debugbell(credentials);
-                debugbell(params);
-                debugbell(get);
-                debugbell('processing bell profile..........................');
+               
             }
+            */
             
 		};
         
@@ -105,18 +57,12 @@ async function iSASauth (hapiServer, options) {
             provider    : provider,
             password    : uuid.v4(),
             clientId    : process.env.CLIENTID.trim(),
-            clientSecret: (process.env.CLIENTSECRET == null) ? ' ' : process.env.CLIENTSECRET,
-            /*location    : getLocation,*/
-            
-            isSecure: false
+            clientSecret: (process.env.CLIENTSECRET == null) ? ' ' : process.env.CLIENTSECRET,  
+            isSecure    : options.isSecure
         
         };
         await hapiServer.register(bell);
-        await hapiServer.register(cookie);
-        hapiServer.auth.strategy('session', 'cookie', authCookieOptions);
         hapiServer.auth.strategy('sas', 'bell', bellAuthOptions);
-        
-        hapiServer.auth.default('session');
     
     }
 

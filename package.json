@@ -33,20 +33,19 @@
     "implicit": "node cli --env=./env/implicit/overrides.env --docker=./Dockerfile",
     "implcallback": "node cli --env=./env/implicit/overridescallback.env --docker=./Dockerfile",
     "implcustom": "node cli --env=./env/implicit/overridescustom.env --docker=./Dockerfile",
-    "code": "node cli --env=./overrides.env --docker=./Dockerfile",
+    "code": "node cli --env=./.env --docker=./Dockerfile",
     "tls": "node cli --env=./env/code/overridesSecure.env --docker=./Dockerfile",
     "debugimplicit": "node --inspect-brk cli --env=./env/implicit/overrides.env --docker=./Dockerfile --appenv=appenv.js",
-    "debugcode": "node --inspect-brk cli --env=./env/code/overrides.env --docker=./Dockerfile --appenv=appenv.js",
+    "debugcode": "node --inspect-brk cli --env=./.env --docker=./Dockerfile --appenv=appenv.js",
     "indocker": "node cli",
     "dkrbuild": "docker build -f Dockerfile -t viyaapp .",
     "dkrapp": "docker run -p 8080:8080 --env-file app.env  -t viyaapp",
-    "dkrrun": "docker run -p 5000:8080 --env-file overrides.env  -t viyaapp",
+    "dkrrun": "docker run -p 8080:8080 --env-file ./.env  -t viyaapp",
     "lint": "npx eslint --fix src/*.js"
   },
   "dependencies": {
     "@hapi/bell": "^12.0.0",
     "@hapi/boom": "^9.1.0",
-    "@hapi/cookie": "^11.0.1",
     "@hapi/h2o2": "^9.0.1",
     "@hapi/hapi": "^19.1.1",
     "@hapi/inert": "^6.0.1",
@@ -68,7 +67,6 @@
     "regenerator-runtime": "^0.13.5",
     "request-debug": "^0.2.0",
     "should-send-same-site-none": "^2.0.4",
-    "shx": "^0.3.2",
     "tcp-ping": "^0.1.1",
     "uuid": "^7.0.3",
     "yargs": "^15.3.1"
@@ -101,6 +99,7 @@
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "eslint": "^6.8.0",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "shx": "^0.3.2"
   }
 }

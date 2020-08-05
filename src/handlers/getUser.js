@@ -5,10 +5,15 @@
 'use strict';
 let debug = require('debug')('user');
 async function getUser (req, h) {
+      
     debug(req.state);
-    let authCred = req.auth.credentials;
-    debug(authCred);
-    let user = (authCred != null) ? authCred.user_name : 'User';
-    return `let USER_NAME='${user}';`;
+    let name = 'SAS User';
+    if (req.state.ocookie != null) {
+        let sid = req.state.ocookie.sid;
+          
+        let credentials = await req.server.app.cache.get(sid);
+        name = credentials.user_name;
+    }
+    return `let USER_NAME='${name}'`;
 }
 export default getUser;
