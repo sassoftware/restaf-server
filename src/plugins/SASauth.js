@@ -47,7 +47,7 @@ async function iSASauth (hapiServer, options) {
             
             
             profile: async function (credentials, params, get) {
-                debugger;
+                  
                 debug(credentials);
             }
         
@@ -62,7 +62,7 @@ async function iSASauth (hapiServer, options) {
             isSecure    : options.isSecure
         
         };
-        debugger;
+          
         debug(bellAuthOptions);
         await hapiServer.register(bell);
         hapiServer.auth.strategy('sas', 'bell', bellAuthOptions);

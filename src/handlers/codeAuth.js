@@ -9,9 +9,9 @@ import Boom from '@hapi/boom';
 let debug = require('debug')('codeauth');
 
 async function codeAuth (req, h) {
-	debugger;
+	  
 	debug(req.state);
-	debugger;
+	  
 	let logonResult = await setCookies(req, h);
 
 	// To handle the 500 under certain circumstances
