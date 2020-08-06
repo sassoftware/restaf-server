@@ -10,10 +10,11 @@ async function getUser (req, h) {
     let name = 'SAS User';
     if (req.state.ocookie != null) {
         let sid = req.state.ocookie.sid;
-          
+        debug(sid);
         let credentials = await req.server.app.cache.get(sid);
         name = credentials.user_name;
     }
+    debug(name);
     return `let USER_NAME='${name}'`;
 }
 export default getUser;

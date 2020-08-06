@@ -28,7 +28,7 @@ async function setCookies (req, h) {
       
     await req.server.app.cache.set(sid, credentials);
  
-      
+    debug(sid);
     h.state('ocookie', { "sid": sid });
   
 
