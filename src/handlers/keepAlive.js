@@ -7,6 +7,7 @@
 // primarly to do a keepAlive of sasLogon
 async function keepAlive (req,h) {
    let SASLogon = `${process.env.VIYA_SERVER}/SASLogon/`;
+   console.log(`KeepAlive ${SASLogon}`);
    return h.response().redirect(SASLogon).code(302);
 }
 export default keepAlive;
