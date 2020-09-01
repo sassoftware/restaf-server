@@ -19,6 +19,7 @@
 'use strict';
 
 let fs = require('fs');
+let isDocker = require('is-docker');
 import parseDocker from './parseDocker';
 import debug from 'debug';
 let configDebug = debug('config');
@@ -38,6 +39,11 @@ function config (appEnv, dockerFile) {
 		process.env.APPPORT = process.env.EXPOSEDPORT;
 		console.log(`APPPORT set to value of exposed port ${process.env.APPPORT}`);
 	}
+	if (isDocker() === false && process.env.APPHOST === '0.0.0.0') {
+		console.log('Setting APPHOST to localhost');
+		process.env.APPHOST = 'localhost';
+	}
+
 
 	process.env.SAS_SSL_PROTOCOL =
 		process.env.HTTPS === 'true' ? 'https://' : 'http://';
