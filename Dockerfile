@@ -7,17 +7,28 @@ COPY . .
 RUN npm run build
 EXPOSE 8080
 
+# if not set this defaults to EXPOSE
+ENV APPPORT=8080
+
 #
 # You can override these(but in container leave APPHOST as shown below)
 # 
 
 ENV APPHOST=0.0.0.0
 ENV APPNAME=viyademo
+
+# The following are defaults if not set
 ENV APPLOC=./public
 ENV APPENTRY=index.html
-ENV APPPORT=8080
+# ENV APPENV=appenv.js
+
+# The app has to handle the call to /{appname}/keepAlive end point
 ENV KEEPALIVE=YES
-ENV APPENV=appenv.js
+
+# TLS releated info . 
+# BAD but: REJECT_UNAUTHORIZED is turned off by default since many forget to get rid 
+# of the unsigned certificate used by Viya during install
+
 ENV SAMESITE=None,false
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 CMD ["npm", "run", "indocker"]

@@ -35,6 +35,7 @@ function config (appEnv, dockerFile) {
 	}
 	
 
+	// Final patching
 	if (process.env.APPPORT == null && process.env.EXPOSEDPORT != null) {
 		process.env.APPPORT = process.env.EXPOSEDPORT;
 		console.log(`APPPORT set to value of exposed port ${process.env.APPPORT}`);
@@ -44,6 +45,13 @@ function config (appEnv, dockerFile) {
 		process.env.APPHOST = 'localhost';
 	}
 
+	if (process.env.APPLOC == null) {
+		process.env.APPLOC = './public';
+	}
+
+	if (process.env.APPENTRY == null) {
+		process.env.APPENTRY = 'index.html';
+	}
 
 	process.env.SAS_SSL_PROTOCOL =
 		process.env.HTTPS === 'true' ? 'https://' : 'http://';

@@ -102,6 +102,12 @@ function server (userRouterTable, asset, allAppEnv) {
 	}
 	debug(sConfig);
 
+	console.log(
+	`Application information: 
+		APPLOC  : ${process.env.APPLOC}
+		APPENTRY: ${process.env.APPENTRY}
+`
+	);
 	let hapiServer = Hapi.server(sConfig);
 
 	//https://hapi.dev/api/?v=19.2.0#request.preResponses
