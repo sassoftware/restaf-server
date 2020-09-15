@@ -66,6 +66,7 @@
     "qs": "^6.9.3",
     "regenerator-runtime": "^0.13.5",
     "request-debug": "^0.2.0",
+    "selfsigned": "^1.10.8",
     "should-send-same-site-none": "^2.0.4",
     "tcp-ping": "^0.1.1",
     "uuid": "^7.0.3",

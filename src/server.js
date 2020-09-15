@@ -28,6 +28,7 @@ let Hapi = require('@hapi/hapi');
 const { isSameSiteNoneCompatible } = require('should-send-same-site-none');
 let Vision = require('@hapi/vision');
 let debug = require('debug')('server');
+let selfsigned = require('selfsigned');
 
 
 function server (userRouterTable, asset, allAppEnv) {
@@ -75,6 +76,28 @@ function server (userRouterTable, asset, allAppEnv) {
 
 	let tls = {};
 
+	console.log('TLS_CREATE ',process.env.TLS_CREATE);
+	if (process.env.TLS_CREATE != null) {
+		let options = {
+			keySize  : 2048,
+			days     : 360,
+			algorithm: "sha256",
+
+			clientCertificate: true
+		};
+
+		let subj = process.env.TLS_CREATE.split(',');
+		let attr = subj.map(c => {
+			let r = c.split(':');
+			return { name: r[ 0 ], value: r[ 1 ] };
+		});
+		debug(attr);
+		let pems = selfsigned.generate(null, options);
+		tls.cert = pems.cert;
+		tls.key = pems.private;
+		debug(tls);
+
+	}
 	if (process.env.TLS_CERT != null) {
 		tls.cert = fs.readFileSync(process.env.TLS_CERT);
 	}
