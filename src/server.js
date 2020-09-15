@@ -42,6 +42,7 @@ function server (userRouterTable, asset, allAppEnv) {
 		isSecure = s2 === 'secure' ? true : false;
 	}
 
+
 	let sConfig = {
 		port: process.env.APPPORT,
 		host: process.env.APPHOST,

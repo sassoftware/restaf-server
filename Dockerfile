@@ -7,17 +7,22 @@ COPY . .
 RUN npm run build
 EXPOSE 8080
 
-# if not set this defaults to EXPOSE
-ENV APPPORT=8080
 
-#
+
+#####################################################################
 # You can override these(but in container leave APPHOST as shown below)
 # 
 
+# set this the same as EXPOSE here and override in env or as -p option in dockerrun
+ENV APPPORT=8080
+
+# will change to localhost in non-docker environments
 ENV APPHOST=0.0.0.0
+
+
 ENV APPNAME=viyademo
 
-# The following are defaults if not set
+# The following are defaults 
 ENV APPLOC=./public
 ENV APPENTRY=index.html
 # ENV APPENV=appenv.js
@@ -31,4 +36,5 @@ ENV KEEPALIVE=YES
 
 ENV SAMESITE=None,false
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+#####################################################################
 CMD ["npm", "run", "indocker"]
