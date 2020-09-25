@@ -5,8 +5,10 @@
 'use strict';
 
 // primarly to do a keepAlive of sasLogon
+let debug = require('debug')('keepalive');
 async function keepAlive (req,h) {
    let SASLogon = `${process.env.VIYA_SERVER}/SASLogon/`;
+   debug(SASLogon);
    return h.response().redirect(SASLogon).code(302);
 }
 export default keepAlive;

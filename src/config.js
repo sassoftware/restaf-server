@@ -53,8 +53,10 @@ function config (appEnv, dockerFile) {
 		process.env.APPENTRY = 'index.html';
 	}
 
-	process.env.SAS_SSL_PROTOCOL =
-		process.env.HTTPS === 'true' ? 'https://' : 'http://';
+	process.env.SAS_SSL_PROTOCOL = 'http://';
+	if (process.env.HTTPS === 'true' || process.env.HTTPS === 'YES') {
+		process.env.SAS_SSL_PROTOCOL = 'https://';
+	}
 
 	// fixing usual user error of adding a space after the url
 	let vserver = process.env.VIYA_SERVER;

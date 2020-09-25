@@ -20,7 +20,7 @@ ENV APPPORT=8080
 ENV APPHOST=0.0.0.0
 
 
-ENV APPNAME=viyademo
+ENV APPNAME=viyaapp
 
 # The following are defaults 
 ENV APPLOC=./public
@@ -35,6 +35,6 @@ ENV KEEPALIVE=YES
 # of the unsigned certificate used by Viya during install
 
 ENV SAMESITE=None,false
-ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+# ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 #####################################################################
 CMD ["npm", "run", "indocker"]

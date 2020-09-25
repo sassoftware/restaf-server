@@ -133,6 +133,14 @@ function server (userRouterTable, asset, allAppEnv) {
 `
 	);
 	let hapiServer = Hapi.server(sConfig);
+	
+	hapiServer.state =
+		('ocookie',
+		{
+			ttl     : null,
+	    	encoding: 'base64json',
+			isSecure: isSecure
+		});
 
 	//https://hapi.dev/api/?v=19.2.0#request.preResponses
 

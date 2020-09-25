@@ -183,6 +183,7 @@ function iService (uTable, useDefault, asset, allAppEnv) {
 		userRouterTable = [...defaultTable];
 	}
 	console.table(userRouterTable);
+	
 	server(userRouterTable, asset, allAppEnv);
 }
 
