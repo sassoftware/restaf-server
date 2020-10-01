@@ -16,7 +16,7 @@
     "node": ">=12.14.0"
   },
   "bin": {
-    "@sassoftware/restaf-server": "cli.js"
+    "@sassoftware/restaf-server": "./lib/cli.js"
   },
   "homepage": "https://github.com/sassoftware/restaf-server#README.md",
   "repository": {
@@ -29,14 +29,14 @@
   "scripts": {
     "build": "rimraf lib && babel src --out-dir lib && npx shx cp ./src/visionIndex.html ./lib/visionIndex.html",
     "app": "node app --env=./.env --docker=./Dockerfile",
-    "static": "node cli --env=./env/static/overrides.env --docker=./Dockerfile",
-    "implicit": "node cli --env=./env/implicit/overrides.env --docker=./Dockerfile",
-    "implcallback": "node cli --env=./env/implicit/overridescallback.env --docker=./Dockerfile",
-    "implcustom": "node cli --env=./env/implicit/overridescustom.env --docker=./Dockerfile",
-    "code": "node cli --env=./.env --docker=./Dockerfile",
-    "tls": "node cli --env=./env/code/overridesSecure.env --docker=./Dockerfile",
-    "debugimplicit": "node --inspect-brk cli --env=./env/implicit/overrides.env --docker=./Dockerfile --appenv=appenv.js",
-    "debugcode": "node --inspect-brk cli --env=./.env --docker=./Dockerfile --appenv=appenv.js",
+    "static": "node ./lib/cli.js     --env=./env/static/app.env --docker=./Dockerfile",
+    "implicit": "node ./lib/cli.js     --env=./env/implicit/overrides.env --docker=./Dockerfile",
+    "implcallback": "node ./lib/cli.js     --env=./env/implicit/overridescallback.env --docker=./Dockerfile",
+    "implcustom": "node ./lib/cli.js     --env=./env/implicit/overridescustom.env --docker=./Dockerfile",
+    "code": "node ./lib/cli.js     --env=./.env --docker=./Dockerfile",
+    "tls": "node ./lib/cli.js     --env=./env/code/overridesSecure.env --docker=./Dockerfile",
+    "debugimplicit": "node --inspect-brk ./lib/cli.js    --env=./env/implicit/overrides.env --docker=./Dockerfile --appenv=appenv.js",
+    "debugcode": "node --inspect-brk ./lib/cli.js    --env=./.env --docker=./Dockerfile --appenv=appenv.js",
     "indocker": "node cli",
     "dkrbuild": "docker build -f Dockerfile -t viyaapp .",
     "dkrapp": "docker run -p 8080:8080 --env-file app.env  -t viyaapp",

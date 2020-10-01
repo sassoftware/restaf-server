@@ -79,7 +79,6 @@
 				};
 			
 				store.request(payload);
-				/*
 				store.getServices().forEach((s) => {
 					if (s.indexOf('_') === -1) {
 						if (s.indexOf('cas-http') === -1) {
@@ -94,7 +93,6 @@
 						}
 					}
 				});
-				*/
 				return true;
 			};
 			function setup() {
@@ -124,7 +122,7 @@
 				let msg = await store.logon(LOGONPAYLOAD);
 				debugger;
 				services = await store.addServices(
-					'files'
+					'files', 'casManagement', 'compute'
 				);
 				debugger;
 

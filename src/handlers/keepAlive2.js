@@ -5,7 +5,7 @@
 'use strict';
 
 // primarly to do a keepAlive of sasLogon
-let debug = require('debug')('keepalive');
+let debug = require('debug')('keepAlive');
 async function keepAlive2 (req,h) {
    debug('in keep2');;
    return h.response().code(204);
