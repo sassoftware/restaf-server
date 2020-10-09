@@ -71,6 +71,15 @@
 			let files = null;
 			let reports = null;
 			let compute = null;
+			if (LOGONPAYLOAD.keepAlive != null) {
+					setInterval(() => {
+						let payload = {
+							url: `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/keepAlive`,
+							method: 'GET',
+						};
+						store.request(payload);
+				}, 5000);
+			}
 			const handleUserClicks = () => {
 				
 				let payload = {
@@ -79,6 +88,7 @@
 				};
 			
 				store.request(payload);
+				/*
 				store.getServices().forEach((s) => {
 					if (s.indexOf('_') === -1) {
 						if (s.indexOf('cas-http') === -1) {
@@ -93,12 +103,14 @@
 						}
 					}
 				});
+				*/
 				return true;
 			};
 			function setup() {
 				debugger;
 				document.getElementById('output').innerHTML = '...initializing';
 				console.log(USER_NAME);
+				
 				initSession()
 					.then(r => {
 						document.getElementById('head').innerHTML = `Hello ${USER_NAME}`;
@@ -122,18 +134,21 @@
 				let msg = await store.logon(LOGONPAYLOAD);
 				debugger;
 				services = await store.addServices(
-					'files', 'casManagement', 'compute'
+					'files', 'compute', 'casManagement'
 				);
 				debugger;
+				
 
 				return 'done';
 			}
 			function runit(type) {
 				debugger;
+				/*
 				if (LOGONPAYLOAD.keepAlive !== null ) {
 					document.getElementById('output').innerHTML = '...running keepalives';
 					handleUserClicks();
 				}
+				*/
 				document.getElementById('output').innerHTML = '...running';
 				let testcase;
 				switch (type) {

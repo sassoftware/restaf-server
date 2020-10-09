@@ -124,7 +124,8 @@ function getAllEnv (userData) {
       keepAlive: null
     };
     if (authflow === 'server' && keepAlive === 'YES') {
-      l.keepAlive = `http://${process.env.APPHOST}:${process.env.APPPORT}/${appName}/keepAlive`;
+      let protocol = (process.env.HTTPS === 'YES') ? 'https://' : 'http://';
+      l.keepAlive = `${protocol}${process.env.APPHOST}:${process.env.APPPORT}/${appName}/keepAlive`;
       l.keepAlive = l.keepAlive.replace(/0.0.0.0/, 'localhost');
     } ;
     console.log(

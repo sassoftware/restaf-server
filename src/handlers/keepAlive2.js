@@ -8,6 +8,6 @@
 let debug = require('debug')('keepAlive');
 async function keepAlive2 (req,h) {
    debug('in keep2');;
-   return h.response().code(204);
+   return h.response().code(200);
 }
 export default keepAlive2;

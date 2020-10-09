@@ -63,18 +63,21 @@ function config (appEnv, dockerFile) {
 
 	// fixing usual user error of adding a space after the url
 	let vserver = process.env.VIYA_SERVER;
-	if (vserver != null) {
-		vserver = vserver.trim();
-		if (vserver.endsWith('/') === true) {
-			vserver = vserver.substring(0, vserver.length - 1);
-		}
-
-		if (vserver.indexOf('http') < 0) {
-			vserver = protocol + vserver;
-		}
+	if (vserver == null) {
+		console.log('Please specify a Viya server (VIYA_SERVER)');
+		process.exit(0);
 	}
-	if (protocol === 'https://') {
-		process.env.HTTPS = 'YES';
+
+	vserver = vserver.trim();
+	if (vserver.endsWith('/') === true) {
+		vserver = vserver.substring(0, vserver.length - 1);
+	}
+	if (vserver.indexOf('http') < 0) {
+		vserver = protocol + vserver;
+	} else {
+		if (vserver.indexOf('https://') !== -1) {
+			process.env.HTTPS = 'YES';
+		}
 	}
 
 }

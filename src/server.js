@@ -76,54 +76,57 @@ function server (userRouterTable, asset, allAppEnv) {
 
 	let tls = {};
 
-	console.log('TLS_CREATE ',process.env.TLS_CREATE);
-	if (process.env.TLS_CREATE != null) {
-		let options = {
-			keySize  : 2048,
-			days     : 360,
-			algorithm: "sha256",
+	if (process.env.HTTPS === 'YES') {
+		console.log('TLS_CREATE ', process.env.TLS_CREATE);
+		if (process.env.TLS_CREATE != null) {
+			let options = {
+				keySize  : 2048,
+				days     : 360,
+				algorithm: "sha256",
 
-			clientCertificate: true
-		};
+				clientCertificate: true
+			};
 
-		let subj = process.env.TLS_CREATE.split(',');
-		let attr = subj.map(c => {
-			let r = c.split(':');
-			return { name: r[ 0 ], value: r[ 1 ] };
-		});
-		debug(attr);
-		let pems = selfsigned.generate(null, options);
-		tls.cert = pems.cert;
-		tls.key = pems.private;
-		debug(tls);
+			let subj = process.env.TLS_CREATE.split(',');
+			let attr = subj.map(c => {
+				let r = c.split(':');
+				return { name: r[ 0 ], value: r[ 1 ] };
+			});
+			debug(attr);
+			let pems = selfsigned.generate(null, options);
+			tls.cert = pems.cert;
+			tls.key = pems.private;
+			debug(tls);
 
-	}
-	if (process.env.TLS_CERT != null) {
-		tls.cert = fs.readFileSync(process.env.TLS_CERT);
-	}
+		} 
+		if (process.env.TLS_CERT != null) {
+			tls.cert = fs.readFileSync(process.env.TLS_CERT);
+		}
 
-	if (process.env.TLS_CERT != null) {
-		tls.key = fs.readFileSync(process.env.TLS_KEY);
-	}
+		if (process.env.TLS_CERT != null) {
+			tls.key = fs.readFileSync(process.env.TLS_KEY);
+		}
 
-	if (process.env.TLS_CABUNDLE != null) {
-		tls.CA = fs.readFileSync(process.env.TLS_CABUNDLE);
-	}
+		if (process.env.TLS_CABUNDLE != null) {
+			tls.CA = fs.readFileSync(process.env.TLS_CABUNDLE);
+		}
 
-	if (process.env.TLS_PFX != null) {
-		tls.pfx = fs.readFileSync(process.env.TLS_PFX);
-	}
+		if (process.env.TLS_PFX != null) {
+			tls.pfx = fs.readFileSync(process.env.TLS_PFX);
+		}
 
-	if (process.env.TLS_PW != null) {
-		tls.passphrase = process.env.TLS_PW;
-	}
-	if (Object.keys(tls).length > 0) {
-		sConfig.tls = tls;
+		if (process.env.TLS_PW != null) {
+			tls.passphrase = process.env.TLS_PW;
+		}
+		if (Object.keys(tls).length > 0) {
+			sConfig.tls = tls;
+		}
 	}
 
 	if (asset !== null) {
 		sConfig.routes.files = { relativeTo: asset };
 	}
+	
 	debug(sConfig);
 
 	console.log(
