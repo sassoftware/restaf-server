@@ -78,7 +78,7 @@
 							method: 'GET',
 						};
 						store.request(payload);
-				}, 5000);
+				}, 60000);
 			}
 			const handleUserClicks = () => {
 				
@@ -133,9 +133,11 @@
 				console.log(LOGONPAYLOAD);
 				let msg = await store.logon(LOGONPAYLOAD);
 				debugger;
+				/*
 				services = await store.addServices(
 					'files', 'compute', 'casManagement'
 				);
+				*/
 				debugger;
 				
 
@@ -215,7 +217,7 @@
 			}
 			async function runCas(store) {
 				debugger;
-				let casManagement = services.casManagement;
+				let {casManagement} = await store.addServices('casManagement');
 				let servers = await store.apiCall(
 					casManagement.links('servers')
 				);
@@ -235,7 +237,7 @@
 
 			async function SASfileService(store) {
 				debugger;
-				let files = services.files;
+				let {files} = await store.addServices('files');
 				console.log(JSON.stringify(files.links(), null, 4));
 				let payload = {
 					data: { x: 1, y: 'This was saved earlier in the step' },
@@ -250,7 +252,7 @@
 			}
 			async function dsCompute(store) {
 				let log = null;
-				let compute = services.compute;
+				let {compute} = await store.addServices('compute');
 
 				let contexts = await store.apiCall(compute.links('contexts'));
 

@@ -20,7 +20,7 @@
 
 
 import server from './server';
-import { getApp, keepAlive, appCallback, logout, getUser} from './handlers';
+import { getApp, keepAlive, keepAlive2,appCallback, logout, getUser} from './handlers';
 let os = require('os');
 
 function iService (uTable, useDefault, asset, allAppEnv) {
@@ -88,7 +88,7 @@ function iService (uTable, useDefault, asset, allAppEnv) {
 					console.log(req.auth.error);
 					return `Logon failed with ${JSON.stringify(req.auth.error, null, 4)}`;
 				},
-			}
+			},
 		},
 		{
 			method: ['GET'],
@@ -152,6 +152,14 @@ function iService (uTable, useDefault, asset, allAppEnv) {
 			config: {
 				auth   : auth1a,
 				handler: keepAlive,
+			},
+		},
+		{
+			method: ['GET', 'POST'],
+			path  : `${appName}/keepAlive2`,
+			config: {
+				auth   : auth1a,
+				handler: keepAlive2,
 			},
 		},
 		{

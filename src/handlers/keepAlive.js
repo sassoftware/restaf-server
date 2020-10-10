@@ -7,7 +7,7 @@
 // primarly to do a keepAlive of sasLogon
 let debug = require('debug')('keepalive');
 async function keepAlive (req,h) {
-   let SASLogon = `${process.env.VIYA_SERVER}/SASLogon/oauth/authorize?client_id=${process.env.CLIENTID}&redirect_uri=${process.env.APPSERVER}/keepAlive&response_type=code`;
+   let SASLogon = `${process.env.VIYA_SERVER}/SASLogon/oauth/authorize?client_id=${process.env.CLIENTID}&redirect_uri=${process.env.APPSERVER}/keepAlive2&response_type=code`;
   // let SASLogon = `${process.env.VIYA_SERVER}/SASLogon/`;
    debug(SASLogon);
    return h.response().redirect(SASLogon).code(302);
