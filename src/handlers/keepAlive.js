@@ -4,12 +4,53 @@
 */
 'use strict';
 
+import axios from 'axios';
+
 // primarly to do a keepAlive of sasLogon
+let qs = require('qs');
 let debug = require('debug')('keepalive');
-async function keepAlive (req,h) {
+import decodeJwt from './decodeJwt';
+
+async function keepAlive (req, h) {
+    let credentials = refreshToken(req, h);
    let SASLogon = `${process.env.VIYA_SERVER}/SASLogon/oauth/authorize?client_id=${process.env.CLIENTID}&redirect_uri=${process.env.APPSERVER}/keepAlive2&response_type=code`;
   // let SASLogon = `${process.env.VIYA_SERVER}/SASLogon/`;
    debug(SASLogon);
-   return h.response().redirect(SASLogon).code(302);
+   return h.redirect(SASLogon).code(302);
+}
+
+async function refreshToken (req, h) {
+    
+    let sid = req.state.ocookie.sid;
+    debug(sid);
+    let credentials = await req.server.app.cache.get(sid);
+
+    let config = {
+        url   : `${process.env.VIYA_SERVER}/SASLogon/oauth/token`,
+        method: 'POST',
+
+        headers: {
+            'Accept'      : 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        data: qs.stringify({
+            grant_type   : 'refresh_token',
+            refresh_token: credentials.refreshToken,
+            client_id    : process.env.CLIENTID,
+            client_secret: process.env.CLIENTSECRET
+        })
+    };
+
+    let r = await axios(config);
+  
+	credentials = {
+		token       : r.data.access_token,
+		refreshToken: r.data.refresh_token,
+		sid         : sid
+    };
+    await req.server.app.cache.set(sid, credentials);
+    h.state('ocookie', { "sid": sid });
+    return credentials;
+
 }
 export default keepAlive;
