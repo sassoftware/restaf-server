@@ -63,6 +63,7 @@
 				height: 200px;
 			}
 		</style>
+	
 		<script>
 			let store = restaf.initStore();
 			let session = null;
@@ -71,40 +72,56 @@
 			let files = null;
 			let reports = null;
 			let compute = null;
+		
+			function reducer(r) {
+				console.log(r);
+				return r;
+			}
+			async function runApis() {
+				let payload = {
+					url: `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/keepAlive`,
+					method: 'GET',
+					headers: {
+						'Accept': '*/*'
+					}
+				};
+				await store.request(payload);
+				let xsrf = store.getXsrfData();
+				let services = store.getServices();
+				// let route = {files: 'files', compute: 'compute', casManagemnt: 'servers'}
+				for ( let i=0; i < services.length; i++) {
+			        let s = services[i];
+					if (s.indexOf('_') === -1) {
+						if (s.indexOf('cas-http') === -1) {
+							let ixsrf = store.getXsrfData(s);
+							let xsrfHeaderName = ixsrf['x-csrf-header'];
+							if (ixsrf !== null ) {/* could be initialization state if null */
+								let payload = {
+									url: `${LOGONPAYLOAD.host}/${s}/`,
+									'Accept': 'application/json, application/vnd.sas.api+json',
+									withCredentials: true,
+									method: 'GET',
+									xsrfHeaderName: xsrfHeaderName,
+									headers: {}
+								};
+								payload.headers[xsrfHeaderName] = ixsrf['x-csrf-token']; 
+								debugger;
+								await store.request(payload);
+							}
+						}
+					}
+				};
+			}
+			
 			if (LOGONPAYLOAD.keepAlive != null) {
 					setInterval(() => {
-						let payload = {
-							url: `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/keepAlive`,
-							method: 'GET',
-						};
-
-						store.request(payload);
-						let xsrf = store.getXsrfData();
-						store.getServices().forEach((s) => {
-							if (s.indexOf('_') === -1) {
-								if (s.indexOf('cas-http') === -1) {
-									let xsrf = store.getXsrfData(s);
-									if (xsrf !== null ) {/* could be initialization state if null */
-										let xsrfHeaderName = xsrf['x-csrf-header'];
-										let payload = {
-											url: `${LOGONPAYLOAD.host}/${s}/`,
-											method: 'GET',
-											xsrfHeaderName: xsrfHeaderName,
-											headers: {
-												withCredentials: true
-											},
-										};
-										payload.headers[xsrfHeaderName] = xsrf['x-csrf-token'];
-										store.request(payload);
-									}
-								}
-							}
-						});
+						runApis()
+						.then (() => 'done')
+						.catch(err => console.log(err));
 				}, 60000);
 			}
-			function customReducer(r) {
-
-			}
+			
+	
 			const handleUserClicks = () => {
 				
 				let payload = {
@@ -124,7 +141,7 @@
 									withCredentials: true,
 								},
 							};
-							store.request(payload);
+							store.request(payload, reducer);
 						}
 					}
 				});
