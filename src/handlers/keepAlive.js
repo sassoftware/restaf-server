@@ -12,7 +12,7 @@ let debug = require('debug')('keepalive');
 import decodeJwt from './decodeJwt';
 
 async function keepAlive (req, h) {
-    let credentials = refreshToken(req, h);
+    refreshToken(req, h);
     let SASLogon = `${process.env.VIYA_SERVER}/SASLogon/oauth/authorize?client_id=${process.env.CLIENTID}&redirect_uri=${process.env.APPSERVER}/keepAlive2&response_type=code`;
    // let SASLogon = `${process.env.VIYA_SERVER}/SASLogon/`;
    debug(SASLogon);
