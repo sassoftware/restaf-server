@@ -77,8 +77,33 @@
 							url: `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/keepAlive`,
 							method: 'GET',
 						};
+
 						store.request(payload);
+						let xsrf = store.getXsrfData();
+						store.getServices().forEach((s) => {
+							if (s.indexOf('_') === -1) {
+								if (s.indexOf('cas-http') === -1) {
+									let xsrf = store.getXsrfData(s);
+									if (xsrf !== null ) {/* could be initialization state if null */
+										let xsrfHeaderName = xsrf['x-csrf-header'];
+										let payload = {
+											url: `${LOGONPAYLOAD.host}/${s}/`,
+											method: 'GET',
+											xsrfHeaderName: xsrfHeaderName,
+											headers: {
+												withCredentials: true
+											},
+										};
+										payload.headers[xsrfHeaderName] = xsrf['x-csrf-token'];
+										store.request(payload);
+									}
+								}
+							}
+						});
 				}, 60000);
+			}
+			function customReducer(r) {
+
 			}
 			const handleUserClicks = () => {
 				

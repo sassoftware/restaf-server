@@ -182,6 +182,7 @@ function server (userRouterTable, asset, allAppEnv) {
 		await hapiServer.register({ plugin: require('hapi-require-https'), options: {} });
 		await hapiServer.start();
 		let hh = hapiServer.info.uri.replace(/0.0.0.0/, 'localhost');
+		console.log('Start Time: ', Date());
 		console.log(`Visit ${hh}/${process.env.APPNAME}`);
 		process.env.APPSERVER = `${hh}/${process.env.APPNAME}`;
 	};
