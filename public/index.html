@@ -75,7 +75,7 @@
 			let timerid = null;
 			function useRestaf() {
 				let keepUrl = `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/keepAlive`;
-				store.keepViyaAlive(keepUrl);
+				store.keepViyaAlive(GOGONPAYLOAD.keepAlive,1000, 20000);
        		 }
 
 			if (LOGONPAYLOAD.keepAlive != null) {
@@ -93,8 +93,14 @@
 						document.getElementById('head').innerHTML = `Hello ${USER_NAME}`;
 						document.getElementById('output').innerHTML = 'ready';
 						if ( LOGONPAYLOAD.keepAlive != null) {
-						   store.keepViyaAlive(`${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/keepAlive`,
-						   5000,10000);
+							let interval = 60000;
+							let timeout = 14400000;
+							if (LOGONPAYLOAD.timers != null) {
+								let opts = LOGONPAYLOAD.timers.split(',');
+								interval = parseInt(opts[ 0 ]);
+								timeout = parseInt(opts[ 1 ]);
+							}
+						   store.keepViyaAlive(LOGONPAYLOAD.keepAlive, interval, timeout);
 						}
 					})
 					.catch(e => {

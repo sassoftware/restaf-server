@@ -128,6 +128,9 @@ function getAllEnv (userData) {
       l.keepAlive = `${protocol}${process.env.APPHOST}:${process.env.APPPORT}/${appName}/keepAlive`;
       l.keepAlive = l.keepAlive.replace(/0.0.0.0/, 'localhost');
     } ;
+    if (process.env.TIMERS != null) {
+      l.timers = process.env.TIMERS;
+    }
     console.log(
       `\nAuthorization configuration
          ${JSON.stringify(l, null,4)}
