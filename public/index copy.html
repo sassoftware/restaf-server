@@ -63,6 +63,7 @@
 				height: 200px;
 			}
 		</style>
+	
 		<script>
 			let store = restaf.initStore();
 			let session = null;
@@ -71,36 +72,29 @@
 			let files = null;
 			let reports = null;
 			let compute = null;
-			const handleUserClicks = () => {
-				let payload = {
-					url: `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/keepAlive`,
-					method: 'GET',
-				};
-				store.request(payload);
-				store.getServices().forEach((s) => {
-					if (s.indexOf('_') === -1) {
-						if (s.indexOf('cas-http') === -1) {
-							let payload = {
-								url: `${LOGONPAYLOAD.host}/${s}/keepalive`,
-								method: 'GET',
-								headers: {
-									withCredentials: true,
-								},
-							};
-							store.request(payload);
-						}
-					}
-				});
-				return true;
+			let timerid = null;
+			function useRestaf() {
+				let keepUrl = `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/keepAlive`;
+				store.keepViyaAlive(keepUrl);
+       		 }
+
+			if (LOGONPAYLOAD.keepAlive != null) {
+				debugger;
+				  let keepUrl = `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/keepAlive`;
 			};
+
 			function setup() {
 				debugger;
 				document.getElementById('output').innerHTML = '...initializing';
 				console.log(USER_NAME);
+				
 				initSession()
 					.then(r => {
 						document.getElementById('head').innerHTML = `Hello ${USER_NAME}`;
 						document.getElementById('output').innerHTML = 'ready';
+						if ( LOGONPAYLOAD.keepAlive != null) {
+						   timerid = setInterval (useRestaf, 5000);
+						}
 					})
 					.catch(e => {
 						debugger;
@@ -120,20 +114,19 @@
 				let msg = await store.logon(LOGONPAYLOAD);
 				debugger;
 				services = await store.addServices(
-					'files',
-					'compute',
-					'casManagement'
+					'files', 'compute', 'casManagement'
 				);
 				debugger;
-
 				return 'done';
 			}
 			function runit(type) {
 				debugger;
+				/*
 				if (LOGONPAYLOAD.keepAlive !== null ) {
 					document.getElementById('output').innerHTML = '...running keepalives';
 					handleUserClicks();
 				}
+				*/
 				document.getElementById('output').innerHTML = '...running';
 				let testcase;
 				switch (type) {
@@ -151,6 +144,11 @@
 					}
 					case 'download': {
 						testcase = getFiles;
+						break;
+					}
+					case 'redir': {
+						testcase= noaction;
+						
 						break;
 					}
 					default: {
@@ -172,7 +170,10 @@
 						).innerHTML = JSON.stringify(err, null, 4);
 					});
 			}
-
+			async function noaction() {
+				r = {msg: 'redirects completed'};
+				return r;
+			}
 			async function getFiles(store) {
 				let {session} = await restaflib.casSetup(store, null);
 
@@ -192,7 +193,7 @@
 			}
 			async function runCas(store) {
 				debugger;
-				let casManagement = services.casManagement;
+				let {casManagement} = await store.addServices('casManagement');
 				let servers = await store.apiCall(
 					casManagement.links('servers')
 				);
@@ -212,7 +213,7 @@
 
 			async function SASfileService(store) {
 				debugger;
-				let files = services.files;
+				let {files} = await store.addServices('files');
 				console.log(JSON.stringify(files.links(), null, 4));
 				let payload = {
 					data: { x: 1, y: 'This was saved earlier in the step' },
@@ -227,7 +228,7 @@
 			}
 			async function dsCompute(store) {
 				let log = null;
-				let compute = services.compute;
+				let {compute} = await store.addServices('compute');
 
 				let contexts = await store.apiCall(compute.links('contexts'));
 

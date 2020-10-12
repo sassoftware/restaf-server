@@ -16,7 +16,6 @@ async function keepAlive (req, h) {
     // let SASLogon = `${process.env.VIYA_SERVER}/SASLogon/oauth/authorize?client_id=${process.env.CLIENTID}&redirect_uri=${process.env.APPSERVER}/keepAlive2&response_type=code`;
     let SASLogon = `${process.env.VIYA_SERVER}/SASLogon/`;
    debug(SASLogon);
-  //  return h.redirect(SASLogon).code(302);
   return h.redirect(SASLogon).code(302);
 }
 

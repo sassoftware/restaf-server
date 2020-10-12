@@ -72,82 +72,17 @@
 			let files = null;
 			let reports = null;
 			let compute = null;
-		
-			function reducer(r) {
-				console.log(r);
-				return r;
-			}
-			async function runApis() {
-				let payload = {
-					url: `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/keepAlive`,
-					method: 'GET',
-					headers: {
-						'Accept': '*/*'
-					}
-				};
-				await store.request(payload);
-				let xsrf = store.getXsrfData();
-				let services = store.getServices();
-				// let route = {files: 'files', compute: 'compute', casManagemnt: 'servers'}
-				for ( let i=0; i < services.length; i++) {
-			        let s = services[i];
-					if (s.indexOf('_') === -1) {
-						if (s.indexOf('cas-http') === -1) {
-							let ixsrf = store.getXsrfData(s);
-							let xsrfHeaderName = ixsrf['x-csrf-header'];
-							if (ixsrf !== null ) {/* could be initialization state if null */
-								let payload = {
-									url: `${LOGONPAYLOAD.host}/${s}/`,
-									'Accept': 'application/json, application/vnd.sas.api+json',
-									withCredentials: true,
-									method: 'GET',
-									xsrfHeaderName: xsrfHeaderName,
-									headers: {}
-								};
-								payload.headers[xsrfHeaderName] = ixsrf['x-csrf-token']; 
-								debugger;
-								await store.request(payload);
-							}
-						}
-					}
-				};
-			}
-			
+			let timerid = null;
+			function useRestaf() {
+				let keepUrl = `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/keepAlive`;
+				store.keepViyaAlive(keepUrl);
+       		 }
+
 			if (LOGONPAYLOAD.keepAlive != null) {
-					setInterval(() => {
-						runApis()
-						.then (() => 'done')
-						.catch(err => console.log(err));
-				}, 60000);
-			}
-			
-	
-			const handleUserClicks = () => {
-				
-				let payload = {
-					url: `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/keepAlive`,
-					method: 'GET',
-				};
-			
-				store.request(payload);
-				/*
-				store.getServices().forEach((s) => {
-					if (s.indexOf('_') === -1) {
-						if (s.indexOf('cas-http') === -1) {
-							let payload = {
-								url: `${LOGONPAYLOAD.host}/${s}/keepalive`,
-								method: 'GET',
-								headers: {
-									withCredentials: true,
-								},
-							};
-							store.request(payload, reducer);
-						}
-					}
-				});
-				*/
-				return true;
+				debugger;
+				  let keepUrl = `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/keepAlive`;
 			};
+
 			function setup() {
 				debugger;
 				document.getElementById('output').innerHTML = '...initializing';
@@ -157,6 +92,10 @@
 					.then(r => {
 						document.getElementById('head').innerHTML = `Hello ${USER_NAME}`;
 						document.getElementById('output').innerHTML = 'ready';
+						if ( LOGONPAYLOAD.keepAlive != null) {
+						   store.keepViyaAlive(`${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/keepAlive`,
+						   5000,10000);
+						}
 					})
 					.catch(e => {
 						debugger;
@@ -175,14 +114,10 @@
 				console.log(LOGONPAYLOAD);
 				let msg = await store.logon(LOGONPAYLOAD);
 				debugger;
-				/*
 				services = await store.addServices(
 					'files', 'compute', 'casManagement'
 				);
-				*/
 				debugger;
-				
-
 				return 'done';
 			}
 			function runit(type) {
