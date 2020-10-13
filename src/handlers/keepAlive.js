@@ -21,6 +21,9 @@ async function keepAlive (req, h) {
 
 async function refreshToken (req, h) {
     
+    if (req.state.ocookie == null ) {
+        return false;
+    }
     let sid = req.state.ocookie.sid;
     debug(sid);
     let credentials = await req.server.app.cache.get(sid);

@@ -28,7 +28,8 @@ ENV APPENTRY=index.html
 # ENV APPENV=appenv.js
 
 # The app has to handle the call to /{appname}/keepAlive end point
-ENV KEEPALIVE=YES
+# ENV KEEPALIVE=YES
+# TIMERS=300000,14400000
 
 # TLS releated info . 
 # BAD but: REJECT_UNAUTHORIZED is turned off by default since many forget to get rid 
