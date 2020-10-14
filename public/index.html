@@ -75,7 +75,7 @@
 			let timerid = null;
 			function useRestaf() {
 				let keepUrl = `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/keepAlive`;
-				store.keepViyaAlive(GOGONPAYLOAD.keepAlive,1000, 20000);
+				store.keepViyaAlive(GOGONPAYLOAD.keepAlive,300, 86400);
        		 }
 
 			if (LOGONPAYLOAD.keepAlive != null) {
