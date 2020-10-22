@@ -149,7 +149,7 @@ function server (userRouterTable, asset, allAppEnv) {
 
 	const preResponse = async (req, h) => {
 		if (req.response.isBoom === true) {
-			console.log(req.response.output.statusCode);
+			console.log(Date(), req.response.output.statusCode);
 			return h.view('visionIndex', { title: req.response.output.payload.custom, message: JSON.stringify(req.response.output.payload, null,4) });
 		} else {
 			return h.continue;

@@ -101,7 +101,7 @@ function getAllEnv (userData) {
     authflow = 'server';
   }
 
-  let redirect = "Set when clientid was created";
+  let redirect = (process.env.REDIRECT != null )? process.env.REDIRECT : null;
 
   
   let host = trimit('VIYA_SERVER');
@@ -112,8 +112,13 @@ function getAllEnv (userData) {
   if (authflow === 'server' || authflow === 'implicit') {
     if (authflow === 'implicit') {
       redirect = trimit('REDIRECT');
-      redirect = (redirect == null) ? `${appName}/callback` : `${process.env.APPNAME}/${redirect}`;
-      };
+      if (redirect === null) {
+        redirect = `${appName}/callback`;
+      } else {
+        redirect = (redirect.indexOf('http') !=- 1 ) ? redirect : `${process.env.APPNAME}/${redirect}`;
+      }
+      // redirect = (redirect == null) ? `${appName}/callback` : `${process.env.APPNAME}/${redirect}`;
+    };
 
      l = {
       authType : authflow,

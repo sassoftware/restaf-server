@@ -72,16 +72,6 @@
 			let files = null;
 			let reports = null;
 			let compute = null;
-			let timerid = null;
-			function useRestaf() {
-				let keepUrl = `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/keepAlive`;
-				store.keepViyaAlive(GOGONPAYLOAD.keepAlive,300, 86400);
-       		 }
-
-			if (LOGONPAYLOAD.keepAlive != null) {
-				debugger;
-				  let keepUrl = `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/keepAlive`;
-			};
 
 			function setup() {
 				debugger;
@@ -100,7 +90,18 @@
 								interval = parseInt(opts[ 0 ]);
 								timeout = parseInt(opts[ 1 ]);
 							}
-						   store.keepViyaAlive(LOGONPAYLOAD.keepAlive, interval, timeout);
+							store.keepViyaAlive(LOGONPAYLOAD.keepAlive,interval, timeout,() => {
+								console.log('timed out at', Date() );
+								let config = {
+									url: `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/keepAlive2`,
+									method: 'GET',
+									withCredentials: true,
+									headers: {
+										accept: '*/*'
+									}
+								}
+								store.request(config);
+							})
 						}
 					})
 					.catch(e => {
@@ -109,8 +110,7 @@
 					});
 			}
 			function logoff() {
-				// let url = `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/logout?callbackUrl=onlogoff.html`;
-				let url = `${window.location.protocol}//${window.location.host}/keepAlive`;
+				let url = `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/logout?callbackUrl=onlogoff.html`;
 				window.location.replace(url);
 
 					
@@ -149,8 +149,8 @@
 						testcase = runCas;
 						break;
 					}
-					case 'download': {
-						testcase = getFiles;
+					case 'timedout': {
+						testcase = timedout;
 						break;
 					}
 					case 'redir': {
@@ -181,22 +181,11 @@
 				r = {msg: 'redirects completed'};
 				return r;
 			}
-			async function getFiles(store) {
-				let {session} = await restaflib.casSetup(store, null);
-
-				let fname = document.getElementById('filename').value;
-				let payload = {
-					url    : `${window.location.protocol}//${window.location.host}/getfiles/${fname}`,
-					method : 'GET',
-					responseType: "blob"
-				}
-				let [name, type] = fname.split('.');
-				let d = await store.request(payload);
-				debugger;
-				// let r = await restaflib.casUpload(store, session,fname,'casuser.'+name, true, d.data );
-				// await session.links('delete');
-
-				return d.data;
+			async function timedout(store) {
+				console.log('timed out at', Date() );
+				let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=0,height=0,left=-1000,top=-1000`;
+				window.open(`${LOGONPAYLOAD.host}/SASLogon/timedout`,'Timed Out', params);
+				return true;
 			}
 			async function runCas(store) {
 				debugger;
@@ -300,8 +289,8 @@
 			<br />
 			<br />
 			<input id='filename'> </input>
-			<button onclick="runit('download')">
-				Press to download file
+			<button onclick="runit('timedout')">
+				Press to test timedout
 			</button>
 			<br />
 			<br />

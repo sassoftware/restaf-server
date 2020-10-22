@@ -59,7 +59,12 @@ async function iSASauth (hapiServer, options) {
             password    : uuid.v4(),
             clientId    : process.env.CLIENTID.trim(),
             clientSecret: (process.env.CLIENTSECRET == null) ? ' ' : process.env.CLIENTSECRET,  
-            isSecure    : options.isSecure
+            isSecure    : options.isSecure,
+            location    : () => { 
+                console.log(' in location');
+                console.log(process.env.REDIRECT);
+                return (process.env.REDIRECT == null) ? '' : process.env.REDIRECT;
+            }
         
         };
           
