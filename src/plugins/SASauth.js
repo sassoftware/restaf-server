@@ -61,8 +61,7 @@ async function iSASauth (hapiServer, options) {
             clientSecret: (process.env.CLIENTSECRET == null) ? ' ' : process.env.CLIENTSECRET,  
             isSecure    : options.isSecure,
             location    : () => { 
-                console.log(' in location');
-                console.log(process.env.REDIRECT);
+                debug(`Redirect set to: ${process.env.REDIRECT}`);
                 return (process.env.REDIRECT == null) ? '' : process.env.REDIRECT;
             }
         

@@ -15,17 +15,14 @@
  * ----------------------------------------------------------------------------------------
  *
  */
-
-'use strict';
-
-
 import server from './server';
 import { getApp, keepAlive, keepAlive2,appCallback, logout, getUser} from './handlers';
 let os = require('os');
 
-function iService (uTable, useDefault, asset, allAppEnv) {
+function iService (uTablep, useDefault, asset, allAppEnv) {
 
 	process.env.APPHOST = process.env.APPHOST === '*' ? os.hostname() : process.env.APPHOST;
+	let uTable = (typeof uTablep === 'function') ? uTablep() : uTablep;
 	let appName = '/' + process.env.APPNAME;
 	let auth1 = {};
 	let auth1a = {};
