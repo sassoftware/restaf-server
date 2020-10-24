@@ -18,6 +18,7 @@
 import server from './server';
 import { getApp, keepAlive, keepAlive2,appCallback, logout, getUser} from './handlers';
 let os = require('os');
+let debug = require('debug')('appenv');
 
 function iService (uTablep, useDefault, asset, allAppEnv) {
 
@@ -37,6 +38,7 @@ function iService (uTablep, useDefault, asset, allAppEnv) {
 	}
 
 	let getAppEnv = async (req, h) => {
+		debug(allAppEnv);
 		return allAppEnv;
 	};
 
