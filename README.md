@@ -291,7 +291,8 @@ CLIENTSECRET=your clientsecret
 APPNAME=A name for your app. The app will start at APPHOST:APPPORT/APPNAME
 APPENTRY=index.html
 APPPORT=port of your choice
-KEEPALIVE=Used to keep the session alive(see noes below)
+KEEPALIVE=Used to keep the session alive(see notes below)
+TIMERS=delay-in-seconds,timeout-in-seconds(see notes below)
 ```
 
 ---
@@ -353,7 +354,7 @@ Create an app.js that looks as shown below. See <https://hapi.dev/> on details o
 
 ```js
 let rafserver = require ('@sassoftware/restaf-server');
-rafserver.icli (getCustomHandler ());
+rafserver.icli (getCustomHandler);
 
 function getCustomHandler () {
     let handler =
@@ -376,6 +377,8 @@ async function myRouteHandler(req, h) {
 }
 ```
 
+> Notes:  You can pass the getCustomHandler function or the object returned fro getCustomHandlet to icli. Passing the function is useful if you want to access the env variables set thru the env files and docker files. 
+
 ## keepAlive
 
 This is only needed if you are using authorization_code flow.
@@ -383,20 +386,49 @@ In your web app you can call this end point to keep your current session alive.
 
 If the KEEPALIVE environment variable is set, restaf-server will set the keepAlive key in the LOGONPAYLOAD object to the url to call for keeping your session alive. You can call it anytime in your app.
 
+If you are a restaf user you can use the keepViyaAlive method of restaf store to let restaf manage the keepalive process. Below is a sample code
+
+```js
+if (appOptions.logonPayload.keepAlive != null) {
+		let interval = 120;
+		let timeout = 14400;
+		if (appOptions.logonPayload.timers != null) {
+			let opts = appOptions.logonPayload.timers.split(',');
+			interval = parseInt(opts[ 0 ]);
+			timeout = parseInt(opts[ 1 ]);
+		}
+		console.log(`Keepalive is active`);
+		store.keepViyaAlive(appOptions.logonPayload.keepAlive, interval, timeout, () => {
+			console.log('timed out at', Date());
+			let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=0,height=0,left=-1000,top=-1000`;
+			window.open(`${appOptions.logonPayload.host}/SASLogon/timedout`, 'Timed Out', params);
+			return true;
+		});
+	}
+
+```
+
 ### A note for restaf users
 
 restaf automatically calls this end point everytime a call is made to any Viya Service. If you wish to mimic the behavior of Viya Applications like SASVisualAnalytics you can call it everytime the user moves the mouse.
 
 ## TLS Support
 
-You enable TLS using the following environment variables
+You enable TLS using the following environment variables. Use one of these.
 
-### KEY and CERTIFICATE
+### Method 1: Create a temporary certificate
+
+TLS_CREATE=C:yourcountry,ST:yourstate,L:yourlocation,O:your-organization,OU:your-department,CN:cn-name 
+
+Example:
+TLS_CREATE=C:US,ST:NC,L:Cary,O:A Analytics Company,OU:SALES,CN:localhost
+
+### Method 2: KEY and CERTIFICATE
 
 TLS_KEY=path to the KEY
 TLS_CERT= path to certificate
 
-### PFX
+### Method 3: PFX
 
 Instead of key and certificate you can also use the pfx form and specify it as follows:
 
