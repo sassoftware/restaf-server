@@ -3,11 +3,7 @@
 * SPDX-License-Identifier: Apache-2.0
 */
 'use strict';
-let debug          = require('debug');
-let debugProxy     = debug('proxy');
-let proxyLogger    = debug('proxylogger');
-let responseLogger = debug('response');
-let boom           = require('@hapi/boom');
+let boom  = require('@hapi/boom');
 // let request = require('request');
 //
 // Warning: This section is here for historical reasons since authorization_code works
@@ -26,7 +22,6 @@ async function handleProxy (req, h) {
         return response;
     }
     catch (err) {
-        console.log(err);
         return boom.unauthorized(err);
     }
 }

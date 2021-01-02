@@ -18,7 +18,7 @@
 
 'use strict';
 
-import Boom from '@hapi/boom';
+// import { all } from 'core-js/fn/promise';
 
 // proxy server
 
@@ -26,23 +26,33 @@ let fs = require('fs');
 // let isDocker = require('is-docker');
 let Hapi = require('@hapi/hapi');
 const { isSameSiteNoneCompatible } = require('should-send-same-site-none');
+let NodeCache = require("node-cache-promise");
 let Vision = require('@hapi/vision');
+let inert = require('@hapi/inert');
 let debug = require('debug')('server');
 let selfsigned = require('selfsigned');
+import setupAuth from  './plugins/setupAuth';
 
-
-function server (userRouterTable, asset, allAppEnv) {
+function server (routeTable, asset, allAppEnv) {
 	// process.env.APPHOST_ADDR = process.env.APPHOST;
 
+	let defaultMaxBytes = 10485760;
+	let maxBytes;
+	if (isNaN(process.env.PAYLOADMAXBYTES)) {
+		maxBytes = defaultMaxBytes;
+	} else {
+		maxBytes = Number(process.env.PAYLOADMAXBYTES);
+	}
+	console.log(setupAuth);
 	let isSameSite = 'None';
 	let isSecure = false;
 
 	if (process.env.SAMESITE != null) {
+		console.log(process.env.SAMESITE);
 		let [s1, s2] = process.env.SAMESITE.split(',');
 		isSameSite = s1;
 		isSecure = s2 === 'secure' ? true : false;
 	}
-
 
 	let sConfig = {
 		port: process.env.APPPORT,
@@ -136,38 +146,26 @@ function server (userRouterTable, asset, allAppEnv) {
 `
 	);
 	let hapiServer = Hapi.server(sConfig);
+
+	/*
+    const cache = hapiServer.cache({ segment: 'sessions', expiresIn: 3 * 24 * 60 * 60 * 1000 });
+	hapiServer.app.cache = cache;
+	*/
 	
-	hapiServer.state =
-		('ocookie',
-		{
-			ttl     : null,
-	    	encoding: 'base64json',
-			isSecure: isSecure
-		});
+	let nodeCacheOptions = {
+		stdTTL        : 36000,
+		checkPeriod   : 3600,
+		errorOnMissing: true,
+		useClones     : false,
+		deleteOnExpire: true
+   };
+	let storeCache = new NodeCache(nodeCacheOptions);
+	hapiServer.app.cache = storeCache;
 
-	//https://hapi.dev/api/?v=19.2.0#request.preResponses
-
-	const preResponse = async (req, h) => {
-		if (req.response.isBoom === true) {
-			console.log(Date(), req.response.output.statusCode);
-			return h.view('visionIndex', { title: req.response.output.payload.custom, message: JSON.stringify(req.response.output.payload, null,4) });
-		} else {
-			return h.continue;
-		}
-	};
-
+	
+	
 	const init = async () => {
-		let pluginSpec = {
-			plugin : require('./plugins/restafServer'),
-			options: {
-				routes: userRouterTable,
-				appenv: allAppEnv,
-
-				isSameSite: isSameSite,
-				isSecure  : isSecure,
-			},
-		};
-		
+		// common plugins
 		let visionOptions = {
 			engines   : { html: require('handlebars')},
 			relativeTo: __dirname,
@@ -175,11 +173,54 @@ function server (userRouterTable, asset, allAppEnv) {
 		};
 		await hapiServer.register(Vision);
 		hapiServer.views(visionOptions);
+		await hapiServer.register(inert);
+		await hapiServer.register({ plugin: require('hapi-require-https'), options: {} });
+		await hapiServer.register({
+			plugin : require('hapi-pino'),
+			options: {
+			  prettyPrint: process.env.NODE_ENV !== 'production',
+			  level      : (process.env.PINOLEVEL == null) ? 'silent' : process.env.PINOLEVEL
+			}
+		  });
 
+		// setup authentication related plugins
+
+		if (process.env.AUTHFLOW === 'authorization_code' || process.env.AUTHFLOW === 'code') {
+			let options = {
+				host         : process.env.VIYA_SERVER,
+				isSameSite   : isSameSite,
+				isSecure     : isSecure,
+				redirect     : process.env.REDIRECT,
+				clientId     : process.env.CLIENTID,
+				clientSecret : process.env.CLIENTSECRET,
+				redirectTo   : `/${process.env.APPNAME}/logon`,
+				allAppEnv    : allAppEnv,
+				useHapiCookie: true
+			};
+		await setupAuth(hapiServer, options);
+		}
+
+		// setup displaying errors caught during a run
+
+	    const preResponse = async (req, h) => {
+			
+			if (req.response.isBoom === true) {
+				console.log(Date(), req.response.output.statusCode);
+				debug(req);
+				let output = (req.response.output.payload != null) ? JSON.stringify(req.response.output.payload, null,4) : ' ';
+				return h.view('visionIndex', { title: req.response.output.payload.custom, message: output});
+			} else {
+				return h.continue;
+			}
+		};
 		hapiServer.ext('onPreResponse', preResponse);
 
-		await hapiServer.register(pluginSpec);
-		await hapiServer.register({ plugin: require('hapi-require-https'), options: {} });
+		// Finally setup routes and start server
+
+		// temp:
+		// hapiServer.log(['test', 'error'], 'Test event');
+
+		hapiServer.route(routeTable);
 		await hapiServer.start();
 		let hh = hapiServer.info.uri.replace(/0.0.0.0/, 'localhost');
 		console.log('Start Time: ', Date());

@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /*
  *  ------------------------------------------------------------------------------------
  *  * Copyright (c) SAS Institute Inc.
@@ -16,10 +15,43 @@
  * ----------------------------------------------------------------------------------------
  *
  */
+let inert = require('@hapi/inert');
+let vision = require('@hapi/vision');
 
-'use strict';
 
-let fs = require('fs');
-debugger;
-let rafServer = require('./lib/index.js');
-rafServer.icli(null, true);
+let SASauth = require('./SASauth');
+let appCookie = require('./appCookie');
+
+async function setupAuth (server, options){
+	
+	let pluginSpec = {
+		plugin : SASauth,
+		options: options
+	};
+	await server.register(pluginSpec);
+
+	if (options.useHapiCookie === true) {
+		pluginSpec = {
+			plugin : appCookie,
+			options: options
+		};
+		await server.register(pluginSpec);
+	} else {
+		server.state('ocookie', {
+			ttl         : null,
+			isSecure    : options.isSecure,
+			isHttpOnly  : true,
+			encoding    : 'base64json',
+			clearInvalid: true,
+			strictHeader: true,
+		});
+	}
+
+	// custom cookie management
+	
+	server.auth.default((options.useHapiCookie === true) ? 'session' : 'sas');
+
+	
+};
+
+export default setupAuth;

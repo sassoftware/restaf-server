@@ -4,37 +4,23 @@
 */
 let uuid      = require('uuid');
 let debug = require('debug')('setcookies');
-import decodeJwt from './decodeJwt';
-import Boom  from '@hapi/boom';
 
 async function setCookies (req, h) {
 
-    let authCred = req.auth.credentials;
-    debug(authCred);
-    if (authCred != null && req.auth.error != null) {
+    let credentials = req.auth.credentials;
+    if (credentials != null && req.auth.error != null) {
         debug('logon failed');
         return { status: false, error: req.auth.error };
-		}
-    // create a session id and save credentials in cache
-    
+    }
+        
+    // create a cookie(sid) and save credentials in cache
     const sid = uuid.v4();
-    let jwt = decodeJwt(authCred.token);
-    let credentials = {
-        token       : authCred.token,
-        refreshToken: authCred.refreshToken,
-        sid         : sid,
-        user_name   : jwt.user_name
-    };
-      
-    await req.server.app.cache.set(sid, credentials);
- 
-    debug(sid);
-    h.state('ocookie', { "sid": sid });
-  
+    credentials.sid = sid;
 
-    return { status: true, error: null };
+    await req.server.app.cache.set(sid, credentials, 0);
+    req.cookieAuth.set({ sid });
+    return { status: true, error: null , redirect: credentials.query.next};
 }
-
 
 export default setCookies;
 

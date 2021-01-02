@@ -17,19 +17,21 @@
  */
 
 'use strict';
+
+import axios from 'axios';
+
 // proxy server
 
 let os = require('os');
 let Hapi = require('@hapi/hapi'),
 	h2o2 = require('@hapi/h2o2');
 
+function iProxyServer () {
 
-function proxyServer () {
-
-	let host = (process.env.VHOST === '*') ? os.hostname() : process.env.VHOST;
+	//let host = (process.env.VHOST === '*') ? os.hostname() : process.env.VHOST;
 	let sConfig = {
-		port: 8080,
-        host: host,
+		port: process.env.APPPORT,
+        host: process.env.APPHOST,
         
 		routes: {
 			cors: {
@@ -53,25 +55,25 @@ function proxyServer () {
             h2o2
 			]);
     
-        let route = {
-                method: '*',
-			    path  : '/{param*}',
-				
-				 
-				vhost: process.env.VHOST,
-
-                handler: {
-                    proxy: {
-                        host: process.env.APPHOST,
-                        port: process.env.APPPORT,
-
-						protocol   : 'http',
-						passThrough: true,
-                    }
-                }
-		};
-		console.log(route);
-		hapiServer.route(route);
+		// let protocol = process.env.IAPPHOST.indexOf('https') !== -1 ? 'https' : 'http';
+		let routes = [
+			{
+				method : '*',
+				path   : '/{param*}',
+				options: {
+					handler: checkAuth
+				}
+			},
+			{
+				method : '*',
+				path   : '/callback',
+				options: {
+					handler: callback
+					}
+			}
+		];
+		console.log(routes);
+		hapiServer.route(routes);
 
 		await hapiServer.start();
 
@@ -93,5 +95,63 @@ function proxyServer () {
 	});
 
 	init();
+
+	async function checkAuth (req,h) {
+		
+		let head = {...req.headers};
+		if (head.cookie != null){
+			delete head.cookie;
+		}
+		let resp = h.redirect(`${process.env.VIYA_SERVER}/SASLogon/oauth/authorize?client_id=${process.env.CLIENTID}&redirect_uri=http://localhost:3000/api/callback&response_type=code`);
+		for (let k in head) {
+			resp.header(k, head[k]);
+		};
+		return resp.code(302);
+		/*
+		let SASLogon = `${process.env.VIYA_SERVER}/SASLogon/oauth/authorize?client_id=${process.env.CLIENTID}&redirect_uri=http://localhost:3000/api/callback&response_type=code`;
+		console.log(SASLogon);
+		let p = {
+			method : 'GET',
+			url    : `${process.env.VIYA_SERVER}/SASLogon/oauth/authorize`,
+			headers: head,
+
+			withCredentials: true,
+
+			qs: {
+				client_id    : process.env.CLIENTID,
+				response_type: 'code'
+			}
+		};
+
+		let r = await axios (p);
+		
+
+		p = {
+			method : 'POST',
+			url    : `${process.env.VIYA_SERVER}/SASLogon/oauth/token`,
+			headers: head,
+
+			withCredentials: true
+		};
+		try {
+			 let r2 = await axios(p);
+			 console.log(r2);
+			
+		}
+		catch(err){
+			
+			console.log(err);
+		}
+		*/
+	
+		//return h.redirect(SASLogon).code(302);
+	}
+	async function callback (req, h) {
+		
+		console.log(req.headers);
+		
+		return true;
+	}
+
 }
-export default proxyServer;
+export default iProxyServer;

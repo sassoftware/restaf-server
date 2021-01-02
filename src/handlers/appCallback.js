@@ -10,9 +10,11 @@ import codeAuth from './codeAuth';
 // handle all callback
 
 async function appCallback (req, h) {
+    
     let debug = require('debug')('callback');
     console.log(`..... AUTHFLOW: ${process.env.AUTHFLOW}`);
     debug('passing thru appCallback');
+    
     // if authorization code process the auth info from saslogon via SASauth
     if (process.env.AUTHFLOW === 'authorization_code' || process.env.AUTHFLOW === 'code') {
         return codeAuth(req, h);
@@ -22,4 +24,5 @@ async function appCallback (req, h) {
         return h.file(`${indexHTML}`);
     }
 }
+
 export default appCallback;

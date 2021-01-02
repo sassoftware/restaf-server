@@ -16,45 +16,42 @@
  *
  */
 import server from './server';
-import { getApp, keepAlive, keepAlive2,appCallback, logout, getUser} from './handlers';
+import { getApp, keepAlive, keepAlive2,appCallback, logout, logon, getUser, setupUserRoutes} from './handlers';
 let os = require('os');
 let debug = require('debug')('appenv');
 
 function iService (uTablep, useDefault, asset, allAppEnv) {
 
 	process.env.APPHOST = process.env.APPHOST === '*' ? os.hostname() : process.env.APPHOST;
-	let uTable = (typeof uTablep === 'function') ? uTablep() : uTablep;
+	
 	let appName = '/' + process.env.APPNAME;
-	let auth1 = {};
-	let auth1a = {};
+	
+	let auth1 = false;
 	let auth2 = false;
-	let defaultMaxBytes = 10485760;
+	let authLogon = false;
 
-	let maxBytes;
-	if (isNaN(process.env.PAYLOADMAXBYTES)) {
-		maxBytes = defaultMaxBytes;
+	if (process.env.AUTHFLOW === 'authorization_code' || process.env.AUTHFLOW === 'code') {
+		auth1 = {
+			mode: 'required'
+		};
+		authLogon = {
+			mode    : 'required',
+			strategy: 'sas',
+		};
+		auth2 = false;
 	} else {
-		maxBytes = Number(process.env.PAYLOADMAXBYTES);
-	}
+		auth1 = false;
+		auth2 = false;
 
+	}
 	let getAppEnv = async (req, h) => {
 		debug(allAppEnv);
 		return allAppEnv;
 	};
 
-	if (process.env.AUTHFLOW === 'authorization_code' || process.env.AUTHFLOW === 'code') {
-		auth1 = {
-			mode    : 'try',
-			strategy: 'sas',
-		};
-		auth1a = false;
-	} else {
-		auth1 = false;
-		auth1a = false;
-		auth2 = false;
-	}
-
 	// see if appenv was overridden
+
+	let uTable = setupUserRoutes (uTablep, auth2);
 
 	let hasAppEnv = null;
 	if (uTable !== null) {
@@ -68,112 +65,92 @@ function iService (uTablep, useDefault, asset, allAppEnv) {
 	//
 	let defaultTable = [
 		{
-			method: ['GET'],
-			path  : `${appName}`,
-			config: {
+			method : ['GET'],
+			path   : `${appName}`,
+			options: {
 				auth   : auth1,
+				handler: getApp
+			},
+		},
+		{
+			method : ['GET'],
+			path   : `${appName}/logon`,
+			options: {
+				auth   : authLogon,
 				handler: async (req, h) => {
-					return getApp(req, h);
+					return logon(req, h);
 				},
 			},
 		},
 		{
-			method: ['GET'],
-			path  : `/logonError`,
-			config: {
-				auth   : auth2,
-				handler: async (req, h) => {
-					console.log('inerror');
-					console.log(req.auth.error);
-					return `Logon failed with ${JSON.stringify(req.auth.error, null, 4)}`;
-				},
-			},
-		},
-		{
-			method: ['GET'],
-			path  : `${appName}/appenv`,
-			config: {
-				auth   : auth2,
+			method : ['GET'],
+			path   : `${appName}/appenv`,
+			options: {
+				auth   : auth1,
 				handler: getAppEnv,
 			},
 		},
 		{
-			method: ['GET'],
-			path  : `${appName}/callback`,
-			config: {
-				auth   : auth2,
-				handler: appCallback,
-			},
-		},
-		{
-			method: ['GET'],
-			path  : `/callback` /* need to retire after users switch to appname/callback*/,
-			config: {
-				auth   : auth2,
-				handler: appCallback,
-			},
-		},
-		{
-			method: ['GET'],
-			path  : `/appenv`,
-			config: {
-				auth   : auth2,
+			method : ['GET'],
+			path   : `/appenv`,
+			options: {
+				auth   : auth1,
 				handler: getAppEnv,
 			},
 		},
 		{
-			method: ['GET'],
-			path  : `${appName}/{param*}`,
-			config: {
-				auth   : auth2,
+			method : ['GET'],
+			path   : `${appName}/callback`,
+			options: {
+				auth   : auth1,
+				handler: appCallback,
+			},
+		},
+		{
+			method : ['GET'],
+			path   : `${appName}/{param*}`,
+			options: {
+				auth   : auth1,
 				handler: getApp2,
 			},
 		},
 		{
-			method: ['GET'],
-			path  : `${appName}/logout`,
-			config: {
-				auth   : auth1a,
+			method : ['GET'],
+			path   : `${appName}/logout`,
+			options: {
+				auth   : auth1,
 				handler: logout,
 			},
 		},
 		{
-			method: ['GET'],
-			path  : `${appName}/getfiles/{param*}`,
-			config: {
-				auth   : auth1a,
-				handler: getFiles,
-			},
-		},
-		{
-			method: ['GET', 'POST'],
-			path  : `${appName}/keepAlive`,
-			config: {
-				auth   : auth1a,
+			method : ['GET', 'POST'],
+			path   : `${appName}/keepAlive`,
+			options: {
+				auth   : auth1,
 				handler: keepAlive,
 			},
 		},
 		{
-			method: ['GET', 'POST'],
-			path  : `${appName}/keepAlive2`,
-			config: {
-				auth   : auth1a,
+			method : ['GET', 'POST'],
+			path   : `${appName}/keepAlive2`,
+			options: {
+				auth   : auth1,
 				handler: keepAlive2,
 			},
 		},
 		{
-			method: ['GET', 'POST'],
-			path  : `/{param*}`,
-			config: {
-				auth   : false,
+			method : ['GET', 'POST'],
+			path   : `/{param*}`,
+			options: {
+				auth   : auth1,
 				handler: getApp2,
 			},
 		},
 		{
-			method: ['GET'],
-			path  : `${appName}/user`,
-			config: {
-				auth   : auth1a,
+			method : ['GET'],
+			path   : `${appName}/user`,
+			options: {
+				auth   : auth1,
 				handler: getUser,
 			},
 		},
@@ -198,20 +175,13 @@ function iService (uTablep, useDefault, asset, allAppEnv) {
 // get app server files - too small
 //
 
+
 async function getIcon (req, h) {
 	return h.file('favicon.ico');
 }
 
 async function getApp2 (req, h) {
 	return h.file(`${req.params.param}`);
-}
-
-async function getFiles (req, h) {
-	return 'not ready for primetime';
-	/*
-    let r = h.file(`${process.env.DATALOC}/${req.params.param}`).header('content-type', 'binary/octet-stream');
-    return r;
-    */
 }
 
 export default iService;

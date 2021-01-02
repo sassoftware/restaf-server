@@ -23,50 +23,44 @@
 debugger;
 let rafserver = require('./lib/index.js');
 debugger;
-rafserver.icli (getCustomHandler ());
+rafserver.icli (getCustomHandler);
 
 function getCustomHandler () {
+	let appName = `/${process.env.APPNAME}`; /* does not have to be this - your choice */
+
 	let handler = [
 		{
-			method: ['GET'],
-			path  : `/viyaapp/testroute`,
-			config: {
-				auth   : false,
-				cors   : true,
-				handler: testroute
+			method : ['GET'],
+			path   : `${appName}/testroute`,
+			options: {
+				auth   : true,
+				handler: async (req,h) => { 
+					let context = req.pre.context;
+					return context;
+				}
 			}
 		},
 		{
-			method: ['POST'],
-			path  : `/startDB`,
-			config: {
+			method : ['POST'],
+			path   : `${appName}/compute/{param*}`,
+			options: {
 				auth   : false,
-				cors   : true,
-				handler: startDB
+				handler: async (req,h, context) => { return req.path;}
 			}
 		},
 		{
-			method: ['POST'],
-			path  : `/updateDB`,
-			config: {
+			method : ['POST'],
+			path   : `${appName}/cas/{param*}`,
+			options: {
 				auth   : false,
-				cors   : true,
-				handler: updateDB			}
+				handler: async (req,h, context) => { return req.path;}			
+			}
 		}
 	];
     return handler;
-}
+} 
 
-async function startDB (req, h) {
-    return 'in startDB';
-}
-
-async function updateDB (req, h) {
-    return 'in updateDB';
-}
-async function testroute (req, h) {
-	return 'In testroute';
-}
+	
 
 
 

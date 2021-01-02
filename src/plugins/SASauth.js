@@ -17,10 +17,8 @@
  */
 
 
-let bell = require('@hapi/bell'),
-    // eslint-disable-next-line no-unused-vars
-    uuid = require('uuid');
-    
+let bell = require('@hapi/bell');
+let uuid = require('uuid');   
 let debug = require('debug')('SASauth');
 
 exports.plugin = {
@@ -29,48 +27,39 @@ exports.plugin = {
     register: iSASauth
 };
 
-async function iSASauth (hapiServer, options) {
+async function iSASauth (server, options) {
 
     let bellAuthOptions,
         provider;
 
-    if (process.env.AUTHFLOW == 'authorization_code' || process.env.AUTHFLOW === 'code') {
-        let authURL = process.env.VIYA_SERVER ;
         provider = {
 			name         : 'sas',
 			protocol     : 'oauth2',
 			useParamsAuth: false,
-			auth         : authURL + '/SASLogon/oauth/authorize',
-            token        : authURL + '/SASLogon/oauth/token',
+			auth         : options.host + '/SASLogon/oauth/authorize',
+            token        : options.host + '/SASLogon/oauth/token',
 
             profileMethod: 'get',
             
-            
-            profile: async function (credentials, params, get) {
-                  
+            profile: async function (credentials, params, get) {           
                 debug(credentials);
             }
-        
-            
-		};
+        };
         
         bellAuthOptions = {
             provider    : provider,
             password    : uuid.v4(),
-            clientId    : process.env.CLIENTID.trim(),
-            clientSecret: (process.env.CLIENTSECRET == null) ? ' ' : process.env.CLIENTSECRET,  
+            clientId    : options.clientId,
+            clientSecret: options.clientSecret,  
             isSecure    : options.isSecure,
             location    : () => { 
-                debug(`Redirect set to: ${process.env.REDIRECT}`);
-                return (process.env.REDIRECT == null) ? '' : process.env.REDIRECT;
+                debug(`Redirect set to: ${options.redirect}`);
+                
+                return (options.redirect == null) ? '' : options.redirect;
             }
         
         };
-          
-        debug(bellAuthOptions);
-        await hapiServer.register(bell);
-        hapiServer.auth.strategy('sas', 'bell', bellAuthOptions);
-    
+        await server.register(bell);
+        server.auth.strategy('sas', 'bell', bellAuthOptions);
+        
     }
-
-}
