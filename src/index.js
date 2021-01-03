@@ -42,8 +42,6 @@ function icli (uTable, useDefault){
           app env   : ${appenv}
           `
           );
-  
-  
           
   //uTable = iapi(uTable);
   iapp(appenv, env, docker, uTable, useDefault);
