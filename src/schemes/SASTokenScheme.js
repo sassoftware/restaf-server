@@ -25,7 +25,6 @@ module.exports = function SASTokenScheme (server, options) {
     const scheme = {
         authenticate: async function (request, h) {
             debugger;
-            request.log(request.headers);
             const authorization = request.headers.authorization;
             console.log(authorization);
             if (!authorization) {
@@ -38,7 +37,6 @@ module.exports = function SASTokenScheme (server, options) {
                 token   : token,
                 authType: 'token'
             };
-            console.log(credentials);
             return h.authenticated({credentials: credentials});
         }
     };
