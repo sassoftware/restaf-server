@@ -18,21 +18,14 @@
 
 
 async function setContext (req,h){
-    
-    let sid = req.state.ocookie.sid;
-    let credentials = await req.server.app.cache.get(sid);
-    if (credentials == null) {
-        return {};
-    }
-    let context = {
-        logonPayload: {
-            authType: 'token',
-            token   : credentials.token
-        },
-        path  : req.path,
-        params: req.params,
-        query : req.query
-    };
+   let credentials = req.auth.credentials;
+   let context = {
+        path   : req.path,
+        params : req.params,
+        query  : req.query,
+        payload: req.payload,
+        token  : (credentials != null) ? credentials.token : null
+        };
     return context;
 }
 export default setContext;

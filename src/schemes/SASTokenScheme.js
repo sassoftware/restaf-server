@@ -15,7 +15,7 @@
  * ---------------------------------------------------------------------------------------
  *
  */
-// simplified handling of incoming tokens if present
+// lean code to handle of incoming tokens if present
 // designed to used with appCookie and SASauth
 
 const Boom = require('@hapi/boom');
@@ -24,18 +24,14 @@ module.exports = function SASTokenScheme (server, options) {
  
     const scheme = {
         authenticate: async function (request, h) {
-            debugger;
             const authorization = request.headers.authorization;
-            console.log(authorization);
             if (!authorization) {
                 throw Boom.unauthorized(null, 'SASToken');
             }
             const [tokenType, token] = authorization.split(' ');
-            console.log(token);
-    
             let credentials = {
-                token   : token,
-                authType: 'token'
+                token    : token,
+                tokenType: tokenType
             };
             return h.authenticated({credentials: credentials});
         }

@@ -29,13 +29,11 @@ function setupUserRoutes (u, auth) {
             rx.options = {...rx.config};
             delete rx.config;
         }
-
-        let options = rx.options;
-        if (options.auth === true) {
-            options.pre = [
-                {method: setContext, assign: 'context'}
-            ];
-            options.auth = auth;   
+        rx.options.pre = [
+            {method: setContext, assign: 'context'}
+        ];
+        if (rx.options.auth !== false) {
+            rx.options.auth = auth;   
         }
         
         return rx;

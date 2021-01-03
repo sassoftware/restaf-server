@@ -52,7 +52,7 @@ function iService (uTablep, useDefault, asset, allAppEnv) {
 
 	// see if appenv was overridden
 
-	let uTable = setupUserRoutes (uTablep, auth2);
+	let uTable = setupUserRoutes (uTablep, auth1);
 
 	let hasAppEnv = null;
 	if (uTable !== null) {

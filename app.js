@@ -45,7 +45,10 @@ function getCustomHandler () {
 			path   : `${appName}/compute/{param*}`,
 			options: {
 				auth   : false,
-				handler: async (req,h, context) => { return req.path;}
+				handler: async (req,h) => { 
+					let context = req.pre.context;
+					return context;
+				}
 			}
 		},
 		{
@@ -53,7 +56,10 @@ function getCustomHandler () {
 			path   : `${appName}/cas/{param*}`,
 			options: {
 				auth   : false,
-				handler: async (req,h, context) => { return req.path;}			
+				handler: async (req,h) => { 
+					let context = req.pre.context;
+					return context;
+				}		
 			}
 		}
 	];
