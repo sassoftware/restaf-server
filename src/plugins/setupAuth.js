@@ -15,41 +15,24 @@
  * ----------------------------------------------------------------------------------------
  *
  */
-let inert = require('@hapi/inert');
-let vision = require('@hapi/vision');
 
 
-let SASauth = require('./SASauth');
+
+let SASauth   = require('./SASauth');
 let appCookie = require('./appCookie');
+let token     = require('./token');
 
 async function setupAuth (server, options){
-	
-	let pluginSpec = {
-		plugin : SASauth,
-		options: options
-	};
-	await server.register(pluginSpec);
 
-	if (options.useHapiCookie === true) {
-		pluginSpec = {
-			plugin : appCookie,
-			options: options
-		};
-		await server.register(pluginSpec);
-	} else {
-		server.state('ocookie', {
-			ttl         : null,
-			isSecure    : options.isSecure,
-			isHttpOnly  : true,
-			encoding    : 'base64json',
-			clearInvalid: true,
-			strictHeader: true,
-		});
-	}
+	await server.register({plugin: SASauth,   options: options});
+	await server.register({plugin: appCookie, options: options});
+	await server.register({plugin: token});
+
+	server.auth.default('token');
 
 	// custom cookie management
 	
-	server.auth.default((options.useHapiCookie === true) ? 'session' : 'sas');
+
 
 	
 };

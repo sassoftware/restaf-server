@@ -1,0 +1,47 @@
+/*
+ * ------------------------------------------------------------------------------------
+ *   Copyright (c) SAS Institute Inc.
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ * ---------------------------------------------------------------------------------------
+ *
+ */
+// simplified handling of incoming tokens if present
+// designed to used with appCookie and SASauth
+
+const Boom = require('@hapi/boom');
+
+module.exports = function SASTokenScheme (server, options) {
+ 
+    const scheme = {
+        authenticate: async function (request, h) {
+            debugger;
+            request.log(request.headers);
+            const authorization = request.headers.authorization;
+            console.log(authorization);
+            if (!authorization) {
+                throw Boom.unauthorized(null, 'SASToken');
+            }
+            const [tokenType, token] = authorization.split(' ');
+            console.log(token);
+    
+            let credentials = {
+                token   : token,
+                authType: 'token'
+            };
+            console.log(credentials);
+            return h.authenticated({credentials: credentials});
+        }
+    };
+
+    return scheme;
+};

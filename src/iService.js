@@ -32,7 +32,8 @@ function iService (uTablep, useDefault, asset, allAppEnv) {
 
 	if (process.env.AUTHFLOW === 'authorization_code' || process.env.AUTHFLOW === 'code') {
 		auth1 = {
-			mode: 'required'
+			strategies: ['token', 'session'],
+			mode      : 'required'
 		};
 		authLogon = {
 			mode    : 'required',
@@ -87,7 +88,7 @@ function iService (uTablep, useDefault, asset, allAppEnv) {
 			path   : `${appName}/appenv`,
 			options: {
 				auth   : auth1,
-				handler: getAppEnv,
+				handler: getAppEnv
 			},
 		},
 		{
