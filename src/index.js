@@ -53,13 +53,13 @@ function iapp (appSrc, rafEnv, dockerFile, uTable, useDefault) {
     appSrc = (process.env.APPENV == null) ? null: process.env.APPENV;
   }
   if (appSrc != null) {
-    createPayload(appSrc, (err, appEnv) => {
+    createPayload(appSrc, (err, r) => {
       if (err) {
         console.log(err);
         console.log('createPayload failed');
         process.exit(1);
       } else {
-        iService(uTable, useDefault, asset, appEnv);
+        iService(uTable, useDefault, asset, r);
       }
     });
   } else {
@@ -86,6 +86,7 @@ function createPayload (srcName, cb) {
     console.log(`${srcName} compile completed`);
     let r = f();
     f = null;
+
     let ar = getAllEnv(r);
     cb(null, ar);
   } catch (err) {

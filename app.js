@@ -27,8 +27,7 @@ rafserver.icli (getCustomHandler);
 
 function getCustomHandler () {
 	let appName = `/${process.env.APPNAME}`; /* does not have to be this - your choice */
-
-	let handler = [
+	let routes = [
 		{
 			method : ['GET'],
 			path   : `${appName}/testroute`,
@@ -37,18 +36,24 @@ function getCustomHandler () {
 				handler: async (req,h) => { 
 					let context = req.pre.context;
 					return context;
-				}
+				},
+				description: 'Test Route',
+				notes      : 'Echo context',
+				tags       : ['api']
 			}
 		},
 		{
 			method : ['POST'],
 			path   : `${appName}/compute/{param*}`,
 			options: {
-				auth   : false,
+				auth   : true,
 				handler: async (req,h) => { 
 					let context = req.pre.context;
 					return context;
-				}
+				},
+				description: 'Route to run a simple compute job',
+				notes      : 'Uses restaf',
+				tags       : ['api']
 			}
 		},
 		{
@@ -59,11 +64,14 @@ function getCustomHandler () {
 				handler: async (req,h) => { 
 					let context = req.pre.context;
 					return context;
-				}		
+				},
+				description: 'Route to run a simple cas action',
+				notes      : 'Uses restaf',
+				tags       : ['api']		
 			}
 		}
 	];
-    return handler;
+    return routes;
 } 
 
 	

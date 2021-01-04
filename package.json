@@ -31,7 +31,7 @@
   },
   "scripts": {
     "build": "rimraf lib && babel src --out-dir lib && npx shx cp ./src/visionIndex.html ./lib/visionIndex.html",
-    "app": "node app --env=./.env --docker=./Dockerfile",
+    "app": "node app --env=./.env --docker=./Dockerfile --appenv=./appenv.js",
     "api": "node api --env=./.api.env --api=YES --docker=./Dockerfile",
     "static": "node ./lib/cli.js --env=./env/static/app.env --docker=./Dockerfile",
     "start": "node ./lib/cli.js --env=./.env --docker=./Dockerfile",
@@ -61,6 +61,7 @@
     "handlebars": "^4.7.6",
     "hapi-pino": "^8.3.0",
     "hapi-require-https": "^5.0.0",
+    "hapi-swagger": "^14.0.0",
     "is-docker": "^2.1.1",
     "jwt-decode": "^3.1.2",
     "minimist": "^1.2.5",

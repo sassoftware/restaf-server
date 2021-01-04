@@ -20,18 +20,18 @@ import { getApp, keepAlive, keepAlive2,appCallback, logout, logon, getUser, setu
 let os = require('os');
 let debug = require('debug')('appenv');
 
-function iService (uTablep, useDefault, asset, allAppEnv) {
+function iService (uTablep, useDefault, asset, allAppEnv, swaggerOptions) {
 
 	process.env.APPHOST = process.env.APPHOST === '*' ? os.hostname() : process.env.APPHOST;
 	
 	let appName = '/' + process.env.APPNAME;
 	
-	let auth1 = false;
+	let authDefault = false;
 	let auth2 = false;
 	let authLogon = false;
 
 	if (process.env.AUTHFLOW === 'authorization_code' || process.env.AUTHFLOW === 'code') {
-		auth1 = {
+		authDefault = {
 			strategies: ['token', 'session'],
 			mode      : 'required'
 		};
@@ -41,7 +41,7 @@ function iService (uTablep, useDefault, asset, allAppEnv) {
 		};
 		auth2 = false;
 	} else {
-		auth1 = false;
+		authDefault = false;
 		auth2 = false;
 
 	}
@@ -52,7 +52,7 @@ function iService (uTablep, useDefault, asset, allAppEnv) {
 
 	// see if appenv was overridden
 
-	let uTable = setupUserRoutes (uTablep, auth1);
+	let uTable = setupUserRoutes (uTablep, authDefault);
 
 	let hasAppEnv = null;
 	if (uTable !== null) {
@@ -69,8 +69,19 @@ function iService (uTablep, useDefault, asset, allAppEnv) {
 			method : ['GET'],
 			path   : `${appName}`,
 			options: {
-				auth   : auth1,
+				auth   : authDefault,
 				handler: getApp
+			},
+		},
+		{
+			method : ['GET'],
+			path   : `${appName}/api`,
+			options: {
+				auth   : authDefault,
+				handler: async (req, h) => {
+					console.log('Logon Successful');
+					return h.redirect('/documentation');
+				},
 			},
 		},
 		{
@@ -87,7 +98,7 @@ function iService (uTablep, useDefault, asset, allAppEnv) {
 			method : ['GET'],
 			path   : `${appName}/appenv`,
 			options: {
-				auth   : auth1,
+				auth   : authDefault,
 				handler: getAppEnv
 			},
 		},
@@ -95,7 +106,7 @@ function iService (uTablep, useDefault, asset, allAppEnv) {
 			method : ['GET'],
 			path   : `/appenv`,
 			options: {
-				auth   : auth1,
+				auth   : authDefault,
 				handler: getAppEnv,
 			},
 		},
@@ -103,7 +114,7 @@ function iService (uTablep, useDefault, asset, allAppEnv) {
 			method : ['GET'],
 			path   : `${appName}/callback`,
 			options: {
-				auth   : auth1,
+				auth   : authDefault,
 				handler: appCallback,
 			},
 		},
@@ -111,7 +122,7 @@ function iService (uTablep, useDefault, asset, allAppEnv) {
 			method : ['GET'],
 			path   : `${appName}/{param*}`,
 			options: {
-				auth   : auth1,
+				auth   : authDefault,
 				handler: getApp2,
 			},
 		},
@@ -119,7 +130,7 @@ function iService (uTablep, useDefault, asset, allAppEnv) {
 			method : ['GET'],
 			path   : `${appName}/logout`,
 			options: {
-				auth   : auth1,
+				auth   : authDefault,
 				handler: logout,
 			},
 		},
@@ -127,7 +138,7 @@ function iService (uTablep, useDefault, asset, allAppEnv) {
 			method : ['GET', 'POST'],
 			path   : `${appName}/keepAlive`,
 			options: {
-				auth   : auth1,
+				auth   : authDefault,
 				handler: keepAlive,
 			},
 		},
@@ -135,7 +146,7 @@ function iService (uTablep, useDefault, asset, allAppEnv) {
 			method : ['GET', 'POST'],
 			path   : `${appName}/keepAlive2`,
 			options: {
-				auth   : auth1,
+				auth   : authDefault,
 				handler: keepAlive2,
 			},
 		},
@@ -143,7 +154,7 @@ function iService (uTablep, useDefault, asset, allAppEnv) {
 			method : ['GET', 'POST'],
 			path   : `/{param*}`,
 			options: {
-				auth   : auth1,
+				auth   : authDefault,
 				handler: getApp2,
 			},
 		},
@@ -151,7 +162,7 @@ function iService (uTablep, useDefault, asset, allAppEnv) {
 			method : ['GET'],
 			path   : `${appName}/user`,
 			options: {
-				auth   : auth1,
+				auth   : authDefault,
 				handler: getUser,
 			},
 		},
@@ -169,7 +180,7 @@ function iService (uTablep, useDefault, asset, allAppEnv) {
 	}
 	console.table(userRouterTable);
 	
-	server(userRouterTable, asset, allAppEnv);
+	server(userRouterTable, asset, allAppEnv, swaggerOptions);
 }
 
 //

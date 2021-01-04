@@ -29,6 +29,7 @@ const { isSameSiteNoneCompatible } = require('should-send-same-site-none');
 let NodeCache = require("node-cache-promise");
 let Vision = require('@hapi/vision');
 let inert = require('@hapi/inert');
+let HapiSwagger = require('hapi-swagger');
 let debug = require('debug')('server');
 let selfsigned = require('selfsigned');
 import setupAuth from  './plugins/setupAuth';
@@ -174,6 +175,9 @@ function server (routeTable, asset, allAppEnv) {
 		await hapiServer.register(Vision);
 		hapiServer.views(visionOptions);
 		await hapiServer.register(inert);
+		debugger;
+		
+		
 		await hapiServer.register({ plugin: require('hapi-require-https'), options: {} });
 		await hapiServer.register({
 			plugin : require('hapi-pino'),
@@ -200,6 +204,21 @@ function server (routeTable, asset, allAppEnv) {
 		await setupAuth(hapiServer, options);
 		}
 
+		if (process.env.SWAGGER != null) {
+			let swaggerOptions = {
+				info: {
+					title      : `API for ${process.env.APPNAME}`,
+					description: 'This document was auto-generated at run time'
+				},
+				auth: 'session'
+			};
+			console.log(process.env.SWAGGER);
+			let js = fs.readFileSync(process.env.SWAGGER, 'utf8');
+			swaggerOptions = JSON.parse(js);
+			console.log(swaggerOptions);
+			debugger;
+			await hapiServer.register({plugin: HapiSwagger, options: swaggerOptions});
+		}
 		// setup displaying errors caught during a run
 
 	    const preResponse = async (req, h) => {
