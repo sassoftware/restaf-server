@@ -221,6 +221,7 @@ function server (routeTable, asset, allAppEnv) {
 		}
 		// setup displaying errors caught during a run
 
+		/*
 	    const preResponse = async (req, h) => {
 			
 			if (req.response.isBoom === true) {
@@ -233,6 +234,7 @@ function server (routeTable, asset, allAppEnv) {
 			}
 		};
 		hapiServer.ext('onPreResponse', preResponse);
+		*/
 
 		// Finally setup routes and start server
 
