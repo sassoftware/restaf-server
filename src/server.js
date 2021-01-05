@@ -175,7 +175,7 @@ function server (routeTable, asset, allAppEnv) {
 		await hapiServer.register(Vision);
 		hapiServer.views(visionOptions);
 		await hapiServer.register(inert);
-		debugger;
+		
 		
 		
 		await hapiServer.register({ plugin: require('hapi-require-https'), options: {} });
@@ -216,7 +216,7 @@ function server (routeTable, asset, allAppEnv) {
 			let js = fs.readFileSync(process.env.SWAGGER, 'utf8');
 			swaggerOptions = JSON.parse(js);
 			console.log(swaggerOptions);
-			debugger;
+			
 			await hapiServer.register({plugin: HapiSwagger, options: swaggerOptions});
 		}
 		// setup displaying errors caught during a run
