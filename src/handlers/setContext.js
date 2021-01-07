@@ -24,7 +24,8 @@ async function setContext (req,h){
         params : req.params,
         query  : req.query,
         payload: req.payload,
-        token  : (credentials != null) ? credentials.token : null
+        token  : (credentials != null) ? `bearer ${credentials.token}` : null,
+        host   : process.env.VIYA_SERVER
         };
     return context;
 }
