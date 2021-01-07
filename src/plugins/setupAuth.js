@@ -27,8 +27,11 @@ async function setupAuth (server, options){
 	await server.register({plugin: SASauth,   options: options});
 	await server.register({plugin: appCookie, options: options});
 	await server.register({plugin: token});
-
-	server.auth.default('token');
+	if (options.serverMode === 'api') {
+		server.auth.default('token');
+	} else {
+		server.auth.default('session');
+	}
 
 	// custom cookie management
 	

@@ -31,14 +31,20 @@ function iService (uTablep, useDefault, asset, allAppEnv, swaggerOptions) {
 	let authLogon = false;
 
 	if (process.env.AUTHFLOW === 'authorization_code' || process.env.AUTHFLOW === 'code') {
-		authDefault = {
-			strategies: ['token', 'session'],
-			mode      : 'required'
-		};
 		authLogon = {
 			mode    : 'required',
-			strategy: 'sas',
+			strategy: 'session',
 		};
+		if (process.env.SERVERMODE === 'api'){
+			authDefault = {
+				strategies: ['token', 'session'],
+				mode      : 'required'
+			};
+		} else {
+			authDefault = authLogon;
+    
+		}
+		
 		auth2 = false;
 	} else {
 		authDefault = false;

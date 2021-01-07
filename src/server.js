@@ -199,7 +199,8 @@ function server (routeTable, asset, allAppEnv) {
 				clientSecret : process.env.CLIENTSECRET,
 				redirectTo   : `/${process.env.APPNAME}/logon`,
 				allAppEnv    : allAppEnv,
-				useHapiCookie: true
+				useHapiCookie: true,
+				serverMode   : process.env.serverMode
 			};
 		await setupAuth(hapiServer, options);
 		}
@@ -245,7 +246,13 @@ function server (routeTable, asset, allAppEnv) {
 		await hapiServer.start();
 		let hh = hapiServer.info.uri.replace(/0.0.0.0/, 'localhost');
 		console.log('Start Time: ', Date());
-		console.log(`Visit ${hh}/${process.env.APPNAME}`);
+
+		if (process.env.SERVERMODE === 'api') {
+			console.log(`Visit ${hh}/${process.env.APPNAME}/api to access swagger`);
+		} else {
+		   console.log(`Visit ${hh}/${process.env.APPNAME}`);
+		}
+
 		process.env.APPSERVER = `${hh}/${process.env.APPNAME}`;
 	};
 
