@@ -43,7 +43,6 @@ function icli (uTable, useDefault){
           `
           );
           
-  //uTable = iapi(uTable);
   iapp(appenv, env, docker, uTable, useDefault);
 }
 
