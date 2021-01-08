@@ -2,9 +2,9 @@
   "name": "@sassoftware/restaf-server",
   "version": "8.4.1",
   "description": "App server for SAS Viya Applications",
-  "main": "index.js",
-  "author": "Deva Kumaraswamy",
-  "license": "Apache-2",
+  "main": "./lib/index.js",
+  "author": "Deva Kumaraswamy <deva.kumar@sas.com>",
+  "license": "Apache-2.0",
   "keywords": [
     "restaf",
     "Viya",
@@ -12,10 +12,13 @@
     "server",
     "RESTAPI"
   ],
+  "files": [
+    "/lib"
+  ],
   "engines": {
     "node": ">=12.14.0"
   },
-  "homepage": "https://github.com/sassoftware/restaf-server/blob/main/packages/app/README.md",
+  "homepage": "https://github.com/sassoftware/restaf-server#readme",
   "repository": {
     "type": "git",
     "url": "https://github.com/sassoftware/restaf-server.git"
