@@ -1,87 +1,47 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _decodeJwt = _interopRequireDefault(require("./decodeJwt"));
-
-var _boom = _interopRequireDefault(require("@hapi/boom"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
 /*
 * Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
 * SPDX-License-Identifier: Apache-2.0
 */
-var uuid = require('uuid');
+let uuid = require('uuid');
 
-var debug = require('debug')('setcookies');
+let debug = require('debug')('setcookies');
 
-function setCookies(_x, _x2) {
-  return _setCookies.apply(this, arguments);
+import decodeJwt from './decodeJwt';
+import Boom from '@hapi/boom';
+
+async function setCookies(req, h) {
+  let authCred = req.auth.credentials;
+  debug(authCred);
+
+  if (authCred != null && req.auth.error != null) {
+    debug('logon failed');
+    return {
+      status: false,
+      error: req.auth.error
+    };
+  } // create a session id and save credentials in cache
+
+
+  const sid = uuid.v4();
+  let jwt = decodeJwt(authCred.token);
+  let credentials = {
+    token: authCred.token,
+    refreshToken: authCred.refreshToken,
+    sid: sid,
+    user_name: jwt.user_name
+  };
+  await req.server.app.cache.set(sid, credentials);
+  debug(sid);
+  h.state('ocookie', {
+    "sid": sid
+  });
+  return {
+    status: true,
+    error: null
+  };
 }
 
-function _setCookies() {
-  _setCookies = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, h) {
-    var authCred, sid, jwt, credentials;
-    return regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            authCred = req.auth.credentials;
-            debug(authCred);
-
-            if (!(authCred != null && req.auth.error != null)) {
-              _context.next = 5;
-              break;
-            }
-
-            debug('logon failed');
-            return _context.abrupt("return", {
-              status: false,
-              error: req.auth.error
-            });
-
-          case 5:
-            // create a session id and save credentials in cache
-            sid = uuid.v4();
-            jwt = (0, _decodeJwt["default"])(authCred.token);
-            credentials = {
-              token: authCred.token,
-              refreshToken: authCred.refreshToken,
-              sid: sid,
-              user_name: jwt.user_name
-            };
-            _context.next = 10;
-            return req.server.app.cache.set(sid, credentials);
-
-          case 10:
-            debug(sid);
-            h.state('ocookie', {
-              "sid": sid
-            });
-            return _context.abrupt("return", {
-              status: true,
-              error: null
-            });
-
-          case 13:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  }));
-  return _setCookies.apply(this, arguments);
-}
-
-var _default = setCookies;
+export default setCookies;
 /* 
  save for future reference - not used at this time
 async function getCredentials (req) {
@@ -119,5 +79,3 @@ async function getCredentials (req) {
     }
 }
 */
-
-exports["default"] = _default;

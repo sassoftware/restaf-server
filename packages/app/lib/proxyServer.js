@@ -17,23 +17,14 @@
  */
 'use strict'; // proxy server
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
+let os = require('os');
 
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-var os = require('os');
-
-var Hapi = require('@hapi/hapi'),
+let Hapi = require('@hapi/hapi'),
     h2o2 = require('@hapi/h2o2');
 
 function proxyServer() {
-  var host = process.env.VHOST === '*' ? os.hostname() : process.env.VHOST;
-  var sConfig = {
+  let host = process.env.VHOST === '*' ? os.hostname() : process.env.VHOST;
+  let sConfig = {
     port: 8080,
     host: host,
     routes: {
@@ -45,61 +36,37 @@ function proxyServer() {
       }
     }
   };
-  var hapiServer = Hapi.server(sConfig);
+  let hapiServer = Hapi.server(sConfig);
 
-  var init = /*#__PURE__*/function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var route, uri;
-      return regeneratorRuntime.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 2;
-              return hapiServer.register([h2o2]);
-
-            case 2:
-              route = {
-                method: '*',
-                path: '/{param*}',
-                vhost: process.env.VHOST,
-                handler: {
-                  proxy: {
-                    host: process.env.APPHOST,
-                    port: process.env.APPPORT,
-                    protocol: 'http',
-                    passThrough: true
-                  }
-                }
-              };
-              console.log(route);
-              hapiServer.route(route);
-              _context.next = 7;
-              return hapiServer.start();
-
-            case 7:
-              console.log("Visit ".concat(hapiServer.info.uri, "/documentation for documentation on the API"));
-              uri = hapiServer.info.uri; // Need to do this for docker deployment
-
-              if (hapiServer.info.host === '0.0.0.0') {
-                uri = "".concat(hapiServer.info.protocol, "://localhost:").concat(hapiServer.info.port);
-              }
-
-              console.log("To access application visit ".concat(uri, "/").concat(process.env.APPNAME));
-
-            case 11:
-            case "end":
-              return _context.stop();
-          }
+  const init = async () => {
+    await hapiServer.register([h2o2]);
+    let route = {
+      method: '*',
+      path: '/{param*}',
+      vhost: process.env.VHOST,
+      handler: {
+        proxy: {
+          host: process.env.APPHOST,
+          port: process.env.APPPORT,
+          protocol: 'http',
+          passThrough: true
         }
-      }, _callee);
-    }));
-
-    return function init() {
-      return _ref.apply(this, arguments);
+      }
     };
-  }();
+    console.log(route);
+    hapiServer.route(route);
+    await hapiServer.start();
+    console.log(`Visit ${hapiServer.info.uri}/documentation for documentation on the API`);
+    let uri = hapiServer.info.uri; // Need to do this for docker deployment
 
-  process.on('unhandledRejection', function (err) {
+    if (hapiServer.info.host === '0.0.0.0') {
+      uri = `${hapiServer.info.protocol}://localhost:${hapiServer.info.port}`;
+    }
+
+    console.log(`To access application visit ${uri}/${process.env.APPNAME}`);
+  };
+
+  process.on('unhandledRejection', err => {
     console.log(err);
     console.log('unhandled exception');
     process.exit(2);
@@ -107,5 +74,4 @@ function proxyServer() {
   init();
 }
 
-var _default = proxyServer;
-exports["default"] = _default;
+export default proxyServer;
