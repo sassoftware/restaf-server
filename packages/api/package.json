@@ -18,13 +18,13 @@
   "engines": {
     "node": ">=12.14.0"
   },
-  "bin": {
-    "@sassoftware/viya-api-server-nodejs": "./lib/cli.js"
-  },
   "homepage": "https://github.com/sassoftware/restaf-server#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sassoftware/restaf-server/tree/master/packages/api"
+    "url": "https://github.com/sassoftware/restaf-server.git"
+  },
+  "bin": {
+    "@sassoftware/viya-api-server-nodejs": "./lib/cli.js"
   },
   "bugs": {
     "url": "https://github.com/sassoftware/restaf-server/issues"
