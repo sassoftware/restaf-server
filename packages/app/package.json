@@ -1,0 +1,47 @@
+{
+  "name": "@sassoftware/restaf-server",
+  "version": "8.4.1",
+  "description": "App server for SAS Viya Applications",
+  "main": "./lib/index.js",
+  "author": "Deva Kumaraswamy <deva.kumar@sas.com>",
+  "license": "Apache-2.0",
+  "keywords": [
+    "restaf",
+    "Viya",
+    "SAS",
+    "server",
+    "RESTAPI"
+  ],
+  "files": [
+    "/lib"
+  ],
+  "engines": {
+    "node": ">=12.14.0"
+  },
+  "homepage": "https://github.com/sassoftware/restaf-server#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sassoftware/restaf-server.git"
+  },
+  "bin": {
+    "@sassoftware/restaf-server": "./lib/cli.js"
+  },
+  "bugs": {
+    "url": "https://github.com/sassoftware/restaf-server/issues"
+  },
+  "scripts": {
+    "build": "rimraf lib && babel src --out-dir lib && npx shx cp ./src/visionIndex.html ./lib/visionIndex.html",
+    "app": "node app --env=./.env --docker=./Dockerfile --appenv=./appenv.js",
+    "api": "node api --env=./.api.env --api=YES --docker=./Dockerfile",
+    "static": "node ./lib/cli.js --env=./env/static/app.env --docker=./Dockerfile",
+    "start": "node ./lib/cli.js --env=./.env --docker=./Dockerfile",
+    "debug": "node --inspect-brk ./lib/cli.js    --env=./.env --docker=./Dockerfile --appenv=appenv.js",
+    "debugapi": "node --inspect-brk  ./lib/cli.js --api=YES  --env=./.api.env --docker=./Dockerfile --appenv=appenv.js",
+    "debugapp": "node --inspect-brk  app.js --env=./.env --docker=./Dockerfile --appenv=appenv.js",
+    "indocker": "node cli",
+    "dkrbuild": "docker build -f Dockerfile -t viyaapp .",
+    "dkrapp": "docker run -p 8080:8080 --env-file app.env  -t viyaapp",
+    "dkrrun": "docker run -p 8080:8080 --env-file ./.env  -t viyaapp",
+    "lint": "npx eslint --fix src/*.js"
+  }
+}
