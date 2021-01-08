@@ -1,11 +1,10 @@
 {
-  "name": "@sassoftware/viya-api-server-nodejs",
-  "version": "8.4.0",
+  "name": "@sassoftware/restaf-server",
+  "version": "8.4.1",
   "description": "App server for SAS Viya Applications",
   "main": "index.js",
   "author": "Deva Kumaraswamy",
   "license": "Apache-2",
-  "private": true,
   "keywords": [
     "restaf",
     "Viya",
@@ -22,12 +21,11 @@
     "url": "https://github.com/sassoftware/restaf-server.git"
   },
   "bin": {
-    "@sassoftware/viya-app-server-nodejs": "./lib/cli.js"
+    "@sassoftware/restaf-server": "./lib/cli.js"
   },
   "bugs": {
     "url": "https://github.com/sassoftware/restaf-server/issues"
   },
- 
   "scripts": {
     "build": "rimraf lib && babel src --out-dir lib && npx shx cp ./src/visionIndex.html ./lib/visionIndex.html",
     "app": "node app --env=./.env --docker=./Dockerfile --appenv=./appenv.js",
