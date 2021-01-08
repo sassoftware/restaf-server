@@ -1,109 +1,29 @@
 {
   "name": "@sassoftware/restaf-server",
-  "version": "8.3.8",
-  "description": "Custom app server for Viya apps",
-  "author": "Deva Kumaraswamy <deva.kumar@sas.com>",
-  "license": "Apache-2.0",
-  "main": "./lib/index.js",
-  "files": [
-    "/lib"
-  ],
-  "keywords": [
-    "restaf",
-    "Viya",
-    "SAS",
-    "server",
-    "RESTAPI"
-  ],
-  "engines": {
-    "node": ">=12.14.0"
+  "version": "1.0.0",
+  "description": "app and api server for SAS Viya user applications",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bldapp": "cd packages/viya-app-server && npm run build",
+    "bldapi": "cd packages/viya-api-server && npm run build",
+    "runapp": "cd packages/viya-app-server && npm start",
+    "runapi": "cd packages/viya-api-server && npm start"
   },
-  "bin": {
-    "@sassoftware/restaf-server": "./lib/cli.js"
-  },
-  "homepage": "https://github.com/sassoftware/restaf-server#README.md",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sassoftware/restaf-server.git"
+    "url": "git+https://github.com/sassoftware/restaf-server.git"
   },
+  "keywords": [
+    "REST",
+    "API",
+    "Viya",
+    "restaf"
+  ],
+  "author": "Deva Kumar",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/sassoftware/restaf-server/issues"
   },
-  "scripts": {
-    "build": "rimraf lib && babel src --out-dir lib && npx shx cp ./src/visionIndex.html ./lib/visionIndex.html",
-    "app": "node app --env=./.env --docker=./Dockerfile --appenv=./appenv.js",
-    "api": "node api --env=./.api.env --api=YES --docker=./Dockerfile",
-    "static": "node ./lib/cli.js --env=./env/static/app.env --docker=./Dockerfile",
-    "start": "node ./lib/cli.js --env=./.env --docker=./Dockerfile",
-    "debug": "node --inspect-brk ./lib/cli.js    --env=./.env --docker=./Dockerfile --appenv=appenv.js",
-    "debugapi": "node --inspect-brk  ./lib/cli.js --api=YES  --env=./.api.env --docker=./Dockerfile --appenv=appenv.js",
-    "debugapp": "node --inspect-brk  app.js --env=./.env --docker=./Dockerfile --appenv=appenv.js",
-    "indocker": "node cli",
-    "dkrbuild": "docker build -f Dockerfile -t viyaapp .",
-    "dkrapp": "docker run -p 8080:8080 --env-file app.env  -t viyaapp",
-    "dkrrun": "docker run -p 8080:8080 --env-file ./.env  -t viyaapp",
-    "lint": "npx eslint --fix src/*.js"
-  },
-  "dependencies": {
-    "@hapi/bell": "^12.1.1",
-    "@hapi/boom": "^9.1.1",
-    "@hapi/cookie": "^11.0.2",
-    "@hapi/h2o2": "^9.0.2",
-    "@hapi/hapi": "^20.0.3",
-    "@hapi/inert": "^6.0.3",
-    "@hapi/joi": "^17.1.1",
-    "@hapi/vision": "^6.0.1",
-    "axios": "^0.21.1",
-    "core-js": "^3.8.1",
-    "debug": "^4.3.1",
-    "docker-file-parser": "^1.0.5",
-    "eslint-config-prettier": "^7.1.0",
-    "handlebars": "^4.7.6",
-    "hapi-pino": "^8.3.0",
-    "hapi-require-https": "^5.0.0",
-    "hapi-swagger": "^14.0.0",
-    "is-docker": "^2.1.1",
-    "jwt-decode": "^3.1.2",
-    "minimist": "^1.2.5",
-    "node-cache-promise": "^1.0.2",
-    "only": "0.0.2",
-    "qs": "^6.9.4",
-    "regenerator-runtime": "^0.13.7",
-    "request-debug": "^0.2.0",
-    "selfsigned": "^1.10.8",
-    "should-send-same-site-none": "^2.0.5",
-    "tcp-ping": "^0.1.1",
-    "uuid": "^8.3.2",
-    "yargs": "^16.2.0"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.12.10",
-    "@babel/core": "^7.12.10",
-    "@babel/plugin-proposal-class-properties": "^7.12.1",
-    "@babel/plugin-proposal-decorators": "^7.12.12",
-    "@babel/plugin-proposal-do-expressions": "^7.12.1",
-    "@babel/plugin-proposal-export-default-from": "^7.12.1",
-    "@babel/plugin-proposal-export-namespace-from": "^7.12.1",
-    "@babel/plugin-proposal-function-bind": "^7.12.1",
-    "@babel/plugin-proposal-function-sent": "^7.12.1",
-    "@babel/plugin-proposal-json-strings": "^7.12.1",
-    "@babel/plugin-proposal-logical-assignment-operators": "^7.12.1",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.12.1",
-    "@babel/plugin-proposal-numeric-separator": "^7.12.7",
-    "@babel/plugin-proposal-object-rest-spread": "^7.12.1",
-    "@babel/plugin-proposal-optional-chaining": "^7.12.7",
-    "@babel/plugin-proposal-pipeline-operator": "^7.12.1",
-    "@babel/plugin-proposal-throw-expressions": "^7.12.1",
-    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-    "@babel/plugin-syntax-import-meta": "^7.10.4",
-    "@babel/plugin-transform-regenerator": "^7.12.1",
-    "@babel/plugin-transform-runtime": "^7.12.10",
-    "@babel/plugin-transform-spread": "^7.12.1",
-    "@babel/plugin-transform-strict-mode": "^7.12.1",
-    "@babel/preset-env": "^7.12.11",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^7.16.0",
-    "rimraf": "^3.0.2",
-    "shx": "^0.3.3"
-  }
+  "homepage": "https://github.com/sassoftware/restaf-server#readme"
 }

@@ -1,0 +1,24 @@
+<html>
+    <body>
+        <div>
+            <h1 style="background-color:blue;">{{title}}</h1>
+            <div style="border-style:solid; border-width: 2px;"><pre>{{message}}<pre></pre></div>
+        </div>
+    
+         <h2>Hints for Logon Error - Contact your administrator</h2>
+      
+            <ul> 
+                <li>SAMESITE setting is not correct for your environment (contact your administrator)</li>
+                <li>Presence of self-signed certificates - might have to set NODE_TLS_REJECT_UNAUTHORIZED=0 in the env file</li>
+                <li>You might have to clear the cookies for your Viya Server</li>
+                <li>You might have to clear the cookies set by this app server</li>
+            </ul>
+        
+            <h2>404</h2>
+            <ul>
+                <li> Make sure the proper appname is used in script tags for /appenv and /user</li>
+                <li> Make sure you are starting the application at the proper url</li>
+            </ul>
+        
+    </body>
+</html>
