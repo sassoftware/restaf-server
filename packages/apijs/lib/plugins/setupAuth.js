@@ -32,6 +32,8 @@ var appCookie = require('./appCookie');
 
 var token = require('./token');
 
+var setHandlers = require('./setHandlers');
+
 function setupAuth(_x, _x2) {
   return _setupAuth.apply(this, arguments);
 }
@@ -63,8 +65,9 @@ function _setupAuth() {
 
           case 6:
             server.auth["default"]('token');
+            setHandlers(server, options);
 
-          case 7:
+          case 8:
           case "end":
             return _context.stop();
         }

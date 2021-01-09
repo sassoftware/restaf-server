@@ -16,18 +16,17 @@
  *
  */
 
-
-
-let SASauth   = require('./SASauth');
-let appCookie = require('./appCookie');
-let token     = require('./token');
+let SASauth     = require('./SASauth');
+let appCookie   = require('./appCookie');
+let token       = require('./token');
+let setHandlers = require('./setHandlers');
 
 async function setupAuth (server, options){
-
 	await server.register({plugin: SASauth,   options: options});
 	await server.register({plugin: appCookie, options: options});
 	await server.register({plugin: token});
 	server.auth.default('token');
+	setHandlers(server, options);
 };
 
 export default setupAuth;

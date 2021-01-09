@@ -46,8 +46,7 @@ function icli(uTable, useDefault) {
     useDefault = true;
   }
 
-  console.log("\nConfiguration:\n          Dockerfile: ".concat(docker, "\n          env file  : ").concat(env, "\n          app env   : ").concat(appenv, "\n          ")); //uTable = iapi(uTable);
-
+  console.log("\nConfiguration:\n          Dockerfile: ".concat(docker, "\n          env file  : ").concat(env, "\n          app env   : ").concat(appenv, "\n          "));
   iapp(appenv, env, docker, uTable, useDefault);
 }
 
