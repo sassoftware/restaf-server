@@ -6,3 +6,8 @@ This package has two servers:
 2. viya-api-server-nodejs - Use this to develop rest api servers(see packages/api)
 
 > The restaf-server will be soon super-seeded by viya-app-server with better support for protecting all routes
+
+
+## apiSample
+
+see the apiSample branch for api sample
