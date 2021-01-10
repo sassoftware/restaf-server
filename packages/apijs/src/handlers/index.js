@@ -4,7 +4,7 @@
 */
 'use strict';
 import getApp from './getApp';
-import handleProxy from './handleProxy';
+// import handleProxy from './handleProxy';
 import appCallback from './appCallback';
 import logon       from './logon';
 import keepAlive from './keepAlive';
@@ -17,7 +17,7 @@ export {
     getApp,
     keepAlive,
     keepAlive2,
-    handleProxy,
+    // handleProxy,
     appCallback,
     logon,
     logout,

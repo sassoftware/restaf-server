@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:app": "cd packages/app && yarn build",
+    "build:appjs": "cd packages/appjs && yarn build",
     "build:apijs": "cd packages/apijs && yarn build",
-    "start:app": "cd packages/app && yarn start",
+    "start:appjs": "cd packages/appjs && yarn start",
     "start:apijs": "cd packages/apijs && yarn start",
-    "buildall": "yarn build:app && yarn build:apijs"
+    "buildall": "yarn build:appjs && yarn build:apijs"
   },
   "repository": "git+https://github.com/sassoftware/restaf-server.git",
   "keywords": [

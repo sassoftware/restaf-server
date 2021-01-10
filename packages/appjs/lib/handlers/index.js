@@ -49,12 +49,6 @@ Object.defineProperty(exports, "getUser", {
     return _getUser["default"];
   }
 });
-Object.defineProperty(exports, "setupUserRoutes", {
-  enumerable: true,
-  get: function get() {
-    return _setupUserRoutes["default"];
-  }
-});
 
 var _getApp = _interopRequireDefault(require("./getApp"));
 
@@ -69,7 +63,5 @@ var _keepAlive2 = _interopRequireDefault(require("./keepAlive2"));
 var _logout = _interopRequireDefault(require("./logout"));
 
 var _getUser = _interopRequireDefault(require("./getUser"));
-
-var _setupUserRoutes = _interopRequireDefault(require("./setupUserRoutes"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }

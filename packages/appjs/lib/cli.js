@@ -19,10 +19,10 @@
  */
 'use strict';
 
-let fs = require('fs');
+var fs = require('fs');
 
 debugger;
 
-let rafServer = require('./index.js');
+var rafServer = require('./index.js');
 
 rafServer.icli(null, true);
