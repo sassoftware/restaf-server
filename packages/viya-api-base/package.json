@@ -1,5 +1,5 @@
 {
-	"name": "viya-api-base",
+	"name": "@sassoftware/viya-api-base",
 	"version": "1.0.0",
 	"keywords": [
 		"react",
@@ -7,7 +7,7 @@
 		"template",
 		"viya"
 	],
-	"main": "index.js",
+	"main": "template.json",
 	"description": "Template for typical SAS Viya Applications",
 	"homepage": "https://github.com/sassoftware/restaf-server#README.md",
 	"repository": {
@@ -25,10 +25,9 @@
 	},
 	"files": [
 		"template",
-         "template.json",
-         "index.js"
-  ],
-  "scripts": {
-    "start": "node index.js"
-  }
+		"template.json"
+	],
+	"scripts": {
+		"start": "node index.js"
+	}
 }
