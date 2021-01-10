@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 let sh = require('shelljs');
 let argv = require('yargs').argv;
+let fs = require('fs').promises;
+let jsonFormat = require('json-format');
 
 let app = argv._[0];
 let appDir = `${process.cwd()}/${app}`;
@@ -18,26 +20,40 @@ if (rc != 0) {
  * SPDX-License-Identifier: Apache-2.0
  */
 
-function installPackages (packages) {
+function execcmd (cmd) {
 	return new Promise((resolve) => {
-		let x = `npm install ${packages}`;
-		console.log(x);
-		sh.exec(x, () => {
-			console.log('\nFinished installing packages\n'.green);
+		sh.exec(cmd, () => {
 			resolve();
 		});
 	});
 }
 
 async function run (appDirectory) {
-	//sh.cp('-rf', 'package.json', 'package.json.bak');
-	// sh.rm('-rf', 'package-lock.json');
-    sh.cd(appDirectory);
-    await installPackages('@sassoftware/viya-api-base');
-	rc = sh.cp('-rf', './node_modules/@sassoftware/viya-api-base/template/*','.');
-	rc = sh.cp('-rf', './node_modules/@sassoftware/viya-api-base/template.json', 'package.json');
+
+	sh.cd(appDirectory);
+	// init 
+	let rc = await execcmd('npm init -y');
+
+	// install base and copy code over from node_modules
+    rc = await execcmd('npm install @sassoftware/viya-api-base');
+	rc = sh.cp('-rf', './node_modules/@sassoftware/viya-api-base/template/*', '.');
+
+	// update package.json with the template.json
+	let templatejs = await fs.readFile('./node_modules/@sassoftware/viya-api-base/template.json', 'utf8');
+	let tjs = JSON.parse(templatejs);
+	let packagejs = await fs.readFile('./package.json', 'utf8');
+	let pjs = JSON.parse(packagejs);
+	let pjson = { ...pjs, ...tjs };
+	await fs.writeFile('package.json', jsonFormat(pjson), 'utf8');  
+	console.log(pjson);
+	sh.mv('env', '.env');
+	sh.mv('gitignore', '.gitignore');
+	sh.mv('eslintignore', '.eslintignore');
+	sh.mv('eslintrc.json', '.eslintrc.json');
+	// rename the . files
+	
     rc = sh.rm('-rf', './node_modules');
-    rc = await installPackages(' ');
+    rc = await execcmd('npm install');
 }
 
 run(appDir)

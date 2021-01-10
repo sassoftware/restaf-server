@@ -27,6 +27,7 @@
 		"url": "https://github.com/sassoftware/restaf/issues"
 	},
 	"dependencies": {
+		"json-format": "^1.0.1",
 		"shelljs": "^0.8.4",
 		"yargs": "^16.2.0"
 	}

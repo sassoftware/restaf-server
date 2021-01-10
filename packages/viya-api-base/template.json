@@ -1,11 +1,4 @@
  {
-		"name": "myapi",
-		"version": "1.0.0",
-		"keywords": ["rest", "viya"],
-		"main": "index.js",
-		"license": "Apache-2.0",
-		"author": "yourname yourname@co.com",
-		"description": "api server created with create-viya-api",
 		"dependencies": {
 			"@sassoftware/restaf": "^3.0.1",
 			"@sassoftware/restaflib": "^3.0.1",
@@ -43,6 +36,9 @@
 			"eslint": "^7.16.0",
 			"rimraf": "^3.0.2",
 			"shx": "^0.3.3"
+		},
+		"resolutions": {
+			"core-js": "^3.8.2"
 		},
 		"jest": {
 			"testTimeout": 10000000,
