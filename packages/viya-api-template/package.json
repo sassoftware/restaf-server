@@ -1,6 +1,6 @@
 {
   "name": "viya-api-template",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "template for creating viya-apserrverjs based servers",
   "main": "template.json",
   "repository": {
@@ -8,7 +8,7 @@
     "url": "https://github.com/sassoftware/restaf-server.git"
   },
   "bugs": {
-        "url": "https://github.com/sassoftware/restaf-server/issues"
+    "url": "https://github.com/sassoftware/restaf-server/issues"
   },
   "keywords": [
     "restapi",
@@ -16,8 +16,11 @@
   ],
   "author": "Deva Kumar deva.kumar@sas.com",
   "license": "Apache-2.0",
-  "files": ["template", "template.json"],
-  "unpkg": "@sassoftware/viya-api-template",
+  "files": [
+    "template",
+    "template.json"
+  ],
+  "unpkg": "template.json",
   "engine": {
     "node": ">=12.14.0",
     "npm": ">=6.13.4",
