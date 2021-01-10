@@ -19,100 +19,122 @@
 let handlers = require('./handlers');
 let Joi = require('joi');
 
-module.exports =  function api () {
+module.exports = function api () {
 	let appName = `/${process.env.APPNAME}`; /* does not have to be this - your choice */
 	let routes = [
 		{
-			method : ['GET'],
-			path   : `${appName}/testroute`,
+			method: ['GET'],
+			path: `${appName}/testroute`,
 			options: {
-				handler: async (req,h) => { 
+				handler: async (req, h) => {
 					let context = req.pre.context;
 					return context;
 				},
 				description: 'Test Route',
-				notes      : 'Echo context',
-				tags       : ['api']
-			}
+				notes: 'Echo context',
+				tags: ['api'],
+			},
 		},
 		{
-			method : ['GET'],
-			path   : `${appName}/simpleExample`,
+			method: ['GET'],
+			path: `${appName}/simpleExample`,
 			options: {
-				handler    : handlers.simpleExample,
+				handler: handlers.simpleExample,
 				description: 'Simple Example returning list of files',
-				notes      : 'Uses axios to get a list of files from Viya file service',
-				tags       : ['api']
-			}
+				notes: 'Uses axios to get a list of files from Viya file service',
+				tags: ['api'],
+			},
 		},
 		{
-			method : ['POST'],
-			path   : `${appName}/compute/{param*}`,
+			method: ['POST'],
+			path: `${appName}/compute/{param*}`,
 			options: {
-				handler    : handlers.compute,
+				handler: handlers.compute,
 				description: 'Route to run a simple compute job',
-				notes      : 'Uses compute service',
-				tags       : ['api'],
+				notes: 'Uses compute service',
+				tags: ['api'],
 
 				validate: {
 					payload: Joi.object({
 						input: Joi.object().description('your macros as an object'),
-						code : Joi.string().description('your sas program')
-					})
-				}	
-			}
+						code: Joi.string().description('your sas program'),
+					}),
+				},
+			},
 		},
 		{
-			method : ['POST'],
-			path   : `${appName}/coolStuff`,
+			method: ['POST'],
+			path: `${appName}/coolStuff`,
 			options: {
-				handler    : handlers.coolStuff,
+				handler: handlers.coolStuff,
 				description: 'Run a specific saved program',
-				notes      : 'This creates a data set with the numbre of cols specfied in the input',
-				tags       : ['api'],
-				
+				notes: 'This creates a data set with the numbre of cols specfied in the input',
+				tags: ['api'],
+
 				validate: {
 					payload: Joi.object({
 						input: Joi.object({
-							cols: Joi.number().default(10)
-						}).description('specify cols')
-					})
-				}
-			}
+							cols: Joi.number().default(10).min(5).max(20),
+						}).description('specify cols'),
+						output: Joi.string()
+							.tolowercase()
+							.valid(['log', 'list', 'ods'])
+							.tolowe.description('return log, listing or ods'),
+					}),
+				},
+			},
 		},
 		{
-			method : ['POST'],
-			path   : `${appName}/casAction`,
+			method: ['POST'],
+			path: `${appName}/casAction`,
 			options: {
-				handler    : handlers.casAction,
+				handler: handlers.casAction,
 				description: 'Route to run any cas action',
-				notes      : 'This can be used to execute any cas action',
-				tags       : ['api'],
+				notes: 'This can be used to execute any cas action',
+				tags: ['api'],
 
 				validate: {
 					payload: Joi.object({
 						action: Joi.string().description('actionset.actionName'),
-						data  : Joi.any().description('action parameters')})
-				}	
-			}
+						data: Joi.any().description('action parameters'),
+					}),
+				},
+			},
 		},
 		{
-			method : ['POST'],
-			path   : `${appName}/casl`,
+			method: ['POST'],
+			path: `${appName}/casl`,
 			options: {
-				handler    : handlers.casl,
+				handler: handlers.casl,
 				description: 'Route a casl program',
-				notes      : 'You can execute any casl program and return some json',
-				tags       : ['api'],
+				notes: 'You can execute any casl program and return some json',
+				tags: ['api'],
 
 				validate: {
 					payload: Joi.object({
 						input: Joi.object().description('input args'),
-						code : Joi.string().description('the casl code')
-					})
-				}	
-			}
-		}
+						code : Joi.string().description('the casl code'),
+					}),
+				},
+			},
+		},
+		{
+			method: ['POST'],
+			path: `${appName}/getData`,
+			options: {
+				handler: handlers.getData,
+				description: 'Get data from a cas table',
+				notes: 'This returns the first few values. ',
+				tags: ['api'],
+
+				validate: {
+					payload: Joi.object({
+						caslib: Joi.string().description('caslib'),
+						name: Joi.string().description('table name'),
+					}),
+				},
+			},
+		},
 	];
-    return routes;
-} ;
+	return routes;
+};

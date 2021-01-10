@@ -1,8 +1,8 @@
  {
-		"name": "your api",
+		"name": "myapi",
 		"version": "1.0.0",
 		"keywords": ["rest", "viya"],
-		"main": "index.json",
+		"main": "index.js",
 		"description": "api server created with create-viya-api",
 		"dependencies": {
 			"@sassoftware/restaf": "^3.0.1",

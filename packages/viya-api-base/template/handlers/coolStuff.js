@@ -19,12 +19,15 @@ async function run (req,h) {
     let context = req.pre.context;
     let store = await setupConnection(context);
 	let computeSession = await computeSetup(store, null, null);
-    debugger;
-    console.log(context.path);
+   
+    // get the last param from the path
     let f = context.path.split('/');
 
+    // read the file with the same name
     let fname = `./pgm/${f[2]}.sas`;
     let src = await fs.readFile(fname, 'utf8');
+
+    // run the sas code 
     let computeSummary = await computeRun(
         store,
         computeSession,
@@ -32,10 +35,11 @@ async function run (req,h) {
         context.payload.input,
         15,2  /* just a place holder values for checking job status */
     );
-    debugger;
-    let log = await restaflib.computeResults(store, computeSummary, 'log');
+  
+    // get the specified result
+    let result = await restaflib.computeResults(store, computeSummary, context.payload.output);
     await store.apiCall(computeSession.links('delete'));
     // just return log for the example
-    return log;
+    return result;
 
 };

@@ -1,4 +1,4 @@
-#!#!/usr/bin/env node
+#!/usr/bin/env node
 let sh = require('shelljs');
 let argv = require('yargs').argv;
 
@@ -18,9 +18,9 @@ if (rc != 0) {
  * SPDX-License-Identifier: Apache-2.0
  */
 
-function installPackages (appDirectory, packages) {
+function installPackages (packages) {
 	return new Promise((resolve) => {
-		let x = `cd ${appDirectory} && npm install ${packages}`;
+		let x = `npm install ${packages}`;
 		console.log(x);
 		sh.exec(x, () => {
 			console.log('\nFinished installing packages\n'.green);
@@ -30,14 +30,14 @@ function installPackages (appDirectory, packages) {
 }
 
 async function run (appDirectory) {
-	sh.cp('-rf', 'package.json', 'package.json.bak');
-	sh.rm('-rf', 'package-lock.json');
+	//sh.cp('-rf', 'package.json', 'package.json.bak');
+	// sh.rm('-rf', 'package-lock.json');
     sh.cd(appDirectory);
-    await installPackages(appDirectory, '@sassoftware/viya-api-base');
-	rc = sh.cp('-rf', '../node_modules/@sassoftware/viya-api-base/template', appDirectory);
-	rc = sh.cp('-rf', '../node_modules/@sassoftware/viya-api-base/template.json', 'package.json');
-    rc = sh.rm('-rf', '../node_modules');
-    rc = installPackages(appDirectory, ' ');
+    await installPackages('@sassoftware/viya-api-base');
+	rc = sh.cp('-rf', './node_modules/@sassoftware/viya-api-base/template/*','.');
+	rc = sh.cp('-rf', './node_modules/@sassoftware/viya-api-base/template.json', 'package.json');
+    rc = sh.rm('-rf', './node_modules');
+    rc = await installPackages(' ');
 }
 
 run(appDir)

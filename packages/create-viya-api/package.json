@@ -1,15 +1,18 @@
 {
 	"name": "@sassoftware/viya-create-api",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"keywords": [
 		"react",
 		"create-react-app",
 		"template",
 		"viya"
 	],
-	"main": "index.json",
+	"main": "index.js",
 	"description": "Template for typical SAS Viya Applications",
 	"homepage": "https://github.com/sassoftware/restaf-server#README.md",
+	"bin": {
+		"@sassoftware/create-viya-api": "index.js"
+	},
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/sassoftware/restaf-server/tree/main/packages/create-viya-api"
@@ -23,10 +26,8 @@
 	"bugs": {
 		"url": "https://github.com/sassoftware/restaf/issues"
 	},
-	"scripts": {
-		"start": "node index.js"
-	},
 	"dependencies": {
-		"shelljs": "^0.8.4"
+		"shelljs": "^0.8.4",
+		"yargs": "^16.2.0"
 	}
 }
