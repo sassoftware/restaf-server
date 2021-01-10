@@ -1,6 +1,6 @@
 {
   "name": "@sassoftware/restaf-server",
-  "version": "8.4.1",
+  "version": "8.4.3",
   "description": "App server for SAS Viya Applications",
   "main": "./lib/index.js",
   "author": "Deva Kumaraswamy <deva.kumar@sas.com>",
@@ -44,7 +44,7 @@
     "dkrrun": "docker run -p 8080:8080 --env-file ./.env  -t viyaapp",
     "lint": "npx eslint --fix src/*.js"
   },
-   "dependencies": {
+  "dependencies": {
     "@hapi/bell": "^12.1.1",
     "@hapi/boom": "^9.1.1",
     "@hapi/cookie": "^11.0.2",
