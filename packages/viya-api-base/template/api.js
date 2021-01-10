@@ -18,6 +18,7 @@
 
 let handlers = require('./handlers');
 let Joi = require('joi');
+const { jsxOpeningElement } = require('@babel/types');
 
 module.exports = function api () {
 	let appName = `/${process.env.APPNAME}`; /* does not have to be this - your choice */
@@ -77,9 +78,9 @@ module.exports = function api () {
 							cols: Joi.number().default(10).min(5).max(20),
 						}).description('specify cols'),
 						output: Joi.string()
-							.tolowercase()
-							.valid(['log', 'list', 'ods'])
-							.tolowe.description('return log, listing or ods'),
+							.lowercase()
+							.valid('log', 'list', 'ods')
+							.lowercase().description('return log, listing or ods'),
 					}),
 				},
 			},
@@ -125,15 +126,17 @@ module.exports = function api () {
 				handler: handlers.getData,
 				description: 'Get data from a cas table',
 				notes: 'This returns the first few values. ',
-				tags: ['api'],
+				tags: [ 'api' ],
 
 				validate: {
 					payload: Joi.object({
-						caslib: Joi.string().description('caslib'),
-						name: Joi.string().description('table name'),
-					}),
-				},
-			},
+						input: Joi.object({
+							caslib: Joi.string().description('caslib'),
+							name: Joi.string().description('table name')
+						})
+					})
+				}
+			}
 		},
 	];
 	return routes;

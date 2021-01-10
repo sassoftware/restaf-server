@@ -6,10 +6,11 @@ let restaflib = require('@sassoftware/restaflib');
 let setupConnection = require('../lib/setupConnection');
 let fs = require('fs').promises;
 
-module.exports = async function casl (req,h) {
+module.exports = async function getData (req,h) {
     return run(req,h) 
      .then (r => {return r;})
-     .catch(err => {
+        .catch(err => {
+            console.log(err);
          return err; //add Boom to make the message better
      });
 };
@@ -26,7 +27,8 @@ async function run (req,h) {
     let src = await fs.readFile(fname, 'utf8');
 
     // run the casl code and return whatever the casl code returns
-    let result = await restaflib.caslRun(store, session, src, context.payload.args);
+    let result = await restaflib.caslRun(store, session, src, context.payload.input);
+    console.log(result);
     await store.apiCall(session.links('delete'));
     return result;
 }

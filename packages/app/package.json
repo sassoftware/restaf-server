@@ -69,7 +69,6 @@
     "only": "0.0.2",
     "qs": "^6.9.4",
     "regenerator-runtime": "^0.13.7",
-    "request-debug": "^0.2.0",
     "selfsigned": "^1.10.8",
     "should-send-same-site-none": "^2.0.5",
     "tcp-ping": "^0.1.1",

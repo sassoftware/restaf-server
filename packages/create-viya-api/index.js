@@ -8,7 +8,6 @@ let app = argv._[0];
 let appDir = `${process.cwd()}/${app}`;
 console.log(appDir);
 
-console.log(argv);
 let rc = sh.rm('-rf', appDir);
 rc = sh.mkdir(appDir);
 if (rc != 0) {
@@ -57,5 +56,7 @@ async function run (appDirectory) {
 }
 
 run(appDir)
-	.then(() => 'done')
+	.then(() => {
+		console.log('Please see https://github.com/sassoftware/restaf-server/wiki for documentation');
+	})
 	.catch((err) => console.log(err));
