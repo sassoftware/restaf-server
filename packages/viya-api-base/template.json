@@ -3,6 +3,8 @@
 		"version": "1.0.0",
 		"keywords": ["rest", "viya"],
 		"main": "index.js",
+		"license": "Apache-2.0",
+		"author": "yourname yourname@co.com",
 		"description": "api server created with create-viya-api",
 		"dependencies": {
 			"@sassoftware/restaf": "^3.0.1",
@@ -42,7 +44,10 @@
 			"rimraf": "^3.0.2",
 			"shx": "^0.3.3"
 		},
-
+		"jest": {
+			"testTimeout": 10000000,
+			"verbose": false
+		},
 		"scripts": {
 			"test": "npx jest",
 			"start": "node index.js --env=./.env --docker=./Dockerfile",
