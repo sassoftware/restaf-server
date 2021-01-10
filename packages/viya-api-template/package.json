@@ -1,6 +1,6 @@
 {
   "name": "viya-api-template",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "description": "template for creating viya-apserrverjs based servers",
   "main": "template.json",
   "repository": {
@@ -20,7 +20,6 @@
     "template",
     "template.json"
   ],
-  "unpkg": "template.json",
   "engine": {
     "node": ">=12.14.0",
     "npm": ">=6.13.4",
