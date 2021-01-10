@@ -7,7 +7,7 @@
 		"template",
 		"viya"
 	],
-	"main": "template.json",
+	"main": "index.js",
 	"description": "Template for typical SAS Viya Applications",
 	"homepage": "https://github.com/sassoftware/restaf-server#README.md",
 	"repository": {
@@ -25,6 +25,10 @@
 	},
 	"files": [
 		"template",
-    "template.json"
-	]
+         "template.json",
+         "index.js"
+  ],
+  "scripts": {
+    "start": "node index.js"
+  }
 }
