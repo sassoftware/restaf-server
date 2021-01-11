@@ -18,7 +18,6 @@
 
 let handlers = require('./handlers');
 let Joi = require('joi');
-const { jsxOpeningElement } = require('@babel/types');
 
 module.exports = function api () {
 	let appName = `/${process.env.APPNAME}`; /* does not have to be this - your choice */
@@ -36,6 +35,7 @@ module.exports = function api () {
 				tags: ['api'],
 			},
 		},
+		/*
 		{
 			method: ['GET'],
 			path: `${appName}/simpleExample`,
@@ -46,6 +46,7 @@ module.exports = function api () {
 				tags: ['api'],
 			},
 		},
+		*/
 		{
 			method: ['POST'],
 			path: `${appName}/compute/{param*}`,
