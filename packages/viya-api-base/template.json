@@ -37,6 +37,9 @@
 			"rimraf": "^3.0.2",
 			"shx": "^0.3.3"
 		},
+		  "resolutions": {
+			"**/core-js": "^3.6.4"
+ 		},
 		"jest": {
 			"testTimeout": 10000000,
 			"verbose": false
