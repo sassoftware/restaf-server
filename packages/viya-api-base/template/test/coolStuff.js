@@ -12,7 +12,7 @@ module.exports = async function coolStuff () {
           authorization: token
        },
        data: {
-          input: { cols: 5 },
+          input : { cols: 5 },
           output: 'log'
         }
    };
