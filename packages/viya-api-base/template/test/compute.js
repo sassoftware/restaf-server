@@ -9,7 +9,7 @@ module.exports = async function compute () {
        method : 'POST',
        url    : 'http://localhost:8080/myapi/compute',
        headers: {
-          authorization: 'bearer ' + token
+          authorization: token
        },
        data: {
         input: {x: 1},

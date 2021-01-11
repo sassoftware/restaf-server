@@ -7,12 +7,13 @@ module.exports = async function coolStuff () {
    let {store, token} = await setupTest();
    let payload = {
        method : 'POST',
-       url    : 'http://localhost:8080/myapi/coolstuff',
+       url    : 'http://localhost:8080/myapi/coolStuff',
        headers: {
-          authorization: 'bearer ' + token
+          authorization: token
        },
        data: {
-        input: {cols: 5}
+          input: { cols: 5 },
+          output: 'log'
         }
    };
 

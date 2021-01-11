@@ -21,7 +21,7 @@ test('compute', async () => {
     expect(l).toBe('done');
 });
 
-test('compute', async () => {
+test('coolstuff', async () => {
     let l = await coolStuff();
     expect(l).toBe('done');
 });

@@ -11,7 +11,7 @@ module.exports = async function casAction () {
        method : 'POST',
        url    : 'http://localhost:8080/myapi/casAction',
        headers: {
-          authorization: 'bearer ' + token
+          authorization: token
        },
        data: {
         action: 'builtins.echo',
@@ -20,6 +20,7 @@ module.exports = async function casAction () {
         }
       }
    };
+   console.log(payload);
    let r = await store.request(payload);
    console.log(r.data);
    return 'done';

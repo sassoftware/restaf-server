@@ -10,7 +10,7 @@ module.exports = async function casl () {
        method : 'POST',
        url    : 'http://localhost:8080/myapi/casl',
        headers: {
-          authorization: 'bearer ' + token
+          authorization: token
        },
        data: {
         input: {x: 1},

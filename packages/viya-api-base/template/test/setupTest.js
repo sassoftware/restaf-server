@@ -11,6 +11,7 @@ module.exports = async function setupTest () {
     if (process.env.TOKENFILE != null) {
         let token = await fs.readFile(process.env.TOKENFILE, 'utf8');
         console.log('Using saved token');
+        token = 'bearer ' + token;
         return {store,token};
     } 
     let logonPayload = {
@@ -24,5 +25,6 @@ module.exports = async function setupTest () {
 
     await store.logon(logonPayload);
     let token = store.connection().token;
+    token = 'bearer ' + token;
     return {store,token};
 };
