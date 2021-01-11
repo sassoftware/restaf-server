@@ -52,7 +52,8 @@ async function run (appDirectory) {
 	// rename the . files
 	
     rc = sh.rm('-rf', './node_modules');
-    rc = await execcmd('npm install');
+	rc = await execcmd('npm install');
+	rc = await execcmd('npm run lint');
 }
 
 run(appDir)
