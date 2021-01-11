@@ -21,7 +21,7 @@ async function keepAlive (req, h) {
 
 async function refreshToken (req, h) {
     
-    if (req.state.ocookie == null ) {
+    if (req.state.ocookie == null) {
         return false;
     }
     let sid = req.state.ocookie.sid;

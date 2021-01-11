@@ -10,7 +10,7 @@ async function keepAlive2 (req, h) {
    console.log('in keepAlive2');
    let SASLogon = `${process.env.VIYA_SERVER}/SASLogon/timedout`;
    console.log(SASLogon);
-   if (req.state.ocookie != null ) {
+   if (req.state.ocookie != null) {
       let sid = req.state.ocookie.sid;
       h.state('ocookie', { "sid": sid });
    }

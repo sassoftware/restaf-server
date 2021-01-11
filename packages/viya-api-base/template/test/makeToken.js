@@ -27,23 +27,23 @@ let store = restaf.initStore(initOpts);
 
 runCli(store);
 
-function runCli(store) {
+function runCli (store) {
 	vorpal
 		.command('logon')
 		.description('Logon to Viya')
 		.action((args, cb) => {
 			vorpal.activeCommand.prompt(
 				{
-					type: 'input',
-					name: 'user',
+					type   : 'input',
+					name   : 'user',
 					message: 'Enter your userid> ',
 				},
 				(result) => {
 					payload.user = result.user;
 					vorpal.activeCommand.prompt(
 						{
-							type: 'password',
-							name: 'password',
+							type   : 'password',
+							name   : 'password',
 							message: 'Enter your password> ',
 						},
 						(result) => {
@@ -80,7 +80,7 @@ function runCli(store) {
 
 	vorpal.show();
 }
-async function logon(store, logonPayload, vorpal) {
+async function logon (store, logonPayload, vorpal) {
 	if (logonPayload !== null) {
 		if (store.connection() !== null) {
 			await store.logoff();
