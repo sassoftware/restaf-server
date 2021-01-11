@@ -3,7 +3,6 @@
 			"@sassoftware/restaf": "^3.0.1",
 			"@sassoftware/restaflib": "^3.0.1",
 			"@sassoftware/viya-apiserverjs": "^0.1.4",
-			"jest": "^26.6.3",
 			"joi": "^17.3.0"
 		},
 
@@ -34,6 +33,7 @@
 			"@babel/preset-env": "^7.12.11",
 			"babel-eslint": "^10.1.0",
 			"eslint": "^7.16.0",
+			"jest": "next",
 			"rimraf": "^3.0.2",
 			"shx": "^0.3.3"
 		},
