@@ -8,7 +8,6 @@ module.exports = async function casAction (req,h) {
     return run(req,h) 
         .then (r => {return r;})
         .catch(err => {
-            console.log(err);
             return err;/* need to add Boom support */
         });
 };

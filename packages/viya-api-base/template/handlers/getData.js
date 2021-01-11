@@ -10,7 +10,6 @@ module.exports = async function getData (req,h) {
     return run(req,h) 
      .then (r => {return r;})
         .catch(err => {
-            console.log(err);
          return err; //add Boom to make the message better
      });
 };
@@ -28,7 +27,6 @@ async function run (req,h) {
 
     // run the casl code and return whatever the casl code returns
     let result = await restaflib.caslRun(store, session, src, context.payload.input);
-    console.log(result);
     await store.apiCall(session.links('delete'));
     return result;
 }
