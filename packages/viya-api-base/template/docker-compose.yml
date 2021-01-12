@@ -1,11 +1,14 @@
 version: "3.3"
 services:
-  viyaapiserver:
+  myapi:
       build: .
       restart: always
       ports:
         - 8080:8080
       environment:
         - VIYA_SERVER=
+        - CLIENTID=myapi
+        - CLIENTSECRET=secret
+
 
 
