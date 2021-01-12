@@ -4,7 +4,11 @@ let argv = require('yargs').argv;
 let fs = require('fs').promises;
 let jsonFormat = require('json-format');
 
-let app = argv._[0];
+let app = argv._[ 0 ];
+let version = 'latest';
+if (argv.version != null) {
+	version = argv.version;
+}
 let appDir = `${process.cwd()}/${app}`;
 console.log(appDir);
 
@@ -27,14 +31,16 @@ function execcmd (cmd) {
 	});
 }
 
-async function run (appDirectory) {
+async function run (appDirectory, version) {
 
 	sh.cd(appDirectory);
 	// init 
 	let rc = await execcmd('npm init -y');
 
 	// install base and copy code over from node_modules
-    rc = await execcmd('npm install @sassoftware/viya-api-base');
+	let base = `npm install @sassoftware/viya-api-base@${version}`;
+	console.log(base);
+    rc = await execcmd(base);
 	rc = sh.cp('-rf', './node_modules/@sassoftware/viya-api-base/template/*', '.');
 
 	// update package.json with the template.json
