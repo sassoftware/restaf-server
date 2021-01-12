@@ -5,10 +5,12 @@ let fs = require('fs').promises;
 let jsonFormat = require('json-format');
 
 let app = argv._[ 0 ];
+console.log(argv);
 let version = 'latest';
-if (argv.version != null) {
-	version = argv.version;
+if (argv.use != null) {
+	version = argv.use;
 }
+console.log(version);
 let appDir = `${process.cwd()}/${app}`;
 console.log(appDir);
 
@@ -39,7 +41,6 @@ async function run (appDirectory, version) {
 
 	// install base and copy code over from node_modules
 	let base = `npm install @sassoftware/viya-api-base@${version}`;
-	console.log(base);
     rc = await execcmd(base);
 	rc = sh.cp('-rf', './node_modules/@sassoftware/viya-api-base/template/*', '.');
 
@@ -62,7 +63,7 @@ async function run (appDirectory, version) {
 	rc = await execcmd('npm run lint');
 }
 
-run(appDir)
+run(appDir,version)
 	.then(() => {
 		console.log('Please see https://github.com/sassoftware/restaf-server/wiki for documentation');
 	})
