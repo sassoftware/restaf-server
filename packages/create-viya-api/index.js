@@ -5,14 +5,11 @@ let fs = require('fs').promises;
 let jsonFormat = require('json-format');
 
 let app = argv._[ 0 ];
-console.log(argv);
 let version = 'latest';
 if (argv.use != null) {
 	version = argv.use;
 }
-console.log(version);
 let appDir = `${process.cwd()}/${app}`;
-console.log(appDir);
 
 let rc = sh.rm('-rf', appDir);
 rc = sh.mkdir(appDir);
@@ -41,6 +38,7 @@ async function run (appDirectory, version) {
 
 	// install base and copy code over from node_modules
 	let base = `npm install @sassoftware/viya-api-base@${version}`;
+	console.log(`Installing @sassoftware/viya-api-base@${version}`);
     rc = await execcmd(base);
 	rc = sh.cp('-rf', './node_modules/@sassoftware/viya-api-base/template/*', '.');
 
@@ -51,7 +49,6 @@ async function run (appDirectory, version) {
 	let pjs = JSON.parse(packagejs);
 	let pjson = { ...pjs, ...tjs };
 	await fs.writeFile('package.json', jsonFormat(pjson), 'utf8');  
-	console.log(pjson);
 	sh.mv('env', '.env');
 	sh.mv('gitignore', '.gitignore');
 	sh.mv('eslintignore', '.eslintignore');
@@ -65,6 +62,6 @@ async function run (appDirectory, version) {
 
 run(appDir,version)
 	.then(() => {
-		console.log('Please see https://github.com/sassoftware/restaf-server/wiki for documentation');
+		console.log('Please visit https://github.com/sassoftware/restaf-server/wiki/apiserver for documentation');
 	})
 	.catch((err) => console.log(err));
