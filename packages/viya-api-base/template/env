@@ -18,6 +18,7 @@ CLIENTSECRET=secret
 #
 
 # APPHOST = localhost | dns name of the server(ex: acme.unx.sas.com)
+# APPNAME is thename of your apiserver
 APPHOST=localhost
 APPNAME=myapi
 APPPORT=8080

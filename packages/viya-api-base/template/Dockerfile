@@ -18,6 +18,7 @@ ENV APPHOST=0.0.0.0
 ENV APPNAME=viyaapp
 
 ENV PLUGIN=hapi-swagger
+ENV SWAGGER=./swagger.json
 ENV APPLOC=./public
 ENV APPENTRY=index.html
 # ENV APPENV=appenv.js
