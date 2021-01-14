@@ -9,6 +9,8 @@ services:
         - VIYA_SERVER=
         - CLIENTID=myapi
         - CLIENTSECRET=secret
+        - APPNAME=myapi
+
 
 
 

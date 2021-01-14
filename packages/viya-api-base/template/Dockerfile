@@ -15,7 +15,6 @@ ENV APPPORT=8080
 
 # will change to localhost in non-docker environments
 ENV APPHOST=0.0.0.0
-ENV APPNAME=viyaapp
 
 ENV PLUGIN=hapi-swagger
 ENV SWAGGER=./swagger.json
@@ -51,4 +50,4 @@ ENV SAMESITE=None,false
 # TLS_CABUNDLE=../certs/pems/roots.pem
 
 #####################################################################
-CMD ["npm", "inDocker"]
+CMD ["npm", "run", "indocker"]
