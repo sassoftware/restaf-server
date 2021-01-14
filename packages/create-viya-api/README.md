@@ -6,4 +6,3 @@ Please see <https://github.com/sassoftware/restaf-server/wiki/apiserver> for lat
 
 The figure below is an overview.
 ![viya-apiserverjs](https://github.com/sassoftware/restaf-server/blob/main/images/viya-apiserverjs.png)
-
