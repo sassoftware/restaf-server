@@ -51,6 +51,9 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode) {
 			let [s1, s2] = process.env.SAMESITE.split(',');
 			isSameSite = s1;
 			isSecure = s2 === 'secure' ? true : false;
+			if (process.env.HTTPS !== 'YES') {
+				isSecure = false;
+			}
 		}
 
 		let sConfig = {

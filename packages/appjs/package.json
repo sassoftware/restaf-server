@@ -31,7 +31,8 @@
   },
   "scripts": {
     "build": "babel src --out-dir lib",
-    "start": "node ./lib/cli.js --env=./.env --docker=./Dockerfile",
+    "nossl": "cross-env VIYA_SERVER=%v4% node ./lib/cli.js --env=./.env --docker=./Dockerfile",
+    "start": "cross-env VIYA_SERVER=%v4s% node ./lib/cli.js --env=./.env --docker=./Dockerfile",
     "debug": "node --inspect-brk ./lib/cli.js   --env=./.env --docker=./Dockerfile --appenv=appenv.js",
     "lint": "npx eslint --fix src/*.js"
   },
@@ -44,7 +45,7 @@
     "@hapi/inert": "^6.0.3",
     "@hapi/joi": "^17.1.1",
     "@hapi/vision": "^6.0.1",
-    "@sassoftware/viya-server-core": "0.1.14",
+    "@sassoftware/viya-server-core": "0.1.4",
     "axios": "^0.21.1",
     "core-js": "^3.8.1",
     "debug": "^4.3.1",

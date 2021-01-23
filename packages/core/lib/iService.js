@@ -91,6 +91,10 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
                 _process$env$SAMESITE = process.env.SAMESITE.split(','), _process$env$SAMESITE2 = _slicedToArray(_process$env$SAMESITE, 2), s1 = _process$env$SAMESITE2[0], s2 = _process$env$SAMESITE2[1];
                 isSameSite = s1;
                 isSecure = s2 === 'secure' ? true : false;
+
+                if (process.env.HTTPS !== 'YES') {
+                  isSecure = false;
+                }
               }
 
               sConfig = {

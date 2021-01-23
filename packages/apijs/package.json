@@ -32,7 +32,7 @@
   },
   "scripts": {
     "build": "rimraf lib && babel src --out-dir lib",
-    "start": "node api --env=./.env --docker=./Dockerfile",
+    "start": "cross-env SAMESITE=None,false node api --env=./.env --docker=./Dockerfile",
     "debug": "node --inspect-brk api   --env=./.env --docker=./Dockerfile --appenv=appenv.js",
     "lint": "npx eslint --fix src/*.js"
   },
