@@ -1,15 +1,19 @@
 {
   "name": "@sassoftware/restaf-server",
-  "version": "1.0.0",
+  "version": "3.0.0",
   "description": "app and api server for SAS Viya user applications",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:appjs": "cd packages/appjs && yarn build",
-    "build:apijs": "cd packages/apijs && yarn build",
-    "start:appjs": "cd packages/appjs && yarn start",
-    "start:apijs": "cd packages/apijs && yarn start",
-    "buildall": "yarn build:appjs && yarn build:apijs",
+    "core:build": "cd packages/core && yarn build",
+    "appjs:build": "cd packages/appjs && yarn build",
+    "apijs:build": "cd packages/apijs && yarn build",
+    "appjs:start": "cd packages/appjs && yarn start",
+    "appjs:uroute": "cd packages/appjs && yarn uroute",
+    "apijs:start": "cd packages/apijs && yarn start",
+    "apijs:debug": "cd packages/apijs && yarn debug",
+    "appjs:debug": "cd packages/appjs && yarn debug",
+    "build": "yarn core:build && yarn appjs:build && yarn apijs:build",
     "format": "prettier-eslint --eslint-config-path ./.eslintrc.json --write '**/*.js'",
     "lint": "eslint . --ext .js --fix"
   },
@@ -62,11 +66,18 @@
   },
   "workspaces": {
     "packages": [
-      "packages/*"
+      "packages/appjs",
+      "packages/appijs",
+      "packages/core",
+      "packages/create-viya-api"
     ],
     "nohoist": [
-      "**/app*/**",
-      "**/api/**"
+      "**/appjs/**",
+      "**/apijs/**",
+      "**/core/**"
     ]
+  },
+  "dependencies": {
+    "mkcert": "^1.4.0"
   }
 }

@@ -1,4 +1,10 @@
 #!/usr/bin/env node
+
+/*
+ * Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 let sh = require('shelljs');
 let argv = require('yargs').argv;
 let fs = require('fs').promises;
@@ -17,10 +23,6 @@ if (rc != 0) {
 	process.exit('unable to create directory');
 }
 
-/*
- * Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
- * SPDX-License-Identifier: Apache-2.0
- */
 
 function execcmd (cmd) {
 	return new Promise((resolve) => {

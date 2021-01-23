@@ -34,8 +34,7 @@
 		<script src="https://unpkg.com/@sassoftware/restaf/dist/restaf.js"></script>
 		<script src="https://unpkg.com/@sassoftware/restaflib/dist/restaflib.js"></script>
 		<script src="/viyaapp/appenv"></script>
-		<script src="/viyaapp/user"></script>
-         <script async src="https://unpkg.com/@sassoftware/va-report-components/dist/umd/va-report-components.js"></script>
+	
 		<style>
 			.container {
 				display: flex;
@@ -76,38 +75,35 @@
 			function setup() {
 				debugger;
 				document.getElementById('output').innerHTML = '...initializing';
-				console.log(USER_NAME);
 				
 				initSession()
 					.then(r => {
-						document.getElementById('head').innerHTML = `Hello ${USER_NAME}`;
 						document.getElementById('output').innerHTML = 'ready';
-						if ( LOGONPAYLOAD.keepAlive != null) {
-							let interval = 60000;
-							let timeout = 14400000;
-							if (LOGONPAYLOAD.timers != null) {
-								let opts = LOGONPAYLOAD.timers.split(',');
-								interval = parseInt(opts[ 0 ]);
-								timeout = parseInt(opts[ 1 ]);
-							}
-							store.keepViyaAlive(LOGONPAYLOAD.keepAlive,interval, timeout,() => {
-								console.log('timed out at', Date() );
-								let config = {
-									url: `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/keepAlive2`,
-									method: 'GET',
-									withCredentials: true,
-									headers: {
-										accept: '*/*'
-									}
-								}
-								store.request(config);
-							})
-						}
+						keepAlive();
 					})
 					.catch(e => {
 						debugger;
 						console.log(e);
 					});
+			}
+			function keepAlive() {
+				if (LOGONPAYLOAD.keepAlive != null) {
+					let interval = 120;
+					let timeout = 14400;
+					if (LOGONPAYLOAD.timers != null) {
+						let opts = LOGONPAYLOAD.timers.split(',');
+						interval = parseInt(opts[ 0 ]);
+						timeout = parseInt(opts[ 1 ]);
+					}
+					console.log(`Keepalive is active`);
+					store.keepViyaAlive(LOGONPAYLOAD.keepAlive, interval, timeout, () => {
+						console.log('timed out at', Date());
+						let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=0,height=0,left=-1000,top=-1000`;
+						window.open(`${appOptions.logonPayload.host}/SASLogon/timedout`, 'Timed Out', params);
+						return true;
+					});
+				}
+
 			}
 			function logoff() {
 				let url = `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/logout?callbackUrl=onlogoff.html`;
@@ -128,12 +124,7 @@
 			}
 			function runit(type) {
 				debugger;
-				/*
-				if (LOGONPAYLOAD.keepAlive !== null ) {
-					document.getElementById('output').innerHTML = '...running keepalives';
-					handleUserClicks();
-				}
-				*/
+				
 				document.getElementById('output').innerHTML = '...running';
 				let testcase;
 				switch (type) {
@@ -155,6 +146,11 @@
 					}
 					case 'redir': {
 						testcase= noaction;
+						
+						break;
+					}
+					case 'spre': {
+						testcase= spre;
 						
 						break;
 					}
@@ -180,6 +176,15 @@
 			async function noaction() {
 				r = {msg: 'redirects completed'};
 				return r;
+			}
+			async function spre(store) {
+				let p = {
+					method: 'GET',
+					url   : 'http://localhost:3000/api/test',
+					withCredentials: true
+				}
+				let r = await store.request(p);
+				return r.data;
 			}
 			async function timedout(store) {
 				console.log('timed out at', Date() );
@@ -285,6 +290,11 @@
 			<br />
 			<button onclick="runit('cas')">
 				Press to make a call to cas echo
+			</button>
+			<br />
+			<br />
+			<button onclick="runit('spre')">
+				REST call
 			</button>
 			<br />
 			<br />

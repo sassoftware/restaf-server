@@ -1,19 +1,19 @@
 {
   "name": "@sassoftware/restaf-server",
-  "version": "8.4.3",
-  "description": "App server for SAS Viya Applications",
-  "main": "./lib/index.js",
+  "version": "0.1.4",
+  "description": "Custom app server for Viya apps",
   "author": "Deva Kumaraswamy <deva.kumar@sas.com>",
   "license": "Apache-2.0",
+  "main": "./lib/index.js",
+  "files": [
+    "/lib"
+  ],
   "keywords": [
     "restaf",
     "Viya",
     "SAS",
     "server",
     "RESTAPI"
-  ],
-  "files": [
-    "/lib"
   ],
   "engines": {
     "node": ">=12.14.0"
@@ -30,18 +30,9 @@
     "url": "https://github.com/sassoftware/restaf-server/issues"
   },
   "scripts": {
-    "build": "rimraf lib && babel src --out-dir lib && npx shx cp ./src/visionIndex.html ./lib/visionIndex.html",
-    "app": "node app --env=./.env --docker=./Dockerfile --appenv=./appenv.js",
-    "api": "node api --env=./.api.env --api=YES --docker=./Dockerfile",
-    "static": "node ./lib/cli.js --env=./env/static/app.env --docker=./Dockerfile",
+    "build": "babel src --out-dir lib",
     "start": "node ./lib/cli.js --env=./.env --docker=./Dockerfile",
-    "debug": "node --inspect-brk ./lib/cli.js    --env=./.env --docker=./Dockerfile --appenv=appenv.js",
-    "debugapi": "node --inspect-brk  ./lib/cli.js --api=YES  --env=./.api.env --docker=./Dockerfile --appenv=appenv.js",
-    "debugapp": "node --inspect-brk  app.js --env=./.env --docker=./Dockerfile --appenv=appenv.js",
-    "indocker": "node cli",
-    "dkrbuild": "docker build -f Dockerfile -t viyaapp .",
-    "dkrapp": "docker run -p 8080:8080 --env-file app.env  -t viyaapp",
-    "dkrrun": "docker run -p 8080:8080 --env-file ./.env  -t viyaapp",
+    "debug": "node --inspect-brk ./lib/cli.js   --env=./.env --docker=./Dockerfile --appenv=appenv.js",
     "lint": "npx eslint --fix src/*.js"
   },
   "dependencies": {
@@ -53,6 +44,7 @@
     "@hapi/inert": "^6.0.3",
     "@hapi/joi": "^17.1.1",
     "@hapi/vision": "^6.0.1",
+    "@sassoftware/viya-server-core": "0.1.14",
     "axios": "^0.21.1",
     "core-js": "^3.8.1",
     "debug": "^4.3.1",
@@ -69,6 +61,7 @@
     "only": "0.0.2",
     "qs": "^6.9.4",
     "regenerator-runtime": "^0.13.7",
+    "request-debug": "^0.2.0",
     "selfsigned": "^1.10.8",
     "should-send-same-site-none": "^2.0.5",
     "tcp-ping": "^0.1.1",

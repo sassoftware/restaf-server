@@ -1,9 +1,5 @@
-let x = {
-	scoreModel: {
-		caslib: 'Public',
-		name  : 'loanEvaluation',
-		z     : 10
-	}
+let app = {
+	x: 1
 };
-console.log(x);
-return x;
+return app;
+

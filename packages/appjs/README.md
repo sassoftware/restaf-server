@@ -1,11 +1,7 @@
-# @sassoftware/restaf-server - web server in nodejs for SAS Viya Applications
+# @sassoftware/viya-api-server-nodejs - a REST API server for SAS Viya users
 
----
-
-Version 8
-
----
-restaf-server is an app server designed for rapid development and deployment of SAS Viya applications.
+> Note: This read me file needs to be rewritten 
+viya-api-server-nodejs is an app server designed for rapid development and deployment of SAS Viya applications.
 
 The key features are:
 
@@ -21,7 +17,7 @@ The key features are:
 3. Start the server with a simple command
 
 ```sh
-npx @sassoftware/restaf-server  --env=your-env-envfile --docker=your-DockerFile --appenv=your-appenv.js-file
+npx @sassoftware/viya-api-server-nodejs  --env=your-env-envfile --docker=your-DockerFile --appenv=your-appenv.js-file
 ```
 
 ## Quick start example
@@ -87,7 +83,7 @@ Build a placeholder appenv.js file with this content
 You then start the server with the following command
 
 ```sh
-npx @sassoftware/restaf-server  --env=./override.env --docker=./DockerFile --appenv=./appenv.js
+npx @sassoftware/viya-api-server-nodejs  --env=./override.env --docker=./DockerFile --appenv=./appenv.js
 ```
 
 The server will start at <http://localhost:8080/viyaapp> (http:{APPHOST}:{APPPORT}/APPNAME).
@@ -116,14 +112,14 @@ async function makeViyaCall () {
 
 Please see <https://github.com/sassoftware/restaf/wiki/usefulTips> for key SAS Viya configurations for your app to work properly.
 
-## Note for users of restaf-server@6.11.2
+## Note for users of viya-api-server-nodejs@6.11.2
 
 The handling of authentication is handled differently in this version.
 Please see notes below.
 
 ## Installation
 
-npm install @sassoftware/restaf-server
+npm install @sassoftware/viya-api-server-nodejs
 
 ## Configuration
 
@@ -260,7 +256,7 @@ Example:
  If your APPNAME=viyaapp, APPHOST is localhost and APPPORT=8080
   
    <http://localhost:8080/viyaapp/callback>
-   restaf-server will handle the callback and redirect to APPENTRY.
+   viya-api-server-nodejs will handle the callback and redirect to APPENTRY.
 
 For backward compatability the following are currently supported. Please switch to the recommended redirect above.
 
@@ -281,7 +277,7 @@ Your env file should like something like this. The redirect for this flow is as 
 
 ```
 
-restaf-server will handle the callback and redirect to APPENTRY. The server will set the cookie to CookieAuth. The authorization token is not returned to client with the cookie.
+viya-api-server-nodejs will handle the callback and redirect to APPENTRY. The server will set the cookie to CookieAuth. The authorization token is not returned to client with the cookie.
 
 ```ini
 VIYA_SERVER=your-viya-server(http://...)
@@ -353,7 +349,7 @@ But for most common cases there is no need to do this.
 Create an app.js that looks as shown below. See <https://hapi.dev/> on details on how to define your routes.
 
 ```js
-let rafserver = require ('@sassoftware/restaf-server');
+let rafserver = require ('@sassoftware/viya-api-server-nodejs');
 rafserver.icli (getCustomHandler);
 
 function getCustomHandler () {
@@ -384,7 +380,7 @@ async function myRouteHandler(req, h) {
 This is only needed if you are using authorization_code flow.
 In your web app you can call this end point to keep your current session alive.
 
-If the KEEPALIVE environment variable is set, restaf-server will set the keepAlive key in the LOGONPAYLOAD object to the url to call for keeping your session alive. You can call it anytime in your app.
+If the KEEPALIVE environment variable is set, viya-api-server-nodejs will set the keepAlive key in the LOGONPAYLOAD object to the url to call for keeping your session alive. You can call it anytime in your app.
 
 If you are a restaf user you can use the keepViyaAlive method of restaf store to let restaf manage the keepalive process. Below is a sample code
 
