@@ -85,10 +85,11 @@ function _iappCookie() {
                 return validateFunc;
               }()
             };
+            console.log('cookie options', cookieOptions);
             server.log('Cookie Options', cookieOptions);
             server.auth.strategy('session', 'cookie', cookieOptions);
 
-          case 5:
+          case 6:
           case "end":
             return _context2.stop();
         }

@@ -51,7 +51,7 @@ async function iSASauth (server, options) {
             password    : uuid.v4(),
             clientId    : options.clientId,
             clientSecret: options.clientSecret, 
-            isSameSite  : (options.isSameSite === 'None') ? false : options.isSameSite,/* cause for concern */
+            // isSameSite  : options.isSameSite,
             isSecure    : options.isSecure,
             location    : () => { 
                 debugger;
@@ -60,6 +60,7 @@ async function iSASauth (server, options) {
             }
         
         };
+        console.log('SASAuth options', bellAuthOptions);
         server.log('SASAuth',bellAuthOptions);
         await server.register(bell);
         server.auth.strategy('sas', 'bell', bellAuthOptions);

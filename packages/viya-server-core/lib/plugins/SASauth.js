@@ -79,9 +79,7 @@ function _iSASauth() {
               password: uuid.v4(),
               clientId: options.clientId,
               clientSecret: options.clientSecret,
-              isSameSite: options.isSameSite === 'None' ? false : options.isSameSite,
-
-              /* cause for concern */
+              // isSameSite  : options.isSameSite,
               isSecure: options.isSecure,
               location: function location() {
                 debugger;
@@ -89,14 +87,15 @@ function _iSASauth() {
                 return options.redirect == null ? '' : options.redirect;
               }
             };
+            console.log('SASAuth options', bellAuthOptions);
             server.log('SASAuth', bellAuthOptions);
-            _context2.next = 5;
+            _context2.next = 6;
             return server.register(bell);
 
-          case 5:
+          case 6:
             server.auth.strategy('sas', 'bell', bellAuthOptions);
 
-          case 6:
+          case 7:
           case "end":
             return _context2.stop();
         }

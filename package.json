@@ -1,6 +1,6 @@
 {
   "name": "@sassoftware/viya-server-core",
-  "version": "1.20",
+  "version": "1.2.1",
   "description": "app and api server for SAS Viya user applications",
   "main": "index.js",
   "scripts": {
@@ -71,7 +71,7 @@
     "packages": [
       "packages/appjs",
       "packages/appijs",
-      "packages/core",
+      "packages/viya-server-core",
       "packages/create-viya-api",
       "packages/viya-api-base"
     ],

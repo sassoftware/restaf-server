@@ -13,9 +13,10 @@ This package has two servers:
 1. Set the default settings in Dockerfile. This will ensure these are set when you build containers.
 2. Use the .env file when running bare-os and docker-compose file to set run time overrides.
 
-### `Running with SSL`
+### `Running with SSL` -- Recommended
 
-This is the recommended setting. This will also make browsers like Chrome run with the SAMESITE settings set to ENABLED.
+This is the recommended setting. This will also make browsers like Chrome run with the SAMESITE settings set to Default - your users will thank you.
+
 Make sure you specify the VIYA_SERVER with a protocol of https.
 
 The following are the key settings:
@@ -27,6 +28,12 @@ The following are the key settings:
 ```env
 ENV SAMESITE=None,secure
 ```
+
+You should be able to set these browser settings to default:
+- SameSite by default cookies
+- Coookies with SameSite must be secure
+
+I am not really sure about the impact of setting for Schemeful Same-site option to default.
 
 2.The certificates for SSL can be set in one of the following ways(all values are just examples)
 
@@ -59,6 +66,12 @@ Make sure your specify VIYA_SERVER with a protocol of http
 ```env
 ENV SAMESITE=None,false
 ```
+
+You might also have to disable all the SAMESITE options in your browser:
+
+- SameSite by default cookies
+- Coookies with SameSite must be secure
+- Schemeful Same-site
 
 ### CLIENTID and CLIENTSECRET
 
