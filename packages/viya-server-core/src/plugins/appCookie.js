@@ -14,7 +14,7 @@ async function iappCookie (server, options){
             name      : 'ocookie',
             password  : uuid.v4(),
             isSecure  : options.isSecure,
-            isSameSite: 'None'
+            isSameSite: options.isSameSite
         },
         redirectTo  : options.redirectTo,
         appendNext  : {raw: true, name: 'next'},
@@ -25,10 +25,11 @@ async function iappCookie (server, options){
                 return {valid: false};
             }
             const credentials = await req.server.app.cache.get(session.sid);
+            server.log('Cookie validateFunc', credentials);
             return {valid: true, credentials: credentials};
         }
     };
-    server.log(cookieOptions);
+    server.log('Cookie Options',cookieOptions);
     server.auth.strategy('session', 'cookie', cookieOptions);
 
 }

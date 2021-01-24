@@ -26,11 +26,8 @@ function _getApp() {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            debugger;
-            console.log('in getauth');
-
             if (!(process.env.AUTHFLOW === 'implicit')) {
-              _context.next = 12;
+              _context.next = 10;
               break;
             }
 
@@ -53,22 +50,22 @@ function _getApp() {
             debug(url);
             return _context.abrupt("return", h.redirect(url));
 
-          case 12:
+          case 10:
             if (!(process.env.AUTHFLOW === 'server')) {
-              _context.next = 17;
+              _context.next = 15;
               break;
             }
 
             debugger;
             return _context.abrupt("return", (0, _codeAuth["default"])(req, h));
 
-          case 17:
+          case 15:
             debug('default getapp');
             indexHTML = process.env.APPENTRY == null ? 'index.html' : process.env.APPENTRY;
             console.log("Redirecting to default ".concat(indexHTML));
             return _context.abrupt("return", h.file(indexHTML));
 
-          case 21:
+          case 19:
           case "end":
             return _context.stop();
         }

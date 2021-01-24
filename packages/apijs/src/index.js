@@ -24,3 +24,4 @@ import core from '@sassoftware/viya-server-core';
 function icli (uTable, useDefault) {
 	core(uTable, useDefault, 'app');
 }
+export {icli};

@@ -30,22 +30,21 @@ function _appCallback() {
         switch (_context.prev = _context.next) {
           case 0:
             debug = require('debug')('callback');
-            console.log("..... AUTHFLOW: ".concat(process.env.AUTHFLOW));
-            debug('passing thru appCallback'); // if authorization code process the auth info from saslogon via SASauth
+            console.log("..... AUTHFLOW: ".concat(process.env.AUTHFLOW)); // if authorization code process the auth info from saslogon via SASauth
 
             if (!(process.env.AUTHFLOW === 'server')) {
-              _context.next = 7;
+              _context.next = 6;
               break;
             }
 
             return _context.abrupt("return", (0, _codeAuth["default"])(req, h));
 
-          case 7:
+          case 6:
             indexHTML = process.env.APPENTRY == null ? 'index.html' : process.env.APPENTRY;
             console.log("Redirecting to default ".concat(indexHTML));
             return _context.abrupt("return", h.file("".concat(indexHTML)));
 
-          case 10:
+          case 9:
           case "end":
             return _context.stop();
         }

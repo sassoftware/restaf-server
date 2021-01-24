@@ -27,7 +27,7 @@ module.exports = function core (uTable, useDefault, serverMode) {
   let env = argv.env == null ? null : argv.env;
   let appenv = argv.appenv == null ? null : argv.appenv;
   let docker = argv.docker == null ? null : argv.docker;
- 
+  
   
   if (useDefault == null) {
     useDefault = true;
@@ -97,17 +97,17 @@ function getAllEnv (userData) {
   let authflow = trimit('AUTHFLOW');
   if (authflow === 'authorization_code' ||authflow === 'code') {
     authflow = 'server';
-    process.env.AUTHFLOW = authflow;
   }
-
+  process.env.AUTHFLOW = authflow;
+  console.log(authflow);
   let redirect = (process.env.REDIRECT != null) ? process.env.REDIRECT : null;
 
+  let host         = trimit('VIYA_SERVER');
+  let clientID     = trimit('CLIENTID');
+  let clientSecret = trimit('CLIENTSECRET');
+  let keepAlive    = trimit('KEEPALIVE');
+  let appName      = trimit('APPNAME');
   
-  let host = trimit('VIYA_SERVER');
-  let clientID  = trimit('CLIENTID');
-  let keepAlive = trimit('KEEPALIVE');
-  let appName   = trimit('APPNAME');
-
   if (authflow === 'server' || authflow === 'implicit') {
     if (authflow === 'implicit') {
       redirect = trimit('REDIRECT');

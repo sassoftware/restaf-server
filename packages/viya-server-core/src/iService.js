@@ -60,12 +60,10 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode) {
 			port: process.env.APPPORT,
 			host: process.env.APPHOST,
 
-			debug: { request: '*' },
-
 			state: {
 				isSameSite: isSameSite,
 				isSecure  : isSecure,
-
+				/*
 				contextualize: async (definition, request) => {
 					const userAgent = request.headers['user-agent'] || false;
 					if (userAgent && isSameSiteNoneCompatible(userAgent)) {
@@ -74,20 +72,26 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode) {
 					}
 					request.response.vary('User-Agent');
 				},
+				*/
 			},
-			/* debug   : {request: ['*']},*/
+	
 
 			routes: {
+				payload: {
+					maxBytes: maxBytes
+				},
 				cors: {
-					origin: ['*'],
+					origin     : ['*'],
 					credentials: true,
 
-					additionalHeaders: ['multipart/form-data', 'content-disposition'],
+					additionalHeaders       : ['multipart/form-data', 'content-disposition'],
 					additionalExposedHeaders: ['location'],
 				},
 			},
 		};
-
+		if (process.env.HAPIDEBUG === 'YES') {
+			sConfig.debug = { request: '*' };
+		}
 		let tls = {};
 
 		if (process.env.HTTPS === 'YES') {
@@ -160,13 +164,14 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode) {
 			plugin : require('hapi-pino'),
 			options: {
 				prettyPrint: process.env.NODE_ENV !== 'production',
-				level      : process.env.PINOLEVEL == null ? 'silent' : process.env.PINOLEVEL,
+				level      : process.env.LOGLEVEL == null ? 'silent' : process.env.LOGLEVEL,
 			},
 		});
 
 		// setup authentication related plugins
 		let options = {
 			serverMode    : serverMode,
+			authFlow      : process.env.AUTHFLOW,
 			host          : process.env.VIYA_SERVER,
 			isSameSite    : isSameSite,
 			isSecure      : isSecure,
@@ -179,14 +184,17 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode) {
 			appName       : process.env.APPNAME,
 			appHost       : process.env.APPHOST,
 			userRouteTable: userRouteTable,
-			useDefault    : useDefault /* not used - left here for potential reuse */,
+			useDefault    : useDefault, /* not used - left here for potential reuse */
+			https         : process.env.HTTPS
 		};
 		hapiServer.log(options);
+		
 		if (process.env.HTTPS === 'YES') {
 			hapiServer.log(`tls 
 			${process.env.TLS_CREATE}
 			${tls}`);
 		};
+
 		await setupAuth(hapiServer, options);
 
 		if (process.env.PLUGIN == 'hapi-swagger'&& serverMode === 'api') {

@@ -2,7 +2,7 @@
 		"dependencies": {
 			"@sassoftware/restaf": "^3.0.1",
 			"@sassoftware/restaflib": "^3.0.1",
-			"@sassoftware/viya-apiserverjs": "^0.1.4",
+			"@sassoftware/viya-apiserverjs": "^1.2.0",
 			"joi": "^17.3.0"
 		},
 

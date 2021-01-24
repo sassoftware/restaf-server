@@ -21,16 +21,23 @@ import { getApp, getApp2,  favicon, keepAlive, keepAlive2,logout, logon, setupUs
 module.exports = function setHandlers (server, options) {
 
 	let appName = '/' + options.appName;
-	let authDefault = {
-		strategies: (options.serverMode === 'app') ? ['session'] : ['token', 'session'],
-		mode      : 'required'
-	};
-	let authLogon = {
+	let authDefault = false;
+	let authLogon   = false;
+	if (options.authFlow === 'server'){
+		authDefault = {
+			strategies: (options.serverMode === 'api') ? ['token', 'session'] : ['session'],
+			mode      : 'try'
+		};
+
+	    authLogon = {
 			mode    : 'required',
 			strategy: 'sas',
 		};
+	}
 
-
+	server.log('Default strategy', authDefault);
+	server.log('Logon strategy', authLogon); 
+			
 	let uTable = (options.userRouteTable !== null) ? setupUserRoutes(options.userRouteTable, authDefault) : null;
 	
 	let defaultTable = [
@@ -115,6 +122,7 @@ module.exports = function setHandlers (server, options) {
 	];
 
 	let routeTables = (uTable !== null) ? [...defaultTable, ...uTable] : defaultTable;
+	server.log('routes', routeTables);
 	console.table(routeTables);
 	server.route(routeTables);
 };

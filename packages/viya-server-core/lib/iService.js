@@ -65,12 +65,12 @@ var os = require('os');
 function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
   // process.env.APPHOST_ADDR = process.env.APPHOST;
   var init = /*#__PURE__*/function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
       var defaultMaxBytes, maxBytes, isSameSite, isSecure, _process$env$SAMESITE, _process$env$SAMESITE2, s1, s2, sConfig, tls, hapiServer, nodeCacheOptions, storeCache, visionOptions, options, swaggerOptions, js, hh, msg;
 
-      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
-          switch (_context2.prev = _context2.next) {
+          switch (_context.prev = _context.next) {
             case 0:
               if (process.env.APPHOST === '*') {
                 process.env.APPHOST = os.hostname();
@@ -100,46 +100,25 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
               sConfig = {
                 port: process.env.APPPORT,
                 host: process.env.APPHOST,
-                debug: {
-                  request: '*'
-                },
                 state: {
                   isSameSite: isSameSite,
-                  isSecure: isSecure,
-                  contextualize: function () {
-                    var _contextualize = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(definition, request) {
-                      var userAgent;
-                      return regeneratorRuntime.wrap(function _callee$(_context) {
-                        while (1) {
-                          switch (_context.prev = _context.next) {
-                            case 0:
-                              userAgent = request.headers['user-agent'] || false;
+                  isSecure: isSecure
+                  /*
+                  contextualize: async (definition, request) => {
+                  	const userAgent = request.headers['user-agent'] || false;
+                  	if (userAgent && isSameSiteNoneCompatible(userAgent)) {
+                  		definition.isSecure = isSecure;
+                  		definition.isSameSite = isSameSite;
+                  	}
+                  	request.response.vary('User-Agent');
+                  },
+                  */
 
-                              if (userAgent && isSameSiteNoneCompatible(userAgent)) {
-                                definition.isSecure = isSecure;
-                                definition.isSameSite = isSameSite;
-                              }
-
-                              request.response.vary('User-Agent');
-
-                            case 3:
-                            case "end":
-                              return _context.stop();
-                          }
-                        }
-                      }, _callee);
-                    }));
-
-                    function contextualize(_x, _x2) {
-                      return _contextualize.apply(this, arguments);
-                    }
-
-                    return contextualize;
-                  }()
                 },
-
-                /* debug   : {request: ['*']},*/
                 routes: {
+                  payload: {
+                    maxBytes: maxBytes
+                  },
                   cors: {
                     origin: ['*'],
                     credentials: true,
@@ -148,25 +127,32 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
                   }
                 }
               };
+
+              if (process.env.HAPIDEBUG === 'YES') {
+                sConfig.debug = {
+                  request: '*'
+                };
+              }
+
               tls = {};
 
               if (!(process.env.HTTPS === 'YES')) {
-                _context2.next = 19;
+                _context.next = 20;
                 break;
               }
 
               if (!(process.env.TLS_CREATE != null)) {
-                _context2.next = 13;
+                _context.next = 14;
                 break;
               }
 
-              _context2.next = 12;
+              _context.next = 13;
               return getTls();
 
-            case 12:
-              tls = _context2.sent;
-
             case 13:
+              tls = _context.sent;
+
+            case 14:
               if (process.env.TLS_CERT != null) {
                 tls.cert = fs.readFileSync(process.env.TLS_CERT);
               }
@@ -191,7 +177,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
                 sConfig.tls = tls;
               }
 
-            case 19:
+            case 20:
               if (asset !== null) {
                 sConfig.routes.files = {
                   relativeTo: asset
@@ -222,35 +208,36 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
                 relativeTo: __dirname,
                 path: '.'
               };
-              _context2.next = 28;
+              _context.next = 29;
               return hapiServer.register(Vision);
 
-            case 28:
+            case 29:
               hapiServer.views(visionOptions);
-              _context2.next = 31;
+              _context.next = 32;
               return hapiServer.register(inert);
 
-            case 31:
-              _context2.next = 33;
+            case 32:
+              _context.next = 34;
               return hapiServer.register({
                 plugin: require('hapi-require-https'),
                 options: {}
               });
 
-            case 33:
-              _context2.next = 35;
+            case 34:
+              _context.next = 36;
               return hapiServer.register({
                 plugin: require('hapi-pino'),
                 options: {
                   prettyPrint: process.env.NODE_ENV !== 'production',
-                  level: process.env.PINOLEVEL == null ? 'silent' : process.env.PINOLEVEL
+                  level: process.env.LOGLEVEL == null ? 'silent' : process.env.LOGLEVEL
                 }
               });
 
-            case 35:
+            case 36:
               // setup authentication related plugins
               options = {
                 serverMode: serverMode,
+                authFlow: process.env.AUTHFLOW,
                 host: process.env.VIYA_SERVER,
                 isSameSite: isSameSite,
                 isSecure: isSecure,
@@ -263,9 +250,10 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
                 appName: process.env.APPNAME,
                 appHost: process.env.APPHOST,
                 userRouteTable: userRouteTable,
-                useDefault: useDefault
-                /* not used - left here for potential reuse */
+                useDefault: useDefault,
 
+                /* not used - left here for potential reuse */
+                https: process.env.HTTPS
               };
               hapiServer.log(options);
 
@@ -274,12 +262,12 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
               }
 
               ;
-              _context2.next = 41;
+              _context.next = 42;
               return (0, _setupAuth["default"])(hapiServer, options);
 
-            case 41:
+            case 42:
               if (!(process.env.PLUGIN == 'hapi-swagger' && serverMode === 'api')) {
-                _context2.next = 49;
+                _context.next = 50;
                 break;
               }
 
@@ -292,26 +280,26 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
               };
               js = fs.readFileSync(process.env.SWAGGER, 'utf8');
               swaggerOptions = JSON.parse(js);
-              _context2.next = 47;
+              _context.next = 48;
               return hapiServer.register({
                 plugin: HapiSwagger,
                 options: swaggerOptions
               });
 
-            case 47:
-              _context2.next = 50;
+            case 48:
+              _context.next = 51;
               break;
 
-            case 49:
+            case 50:
               if (process.env.PLUGIN == 'hapi-openapi' && serverMode === 'api') {
                 console.log('coming soon');
               }
 
-            case 50:
-              _context2.next = 52;
+            case 51:
+              _context.next = 53;
               return hapiServer.start();
 
-            case 52:
+            case 53:
               hh = hapiServer.info.uri.replace(/0.0.0.0/, 'localhost');
               console.log('Server Start Time: ', Date());
               msg = options.serverMode === 'app' ? "Visit ".concat(hh, "/").concat(process.env.APPNAME, " to access application") : "Visit ".concat(hh, "/").concat(process.env.APPNAME, "/api to access swagger");
@@ -319,12 +307,12 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
               console.log('NOTE: If running in container then use the port number you mapped to');
               process.env.APPSERVER = "".concat(hh, "/").concat(process.env.APPNAME);
 
-            case 58:
+            case 59:
             case "end":
-              return _context2.stop();
+              return _context.stop();
           }
         }
-      }, _callee2);
+      }, _callee);
     }));
 
     return function init() {
@@ -344,11 +332,11 @@ function getTls() {
 }
 
 function _getTls() {
-  _getTls = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+  _getTls = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
     var options, subjt, subj, d, attr, pems, tls;
-    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
-        switch (_context3.prev = _context3.next) {
+        switch (_context2.prev = _context2.next) {
           case 0:
             options = {
               keySize: 2048,
@@ -411,14 +399,14 @@ function _getTls() {
               cert: pems.cert,
               key: pems["private"]
             };
-            return _context3.abrupt("return", tls);
+            return _context2.abrupt("return", tls);
 
           case 10:
           case "end":
-            return _context3.stop();
+            return _context2.stop();
         }
       }
-    }, _callee3);
+    }, _callee2);
   }));
   return _getTls.apply(this, arguments);
 }

@@ -57,7 +57,7 @@ function _iSASauth() {
                     while (1) {
                       switch (_context.prev = _context.next) {
                         case 0:
-                          debug(credentials);
+                          server.log('SASAuth profile', credentials);
 
                         case 1:
                         case "end":
@@ -79,20 +79,24 @@ function _iSASauth() {
               password: uuid.v4(),
               clientId: options.clientId,
               clientSecret: options.clientSecret,
+              isSameSite: options.isSameSite === 'None' ? false : options.isSameSite,
+
+              /* cause for concern */
               isSecure: options.isSecure,
               location: function location() {
                 debugger;
-                debug("Redirect set to: ".concat(options.redirect));
+                server.log('SASAuth location', "Redirect set to: ".concat(options.redirect));
                 return options.redirect == null ? '' : options.redirect;
               }
             };
-            _context2.next = 4;
+            server.log('SASAuth', bellAuthOptions);
+            _context2.next = 5;
             return server.register(bell);
 
-          case 4:
+          case 5:
             server.auth.strategy('sas', 'bell', bellAuthOptions);
 
-          case 5:
+          case 6:
           case "end":
             return _context2.stop();
         }

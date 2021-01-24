@@ -1,11 +1,11 @@
 {
-  "name": "@sassoftware/restaf-server",
-  "version": "3.0.0",
+  "name": "@sassoftware/viya-server-core",
+  "version": "1.20",
   "description": "app and api server for SAS Viya user applications",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "core:build": "cd packages/core && yarn build",
+    "core:build": "cd packages/viya-server-core && yarn build",
     "appjs:build": "cd packages/appjs && yarn build",
     "apijs:build": "cd packages/apijs && yarn build",
     "appjs:start": "cd packages/appjs && yarn start",
@@ -64,6 +64,7 @@
     "prettier-eslint": "^12.0.0",
     "prettier-eslint-cli": "^5.0.0",
     "rimraf": "^3.0.2",
+    "set-versions": "^1.0.3",
     "shx": "^0.3.3"
   },
   "workspaces": {
@@ -71,7 +72,8 @@
       "packages/appjs",
       "packages/appijs",
       "packages/core",
-      "packages/create-viya-api"
+      "packages/create-viya-api",
+      "packages/viya-api-base"
     ],
     "nohoist": [
       "**/appjs/**",

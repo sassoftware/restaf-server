@@ -65,6 +65,6 @@ ENV SAMESITE=None,false
 Recommend you use the authorization_flow code
 
 
-## Viya Server Configuration
+## Viya Server Configuration and more
 
-Please see []
+Please see <https://github.com/sassoftware/restaf-server/wiki>

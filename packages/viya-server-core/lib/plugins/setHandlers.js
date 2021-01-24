@@ -20,14 +20,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 module.exports = function setHandlers(server, options) {
   var appName = '/' + options.appName;
-  var authDefault = {
-    strategies: options.serverMode === 'app' ? ['session'] : ['token', 'session'],
-    mode: 'required'
-  };
-  var authLogon = {
-    mode: 'required',
-    strategy: 'sas'
-  };
+  var authDefault = false;
+  var authLogon = false;
+
+  if (options.authFlow === 'server') {
+    authDefault = {
+      strategies: options.serverMode === 'api' ? ['token', 'session'] : ['session'],
+      mode: 'try'
+    };
+    authLogon = {
+      mode: 'required',
+      strategy: 'sas'
+    };
+  }
+
+  server.log('Default strategy', authDefault);
+  server.log('Logon strategy', authLogon);
   var uTable = options.userRouteTable !== null ? (0, _handlers.setupUserRoutes)(options.userRouteTable, authDefault) : null;
   var defaultTable = [{
     method: ['GET'],
@@ -138,6 +146,7 @@ module.exports = function setHandlers(server, options) {
     }
   }];
   var routeTables = uTable !== null ? [].concat(defaultTable, _toConsumableArray(uTable)) : defaultTable;
+  server.log('routes', routeTables);
   console.table(routeTables);
   server.route(routeTables);
 };

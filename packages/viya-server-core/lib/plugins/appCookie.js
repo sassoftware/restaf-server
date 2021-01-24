@@ -32,7 +32,7 @@ function _iappCookie() {
                 name: 'ocookie',
                 password: uuid.v4(),
                 isSecure: options.isSecure,
-                isSameSite: 'None'
+                isSameSite: options.isSameSite
               },
               redirectTo: options.redirectTo,
               appendNext: {
@@ -64,12 +64,13 @@ function _iappCookie() {
 
                         case 6:
                           credentials = _context.sent;
+                          server.log('Cookie validateFunc', credentials);
                           return _context.abrupt("return", {
                             valid: true,
                             credentials: credentials
                           });
 
-                        case 8:
+                        case 9:
                         case "end":
                           return _context.stop();
                       }
@@ -84,7 +85,7 @@ function _iappCookie() {
                 return validateFunc;
               }()
             };
-            server.log(cookieOptions);
+            server.log('Cookie Options', cookieOptions);
             server.auth.strategy('session', 'cookie', cookieOptions);
 
           case 5:

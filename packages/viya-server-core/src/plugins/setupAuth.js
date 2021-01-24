@@ -22,12 +22,18 @@ let token       = require('./token');
 let setHandlers = require('./setHandlers');
 
 async function setupAuth (server, options){
-	await server.register({plugin: SASauth,   options: options});
-	await server.register({plugin: appCookie, options: options});
-	await server.register({ plugin: token });
-	let def = (options.serverMode === 'app') ? 'session' : 'token';
-	console.log(def);
-	server.auth.default(def);
+	if (options.authFlow === 'server') {
+		await server.register({plugin: SASauth,   options: options});
+		await server.register({plugin: appCookie, options: options});
+		let def = 'session';
+		if (options.serverMode === 'api'){
+			await server.register({ plugin: token });
+			def = 'token';
+		}
+		
+		server.log(`Default auth: ${def}`);
+		server.auth.default(def);
+	}
 	setHandlers(server, options);
 };
 

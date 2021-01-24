@@ -9,7 +9,6 @@ import setCookies from './setCookies';
 
 async function codeAuth (req, h) {  
 	debugger;
-	console.log(' in codeauth');
 	let r = await setCookies(req, h);
 	let indexHTML = process.env.APPENTRY == null ? 'index.html' : process.env.APPENTRY;
 	if (indexHTML.indexOf('/') === 0) {

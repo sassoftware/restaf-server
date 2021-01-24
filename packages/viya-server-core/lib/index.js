@@ -102,12 +102,14 @@ function getAllEnv(userData) {
 
   if (authflow === 'authorization_code' || authflow === 'code') {
     authflow = 'server';
-    process.env.AUTHFLOW = authflow;
   }
 
+  process.env.AUTHFLOW = authflow;
+  console.log(authflow);
   var redirect = process.env.REDIRECT != null ? process.env.REDIRECT : null;
   var host = trimit('VIYA_SERVER');
   var clientID = trimit('CLIENTID');
+  var clientSecret = trimit('CLIENTSECRET');
   var keepAlive = trimit('KEEPALIVE');
   var appName = trimit('APPNAME');
 

@@ -42,7 +42,7 @@ async function iSASauth (server, options) {
             profileMethod: 'get',
             
             profile: async function (credentials, params, get) {           
-                debug(credentials);
+                server.log('SASAuth profile', credentials);
             }
         };
         
@@ -50,16 +50,17 @@ async function iSASauth (server, options) {
             provider    : provider,
             password    : uuid.v4(),
             clientId    : options.clientId,
-            clientSecret: options.clientSecret,  
+            clientSecret: options.clientSecret, 
+            isSameSite  : (options.isSameSite === 'None') ? false : options.isSameSite,/* cause for concern */
             isSecure    : options.isSecure,
             location    : () => { 
                 debugger;
-                debug(`Redirect set to: ${options.redirect}`);
-                
+                server.log('SASAuth location',`Redirect set to: ${options.redirect}`);
                 return (options.redirect == null) ? '' : options.redirect;
             }
         
         };
+        server.log('SASAuth',bellAuthOptions);
         await server.register(bell);
         server.auth.strategy('sas', 'bell', bellAuthOptions);
         
