@@ -13,8 +13,6 @@ async function appCallback (req, h) {
     
     let debug = require('debug')('callback');
     console.log(`..... AUTHFLOW: ${process.env.AUTHFLOW}`);
-    
-    // if authorization code process the auth info from saslogon via SASauth
     if (process.env.AUTHFLOW === 'server') {
         return codeAuth(req, h);
     } else {

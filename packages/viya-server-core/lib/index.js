@@ -119,6 +119,7 @@ function getAllEnv(userData) {
 
       if (redirect === null) {
         redirect = "".concat(appName, "/callback");
+        process.env.REDIRECT = 'callback';
       } else {
         redirect = redirect.indexOf('http') != -1 ? redirect : "".concat(process.env.APPNAME, "/").concat(redirect);
       } // redirect = (redirect == null) ? `${appName}/callback` : `${process.env.APPNAME}/${redirect}`;

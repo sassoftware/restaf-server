@@ -102,6 +102,13 @@ module.exports = function setHandlers(server, options) {
     }
   }, {
     method: ['GET'],
+    path: "".concat(appName, "/callback"),
+    options: {
+      auth: authDefault,
+      handler: _handlers.appCallback
+    }
+  }, {
+    method: ['GET'],
     path: "".concat(appName, "/logout"),
     options: {
       auth: authDefault,

@@ -30,7 +30,7 @@ function _appCallback() {
         switch (_context.prev = _context.next) {
           case 0:
             debug = require('debug')('callback');
-            console.log("..... AUTHFLOW: ".concat(process.env.AUTHFLOW)); // if authorization code process the auth info from saslogon via SASauth
+            console.log("..... AUTHFLOW: ".concat(process.env.AUTHFLOW));
 
             if (!(process.env.AUTHFLOW === 'server')) {
               _context.next = 6;

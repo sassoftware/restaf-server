@@ -65,6 +65,17 @@ ENV SAMESITE=None,false
 Recommend you use the authorization_flow code
 
 
+## KeepAlive
+
+Use the following options to keep your web application alive for longer periods
+
+KEEPALIVE=YES
+TIMERS=<run keepalive check every n seconds>,<total life time in seconds>
+
+See this <https://github.com/sassoftware/restaf/wiki/usefulTips> for tips on keeping your Viya session and CAs sessions active
+for longer periods.
+
+
 ## Viya Server Configuration and more
 
 Please see <https://github.com/sassoftware/restaf-server/wiki>

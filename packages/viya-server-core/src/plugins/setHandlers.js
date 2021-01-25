@@ -16,7 +16,7 @@
  *
  */
 
-import { getApp, getApp2,  favicon, keepAlive, keepAlive2,logout, logon, setupUserRoutes} from '../handlers';
+import { getApp, getApp2,  appCallback, favicon, keepAlive, keepAlive2,logout, logon, setupUserRoutes} from '../handlers';
 
 module.exports = function setHandlers (server, options) {
 
@@ -67,6 +67,14 @@ module.exports = function setHandlers (server, options) {
 				handler: async (req, h) => {
 					return logon(req, h);
 				},
+			},
+		},
+		{
+			method : ['GET'],
+			path   : `${appName}/callback`,
+			options: {
+				auth   : authDefault,
+				handler: appCallback,
 			},
 		},
 		{

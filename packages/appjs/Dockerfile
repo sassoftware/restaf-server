@@ -3,7 +3,7 @@ LABEL maintainer="deva.kumar@sas.com"
 WORKDIR /usr/src/app
 COPY . .
 # COPY package*.json ./
-# RUN npm install
+RUN npm install
 # RUN npm run build
 EXPOSE 8080
 # will auto change to localhost in non-docker environments
@@ -16,8 +16,8 @@ ENV APPHOST=0.0.0.0
 # set this the same as EXPOSE here and override in env or as -p option in dockerrun
 # ENV APPPORT=8080
 ENV APPNAME=viyaapp
-ENV AUTHFLOW=code
-ENV CLIENTID=viyaapp
+ENV AUTHFLOW=implicit
+ENV CLIENTID=viyaimpl
 ENV CLIENTSECRET=secret
 
 # ENV PLUGIN=hapi-swagger
@@ -33,4 +33,4 @@ ENV SAMESITE=None,secure
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
 #####################################################################
-CMD ["npx", "@sassoftware/restaf-server"]
+CMD ["npx", "@sassoftware/viya-appserverjs"]
