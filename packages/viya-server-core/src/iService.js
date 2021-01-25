@@ -187,17 +187,16 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode) {
 			useDefault    : useDefault, /* not used - left here for potential reuse */
 			https         : process.env.HTTPS
 		};
-		hapiServer.log(options);
+		hapiServer.log('Options',options);
 		
 		if (process.env.HTTPS === 'YES') {
-			hapiServer.log(`tls 
-			${process.env.TLS_CREATE}
-			${tls}`);
+			hapiServer.log('TLS_CREATE', process.env.TLS_CREATE);
+			hapiServer.log('TLS', tls);
 		};
 
 		await setupAuth(hapiServer, options);
-
-		if (process.env.PLUGIN == 'hapi-swagger'&& serverMode === 'api') {
+		hapiServer.log('Plugin', process.env.PLUGIN);
+		if (process.env.PLUGIN === 'hapi-swagger' && serverMode === 'api') {
 			let swaggerOptions = {
 				info: {
 					title      : `API for ${process.env.APPNAME}`,
@@ -207,9 +206,10 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode) {
 			};
 			let js = fs.readFileSync(process.env.SWAGGER, 'utf8');
 			swaggerOptions = JSON.parse(js);
+			hapiServer.log('hapi-swagger', swaggerOptions);
 			await hapiServer.register({ plugin: HapiSwagger, options: swaggerOptions });
 		} else if (process.env.PLUGIN == 'hapi-openapi' && serverMode === 'api') {
-			console.log('coming soon');
+			console.log('hapi-openapi', 'coming soon');
 		} 
 
 		//

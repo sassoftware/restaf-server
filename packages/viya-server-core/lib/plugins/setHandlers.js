@@ -26,7 +26,7 @@ module.exports = function setHandlers(server, options) {
   if (options.authFlow === 'server') {
     authDefault = {
       strategies: options.serverMode === 'api' ? ['token', 'session'] : ['session'],
-      mode: 'try'
+      mode: 'required'
     };
     authLogon = {
       mode: 'required',

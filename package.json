@@ -1,6 +1,6 @@
 {
   "name": "@sassoftware/viya-server-core",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "app and api server for SAS Viya user applications",
   "main": "index.js",
   "scripts": {
@@ -9,13 +9,20 @@
     "appjs:build": "cd packages/appjs && yarn build",
     "apijs:build": "cd packages/apijs && yarn build",
     "appjs:start": "cd packages/appjs && yarn start",
-    "appjs:nossl": "cd packages/appjs && yarn nossl",
     "appjs:uroute": "cd packages/appjs && yarn uroute",
     "apijs:start": "cd packages/apijs && yarn start",
     "apijs:debug": "cd packages/apijs && yarn debug",
     "appjs:debug": "cd packages/appjs && yarn debug",
     "build": "yarn core:build && yarn appjs:build && yarn apijs:build",
     "format": "prettier-eslint --eslint-config-path ./.eslintrc.json --write '**/*.js'",
+
+    "core:pub": "cd packages/viya-server-core && yarn pub",
+    "appjs:pub": "cd packages/appjs && yarn pub",
+    "apijs:pub": "cd packages/apijs && yarn pub",
+    "create:pub": "cd packages/create-viya-api && yarn pub",
+    "base:pub": "cd packages/viya-api-base && yarn pub",
+    "pub": "yarn core:pub && yarn appjs:pub && yarn apijs:pub && yarn create:pub && yarn base:pub",
+
     "lint": "eslint . --ext .js --fix"
   },
   "repository": "git+https://github.com/sassoftware/restaf-server.git",
@@ -70,7 +77,7 @@
   "workspaces": {
     "packages": [
       "packages/appjs",
-      "packages/appijs",
+      "packages/apijs",
       "packages/viya-server-core",
       "packages/create-viya-api",
       "packages/viya-api-base"
@@ -78,7 +85,7 @@
     "nohoist": [
       "**/appjs/**",
       "**/apijs/**",
-      "**/core/**"
+      "**/viya-server-core/**"
     ]
   },
   "dependencies": {

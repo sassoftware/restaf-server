@@ -255,10 +255,11 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
                 /* not used - left here for potential reuse */
                 https: process.env.HTTPS
               };
-              hapiServer.log(options);
+              hapiServer.log('Options', options);
 
               if (process.env.HTTPS === 'YES') {
-                hapiServer.log("tls \n\t\t\t".concat(process.env.TLS_CREATE, "\n\t\t\t").concat(tls));
+                hapiServer.log('TLS_CREATE', process.env.TLS_CREATE);
+                hapiServer.log('TLS', tls);
               }
 
               ;
@@ -266,8 +267,10 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
               return (0, _setupAuth["default"])(hapiServer, options);
 
             case 42:
-              if (!(process.env.PLUGIN == 'hapi-swagger' && serverMode === 'api')) {
-                _context.next = 50;
+              hapiServer.log('Plugin', process.env.PLUGIN);
+
+              if (!(process.env.PLUGIN === 'hapi-swagger' && serverMode === 'api')) {
+                _context.next = 52;
                 break;
               }
 
@@ -280,26 +283,27 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
               };
               js = fs.readFileSync(process.env.SWAGGER, 'utf8');
               swaggerOptions = JSON.parse(js);
-              _context.next = 48;
+              hapiServer.log('hapi-swagger', swaggerOptions);
+              _context.next = 50;
               return hapiServer.register({
                 plugin: HapiSwagger,
                 options: swaggerOptions
               });
 
-            case 48:
-              _context.next = 51;
+            case 50:
+              _context.next = 53;
               break;
 
-            case 50:
+            case 52:
               if (process.env.PLUGIN == 'hapi-openapi' && serverMode === 'api') {
-                console.log('coming soon');
+                console.log('hapi-openapi', 'coming soon');
               }
 
-            case 51:
-              _context.next = 53;
+            case 53:
+              _context.next = 55;
               return hapiServer.start();
 
-            case 53:
+            case 55:
               hh = hapiServer.info.uri.replace(/0.0.0.0/, 'localhost');
               console.log('Server Start Time: ', Date());
               msg = options.serverMode === 'app' ? "Visit ".concat(hh, "/").concat(process.env.APPNAME, " to access application") : "Visit ".concat(hh, "/").concat(process.env.APPNAME, "/api to access swagger");
@@ -307,7 +311,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
               console.log('NOTE: If running in container then use the port number you mapped to');
               process.env.APPSERVER = "".concat(hh, "/").concat(process.env.APPNAME);
 
-            case 59:
+            case 61:
             case "end":
               return _context.stop();
           }

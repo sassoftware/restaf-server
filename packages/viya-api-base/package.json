@@ -28,6 +28,7 @@
     "template.json"
   ],
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "pub": "npm publish --tag test --access public"
   }
 }

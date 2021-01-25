@@ -1,6 +1,6 @@
 {
   "name": "@sassoftware/create-viya-api",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "keywords": [
     "react",
     "create-react-app",
@@ -10,6 +10,9 @@
   "main": "index.js",
   "description": "Template for typical SAS Viya Applications",
   "homepage": "https://github.com/sassoftware/restaf-server#README.md",
+  "script": {
+    "pub": "npm publish --tag test --access public"
+  },
   "bin": {
     "@sassoftware/create-viya-api": "index.js"
   },
