@@ -6,7 +6,7 @@
   "license": "Apache-2.0",
   "main": "./lib/index.js",
   "files": [
-    "/lib"
+    "lib"
   ],
   "keywords": [
     "restaf",
