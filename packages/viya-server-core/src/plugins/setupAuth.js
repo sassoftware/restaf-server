@@ -16,10 +16,10 @@
  *
  */
 
-let SASauth     = require('./SASauth');
-let appCookie   = require('./appCookie');
-let token       = require('./token');
-let setHandlers = require('./setHandlers');
+let SASauth          = require('./SASauth');
+let appCookie        = require('./appCookie');
+let token            = require('./token');
+let setDefaultRoutes = require('./setDefaultRoutes');
 
 async function setupAuth (server, options){
 	if (options.authFlow === 'server') {
@@ -31,10 +31,10 @@ async function setupAuth (server, options){
 			def = 'token';
 		}
 		
-		server.log(`Default auth: ${def}`);
+		server.log('Default auth', def);
 		server.auth.default(def);
 	}
-	setHandlers(server, options);
+	setDefaultRoutes(server, options);
 };
 
 export default setupAuth;

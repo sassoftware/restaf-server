@@ -16,8 +16,8 @@ ENV APPHOST=0.0.0.0
 # set this the same as EXPOSE here and override in env or as -p option in dockerrun
 # ENV APPPORT=8080
 ENV APPNAME=viyaapp
-ENV AUTHFLOW=implicit
-ENV CLIENTID=viyaimpl
+ENV AUTHFLOW=code
+ENV CLIENTID=viyaapp
 ENV CLIENTSECRET=secret
 
 # ENV PLUGIN=hapi-swagger

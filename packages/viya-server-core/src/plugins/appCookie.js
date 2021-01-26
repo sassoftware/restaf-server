@@ -20,12 +20,13 @@ async function iappCookie (server, options){
         appendNext  : {raw: true, name: 'next'},
         validateFunc: async (req, session) => {
             debugger;
+            console.log(req.path);
             if (session === null) {
                 console.log('session is null');
                 return {valid: false};
             }
             const credentials = await req.server.app.cache.get(session.sid);
-            server.log('Cookie validateFunc', credentials);
+            server.log('Cookie validateFunc', session.sid);
             return {valid: true, credentials: credentials};
         }
     };

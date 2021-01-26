@@ -32,42 +32,31 @@ function getCustomHandler () {
 			method : ['GET'],
 			path   : `${appName}/testroute`,
 			options: {
-				auth   : true,
 				handler: async (req,h) => { 
 					let context = req.pre.context;
+					console.log(context);
 					return context;
-				},
-				description: 'Test Route',
-				notes      : 'Echo context',
-				tags       : ['api']
+				}
 			}
 		},
 		{
 			method : ['POST'],
 			path   : `${appName}/compute`,
 			options: {
-				auth   : true,
 				handler: async (req,h) => { 
 					let context = req.pre.context;
 					return context;
-				},
-				description: 'Create a dataset with specified nummber of columns and rows',
-				notes      : 'Uses restaf',
-				tags       : ['api'],
+				}
 			}
 		},
 		{
 			method : ['POST'],
 			path   : `${appName}/cas/{param*}`,
 			options: {
-				auth   : false,
 				handler: async (req,h) => { 
 					let context = req.pre.context;
 					return context;
-				},
-				description: 'Route to run a simple cas action',
-				notes      : 'Uses restaf',
-				tags       : ['api']		
+				}
 			}
 		}
 	];

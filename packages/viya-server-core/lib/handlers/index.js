@@ -86,6 +86,6 @@ var _logout = _interopRequireDefault(require("./logout"));
 
 var _getUser = _interopRequireDefault(require("./getUser"));
 
-var _setupUserRoutes = _interopRequireDefault(require("./setupUserRoutes"));
+var _setupUserRoutes = _interopRequireDefault(require("../plugins/setupUserRoutes"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }

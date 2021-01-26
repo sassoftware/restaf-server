@@ -47,9 +47,10 @@ function _iappCookie() {
                       switch (_context.prev = _context.next) {
                         case 0:
                           debugger;
+                          console.log(req.path);
 
                           if (!(session === null)) {
-                            _context.next = 4;
+                            _context.next = 5;
                             break;
                           }
 
@@ -58,19 +59,19 @@ function _iappCookie() {
                             valid: false
                           });
 
-                        case 4:
-                          _context.next = 6;
+                        case 5:
+                          _context.next = 7;
                           return req.server.app.cache.get(session.sid);
 
-                        case 6:
+                        case 7:
                           credentials = _context.sent;
-                          server.log('Cookie validateFunc', credentials);
+                          server.log('Cookie validateFunc', session.sid);
                           return _context.abrupt("return", {
                             valid: true,
                             credentials: credentials
                           });
 
-                        case 9:
+                        case 10:
                         case "end":
                           return _context.stop();
                       }

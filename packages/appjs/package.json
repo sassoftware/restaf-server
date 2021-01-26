@@ -1,13 +1,10 @@
 {
-  "name": "@sassoftware/restaf-server",
-  "version": "1.2.2",
+  "name": "@sassoftware/viya-appserverjs",
+  "version": "1.2.4",
   "description": "Custom app server for Viya apps",
   "author": "Deva Kumaraswamy <deva.kumar@sas.com>",
   "license": "Apache-2.0",
   "main": "./lib/index.js",
-  "files": [
-    "/lib"
-  ],
   "keywords": [
     "restaf",
     "Viya",
@@ -32,6 +29,7 @@
   "scripts": {
     "build": "babel src --out-dir lib",
     "start": "cross-env VIYA_SERVER=%vx% node ./lib/cli.js --env=./.env --docker=./Dockerfile",
+    "uroute": "cross-env VIYA_SERVER=%vx% node api.js --env=./.env --docker=./Dockerfile",
     "debug": "cross-env VIYA_SERVER=%vx% node --inspect-brk ./lib/cli.js   --env=./.env --docker=./Dockerfile --appenv=appenv.js",
     "pub": "npm publish --tag test --access public",
     "lint": "npx eslint --fix src/*.js"
@@ -45,7 +43,7 @@
     "@hapi/inert": "^6.0.3",
     "@hapi/joi": "^17.1.1",
     "@hapi/vision": "^6.0.1",
-    "@sassoftware/viya-server-core": "1.2.2",
+    "@sassoftware/viya-server-core": "1.2.4",
     "axios": "^0.21.1",
     "core-js": "^3.8.1",
     "debug": "^4.3.1",

@@ -36,10 +36,11 @@ function setupUserRoutes(u, auth) {
       assign: 'context'
     }];
 
-    if (rx.options.auth !== false) {
+    if (rx.options.auth == null) {
       rx.options.auth = auth;
     }
 
+    console.log(JSON.stringify(rx, null, 4));
     return rx;
   });
   return routes;

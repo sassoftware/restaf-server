@@ -12,7 +12,7 @@ import keepAlive from './keepAlive';
 import keepAlive2 from './keepAlive2';
 import logout      from './logout';
 import getUser from './getUser';
-import setupUserRoutes from './setupUserRoutes';
+import setupUserRoutes from '../plugins/setupUserRoutes';
 
 export {
     getApp,

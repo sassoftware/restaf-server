@@ -18,7 +18,7 @@
 
 import { getApp, getApp2,  appCallback, favicon, keepAlive, keepAlive2,logout, logon, setupUserRoutes} from '../handlers';
 
-module.exports = function setHandlers (server, options) {
+module.exports = function setDefaultRoutes (server, options) {
 
 	let appName = '/' + options.appName;
 	let authDefault = false;
@@ -99,6 +99,7 @@ module.exports = function setHandlers (server, options) {
 			options: {
 				auth   : authDefault,
 				handler: (req, h) => {
+					console.log(options.allAppEnv);
 					return options.allAppEnv;
 				},
 			},
@@ -106,6 +107,14 @@ module.exports = function setHandlers (server, options) {
 		{
 			method : ['GET'],
 			path   : `${appName}/{param*}`,
+			options: {
+				auth   : authDefault,
+				handler: getApp2,
+			},
+		},
+		{
+			method : ['GET'],
+			path   : `/{param*}`,
 			options: {
 				auth   : authDefault,
 				handler: getApp2,
@@ -129,7 +138,7 @@ module.exports = function setHandlers (server, options) {
 		},
 	];
 
-	let routeTables = (uTable !== null) ? [...defaultTable, ...uTable] : defaultTable;
+	let routeTables = (uTable !== null) ? defaultTable.concat(uTable) : defaultTable;
 	server.log('routes', routeTables);
 	console.table(routeTables);
 	server.route(routeTables);

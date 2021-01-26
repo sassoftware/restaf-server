@@ -1,6 +1,6 @@
 {
   "name": "@sassoftware/viya-server-core",
-  "version": "1.2.2",
+  "version": "1.2.4",
   "description": "app and api server for SAS Viya user applications",
   "main": "index.js",
   "scripts": {
@@ -15,14 +15,12 @@
     "appjs:debug": "cd packages/appjs && yarn debug",
     "build": "yarn core:build && yarn appjs:build && yarn apijs:build",
     "format": "prettier-eslint --eslint-config-path ./.eslintrc.json --write '**/*.js'",
-
     "core:pub": "cd packages/viya-server-core && yarn pub",
     "appjs:pub": "cd packages/appjs && yarn pub",
     "apijs:pub": "cd packages/apijs && yarn pub",
     "create:pub": "cd packages/create-viya-api && yarn pub",
     "base:pub": "cd packages/viya-api-base && yarn pub",
     "pub": "yarn core:pub && yarn appjs:pub && yarn apijs:pub && yarn create:pub && yarn base:pub",
-
     "lint": "eslint . --ext .js --fix"
   },
   "repository": "git+https://github.com/sassoftware/restaf-server.git",

@@ -32,7 +32,7 @@ var appCookie = require('./appCookie');
 
 var token = require('./token');
 
-var setHandlers = require('./setHandlers');
+var setDefaultRoutes = require('./setDefaultRoutes');
 
 function setupAuth(_x, _x2) {
   return _setupAuth.apply(this, arguments);
@@ -80,11 +80,11 @@ function _setupAuth() {
             def = 'token';
 
           case 10:
-            server.log("Default auth: ".concat(def));
+            server.log('Default auth', def);
             server.auth["default"](def);
 
           case 12:
-            setHandlers(server, options);
+            setDefaultRoutes(server, options);
 
           case 13:
           case "end":
