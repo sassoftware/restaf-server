@@ -31,12 +31,12 @@ ENV CLIENTSECRET=secret
 ##########################
 
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
-ENV SAMESITE=None,false
+ENV SAMESITE=None,secure
 # values below are samples - substititue your own.
 #
 # HTTPS=true
 # Option 1
-# TLS_CREATE=C:US,ST:NC,L:Cary,O:your company,OU:deptname,CN:localhost
+ENV TLS_CREATE="C:US,ST:NC,L:Cary,O:Company,OU:dep,CN:localhost"
 
 # Option 2
 # TLS_KEY=../certs/self/key.pem
