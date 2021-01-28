@@ -22,7 +22,8 @@ rc = sh.mkdir(appDir);
 if (rc != 0) {
 	process.exit('unable to create directory');
 }
-
+console.log(`${appDir} has been created`);
+console.log(`viya-api-base version: ${version}`);
 
 function execcmd (cmd) {
 	return new Promise((resolve) => {
@@ -64,6 +65,6 @@ async function run (appDirectory, version) {
 
 run(appDir,version)
 	.then(() => {
-		console.log('Please visit https://github.com/sassoftware/restaf-server/wiki/apiserver for documentation');
+		console.log('Please visit https://github.com/sassoftware/restaf-server/wiki/viya-apiserverjs for documentation');
 	})
 	.catch((err) => console.log(err));

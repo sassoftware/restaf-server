@@ -1,30 +1,25 @@
 {
-  "name": "@sassoftware/viya-server-core",
+  "name": "@sassoftware/restaf-server",
   "version": "1.2.4",
   "description": "app and api server for SAS Viya user applications",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "core:build": "cd packages/viya-server-core && yarn build",
-
     "appjs:build": "cd packages/viya-appserverjs && yarn build",
     "appjs:start": "cd packages/viya-appserverjs && yarn start",
     "appjs:uroute": "cd packages/viya-appserverjs && yarn uroute",
     "appjs:debug": "cd packages/viya-appserverjs && yarn debug",
-
     "apijs:build": "cd packages/viya-apiserverjs && yarn build",
     "apijs:start": "cd packages/viya-apiserverjs && yarn start",
     "apijs:debug": "cd packages/viya-apiserverjs && yarn debug",
-
     "build": "yarn core:build && yarn appjs:build && yarn apijs:build",
-
     "core:pub": "cd packages/viya-server-core && yarn pub",
     "appjs:pub": "cd packages/viya-appserverjs && yarn pub",
     "apijs:pub": "cd packages/viya-apiserver && yarn pub",
     "create:pub": "cd packages/create-viya-api && yarn pub",
     "base:pub": "cd packages/viya-api-base && yarn pub",
     "pub": "yarn core:pub && yarn appjs:pub && yarn apijs:pub && yarn create:pub && yarn base:pub",
-
     "format": "prettier-eslint --eslint-config-path ./.eslintrc.json --write '**/*.js'",
     "lint": "eslint . --ext .js --fix"
   },
@@ -84,14 +79,6 @@
       "packages/viya-server-core",
       "packages/create-viya-api",
       "packages/viya-api-base"
-    ],
-    "nohoist": [
-      "**/appjs/**",
-      "**/apijs/**",
-      "**/viya-server-core/**"
     ]
-  },
-  "dependencies": {
-    "mkcert": "^1.4.0"
   }
 }
