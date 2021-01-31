@@ -35,7 +35,6 @@ module.exports = function api () {
 				tags       : ['api'],
 			},
 		},
-		/*
 		{
 			method: ['GET'],
 			path: `${appName}/simpleExample`,
@@ -46,7 +45,29 @@ module.exports = function api () {
 				tags: ['api'],
 			},
 		},
-		*/
+		/*
+		{
+			method : ['POST'],
+			path   : `${appName}/covid`,
+			options: {
+				handler    : handlers.covid,
+				description: 'Score patient for covid infection',
+				notes      : 'Score Using Mas',
+				tags       : ['api'],
+
+				validate: {
+					payload: Joi.object({
+						scenario: Joi.object({
+							income             : Joi.number().default(1000).min(0).max(900000).description('Annual Income'),
+							respiratory_tests  : Joi.number().default(5).min(0).max(15).description('Respiratory Result'),
+							cholesterol_level  : Joi.number().default(30).min(0).max(1200).description('Cholesterol Level'),
+							city_infection_rate: Joi.number().default(4).min(0).max(210).description('City Infection Rate'),
+							}).description('Patient information')
+					}),
+				}
+			}
+		},
+*/
 		{
 			method : ['POST'],
 			path   : `${appName}/compute/{param*}`,

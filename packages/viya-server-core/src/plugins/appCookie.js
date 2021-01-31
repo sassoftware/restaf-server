@@ -20,7 +20,7 @@ async function iappCookie (server, options){
         appendNext  : {raw: true, name: 'next'},
         validateFunc: async (req, session) => {
             debugger;
-            console.log(req.path);
+            server.log('Cookie validateFunc', `path - ${req.path}`)
             if (session === null) {
                 console.log('session is null');
                 return {valid: false};
