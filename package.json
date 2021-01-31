@@ -16,7 +16,7 @@
     "build": "yarn core:build && yarn appjs:build && yarn apijs:build",
     "core:pub": "cd packages/viya-server-core && yarn pub",
     "appjs:pub": "cd packages/viya-appserverjs && yarn pub",
-    "apijs:pub": "cd packages/viya-apiserver && yarn pub",
+    "apijs:pub": "cd packages/viya-apiserverjs && yarn pub",
     "create:pub": "cd packages/create-viya-api && yarn pub",
     "base:pub": "cd packages/viya-api-base && yarn pub",
     "pub": "yarn core:pub && yarn appjs:pub && yarn apijs:pub && yarn create:pub && yarn base:pub",
