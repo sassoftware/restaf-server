@@ -76,7 +76,7 @@
 
 				store.request(config)
 					.then ( r => {
-						debugger;
+						
 						document.getElementById('output').innerHTML = r.data;
 					})
 					.catch( err => alert(err));

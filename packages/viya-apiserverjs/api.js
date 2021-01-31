@@ -20,9 +20,9 @@
 
 'use strict';
 
-debugger;
+
 let rafserver = require('./lib/index.js');
-debugger;
+
 rafserver.icli (getCustomHandler);
 
 function getCustomHandler () {

@@ -82,7 +82,6 @@ function _iSASauth() {
               // isSameSite  : options.isSameSite,
               isSecure: options.isSecure,
               location: function location() {
-                debugger;
                 server.log('SASAuth location', "Redirect set to: ".concat(options.redirect));
                 return options.redirect == null ? '' : options.redirect;
               }

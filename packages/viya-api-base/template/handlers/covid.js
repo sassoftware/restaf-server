@@ -20,7 +20,7 @@ async function run (req,h) {
     let store = await setupConnection(context);
 
     // call MAS to score and return score information
-    debugger;
+    
     let r = await restaflib.masScore(store,'deva_manuel', payload.scenario);
 
     // Transform results as needed.

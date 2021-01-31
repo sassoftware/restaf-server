@@ -36,10 +36,9 @@ function _favicon() {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            console.log('in icon');
             return _context.abrupt("return", h.file("favicon.ico"));
 
-          case 2:
+          case 1:
           case "end":
             return _context.stop();
         }

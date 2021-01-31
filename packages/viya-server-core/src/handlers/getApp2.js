@@ -18,7 +18,7 @@
 'use strict';
 
 async function getApp2 (req, h) {
-    debugger;
+    
     return h.file(`${req.params.param}`);
 }
 

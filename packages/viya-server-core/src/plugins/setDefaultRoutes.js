@@ -99,7 +99,6 @@ module.exports = function setDefaultRoutes (server, options) {
 			options: {
 				auth   : authDefault,
 				handler: (req, h) => {
-					console.log(options.allAppEnv);
 					return options.allAppEnv;
 				},
 			},

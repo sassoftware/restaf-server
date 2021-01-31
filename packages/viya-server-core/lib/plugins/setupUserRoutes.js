@@ -40,7 +40,6 @@ function setupUserRoutes(u, auth) {
       rx.options.auth = auth;
     }
 
-    console.log(JSON.stringify(rx, null, 4));
     return rx;
   });
   return routes;

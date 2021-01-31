@@ -18,7 +18,6 @@
 'use strict';
 
 async function favicon (req, h) {
-    console.log('in icon');
     return h.file(`favicon.ico`);
 }
 

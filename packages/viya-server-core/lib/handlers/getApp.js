@@ -52,20 +52,19 @@ function _getApp() {
 
           case 10:
             if (!(process.env.AUTHFLOW === 'server')) {
-              _context.next = 15;
+              _context.next = 14;
               break;
             }
 
-            debugger;
             return _context.abrupt("return", (0, _codeAuth["default"])(req, h));
 
-          case 15:
+          case 14:
             debug('default getapp');
             indexHTML = process.env.APPENTRY == null ? 'index.html' : process.env.APPENTRY;
             console.log("Redirecting to default ".concat(indexHTML));
             return _context.abrupt("return", h.file(indexHTML));
 
-          case 19:
+          case 18:
           case "end":
             return _context.stop();
         }

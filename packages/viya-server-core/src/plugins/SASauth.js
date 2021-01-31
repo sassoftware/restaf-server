@@ -54,7 +54,7 @@ async function iSASauth (server, options) {
             // isSameSite  : options.isSameSite,
             isSecure    : options.isSecure,
             location    : () => { 
-                debugger;
+                
                 server.log('SASAuth location',`Redirect set to: ${options.redirect}`);
                 return (options.redirect == null) ? '' : options.redirect;
             }

@@ -74,7 +74,7 @@
 			let compute = null;
 
 			function setup() {
-				debugger;
+				
 				document.getElementById('output').innerHTML = '...initializing';
 				
 				initSession()
@@ -83,7 +83,7 @@
 						keepAlive();
 					})
 					.catch(e => {
-						debugger;
+						
 						console.log(e);
 					});
 			}
@@ -113,18 +113,18 @@
 					
 			}
 			async function initSession() {
-				debugger;
+				
 				console.log(LOGONPAYLOAD);
 				let msg = await store.logon(LOGONPAYLOAD);
-				debugger;
+				
 				services = await store.addServices(
 					'files', 'compute', 'casManagement'
 				);
-				debugger;
+				
 				return 'done';
 			}
 			function runit(type) {
-				debugger;
+				
 				
 				document.getElementById('output').innerHTML = '...running';
 				let testcase;
@@ -168,7 +168,7 @@
 						).innerHTML = JSON.stringify(r, null, 4);
 					})
 					.catch(err => {
-						debugger;
+						
 						document.getElementById(
 							'output'
 						).innerHTML = JSON.stringify(err, null, 4);
@@ -194,7 +194,7 @@
 				return true;
 			}
 			async function runCas(store) {
-				debugger;
+				
 				let {casManagement} = await store.addServices('casManagement');
 				let servers = await store.apiCall(
 					casManagement.links('servers')
@@ -214,7 +214,7 @@
 			}
 
 			async function SASfileService(store) {
-				debugger;
+				
 				let {files} = await store.addServices('files');
 				console.log(JSON.stringify(files.links(), null, 4));
 				let payload = {
@@ -225,7 +225,7 @@
 				let newFile = await store.apiCall(createCmd, payload);
 
 				let content = await store.apiCall(newFile.links('content'));
-				debugger;
+				
 				return content.items();
 			}
 			async function dsCompute(store) {
