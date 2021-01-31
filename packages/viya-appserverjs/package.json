@@ -1,6 +1,6 @@
 {
   "name": "@sassoftware/viya-appserverjs",
-  "version": "1.2.4",
+  "version": "1.2.6",
   "description": "Custom app server for Viya apps",
   "author": "Deva Kumaraswamy <deva.kumar@sas.com>",
   "license": "Apache-2.0",
@@ -46,7 +46,7 @@
     "@hapi/inert": "^6.0.3",
     "@hapi/joi": "^17.1.1",
     "@hapi/vision": "^6.0.1",
-    "@sassoftware/viya-server-core": "1.2.4",
+    "@sassoftware/viya-server-core": "1.2.6",
     "axios": "^0.21.1",
     "core-js": "^3.8.1",
     "debug": "^4.3.1",

@@ -1,6 +1,6 @@
 {
   "name": "@sassoftware/restaf-server",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "app and api server for SAS Viya user applications",
   "main": "index.js",
   "scripts": {
@@ -74,8 +74,8 @@
   },
   "workspaces": {
     "packages": [
-      "packages/appjs",
-      "packages/apijs",
+      "packages/viya-apiserverjs",
+      "packages/viya-appserverjs",
       "packages/viya-server-core",
       "packages/create-viya-api",
       "packages/viya-api-base"
