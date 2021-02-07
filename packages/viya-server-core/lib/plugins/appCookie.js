@@ -6,18 +6,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var uuid = require('uuid');
 
-exports.plugin = {
-  name: 'appCookie',
-  version: '1.0.0',
-  register: iappCookie
-};
-
-function iappCookie(_x, _x2) {
-  return _iappCookie.apply(this, arguments);
-}
-
-function _iappCookie() {
-  _iappCookie = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(server, options) {
+module.exports = /*#__PURE__*/function () {
+  var _appCookie = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(server, options) {
     var cookieOptions;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
@@ -29,27 +19,27 @@ function _iappCookie() {
           case 2:
             cookieOptions = {
               cookie: {
-                name: 'ocookie',
+                name: 'cookie',
                 password: uuid.v4(),
                 isSecure: options.isSecure,
-                isSameSite: options.isSameSite
+                isSameSite: 'None'
               },
               redirectTo: options.redirectTo,
               appendNext: {
-                raw: true,
                 name: 'next'
               },
               validateFunc: function () {
                 var _validateFunc = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, session) {
-                  var credentials;
+                  var credentials, sid;
                   return regeneratorRuntime.wrap(function _callee$(_context) {
                     while (1) {
                       switch (_context.prev = _context.next) {
                         case 0:
+                          debugger;
                           server.log('Cookie validateFunc', "path - ".concat(req.path));
 
-                          if (!(session === null)) {
-                            _context.next = 4;
+                          if (!(session == null)) {
+                            _context.next = 5;
                             break;
                           }
 
@@ -58,19 +48,46 @@ function _iappCookie() {
                             valid: false
                           });
 
-                        case 4:
-                          _context.next = 6;
-                          return req.server.app.cache.get(session.sid);
+                        case 5:
+                          credentials = null;
 
-                        case 6:
+                          if (Array.isArray(session) === true && session.length > 0) {
+                            sid = session[0].sid;
+                          } else {
+                            sid = session.sid;
+                          }
+
+                          if (!(sid != null)) {
+                            _context.next = 11;
+                            break;
+                          }
+
+                          _context.next = 10;
+                          return req.server.app.cache.get(sid);
+
+                        case 10:
                           credentials = _context.sent;
-                          server.log('Cookie validateFunc', session.sid);
+
+                        case 11:
+                          debugger;
+
+                          if (!(credentials == null)) {
+                            _context.next = 14;
+                            break;
+                          }
+
+                          return _context.abrupt("return", {
+                            valid: false
+                          });
+
+                        case 14:
+                          server.log('Cookie validateFunc', sid);
                           return _context.abrupt("return", {
                             valid: true,
                             credentials: credentials
                           });
 
-                        case 9:
+                        case 16:
                         case "end":
                           return _context.stop();
                       }
@@ -96,5 +113,10 @@ function _iappCookie() {
       }
     }, _callee2);
   }));
-  return _iappCookie.apply(this, arguments);
-}
+
+  function appCookie(_x, _x2) {
+    return _appCookie.apply(this, arguments);
+  }
+
+  return appCookie;
+}();

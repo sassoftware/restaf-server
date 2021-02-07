@@ -13,12 +13,6 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-/*
-* Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
-* SPDX-License-Identifier: Apache-2.0
-*/
-var debug = require('debug')('logon');
-
 function logon(_x, _x2) {
   return _logon.apply(this, arguments);
 }
@@ -30,16 +24,18 @@ function _logon() {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.next = 2;
+            req.log('in logon');
+            debugger;
+            req.log('in logon 2');
+            _context.next = 5;
             return (0, _setCookies["default"])(req, h);
 
-          case 2:
+          case 5:
             r = _context.sent;
-            req.log('in logon');
-            req.log(r);
+            req.log('in logon after setcookie', r.redirect);
             return _context.abrupt("return", h.redirect(r.redirect));
 
-          case 6:
+          case 8:
           case "end":
             return _context.stop();
         }

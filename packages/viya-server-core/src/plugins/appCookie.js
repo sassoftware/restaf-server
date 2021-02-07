@@ -1,32 +1,40 @@
 
 let uuid = require('uuid');
-exports.plugin = {
-    name    : 'appCookie',
-    version : '1.0.0',
-    register: iappCookie
-};
 
-async function iappCookie (server, options){
+module.exports = async function appCookie (server, options){
 
     await server.register(require('@hapi/cookie'));
     let cookieOptions = {
         cookie: {
-            name      : 'ocookie',
+            name      : 'cookie',
             password  : uuid.v4(),
             isSecure  : options.isSecure,
-            isSameSite: options.isSameSite
+            isSameSite: 'None'
         },
         redirectTo  : options.redirectTo,
-        appendNext  : {raw: true, name: 'next'},
+        appendNext  : {name: 'next'},
         validateFunc: async (req, session) => {
-            
+            debugger;
             server.log('Cookie validateFunc', `path - ${req.path}`)
-            if (session === null) {
+            if (session == null) {
                 console.log('session is null');
                 return {valid: false};
             }
-            const credentials = await req.server.app.cache.get(session.sid);
-            server.log('Cookie validateFunc', session.sid);
+            let credentials = null;
+            let sid;
+            if (Array.isArray(session) === true && session.length > 0) {
+                sid = session[0].sid;
+            } else {
+                sid = session.sid;
+            }
+            if ( sid != null) {
+                credentials = await req.server.app.cache.get(sid);
+             }
+             debugger;
+            if (credentials == null) {
+                return {valid: false};
+            }
+            server.log('Cookie validateFunc', sid);
             return {valid: true, credentials: credentials};
         }
     };

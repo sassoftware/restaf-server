@@ -22,7 +22,7 @@
 
 
 let rafserver = require('./lib/index.js');
-
+debugger;
 rafserver.icli (getCustomHandler);
 
 function getCustomHandler () {
@@ -32,8 +32,9 @@ function getCustomHandler () {
 			method : ['GET'],
 			path   : `${appName}/testroute`,
 			options: {
-				auth   : true,
 				handler: async (req,h) => { 
+					debugger;
+					console.log('++++++++++++++++++++++ in testroute');
 					let context = req.pre.context;
 					return context;
 				},
@@ -46,7 +47,6 @@ function getCustomHandler () {
 			method : ['POST'],
 			path   : `${appName}/compute`,
 			options: {
-				auth   : true,
 				handler: async (req,h) => { 
 					let context = req.pre.context;
 					return context;
@@ -60,7 +60,6 @@ function getCustomHandler () {
 			method : ['POST'],
 			path   : `${appName}/cas/{param*}`,
 			options: {
-				auth   : false,
 				handler: async (req,h) => { 
 					let context = req.pre.context;
 					return context;

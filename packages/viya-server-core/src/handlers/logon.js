@@ -3,14 +3,16 @@
 * SPDX-License-Identifier: Apache-2.0
 */
 
-let debug = require('debug')('logon');
 import setCookies from './setCookies';
 async function logon (req, h) {
-   let r = await setCookies(req, h);
    req.log('in logon');
-   req.log(r);
+   debugger;
+   req.log('in logon 2');
+   let r = await setCookies(req, h);
+   req.log('in logon after setcookie', r.redirect);
    return h.redirect(r.redirect);
 }
+
 
 
 
