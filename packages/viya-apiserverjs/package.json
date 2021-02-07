@@ -32,7 +32,7 @@
   "scripts": {
     "build": "rimraf lib && babel src --out-dir lib",
     "start": "cross-env VIYA_SERVER=%vx%  node api --env=./.env --docker=./Dockerfile",
-    "pub": "npm publish --tag test --access public",
+    "pub": "npm publish --tag next --access public",
     "debug": "cross-env VIYA_SERVER=%vx% node --inspect-brk api   --env=./.env --docker=./Dockerfile --appenv=appenv.js",
     "lint": "npx eslint --fix src/*.js"
   },

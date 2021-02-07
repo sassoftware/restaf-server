@@ -179,9 +179,10 @@
 				return r;
 			}
 			async function spre(store) {
+				debugger;
 				let p = {
 					method: 'GET',
-					url   : 'http://localhost:3000/api/test',
+					url   : 'https://localhost:5001/myapi/testroute',
 					withCredentials: true
 				}
 				let r = await store.request(p);
