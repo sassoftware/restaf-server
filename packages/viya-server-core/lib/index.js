@@ -35,6 +35,7 @@ module.exports = function core(uTable, useDefault, serverMode) {
   var env = argv.env == null ? null : argv.env;
   var appenv = argv.appenv == null ? null : argv.appenv;
   var docker = argv.docker == null ? null : argv.docker;
+  process.env.SERVERMODE = serverMode;
 
   if (useDefault == null) {
     useDefault = true;

@@ -40,6 +40,18 @@ function getCustomHandler () {
 			}
 		},
 		{
+		method : ['GET'],
+		path   : `${appName}/testroute2`,
+		options: {
+			handler: async (req,h) => { 
+				debugger;
+				let context = req.pre.context;
+				console.log(context);
+				return "<h1> Hello world</h1>";
+			}
+		}
+ 	},
+		{
 			method : ['POST'],
 			path   : `${appName}/compute`,
 			options: {

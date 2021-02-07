@@ -7,7 +7,9 @@ let debug = require('debug')('setcookies');
 
 async function setCookies (req, h) {
     
+    
     let credentials = req.auth.credentials;
+    req.log('setcookie', credentials);
     if (credentials != null && req.auth.error != null) {
         debug('logon failed');
         return { status: false, error: req.auth.error };
@@ -19,7 +21,9 @@ async function setCookies (req, h) {
     
     await req.server.app.cache.set(sid, credentials, 0);
     req.cookieAuth.set({ sid });
+    req.log('setcookie', credentials.query);
     let redirect = (credentials.query != null && credentials.query.next != null) ? credentials.query.next : null;
+    req.server.log('setcookie-recirect', redirect);
     return { status: true, error: null , redirect: redirect};
 }
 

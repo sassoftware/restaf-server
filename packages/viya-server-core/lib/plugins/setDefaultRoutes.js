@@ -65,28 +65,13 @@ module.exports = function setDefaultRoutes(server, options) {
     path: "".concat(appName, "/logon"),
     options: {
       auth: authLogon,
-      handler: function () {
-        var _handler2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(req, h) {
-          return regeneratorRuntime.wrap(function _callee2$(_context2) {
-            while (1) {
-              switch (_context2.prev = _context2.next) {
-                case 0:
-                  return _context2.abrupt("return", (0, _handlers.logon)(req, h));
-
-                case 1:
-                case "end":
-                  return _context2.stop();
-              }
-            }
-          }, _callee2);
-        }));
-
-        function handler(_x3, _x4) {
-          return _handler2.apply(this, arguments);
+      //https://futurestud.io/tutorials/hapi-redirect-to-previous-page-after-login
+      plugins: {
+        'hapi-auth-cookie': {
+          redirectTo: false
         }
-
-        return handler;
-      }()
+      },
+      handler: _handlers.logon
     }
   }, {
     method: ['GET'],

@@ -64,9 +64,11 @@ module.exports = function setDefaultRoutes (server, options) {
 			path   : `${appName}/logon`,
 			options: {
 				auth   : authLogon,
-				handler: async (req, h) => {
-					return logon(req, h);
+				//https://futurestud.io/tutorials/hapi-redirect-to-previous-page-after-login
+				plugins: {
+					'hapi-auth-cookie': {redirectTo: false}
 				},
+				handler: logon
 			},
 		},
 		{
@@ -88,6 +90,7 @@ module.exports = function setDefaultRoutes (server, options) {
 		{
 			method : ['GET', 'POST'],
 			path   : `${appName}/keepAlive`,
+	
 			options: {
 				auth   : authDefault,
 				handler: keepAlive,
@@ -106,6 +109,7 @@ module.exports = function setDefaultRoutes (server, options) {
 		{
 			method : ['GET'],
 			path   : `${appName}/{param*}`,
+
 			options: {
 				auth   : authDefault,
 				handler: getApp2,
@@ -114,6 +118,7 @@ module.exports = function setDefaultRoutes (server, options) {
 		{
 			method : ['GET'],
 			path   : `/{param*}`,
+	
 			options: {
 				auth   : authDefault,
 				handler: getApp2,

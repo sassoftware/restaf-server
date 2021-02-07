@@ -30,6 +30,13 @@ function setupUserRoutes(u, auth) {
       rx.options = _objectSpread({}, rx.config);
       delete rx.config;
     }
+    /*
+    rx.options.plugins = {
+        "cookie": {redirectTo: false},
+        'hapi-auth-cookie':{redirectTo: false}
+    };
+    */
+
 
     rx.options.pre = [{
       method: _setContext["default"],

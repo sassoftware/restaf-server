@@ -51,7 +51,7 @@ async function iSASauth (server, options) {
             password    : uuid.v4(),
             clientId    : options.clientId,
             clientSecret: options.clientSecret, 
-            // isSameSite  : options.isSameSite,
+            isSameSite  : 'Lax', /*options.isSameSite,*/
             isSecure    : options.isSecure,
             location    : () => { 
                 

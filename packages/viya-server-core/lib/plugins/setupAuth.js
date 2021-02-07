@@ -33,6 +33,11 @@ var appCookie = require('./appCookie');
 var token = require('./token');
 
 var setDefaultRoutes = require('./setDefaultRoutes');
+/** Notes:
+ * I api then register sasAuth and token - no cookies
+ * If app, then register sasAuth and cookie(session) but no token 
+ */
+
 
 function setupAuth(_x, _x2) {
   return _setupAuth.apply(this, arguments);
@@ -45,48 +50,44 @@ function _setupAuth() {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
+            debugger;
+
             if (!(options.authFlow === 'server')) {
-              _context.next = 12;
+              _context.next = 13;
               break;
             }
 
-            _context.next = 3;
+            _context.next = 4;
             return server.register({
               plugin: SASauth,
               options: options
             });
 
-          case 3:
-            _context.next = 5;
-            return server.register({
-              plugin: appCookie,
-              options: options
-            });
+          case 4:
+            _context.next = 6;
+            return appCookie(server, options);
 
-          case 5:
-            def = 'session';
-
-            if (!(options.serverMode === 'api')) {
-              _context.next = 10;
-              break;
-            }
-
-            _context.next = 9;
+          case 6:
+            _context.next = 8;
             return server.register({
               plugin: token
             });
 
-          case 9:
-            def = 'token';
+          case 8:
+            def = 'session';
 
-          case 10:
+            if (options.serverMode === 'api') {
+              def = 'token';
+            }
+
             server.log('Default auth', def);
             server.auth["default"](def);
-
-          case 12:
-            setDefaultRoutes(server, options);
+            console.log(server.registerations);
 
           case 13:
+            setDefaultRoutes(server, options);
+
+          case 14:
           case "end":
             return _context.stop();
         }

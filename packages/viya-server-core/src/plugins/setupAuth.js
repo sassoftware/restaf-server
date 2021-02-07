@@ -21,18 +21,25 @@ let appCookie        = require('./appCookie');
 let token            = require('./token');
 let setDefaultRoutes = require('./setDefaultRoutes');
 
+/** Notes:
+ * I api then register sasAuth and token - no cookies
+ * If app, then register sasAuth and cookie(session) but no token 
+ */
 async function setupAuth (server, options){
+	debugger;
 	if (options.authFlow === 'server') {
 		await server.register({plugin: SASauth,   options: options});
-		await server.register({plugin: appCookie, options: options});
+		// await server.register({plugin: appCookie, options: options});
+		await appCookie(server,options);
+
+		await server.register({ plugin: token });
 		let def = 'session';
 		if (options.serverMode === 'api'){
-			await server.register({ plugin: token });
 			def = 'token';
 		}
-		
 		server.log('Default auth', def);
 		server.auth.default(def);
+		console.log(server.registerations);
 	}
 	setDefaultRoutes(server, options);
 };

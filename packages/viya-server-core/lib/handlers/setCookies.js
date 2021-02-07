@@ -29,9 +29,10 @@ function _setCookies() {
         switch (_context.prev = _context.next) {
           case 0:
             credentials = req.auth.credentials;
+            req.log('setcookie', credentials);
 
             if (!(credentials != null && req.auth.error != null)) {
-              _context.next = 4;
+              _context.next = 5;
               break;
             }
 
@@ -41,25 +42,27 @@ function _setCookies() {
               error: req.auth.error
             });
 
-          case 4:
+          case 5:
             // create a cookie(sid) and save credentials in cache
             sid = uuid.v4();
             credentials.sid = sid;
-            _context.next = 8;
+            _context.next = 9;
             return req.server.app.cache.set(sid, credentials, 0);
 
-          case 8:
+          case 9:
             req.cookieAuth.set({
               sid: sid
             });
+            req.log('setcookie', credentials.query);
             redirect = credentials.query != null && credentials.query.next != null ? credentials.query.next : null;
+            req.server.log('setcookie-recirect', redirect);
             return _context.abrupt("return", {
               status: true,
               error: null,
               redirect: redirect
             });
 
-          case 11:
+          case 14:
           case "end":
             return _context.stop();
         }
