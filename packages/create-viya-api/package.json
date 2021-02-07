@@ -11,7 +11,7 @@
   "description": "Template for typical SAS Viya Applications",
   "homepage": "https://github.com/sassoftware/restaf-server#README.md",
   "scripts": {
-    "pub": "npm publish --tag next --access public"
+    "pub": "npm publish --tag next01 --access public"
   },
   "bin": {
     "@sassoftware/create-viya-api": "index.js"
