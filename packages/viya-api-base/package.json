@@ -1,6 +1,6 @@
 {
   "name": "@sassoftware/viya-api-base",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "keywords": [
     "react",
     "create-react-app",
@@ -29,6 +29,6 @@
   ],
   "scripts": {
     "start": "node index.js",
-    "pub": "npm publish --tag next01 --access public"
+    "pub": "npm publish --tag test --access public"
   }
 }
