@@ -79,9 +79,7 @@ function _iSASauth() {
               password: uuid.v4(),
               clientId: options.clientId,
               clientSecret: options.clientSecret,
-              isSameSite: 'Lax',
-
-              /*options.isSameSite,*/
+              //   isSameSite  : options.isSameSite,
               isSecure: options.isSecure,
               location: function location() {
                 server.log('SASAuth location', "Redirect set to: ".concat(options.redirect));

@@ -30,15 +30,16 @@ function _codeAuth() {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.next = 2;
+            debugger;
+            _context.next = 3;
             return (0, _setCookies["default"])(req, h);
 
-          case 2:
+          case 3:
             r = _context.sent;
             indexHTML = process.env.APPENTRY == null ? 'index.html' : process.env.APPENTRY;
 
             if (!(indexHTML.indexOf('/') === 0)) {
-              _context.next = 9;
+              _context.next = 10;
               break;
             }
 
@@ -46,13 +47,13 @@ function _codeAuth() {
             debug("/".concat(process.env.APPNAME).concat(indexHTML));
             return _context.abrupt("return", h.redirect("/".concat(process.env.APPNAME).concat(indexHTML)));
 
-          case 9:
+          case 10:
             return _context.abrupt("return", h.file(indexHTML));
 
-          case 10:
+          case 11:
             ;
 
-          case 11:
+          case 12:
           case "end":
             return _context.stop();
         }

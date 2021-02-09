@@ -9,7 +9,7 @@ async function logon (req, h) {
    debugger;
    req.log('in logon 2');
    let r = await setCookies(req, h);
-   req.log('in logon after setcookie', r.redirect);
+   req.log('in logon after setcookie', r.redirect);debugger;
    return h.redirect(r.redirect);
 }
 

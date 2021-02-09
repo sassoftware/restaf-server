@@ -30,7 +30,7 @@ function getCustomHandler () {
 	let routes = [
 		{
 			method : ['GET'],
-			path   : `${appName}/testroute`,
+			path   : `${appName}/testget`,
 			options: {
 				handler: async (req,h) => { 
 					debugger;
@@ -38,16 +38,18 @@ function getCustomHandler () {
 					let context = req.pre.context;
 					return context;
 				},
-				description: 'Test Route',
+				description: 'Test get Route',
 				notes      : 'Echo context',
 				tags       : ['api']
 			}
 		},
 		{
 			method : ['POST'],
-			path   : `${appName}/compute`,
+			path   : `${appName}/testpost`,
 			options: {
 				handler: async (req,h) => { 
+					debugger;
+					console.log('-------------- in post');
 					let context = req.pre.context;
 					return context;
 				},
@@ -55,23 +57,11 @@ function getCustomHandler () {
 				notes      : 'Uses restaf',
 				tags       : ['api'],
 			}
-		},
-		{
-			method : ['POST'],
-			path   : `${appName}/cas/{param*}`,
-			options: {
-				handler: async (req,h) => { 
-					let context = req.pre.context;
-					return context;
-				},
-				description: 'Route to run a simple cas action',
-				notes      : 'Uses restaf',
-				tags       : ['api']		
-			}
 		}
 	];
     return routes;
 } 
+
 
 	
 

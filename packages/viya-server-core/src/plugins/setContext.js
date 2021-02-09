@@ -19,6 +19,7 @@
 
 async function setContext (req,h){
    let credentials = req.auth.credentials;
+   debugger;
    let context = {
         path   : req.path,
         params : req.params,

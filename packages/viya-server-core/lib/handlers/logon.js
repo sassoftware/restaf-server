@@ -33,9 +33,10 @@ function _logon() {
           case 5:
             r = _context.sent;
             req.log('in logon after setcookie', r.redirect);
+            debugger;
             return _context.abrupt("return", h.redirect(r.redirect));
 
-          case 8:
+          case 9:
           case "end":
             return _context.stop();
         }

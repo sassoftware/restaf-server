@@ -63,7 +63,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode) {
 			state: {
 				isSameSite: isSameSite,
 				isSecure  : isSecure,
-				/*
+
 				contextualize: async (definition, request) => {
 					const userAgent = request.headers['user-agent'] || false;
 					if (userAgent && isSameSiteNoneCompatible(userAgent)) {
@@ -72,7 +72,6 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode) {
 					}
 					request.response.vary('User-Agent');
 				},
-				*/
 			},
 	
 
@@ -83,10 +82,15 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode) {
 				cors: {
 					origin     : ['*'],
 					credentials: true,
-
-					additionalHeaders       : ['multipart/form-data', 'content-disposition'],
-					additionalExposedHeaders: ['location'],
-				},
+					
+					"headers": ["Accept", "Authorization", "Content-Type", "If-None-Match", "Accept-language"]
+					/*
+					'Access-Control-Allow-Methods': ['GET', 'POST', 'OPTIONS'],
+					additionalHeaders             : ['multipart/form-data', 'content-disposition'],
+					additionalExposedHeaders      : ['location'],
+					*/
+				}
+				
 			},
 		};
 		if (process.env.HAPIDEBUG === 'YES') {
@@ -123,7 +127,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode) {
 		}
 
 		if (asset !== null) {
-			sConfig.routes.files = { relativeTo: asset };
+			sConfig.routes.files= { relativeTo: asset };
 		}
 
 		console.log(
