@@ -29,6 +29,8 @@ ENV APPENTRY=index.html
 # ENV APPENV=appenv.js
 
 ENV TLS_CREATE="C:US,ST:NC,L:Cary,O:SAS Institute,OU:STO,CN:localhost"
+# ENV TLS_CERT=../../../certs/cert64.cer
+# ENV TLS_KEY=../../../certs/pubkey64.pem
 ENV SAMESITE=None,secure
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 

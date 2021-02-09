@@ -65,7 +65,7 @@
 		</style>
 	
 		<script>
-			let store = restaf.initStore({sslOptions: {rejectUnauthorized: false, secureProtocol: 'SSLv3_method'}});
+			let store = restaf.initStore({sslOptions: {rejectUnauthorized: false ,secureProtocol: 'SSLv3_method'}});
 			let session = null;
 			let servers = null;
 			let services = null;
@@ -165,7 +165,7 @@
 				debugger;
 				let p = {
 					method: 'POST',
-					url   : 'http://localhost:5001/myapi/testpost',
+					url   : 'https://localhost:5001/myapi/testpost',
 					withCredentials: true,
 					data: {x:1}
 				}
@@ -176,7 +176,7 @@
 				debugger;
 				let p = {
 					method: 'GET',
-					url   : 'http://localhost:5001/myapi/testget',
+					url   : 'https://localhost:5001/myapi/testget',
 					withCredentials: true
 				}
 				let r = await store.request(p);

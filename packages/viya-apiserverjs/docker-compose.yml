@@ -7,6 +7,4 @@ services:
         - 8080:8080
       environment:
         - VIYA_SERVER=
-        - COOKIE=None,false
-        - DEBUG=logout,user,cookie,bell,loc
 
