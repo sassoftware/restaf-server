@@ -24,7 +24,6 @@ import parseDocker from './parseDocker';
 import debug from 'debug';
 let configDebug = debug('config');
 
-
 function config (appEnv, dockerFile) {
 	
 	if (dockerFile !=null) {
@@ -54,13 +53,6 @@ function config (appEnv, dockerFile) {
 		process.env.APPENTRY = 'index.html';
 	}
 
-	let protocol = 'http://';
-	/*
-	if (process.env.HTTPS === 'true' || process.env.HTTPS === 'YES') {
-		 = 'https://';
-	}
-	*/
-
 	// fixing usual user error of adding a space after the url
 	let vserver = process.env.VIYA_SERVER;
 	if (vserver == null) {
@@ -73,11 +65,11 @@ function config (appEnv, dockerFile) {
 		vserver = vserver.substring(0, vserver.length - 1);
 	}
 	if (vserver.indexOf('http') < 0) {
-		vserver = protocol + vserver;
-	} else {
-		if (vserver.indexOf('https://') !== -1) {
-			process.env.HTTPS = 'YES';
-		}
+		vserver = 'http://' + vserver;
+	} 
+
+	if (vserver.indexOf('https://') !== -1) {
+		process.env.HTTPS = 'true';
 	}
 
 }

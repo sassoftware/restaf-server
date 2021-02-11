@@ -60,15 +60,8 @@ function config(appEnv, dockerFile) {
 
   if (process.env.APPENTRY == null) {
     process.env.APPENTRY = 'index.html';
-  }
+  } // fixing usual user error of adding a space after the url
 
-  var protocol = 'http://';
-  /*
-  if (process.env.HTTPS === 'true' || process.env.HTTPS === 'YES') {
-  	 = 'https://';
-  }
-  */
-  // fixing usual user error of adding a space after the url
 
   var vserver = process.env.VIYA_SERVER;
 
@@ -84,11 +77,11 @@ function config(appEnv, dockerFile) {
   }
 
   if (vserver.indexOf('http') < 0) {
-    vserver = protocol + vserver;
-  } else {
-    if (vserver.indexOf('https://') !== -1) {
-      process.env.HTTPS = 'YES';
-    }
+    vserver = 'http://' + vserver;
+  }
+
+  if (vserver.indexOf('https://') !== -1) {
+    process.env.HTTPS = 'YES';
   }
 }
 
