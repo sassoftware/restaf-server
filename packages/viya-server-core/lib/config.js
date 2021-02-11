@@ -81,7 +81,7 @@ function config(appEnv, dockerFile) {
   }
 
   if (vserver.indexOf('https://') !== -1) {
-    process.env.HTTPS = 'YES';
+    process.env.HTTPS = 'true';
   }
 }
 
