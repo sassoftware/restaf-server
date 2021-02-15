@@ -91,8 +91,9 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
                 _process$env$SAMESITE = process.env.SAMESITE.split(','), _process$env$SAMESITE2 = _slicedToArray(_process$env$SAMESITE, 2), s1 = _process$env$SAMESITE2[0], s2 = _process$env$SAMESITE2[1];
                 isSameSite = s1;
                 isSecure = s2 === 'secure' ? true : false;
+                console.log(process.env.HTTPS);
 
-                if (process.env.HTTPS !== 'YES') {
+                if (process.env.HTTPS !== 'true') {
                   isSecure = false;
                 }
               }
@@ -160,7 +161,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
 
               tls = {};
 
-              if (!(process.env.HTTPS === 'YES')) {
+              if (!(process.env.HTTPS === 'true')) {
                 _context2.next = 20;
                 break;
               }
@@ -281,7 +282,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
               };
               hapiServer.log('Options', options);
 
-              if (process.env.HTTPS === 'YES') {
+              if (process.env.HTTPS === 'true') {
                 hapiServer.log('TLS_CREATE', process.env.TLS_CREATE);
                 hapiServer.log('TLS', tls);
               }
