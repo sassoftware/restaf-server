@@ -29,6 +29,6 @@
   ],
   "scripts": {
     "start": "node index.js",
-    "pub": "npm publish --tag next --access public"
+    "pub": "npm publish --tag test2 --access public"
   }
 }

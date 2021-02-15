@@ -34,7 +34,7 @@
     "start": "cross-env VIYA_SERVER=%vx% node ./lib/cli.js --env=./.env --docker=./Dockerfile",
     "uroute": "cross-env VIYA_SERVER=%vx% node api.js --env=./.env --docker=./Dockerfile",
     "debug": "cross-env VIYA_SERVER=%vx% node --inspect-brk ./lib/cli.js   --env=./.env --docker=./Dockerfile --appenv=appenv.js",
-    "pub": "npm publish --tag next --access public",
+    "pub": "npm publish --tag test2 --access public",
     "lint": "npx eslint --fix src/*.js"
   },
   "dependencies": {
