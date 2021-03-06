@@ -28,7 +28,8 @@ exports.plugin = {
 };
 
 async function iSASauth (server, options) {
-
+    console.log(options);
+    let location = server.info.uri.replace(/0.0.0.0/, 'localhost');
     let bellAuthOptions,
         provider;
 
@@ -44,6 +45,7 @@ async function iSASauth (server, options) {
             profile: async function (credentials, params, get) {           
                 server.log('SASAuth profile', credentials);
             }
+            
         };
         
         bellAuthOptions = {
@@ -53,12 +55,7 @@ async function iSASauth (server, options) {
             clientSecret: options.clientSecret,
          //   isSameSite  : options.isSameSite,
             isSecure    : options.isSecure,
-            location    : () => { 
-                
-                server.log('SASAuth location',`Redirect set to: ${options.redirect}`);
-                return (options.redirect == null) ? '' : options.redirect;
-            }
-        
+            location    : location  /* added this for running behind Viya proxy */
         };
         console.log('SASAuth options', bellAuthOptions);
         server.log('SASAuth',bellAuthOptions);
@@ -66,3 +63,4 @@ async function iSASauth (server, options) {
         server.auth.strategy('sas', 'bell', bellAuthOptions);
         
     }
+    

@@ -162,47 +162,51 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
               tls = {};
 
               if (!(process.env.HTTPS === 'true')) {
-                _context2.next = 20;
+                _context2.next = 18;
                 break;
               }
 
-              if (!(process.env.TLS_CREATE != null)) {
-                _context2.next = 14;
-                break;
-              }
-
-              _context2.next = 13;
-              return getTls();
-
-            case 13:
-              tls = _context2.sent;
-
-            case 14:
               if (process.env.TLS_CERT != null) {
+                console.log('TLS set: TLS_CERT');
                 tls.cert = fs.readFileSync(process.env.TLS_CERT);
-              }
-
-              if (process.env.TLS_CERT != null) {
                 tls.key = fs.readFileSync(process.env.TLS_KEY);
+              } else if (process.env.TLS_PFX != null) {
+                console.log('TLS set: PFX');
+                tls.pfx = fs.readFileSync(process.env.TLS_PFX);
+
+                if (process.env.TLS_PW != null) {
+                  tls.passphrase = process.env.TLS_PW;
+                }
+              } else if (process.env.TLS_CRT != null) {
+                console.log('TLS set: TLS_CRT');
+                tls.cert = process.env.TLS_CRT;
+                tls.key = process.env.TLS_KEY;
               }
 
               if (process.env.TLS_CABUNDLE != null) {
                 tls.CA = fs.readFileSync(process.env.TLS_CABUNDLE);
               }
 
-              if (process.env.TLS_PFX != null) {
-                tls.pfx = fs.readFileSync(process.env.TLS_PFX);
+              if (!(Object.keys(tls).length === 0 && process.env.TLS_CREATE != null)) {
+                _context2.next = 17;
+                break;
               }
 
-              if (process.env.TLS_PW != null) {
-                tls.passphrase = process.env.TLS_PW;
-              }
+              console.log('TLS set: TLS_CREATE');
+              _context2.next = 16;
+              return getTls();
 
+            case 16:
+              tls = _context2.sent;
+
+            case 17:
               if (Object.keys(tls).length > 0) {
                 sConfig.tls = tls;
+              } else {
+                console.log('Warning: No TLS certificate information specified');
               }
 
-            case 20:
+            case 18:
               if (asset !== null) {
                 sConfig.routes.files = {
                   relativeTo: asset
@@ -233,23 +237,23 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
                 relativeTo: __dirname,
                 path: '.'
               };
-              _context2.next = 29;
+              _context2.next = 27;
               return hapiServer.register(Vision);
 
-            case 29:
+            case 27:
               hapiServer.views(visionOptions);
-              _context2.next = 32;
+              _context2.next = 30;
               return hapiServer.register(inert);
 
-            case 32:
-              _context2.next = 34;
+            case 30:
+              _context2.next = 32;
               return hapiServer.register({
                 plugin: require('hapi-require-https'),
                 options: {}
               });
 
-            case 34:
-              _context2.next = 36;
+            case 32:
+              _context2.next = 34;
               return hapiServer.register({
                 plugin: require('hapi-pino'),
                 options: {
@@ -258,7 +262,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
                 }
               });
 
-            case 36:
+            case 34:
               // setup authentication related plugins
               options = {
                 serverMode: serverMode,
@@ -274,6 +278,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
                 useHapiCookie: true,
                 appName: process.env.APPNAME,
                 appHost: process.env.APPHOST,
+                appPort: process.env.APPPORT,
                 userRouteTable: userRouteTable,
                 useDefault: useDefault,
 
@@ -288,14 +293,14 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
               }
 
               ;
-              _context2.next = 42;
+              _context2.next = 40;
               return (0, _setupAuth["default"])(hapiServer, options);
 
-            case 42:
+            case 40:
               hapiServer.log('Plugin', process.env.PLUGIN);
 
               if (!(process.env.PLUGIN === 'hapi-swagger' && serverMode === 'api')) {
-                _context2.next = 52;
+                _context2.next = 50;
                 break;
               }
 
@@ -309,26 +314,26 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
               js = fs.readFileSync(process.env.SWAGGER, 'utf8');
               swaggerOptions = JSON.parse(js);
               hapiServer.log('hapi-swagger', swaggerOptions);
-              _context2.next = 50;
+              _context2.next = 48;
               return hapiServer.register({
                 plugin: HapiSwagger,
                 options: swaggerOptions
               });
 
-            case 50:
-              _context2.next = 53;
+            case 48:
+              _context2.next = 51;
               break;
 
-            case 52:
+            case 50:
               if (process.env.PLUGIN == 'hapi-openapi' && serverMode === 'api') {
                 console.log('hapi-openapi', 'coming soon');
               }
 
-            case 53:
-              _context2.next = 55;
+            case 51:
+              _context2.next = 53;
               return hapiServer.start();
 
-            case 55:
+            case 53:
               hh = hapiServer.info.uri.replace(/0.0.0.0/, 'localhost');
               console.log('Server Start Time: ', Date());
               msg = options.serverMode === 'app' ? "Visit ".concat(hh, "/").concat(process.env.APPNAME, " to access application") : "Visit ".concat(hh, "/").concat(process.env.APPNAME, "/api to access swagger");
@@ -336,7 +341,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
               console.log('NOTE: If running in container then use the port number you mapped to');
               process.env.APPSERVER = "".concat(hh, "/").concat(process.env.APPNAME);
 
-            case 61:
+            case 59:
             case "end":
               return _context2.stop();
           }
@@ -355,6 +360,18 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
   });
   init();
 }
+/*
+function decodeTLS (s) {
+	let buff = Buffer.from(s, 'base64');
+	let t  = buff.toString();
+	console.log(t);
+	let at = t.split(' ');
+	let f = (at.length > 1) ? at[1] : at[0];
+	console.log(f);
+	return f;
+}
+*/
+
 
 function getTls() {
   return _getTls.apply(this, arguments);

@@ -39,11 +39,13 @@ function iSASauth(_x, _x2) {
 
 function _iSASauth() {
   _iSASauth = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(server, options) {
-    var bellAuthOptions, provider;
+    var location, bellAuthOptions, provider;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
+            console.log(options);
+            location = server.info.uri.replace(/0.0.0.0/, 'localhost');
             provider = {
               name: 'sas',
               protocol: 'oauth2',
@@ -81,20 +83,19 @@ function _iSASauth() {
               clientSecret: options.clientSecret,
               //   isSameSite  : options.isSameSite,
               isSecure: options.isSecure,
-              location: function location() {
-                server.log('SASAuth location', "Redirect set to: ".concat(options.redirect));
-                return options.redirect == null ? '' : options.redirect;
-              }
+              location: location
+              /* added this for running behind Viya proxy */
+
             };
             console.log('SASAuth options', bellAuthOptions);
             server.log('SASAuth', bellAuthOptions);
-            _context2.next = 6;
+            _context2.next = 8;
             return server.register(bell);
 
-          case 6:
+          case 8:
             server.auth.strategy('sas', 'bell', bellAuthOptions);
 
-          case 7:
+          case 9:
           case "end":
             return _context2.stop();
         }

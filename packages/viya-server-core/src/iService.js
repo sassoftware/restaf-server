@@ -100,30 +100,35 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode) {
 		let tls = {};
 
 		if (process.env.HTTPS === 'true') {
-			if (process.env.TLS_CREATE != null) {
-				tls = await getTls();
-			}
+			
 			if (process.env.TLS_CERT != null) {
+				console.log('TLS set: TLS_CERT');
 				tls.cert = fs.readFileSync(process.env.TLS_CERT);
-			}
-
-			if (process.env.TLS_CERT != null) {
 				tls.key = fs.readFileSync(process.env.TLS_KEY);
+			} else if (process.env.TLS_PFX != null) {
+				console.log('TLS set: PFX');
+				tls.pfx = fs.readFileSync(process.env.TLS_PFX);
+				if (process.env.TLS_PW != null) {
+					tls.passphrase = process.env.TLS_PW;
+				}
+			} else if (process.env.TLS_CRT != null) {
+				console.log('TLS set: TLS_CRT');
+				tls.cert = process.env.TLS_CRT;
+				tls.key = process.env.TLS_KEY;
 			}
 
 			if (process.env.TLS_CABUNDLE != null) {
 				tls.CA = fs.readFileSync(process.env.TLS_CABUNDLE);
 			}
-
-			if (process.env.TLS_PFX != null) {
-				tls.pfx = fs.readFileSync(process.env.TLS_PFX);
-			}
-
-			if (process.env.TLS_PW != null) {
-				tls.passphrase = process.env.TLS_PW;
+			
+			if (Object.keys(tls).length === 0 && process.env.TLS_CREATE != null) {
+				console.log('TLS set: TLS_CREATE');
+				tls = await getTls();
 			}
 			if (Object.keys(tls).length > 0) {
 				sConfig.tls = tls;
+			} else {
+				console.log('Warning: No TLS certificate information specified');
 			}
 		}
 
@@ -188,6 +193,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode) {
 			useHapiCookie : true,
 			appName       : process.env.APPNAME,
 			appHost       : process.env.APPHOST,
+			appPort       : process.env.APPPORT,
 			userRouteTable: userRouteTable,
 			useDefault    : useDefault, /* not used - left here for potential reuse */
 			https         : process.env.HTTPS
@@ -238,7 +244,17 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode) {
 	});
 	init();
 }
-
+/*
+function decodeTLS (s) {
+	let buff = Buffer.from(s, 'base64');
+	let t  = buff.toString();
+	console.log(t);
+	let at = t.split(' ');
+	let f = (at.length > 1) ? at[1] : at[0];
+	console.log(f);
+	return f;
+}
+*/
 async function getTls () {
 	let options = {
 		keySize          : 2048,

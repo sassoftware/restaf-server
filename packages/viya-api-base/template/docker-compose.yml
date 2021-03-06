@@ -10,7 +10,9 @@ services:
         - CLIENTID=myapi
         - CLIENTSECRET=secret
         - APPNAME=myapi
-
+# Mounts volume for tokens(if using saved tokens, and other files)
+# volumes:
+#    - c:/Public/dev/data/sas:/sasin
 
 
 
