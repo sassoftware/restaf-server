@@ -37,7 +37,9 @@ module.exports = function setDefaultRoutes (server, options) {
 
 	server.log('Default strategy', authDefault);
 	server.log('Logon strategy', authLogon); 
-			
+	options.defaultStrategy = authDefault;
+    options.authLogon       = authLogon;
+
 	let uTable = (options.userRouteTable !== null) ? setupUserRoutes(options.userRouteTable, authDefault) : null;
 	
 	let defaultTable = [
@@ -55,7 +57,16 @@ module.exports = function setDefaultRoutes (server, options) {
 			options: {
 				auth   : authDefault,
 				handler: async (req, h) => {
-					return h.redirect('/documentation');
+					return h.redirect(`${appName}/documentation`);
+				},
+			},
+		},{
+			method : ['GET'],
+			path   : `/swagger.json`,
+			options: {
+				auth   : false,
+				handler: async (req, h) => {
+					return h.redirect(`${appName}/swagger.json`);
 				},
 			},
 		},
@@ -88,8 +99,8 @@ module.exports = function setDefaultRoutes (server, options) {
 			},
 		},
 		{
-			method : ['GET', 'POST'],
-			path   : `${appName}/keepAlive`,
+			method: ['GET', 'POST'],
+			path  : `${appName}/keepAlive`,
 	
 			options: {
 				auth   : authDefault,
@@ -107,8 +118,8 @@ module.exports = function setDefaultRoutes (server, options) {
 			},
 		},
 		{
-			method : ['GET'],
-			path   : `${appName}/{param*}`,
+			method: ['GET'],
+			path  : `${appName}/{param*}`,
 
 			options: {
 				auth   : authDefault,
@@ -116,8 +127,8 @@ module.exports = function setDefaultRoutes (server, options) {
 			},
 		},
 		{
-			method : ['GET'],
-			path   : `/{param*}`,
+			method: ['GET'],
+			path  : `/{param*}`,
 	
 			options: {
 				auth   : authDefault,

@@ -2831,7 +2831,7 @@ hapi-require-https@^5.0.0:
   resolved "https://registry.yarnpkg.com/hapi-require-https/-/hapi-require-https-5.0.0.tgz#11237983e0c352d0e4ad1a3cddb35f54a779c121"
   integrity sha512-4cL0jNkcpr72mRyVhgl2ZNdJDHdw4ivv5UF4fEGHPqb+fO1c+eomDbnuYhxRRLFxLXsK8vaBAz7RwljG6W25mg==
 
-hapi-swagger@^14.0.0:
+hapi-swagger@^14.0.0, hapi-swagger@^14.1.0:
   version "14.1.0"
   resolved "https://registry.yarnpkg.com/hapi-swagger/-/hapi-swagger-14.1.0.tgz#e23242cf675445e543fc918b012e4c86df389363"
   integrity sha512-kmjGFdO3LIgMb3EsfIvwe+RPZmAycRO/rbbFBtC13u5pHUkvTqwinqWgieQ1vKhkivl17lZiiJci/gPzvJ1suQ==

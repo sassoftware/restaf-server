@@ -21,7 +21,7 @@ ENV CLIENTID=myapi
 ENV CLIENTSECRET=secret
 
 ENV PLUGIN=hapi-swagger
-ENV SWAGGER=./swagger.json
+# ENV SWAGGER=default
 
 # The following are defaults 
 ENV APPLOC=./public

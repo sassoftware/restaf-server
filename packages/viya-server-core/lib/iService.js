@@ -66,7 +66,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
   // process.env.APPHOST_ADDR = process.env.APPHOST;
   var init = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-      var defaultMaxBytes, maxBytes, isSameSite, isSecure, _process$env$SAMESITE, _process$env$SAMESITE2, s1, s2, sConfig, tls, hapiServer, nodeCacheOptions, storeCache, visionOptions, options, swaggerOptions, js, hh, msg;
+      var defaultMaxBytes, maxBytes, isSameSite, isSecure, _process$env$SAMESITE, _process$env$SAMESITE2, s1, s2, sConfig, tls, hapiServer, nodeCacheOptions, storeCache, visionOptions, options, swaggerOptions, js, allRoutes, hh, msg;
 
       return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) {
@@ -305,14 +305,30 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
               }
 
               swaggerOptions = {
-                info: {
-                  title: "API for ".concat(process.env.APPNAME),
-                  description: 'This document was auto-generated at run time'
+                "swagger": "2.0",
+                "info": {
+                  "title": "API for ".concat(process.env.APPNAME),
+                  "version": "0.0.1",
+                  "description": "This document was auto-generated at run time"
                 },
-                auth: 'session'
+                "schemes": ["https", "http"],
+                "cors": true,
+                "debug": true,
+                "jsonRoutePath": "/".concat(process.env.APPNAME, "/swagger.json"),
+                "documentationPage": true,
+                "documentationPath": "/".concat(process.env.APPNAME, "/documentation") // auth               : options.defaultStrategy
+
               };
-              js = fs.readFileSync(process.env.SWAGGER, 'utf8');
-              swaggerOptions = JSON.parse(js);
+
+              if (process.env.SWAGGER != null) {
+                js = fs.readFileSync(process.env.SWAGGER, 'utf8');
+                swaggerOptions = JSON.parse(js);
+              }
+
+              if (process.env.SWAGGERHOST != null) {
+                swaggerOptions.host = process.env.SWAGGERHOST;
+              }
+
               hapiServer.log('hapi-swagger', swaggerOptions);
               _context2.next = 48;
               return hapiServer.register({
@@ -330,10 +346,15 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
               }
 
             case 51:
-              _context2.next = 53;
+              //
+              // Start server
+              //
+              allRoutes = hapiServer.table();
+              console.table(allRoutes);
+              _context2.next = 55;
               return hapiServer.start();
 
-            case 53:
+            case 55:
               hh = hapiServer.info.uri.replace(/0.0.0.0/, 'localhost');
               console.log('Server Start Time: ', Date());
               msg = options.serverMode === 'app' ? "Visit ".concat(hh, "/").concat(process.env.APPNAME, " to access application") : "Visit ".concat(hh, "/").concat(process.env.APPNAME, "/api to access swagger");
@@ -341,7 +362,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
               console.log('NOTE: If running in container then use the port number you mapped to');
               process.env.APPSERVER = "".concat(hh, "/").concat(process.env.APPNAME);
 
-            case 59:
+            case 61:
             case "end":
               return _context2.stop();
           }

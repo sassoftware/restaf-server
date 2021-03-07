@@ -208,15 +208,31 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode) {
 		await setupAuth(hapiServer, options);
 		hapiServer.log('Plugin', process.env.PLUGIN);
 		if (process.env.PLUGIN === 'hapi-swagger' && serverMode === 'api') {
-			let swaggerOptions = {
-				info: {
-					title      : `API for ${process.env.APPNAME}`,
-					description: 'This document was auto-generated at run time',
+			let	swaggerOptions = {
+				"swagger": "2.0",
+
+				"info": {
+					"title"      : `API for ${process.env.APPNAME}`,
+					"version"    : "0.0.1",
+					"description": "This document was auto-generated at run time"
 				},
-				auth: 'session',
+			
+				"schemes"          : ["https", "http"],
+				"cors"             : true,
+				"debug"            : true,
+			    "jsonRoutePath"    : `/${process.env.APPNAME}/swagger.json`,
+			    "documentationPage": true,
+			    "documentationPath": `/${process.env.APPNAME}/documentation`,
+				// auth               : options.defaultStrategy
 			};
-			let js = fs.readFileSync(process.env.SWAGGER, 'utf8');
-			swaggerOptions = JSON.parse(js);
+
+			if (process.env.SWAGGER != null) {
+		    	let js = fs.readFileSync(process.env.SWAGGER, 'utf8');
+			    swaggerOptions = JSON.parse(js);
+			}
+			if (process.env.SWAGGERHOST != null) {
+				swaggerOptions.host = process.env.SWAGGERHOST;
+			}
 			hapiServer.log('hapi-swagger', swaggerOptions);
 			await hapiServer.register({ plugin: HapiSwagger, options: swaggerOptions });
 		} else if (process.env.PLUGIN == 'hapi-openapi' && serverMode === 'api') {
@@ -226,6 +242,8 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode) {
 		//
 		// Start server
 		//
+		let allRoutes = hapiServer.table();
+		console.table(allRoutes);
 		await hapiServer.start();
 		let hh = hapiServer.info.uri.replace(/0.0.0.0/, 'localhost');
 		console.log('Server Start Time: ', Date());
