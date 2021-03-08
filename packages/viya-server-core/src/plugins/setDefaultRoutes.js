@@ -64,7 +64,7 @@ module.exports = function setDefaultRoutes (server, options) {
 			method : ['GET'],
 			path   : `/swagger.json`,
 			options: {
-				auth   : false,
+				auth   : authDefault,
 				handler: async (req, h) => {
 					return h.redirect(`${appName}/swagger.json`);
 				},

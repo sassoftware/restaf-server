@@ -66,7 +66,7 @@ module.exports = function setDefaultRoutes(server, options) {
     method: ['GET'],
     path: "/swagger.json",
     options: {
-      auth: false,
+      auth: authDefault,
       handler: function () {
         var _handler2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(req, h) {
           return regeneratorRuntime.wrap(function _callee2$(_context2) {

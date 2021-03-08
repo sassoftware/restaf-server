@@ -223,7 +223,8 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode) {
 			    "jsonRoutePath"    : `/${process.env.APPNAME}/swagger.json`,
 			    "documentationPage": true,
 			    "documentationPath": `/${process.env.APPNAME}/documentation`,
-				// auth               : options.defaultStrategy
+				// "swaggerUIPath"    : `/${process.env.APPNAME}`,
+				"auth"             : options.defaultStrategy
 			};
 
 			if (process.env.SWAGGER != null) {
@@ -233,6 +234,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode) {
 			if (process.env.SWAGGERHOST != null) {
 				swaggerOptions.host = process.env.SWAGGERHOST;
 			}
+			console.log(swaggerOptions);
 			hapiServer.log('hapi-swagger', swaggerOptions);
 			await hapiServer.register({ plugin: HapiSwagger, options: swaggerOptions });
 		} else if (process.env.PLUGIN == 'hapi-openapi' && serverMode === 'api') {

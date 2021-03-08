@@ -1,6 +1,6 @@
 {
   "name": "@sassoftware/restaf-server",
-  "version": "1.2.15",
+  "version": "1.2.17",
   "description": "app and api server for SAS Viya user applications",
   "main": "index.js",
   "scripts": {
@@ -11,9 +11,11 @@
     "appjs:uroute": "cd packages/viya-appserverjs && yarn uroute",
     "appjs:debug": "cd packages/viya-appserverjs && yarn debug",
     "apijs:build": "cd packages/viya-apiserverjs && yarn build",
+    "swaggerui:build": "cd packages/swaggerui && yarn build",
     "apijs:start": "cd packages/viya-apiserverjs && yarn start",
+    "swaggerui:start": "cd packages/swaggerui && yarn start",
     "apijs:debug": "cd packages/viya-apiserverjs && yarn debug",
-    "build": "yarn core:build && yarn appjs:build && yarn apijs:build",
+    "build": "yarn core:build && yarn appjs:build && yarn apijs:build && yarn swaggerui:build",
     "core:pub": "cd packages/viya-server-core && yarn pub",
     "appjs:pub": "cd packages/viya-appserverjs && yarn pub",
     "apijs:pub": "cd packages/viya-apiserverjs && yarn pub",
@@ -78,7 +80,8 @@
       "packages/viya-appserverjs",
       "packages/viya-server-core",
       "packages/create-viya-api",
-      "packages/viya-api-base"
+      "packages/viya-api-base",
+      "packages/swaggerui"
     ]
   },
   "dependencies": {
