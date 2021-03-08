@@ -78,8 +78,7 @@
       "packages/viya-appserverjs",
       "packages/viya-server-core",
       "packages/create-viya-api",
-      "packages/viya-api-base",
-      "packages/swaggerui"
+      "packages/viya-api-base"
     ]
   },
   "dependencies": {
