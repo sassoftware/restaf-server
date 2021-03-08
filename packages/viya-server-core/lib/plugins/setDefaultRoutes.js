@@ -45,7 +45,7 @@ module.exports = function setDefaultRoutes(server, options) {
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
-                  return _context.abrupt("return", h.redirect("".concat(appName, "/documentation")));
+                  return _context.abrupt("return", 'Logged in');
 
                 case 1:
                 case "end":

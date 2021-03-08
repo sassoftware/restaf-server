@@ -315,10 +315,9 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
                 "cors": true,
                 "debug": true,
                 "jsonRoutePath": "/".concat(process.env.APPNAME, "/swagger.json"),
-                "documentationPage": true,
-                "documentationPath": "/".concat(process.env.APPNAME, "/documentation"),
-                // "swaggerUIPath"    : `/${process.env.APPNAME}`,
-                "auth": options.defaultStrategy
+                "documentationPage": false,
+                //  "documentationPath": `/${process.env.APPNAME}/documentation`,
+                "swaggerUI": false
               };
 
               if (process.env.SWAGGER != null) {

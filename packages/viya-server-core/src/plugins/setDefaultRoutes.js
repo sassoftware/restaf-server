@@ -57,7 +57,7 @@ module.exports = function setDefaultRoutes (server, options) {
 			options: {
 				auth   : authDefault,
 				handler: async (req, h) => {
-					return h.redirect(`${appName}/documentation`);
+					return 'Logged in';
 				},
 			},
 		},{
