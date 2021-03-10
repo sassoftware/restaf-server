@@ -24,7 +24,7 @@ module.exports = function setDefaultRoutes(server, options) {
 
   server.log('Default strategy', authDefault);
   server.log('Logon strategy', authLogon);
-  options.defaultStrategy = authDefault;
+  options.authDefault = authDefault;
   options.authLogon = authLogon;
   var uTable = options.userRouteTable !== null ? (0, _handlers.setupUserRoutes)(options.userRouteTable, authDefault) : null;
   var defaultTable = [{
@@ -45,7 +45,7 @@ module.exports = function setDefaultRoutes(server, options) {
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
-                  return _context.abrupt("return", 'Logged in');
+                  return _context.abrupt("return", h.redirect("".concat(appName, "/documentation")));
 
                 case 1:
                 case "end":
@@ -62,35 +62,18 @@ module.exports = function setDefaultRoutes(server, options) {
         return handler;
       }()
     }
-  }, {
-    method: ['GET'],
-    path: "/swagger.json",
-    options: {
-      auth: authDefault,
-      handler: function () {
-        var _handler2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(req, h) {
-          return regeneratorRuntime.wrap(function _callee2$(_context2) {
-            while (1) {
-              switch (_context2.prev = _context2.next) {
-                case 0:
-                  return _context2.abrupt("return", h.redirect("".concat(appName, "/swagger.json")));
-
-                case 1:
-                case "end":
-                  return _context2.stop();
-              }
-            }
-          }, _callee2);
-        }));
-
-        function handler(_x3, _x4) {
-          return _handler2.apply(this, arguments);
-        }
-
-        return handler;
-      }()
-    }
-  }, {
+  },
+  /*{
+  method : ['GET'],
+  path   : `/swagger.json`,
+  options: {
+  auth   : authDefault,
+  handler: async (req, h) => {
+  	return h.redirect(`${appName}/swagger.json`);
+  },
+  },
+  },*/
+  {
     method: ['GET'],
     path: "".concat(appName, "/logon"),
     options: {

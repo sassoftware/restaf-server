@@ -29,7 +29,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * ----------------------------------------------------------------------------------------
  *
  */
-module.exports = function core(uTable, useDefault, serverMode) {
+module.exports = function core(uTable, useDefault, serverMode, userInfo) {
   var argv = require('yargs').argv;
 
   var env = argv.env == null ? null : argv.env;
@@ -42,10 +42,10 @@ module.exports = function core(uTable, useDefault, serverMode) {
   }
 
   console.log("\nConfiguration:\n          Dockerfile: ".concat(docker, "\n          env file  : ").concat(env, "\n          app env   : ").concat(appenv, "\n          "));
-  iapp(appenv, env, docker, uTable, useDefault, serverMode);
+  iapp(appenv, env, docker, uTable, useDefault, serverMode, userInfo);
 };
 
-function iapp(appSrc, rafEnv, dockerFile, uTable, useDefault, serverMode) {
+function iapp(appSrc, rafEnv, dockerFile, uTable, useDefault, serverMode, userInfo) {
   var asset = setup(rafEnv, dockerFile);
 
   if (appSrc === null) {
@@ -59,17 +59,17 @@ function iapp(appSrc, rafEnv, dockerFile, uTable, useDefault, serverMode) {
         console.log('createPayload failed');
         process.exit(1);
       } else {
-        (0, _iService["default"])(uTable, useDefault, asset, r, serverMode);
+        (0, _iService["default"])(uTable, useDefault, asset, r, serverMode, userInfo);
       }
     });
   } else {
     var appEnv = getAllEnv(null);
-    (0, _iService["default"])(uTable, useDefault, asset, appEnv, serverMode);
+    (0, _iService["default"])(uTable, useDefault, asset, appEnv, serverMode, userInfo);
   }
 }
 
-function setup(rafEnv, dockeFile) {
-  (0, _config["default"])(rafEnv, dockeFile);
+function setup(rafEnv, dockerFile) {
+  (0, _config["default"])(rafEnv, dockerFile);
   var asset = process.env.APPLOC === '.' ? process.cwd() : process.env.APPLOC;
   process.env.APPASSET = asset;
   return asset;

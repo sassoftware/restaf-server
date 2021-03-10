@@ -4,4 +4,12 @@
 * SPDX-License-Identifier: Apache-2.0
 */
 let rafServer = require('./lib/index.js');
-rafServer.icli(null, true);
+rafServer.icli(null, true, customize);
+
+function customize (key){
+    let info = {
+        swaggerOptions: {}
+    };
+    console.log('+++++++++++++++++++', key);
+    return info(key);
+}

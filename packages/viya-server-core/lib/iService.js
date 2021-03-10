@@ -9,6 +9,12 @@ var _setupAuth = _interopRequireDefault(require("./plugins/setupAuth"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -62,11 +68,11 @@ var selfsigned = require('selfsigned');
 
 var os = require('os');
 
-function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
+function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, userInfo) {
   // process.env.APPHOST_ADDR = process.env.APPHOST;
   var init = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-      var defaultMaxBytes, maxBytes, isSameSite, isSecure, _process$env$SAMESITE, _process$env$SAMESITE2, s1, s2, sConfig, tls, hapiServer, nodeCacheOptions, storeCache, visionOptions, options, swaggerOptions, js, allRoutes, hh, msg;
+      var defaultMaxBytes, maxBytes, isSameSite, isSecure, _process$env$SAMESITE, _process$env$SAMESITE2, s1, s2, sConfig, tls, hapiServer, nodeCacheOptions, storeCache, visionOptions, options, swaggerOptions, override, allRoutes, hh, msg;
 
       return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) {
@@ -300,12 +306,11 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
               hapiServer.log('Plugin', process.env.PLUGIN);
 
               if (!(process.env.PLUGIN === 'hapi-swagger' && serverMode === 'api')) {
-                _context2.next = 51;
+                _context2.next = 49;
                 break;
               }
 
               swaggerOptions = {
-                "swagger": "2.0",
                 "info": {
                   "title": "API for ".concat(process.env.APPNAME),
                   "version": "0.0.1",
@@ -314,48 +319,45 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
                 "schemes": ["https", "http"],
                 "cors": true,
                 "debug": true,
+                "jsonPath": "/".concat(process.env.APPNAME, "/swagger.json"),
                 "jsonRoutePath": "/".concat(process.env.APPNAME, "/swagger.json"),
                 "documentationPage": false,
-                //  "documentationPath": `/${process.env.APPNAME}/documentation`,
-                "swaggerUI": false
+                "documentationPath": "/".concat(process.env.APPNAME, "/documentation"),
+                "swaggerUI": false,
+                auth: options.authDefault
               };
 
-              if (process.env.SWAGGER != null) {
-                js = fs.readFileSync(process.env.SWAGGER, 'utf8');
-                swaggerOptions = JSON.parse(js);
-              }
-
-              if (process.env.SWAGGERHOST != null) {
-                swaggerOptions.host = process.env.SWAGGERHOST;
+              if (userInfo != null) {
+                override = userInfo(options, 'swaggerOptions');
+                swaggerOptions = _objectSpread(_objectSpread({}, swaggerOptions), override);
               }
 
               console.log(swaggerOptions);
-              hapiServer.log('hapi-swagger', swaggerOptions);
-              _context2.next = 49;
+              _context2.next = 47;
               return hapiServer.register({
                 plugin: HapiSwagger,
                 options: swaggerOptions
               });
 
-            case 49:
-              _context2.next = 52;
+            case 47:
+              _context2.next = 50;
               break;
 
-            case 51:
+            case 49:
               if (process.env.PLUGIN == 'hapi-openapi' && serverMode === 'api') {
                 console.log('hapi-openapi', 'coming soon');
               }
 
-            case 52:
+            case 50:
               //
               // Start server
               //
               allRoutes = hapiServer.table();
               console.table(allRoutes);
-              _context2.next = 56;
+              _context2.next = 54;
               return hapiServer.start();
 
-            case 56:
+            case 54:
               hh = hapiServer.info.uri.replace(/0.0.0.0/, 'localhost');
               console.log('Server Start Time: ', Date());
               msg = options.serverMode === 'app' ? "Visit ".concat(hh, "/").concat(process.env.APPNAME, " to access application") : "Visit ".concat(hh, "/").concat(process.env.APPNAME, "/api to access swagger");
@@ -363,7 +365,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode) {
               console.log('NOTE: If running in container then use the port number you mapped to');
               process.env.APPSERVER = "".concat(hh, "/").concat(process.env.APPNAME);
 
-            case 62:
+            case 60:
             case "end":
               return _context2.stop();
           }

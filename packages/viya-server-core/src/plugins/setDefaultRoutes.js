@@ -37,8 +37,8 @@ module.exports = function setDefaultRoutes (server, options) {
 
 	server.log('Default strategy', authDefault);
 	server.log('Logon strategy', authLogon); 
-	options.defaultStrategy = authDefault;
-    options.authLogon       = authLogon;
+	options.authDefault = authDefault;
+    options.authLogon   = authLogon;
 
 	let uTable = (options.userRouteTable !== null) ? setupUserRoutes(options.userRouteTable, authDefault) : null;
 	
@@ -57,10 +57,10 @@ module.exports = function setDefaultRoutes (server, options) {
 			options: {
 				auth   : authDefault,
 				handler: async (req, h) => {
-					return 'Logged in';
+					return h.redirect(`${appName}/documentation`);
 				},
 			},
-		},{
+		},/*{
 			method : ['GET'],
 			path   : `/swagger.json`,
 			options: {
@@ -69,7 +69,7 @@ module.exports = function setDefaultRoutes (server, options) {
 					return h.redirect(`${appName}/swagger.json`);
 				},
 			},
-		},
+		},*/
 		{
 			method : ['GET'],
 			path   : `${appName}/logon`,

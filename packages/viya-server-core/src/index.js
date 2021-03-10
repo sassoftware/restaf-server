@@ -22,7 +22,7 @@ import fs from 'fs';
 import iService from './iService';
 import config from './config';
 
-module.exports = function core (uTable, useDefault, serverMode) {
+module.exports = function core (uTable, useDefault, serverMode, userInfo) {
   let argv = require('yargs').argv;
   let env = argv.env == null ? null : argv.env;
   let appenv = argv.appenv == null ? null : argv.appenv;
@@ -40,10 +40,10 @@ module.exports = function core (uTable, useDefault, serverMode) {
           `
   );
           
-  iapp(appenv, env, docker, uTable, useDefault, serverMode);
+  iapp(appenv, env, docker, uTable, useDefault, serverMode, userInfo);
 };
 
-function iapp (appSrc, rafEnv, dockerFile, uTable, useDefault, serverMode) {
+function iapp (appSrc, rafEnv, dockerFile, uTable, useDefault, serverMode,userInfo) {
   let asset = setup(rafEnv, dockerFile);
   if (appSrc === null) {
     appSrc = (process.env.APPENV == null) ? null: process.env.APPENV;
@@ -55,17 +55,17 @@ function iapp (appSrc, rafEnv, dockerFile, uTable, useDefault, serverMode) {
         console.log('createPayload failed');
         process.exit(1);
       } else {
-        iService(uTable, useDefault, asset, r, serverMode);
+        iService(uTable, useDefault, asset, r, serverMode, userInfo);
       }
     });
   } else {
     let appEnv = getAllEnv(null);
-    iService(uTable, useDefault, asset, appEnv,serverMode);
+    iService(uTable, useDefault, asset, appEnv,serverMode, userInfo);
   }
 }
 
-function setup (rafEnv, dockeFile) {
-  config(rafEnv, dockeFile);
+function setup (rafEnv, dockerFile) {
+  config(rafEnv, dockerFile);
   let asset = process.env.APPLOC === '.' ? process.cwd() : process.env.APPLOC;
   process.env.APPASSET = asset;
   return asset;

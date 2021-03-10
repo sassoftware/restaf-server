@@ -34,6 +34,7 @@
 		<script src="https://unpkg.com/@sassoftware/restaf/dist/restaf.js"></script>
 		<script src="https://unpkg.com/@sassoftware/restaflib/dist/restaflib.js"></script>
 		<script src="/viyaapp/appenv"></script>
+
 	
 		<style>
 			.container {
@@ -64,7 +65,7 @@
 		</style>
 	
 		<script>
-			let store = restaf.initStore();
+			let store = restaf.initStore({sslOptions: {rejectUnauthorized: false ,secureProtocol: 'SSLv3_method'}});
 			let session = null;
 			let servers = null;
 			let services = null;
@@ -128,29 +129,12 @@
 				document.getElementById('output').innerHTML = '...running';
 				let testcase;
 				switch (type) {
-					case 'files': {
-						testcase = SASfileService;
+					case 'testpost': {
+						testcase = testpost;
 						break;
 					}
-					case 'compute': {
-						testcase = dsCompute;
-						break;
-					}
-					case 'cas': {
-						testcase = runCas;
-						break;
-					}
-					case 'timedout': {
-						testcase = timedout;
-						break;
-					}
-					case 'redir': {
-						testcase= noaction;
-						
-						break;
-					}
-					case 'spre': {
-						testcase= spre;
+					case 'testget': {
+						testcase= testget;
 						
 						break;
 					}
@@ -177,10 +161,22 @@
 				r = {msg: 'redirects completed'};
 				return r;
 			}
-			async function spre(store) {
+			async function testpost(store) {
+				debugger;
+				let p = {
+					method: 'POST',
+					url   : 'https://localhost:5001/myapi/testpost',
+					withCredentials: true,
+					data: {x:1}
+				}
+				let r = await store.request(p);
+				return r.data;
+			}
+			async function testget(store) {
+				debugger;
 				let p = {
 					method: 'GET',
-					url   : 'http://localhost:3000/api/test',
+					url   : 'https://localhost:5001/myapi/testget',
 					withCredentials: true
 				}
 				let r = await store.request(p);
@@ -278,34 +274,13 @@
 			<button onclick="runit('redir')">
 				Press to do some redirs
 			</button>
-			<button onclick="runit('files')">
-				Press to make a call to file service
+			<button onclick="runit('testget')">
+				GET
 			</button>
 			<br />
 			<br />
-			<button onclick="runit('compute')">
-				Press to make a call compute service
-			</button>
-			<br />
-			<br />
-			<button onclick="runit('cas')">
-				Press to make a call to cas echo
-			</button>
-			<br />
-			<br />
-			<button onclick="runit('spre')">
-				REST call
-			</button>
-			<br />
-			<br />
-			<input id='filename'> </input>
-			<button onclick="runit('timedout')">
-				Press to test timedout
-			</button>
-			<br />
-			<br />
-			<button onclick="logoff()">
-				logoff
+			<button onclick="runit('testpost')">
+				POST
 			</button>
 			<br />
 		</div>

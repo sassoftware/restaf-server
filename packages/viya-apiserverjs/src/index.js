@@ -21,7 +21,7 @@
 import core from '@sassoftware/viya-server-core';
 
 // silly  but a jump point to keep backward compatibility
-function icli (uTable, useDefault) {
-	core(uTable, useDefault, 'api');
+function icli (uTable, useDefault, userInfo) {
+	core(uTable, useDefault, 'api', userInfo);
 }
 export {icli};

@@ -23,7 +23,7 @@
 
 let rafserver = require('./lib/index.js');
 debugger;
-rafserver.icli (getCustomHandler);
+rafserver.icli (getCustomHandler, null, customize);
 
 function getCustomHandler () {
 	let appName = `/${process.env.APPNAME}`; /* does not have to be this - your choice */
@@ -61,6 +61,18 @@ function getCustomHandler () {
 	];
     return routes;
 } 
+function customize (options, key){
+    let info = {
+		swaggerOptions: {
+			"host"             : 'viyans.ingress-nginx.kdksecdb-m1.secdb.sashq-d.openstack.sas.com',
+			"documentationPage": true,
+			"documentationPath": `/${process.env.APPNAME}/documentation`,
+			"swaggerUI"        : true,
+		    "swaggerUIPath"    : `/${process.env.APPNAME}/swaggerui`
+			}
+	};
+    return info[key];
+}
 
 
 	

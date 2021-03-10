@@ -15,7 +15,7 @@
  * ----------------------------------------------------------------------------------------
  *
  */
-'use strict'; // import core from '../corelib/core';
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -27,6 +27,6 @@ var _viyaServerCore = _interopRequireDefault(require("@sassoftware/viya-server-c
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 // silly  but a jump point to keep backward compatibility
-function icli(uTable, useDefault) {
-  (0, _viyaServerCore["default"])(uTable, useDefault, 'app');
+function icli(uTable, useDefault, customize) {
+  (0, _viyaServerCore["default"])(uTable, useDefault, 'app', null, customize);
 }

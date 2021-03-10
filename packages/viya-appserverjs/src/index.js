@@ -18,14 +18,11 @@
 
 'use strict';
 
-// import core from '../corelib/core';
-
 import core from "@sassoftware/viya-server-core";
 
 // silly  but a jump point to keep backward compatibility
-function icli (uTable, useDefault) {
-  
-  core(uTable,useDefault, 'app');
+function icli (uTable, useDefault, customize) {
+  core(uTable,useDefault, 'app', null, customize);
 }
- 
+
 export {icli};

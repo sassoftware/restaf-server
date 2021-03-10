@@ -27,6 +27,6 @@ var _viyaServerCore = _interopRequireDefault(require("@sassoftware/viya-server-c
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 // silly  but a jump point to keep backward compatibility
-function icli(uTable, useDefault) {
-  (0, _viyaServerCore["default"])(uTable, useDefault, 'api');
+function icli(uTable, useDefault, userInfo) {
+  (0, _viyaServerCore["default"])(uTable, useDefault, 'api', userInfo);
 }
