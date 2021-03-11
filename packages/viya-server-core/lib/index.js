@@ -29,7 +29,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * ----------------------------------------------------------------------------------------
  *
  */
-module.exports = function core(uTable, useDefault, serverMode, userInfo) {
+module.exports = function core(uTable, useDefault, serverMode, customize) {
   var argv = require('yargs').argv;
 
   var env = argv.env == null ? null : argv.env;
@@ -41,11 +41,11 @@ module.exports = function core(uTable, useDefault, serverMode, userInfo) {
     useDefault = true;
   }
 
-  console.log("\nConfiguration:\n          Dockerfile: ".concat(docker, "\n          env file  : ").concat(env, "\n          app env   : ").concat(appenv, "\n          "));
-  iapp(appenv, env, docker, uTable, useDefault, serverMode, userInfo);
+  console.log("\nConfiguration:\n          Dockerfile: ".concat(docker, "\n          env file  : ").concat(env, "\n          app env   : ").concat(appenv, "\n          customize : ").concat(customize, "\n          "));
+  iapp(appenv, env, docker, uTable, useDefault, serverMode, customize);
 };
 
-function iapp(appSrc, rafEnv, dockerFile, uTable, useDefault, serverMode, userInfo) {
+function iapp(appSrc, rafEnv, dockerFile, uTable, useDefault, serverMode, customize) {
   var asset = setup(rafEnv, dockerFile);
 
   if (appSrc === null) {
@@ -59,12 +59,13 @@ function iapp(appSrc, rafEnv, dockerFile, uTable, useDefault, serverMode, userIn
         console.log('createPayload failed');
         process.exit(1);
       } else {
-        (0, _iService["default"])(uTable, useDefault, asset, r, serverMode, userInfo);
+        console.log(customize);
+        (0, _iService["default"])(uTable, useDefault, asset, r, serverMode, customize);
       }
     });
   } else {
     var appEnv = getAllEnv(null);
-    (0, _iService["default"])(uTable, useDefault, asset, appEnv, serverMode, userInfo);
+    (0, _iService["default"])(uTable, useDefault, asset, appEnv, serverMode, customize);
   }
 }
 
@@ -157,17 +158,29 @@ function getAllEnv(userData) {
   } else {
     console.log('\nNo LOGONPAYLOAD specified');
   }
+  /*
+   env =
+     l !== null
+       ? `let LOGONPAYLOAD = ${JSON.stringify(l)};`
+       : `let LOGONPAYLOAD=null;`;
+  
+   if (userData !== null) {
+     console.log(`\nAPPENV 
+                  ${JSON.stringify(userData, null, 4)}`);
+     env += `let APPENV = ${JSON.stringify(userData)};`;
+   } else {
+     console.log('No APPENV information specified');
+     env += `let APPENV = {none: 'none'};`;
+   }
+   */
 
-  env = l !== null ? "let LOGONPAYLOAD = ".concat(JSON.stringify(l), ";") : "let LOGONPAYLOAD=null;";
 
-  if (userData !== null) {
-    console.log("\nAPPENV \n                 ".concat(JSON.stringify(userData, null, 4)));
-    env += "let APPENV = ".concat(JSON.stringify(userData), ";");
-  } else {
-    console.log('No APPENV information specified');
-    env += "let APPENV = {none: 'none'};";
-  }
-
+  env = {
+    LOGONPAYLOAD: l,
+    APPENV: userData
+  };
+  console.log('Configurations');
+  console.log(JSON.stringify(env, null, 4));
   return env;
 }
 

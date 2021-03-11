@@ -32,7 +32,6 @@ let os = require('os');
 
 function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, userInfo) {
 	// process.env.APPHOST_ADDR = process.env.APPHOST;
-
 	const init = async () => {
 		if (process.env.APPHOST === '*') {
 			process.env.APPHOST = os.hostname();
@@ -51,7 +50,6 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 			let [s1, s2] = process.env.SAMESITE.split(',');
 			isSameSite = s1;
 			isSecure = s2 === 'secure' ? true : false;
-			console.log(process.env.HTTPS);
 			if (process.env.HTTPS !== 'true') {
 				isSecure = false;
 			}
@@ -196,14 +194,10 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 			appPort       : process.env.APPPORT,
 			userRouteTable: userRouteTable,
 			useDefault    : useDefault, /* not used - left here for potential reuse */
+			userInfo      : userInfo,
 			https         : process.env.HTTPS
 		};
 		hapiServer.log('Options',options);
-		
-		if (process.env.HTTPS === 'true') {
-			hapiServer.log('TLS_CREATE', process.env.TLS_CREATE);
-			hapiServer.log('TLS', tls);
-		};
 
 		await setupAuth(hapiServer, options);
 		hapiServer.log('Plugin', process.env.PLUGIN);
@@ -259,17 +253,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 	});
 	init();
 }
-/*
-function decodeTLS (s) {
-	let buff = Buffer.from(s, 'base64');
-	let t  = buff.toString();
-	console.log(t);
-	let at = t.split(' ');
-	let f = (at.length > 1) ? at[1] : at[0];
-	console.log(f);
-	return f;
-}
-*/
+
 async function getTls () {
 	let options = {
 		keySize          : 2048,

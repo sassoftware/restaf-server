@@ -69,9 +69,14 @@ function customize (options, key){
 			"documentationPath": `/${process.env.APPNAME}/documentation`,
 			"swaggerUI"        : true,
 		    "swaggerUIPath"    : `/${process.env.APPNAME}/swaggerui`
-			}
+			},
+		APPENV: {
+			x: 1,
+			y: 2
+		}
 	};
-    return info[key];
+	let r = info[key];
+    return (r == null) ? {} : r;
 }
 
 

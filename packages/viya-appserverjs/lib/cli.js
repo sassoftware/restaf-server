@@ -8,4 +8,4 @@
 
 var rafServer = require('./index.js');
 
-rafServer.icli(null, true);
+rafServer.icli(null, true, null);

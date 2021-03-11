@@ -113,7 +113,14 @@ module.exports = function setDefaultRoutes(server, options) {
     options: {
       auth: authDefault,
       handler: function handler(req, h) {
-        return options.allAppEnv;
+        var allAppEnv = options.allAppEnv;
+
+        if (options.userInfo != null) {
+          allAppEnv.APPENV = options.userInfo(options, 'APPENV');
+        }
+
+        var s = "let LOGONPAYLOAD = ".concat(JSON.stringify(allAppEnv.LOGONPAYLOAD), ";") + "let APPENV = ".concat(JSON.stringify(allAppEnv.APPENV), ";");
+        return s;
       }
     }
   }, {

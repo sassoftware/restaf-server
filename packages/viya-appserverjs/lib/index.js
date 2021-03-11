@@ -28,5 +28,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 // silly  but a jump point to keep backward compatibility
 function icli(uTable, useDefault, customize) {
-  (0, _viyaServerCore["default"])(uTable, useDefault, 'app', null, customize);
+  (0, _viyaServerCore["default"])(uTable, useDefault, 'app', customize);
 }
