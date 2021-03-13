@@ -271,6 +271,8 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
               // setup authentication related plugins
               options = {
                 serverMode: serverMode,
+
+                /* api or app */
                 authFlow: process.env.AUTHFLOW,
                 host: process.env.VIYA_SERVER,
                 isSameSite: isSameSite,
@@ -289,7 +291,13 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
 
                 /* not used - left here for potential reuse */
                 userInfo: userInfo,
-                https: process.env.HTTPS
+                https: process.env.HTTPS,
+                authDefault: false,
+
+                /* set later in setDefaultRoutes */
+                authLogon: false
+                /* set later in setDefaultRoutes */
+
               };
               hapiServer.log('Options', options);
               _context2.next = 38;
@@ -312,10 +320,10 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
                 "schemes": ["https", "http"],
                 "cors": true,
                 "debug": true,
-                "jsonPath": "/".concat(process.env.APPNAME, "/swagger.json"),
-                "jsonRoutePath": "/".concat(process.env.APPNAME, "/swagger.json"),
+                "jsonPath": "/".concat(options.appName, "/swagger.json"),
+                "jsonRoutePath": "/".concat(options.appName, "/swagger.json"),
                 "documentationPage": false,
-                "documentationPath": "/".concat(process.env.APPNAME, "/documentation"),
+                "documentationPath": "/".concat(options.appName, "/documentation"),
                 "swaggerUI": false,
                 auth: options.authDefault
               };
