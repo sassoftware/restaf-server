@@ -28,6 +28,6 @@
     "template.json"
   ],
   "scripts": {
-    "pub": "npm publish --tag tk8 --access public"
+    "pub": "npm publish --tag next --access public"
   }
 }

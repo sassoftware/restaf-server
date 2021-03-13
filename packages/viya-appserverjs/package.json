@@ -35,7 +35,7 @@
     "app": "cross-env VIYA_SERVER=%vx% node app.js --env=./.env --docker=./Dockerfile",
     "debug": "cross-env VIYA_SERVER=%vx% node --inspect-brk ./lib/cli.js   --env=./.env --docker=./Dockerfile --appenv=appenv.js",
     "debugapp": "cross-env VIYA_SERVER=%vx% node --inspect-brk app.js  --env=./.env --docker=./Dockerfile --appenv=appenv.js",
-    "pub": "npm publish --tag tk8 --access public",
+    "pub": "npm publish --tag next --access public",
     "lint": "npx eslint --fix src/*.js"
   },
   "dependencies": {
