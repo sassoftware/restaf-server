@@ -49,7 +49,7 @@ function getCustomHandler () {
 			options: {
 				handler: async (req,h) => { 
 					debugger;
-					console.log('-------------- in post');
+					console.log('++++++++++++++++++++++ in post');
 					let context = req.pre.context;
 					return context;
 				},

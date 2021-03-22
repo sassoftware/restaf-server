@@ -75,6 +75,41 @@ module.exports = function setDefaultRoutes(server, options) {
   },*/
   {
     method: ['GET'],
+    path: "".concat(appName, "/develop"),
+    config: {
+      auth: false,
+      cors: true,
+      handler: function () {
+        var _handler2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(req, h) {
+          var spawn, child, h2;
+          return regeneratorRuntime.wrap(function _callee2$(_context2) {
+            while (1) {
+              switch (_context2.prev = _context2.next) {
+                case 0:
+                  spawn = require('cross-spawn');
+                  child = spawn('yarn', ['start'], {
+                    stdio: 'inherit'
+                  });
+                  h2 = '<h2>Viya Server: ' + process.env.VIYA_SERVER + '<h2>';
+                  return _context2.abrupt("return", h2 + '<h3>Your session is authenticated</h3>' + '<h3>Your application is starting in another tab </h3>' + '<h4> HMR is active</h4>');
+
+                case 4:
+                case "end":
+                  return _context2.stop();
+              }
+            }
+          }, _callee2);
+        }));
+
+        function handler(_x3, _x4) {
+          return _handler2.apply(this, arguments);
+        }
+
+        return handler;
+      }()
+    }
+  }, {
+    method: ['GET'],
     path: "".concat(appName, "/logon"),
     options: {
       auth: authLogon,
@@ -114,6 +149,8 @@ module.exports = function setDefaultRoutes(server, options) {
       auth: authDefault,
       handler: function handler(req, h) {
         var allAppEnv = options.allAppEnv;
+        console.log(allAppEnv);
+        console.log(options.userInfo);
 
         if (options.userInfo != null) {
           allAppEnv.APPENV = options.userInfo(options, 'APPENV');

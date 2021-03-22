@@ -1,6 +1,6 @@
 {
   "name": "@sassoftware/restaf-server",
-  "version": "1.2.21",
+  "version": "1.2.22",
   "description": "app and api server for SAS Viya user applications",
   "main": "index.js",
   "scripts": {
@@ -83,8 +83,9 @@
     ]
   },
   "dependencies": {
-    "@sassoftware/restaf": "^3.1.4",
-    "@sassoftware/restaflib": "^3.1.4",
+    "@sassoftware/restaf": "next",
+    "@sassoftware/restaflib": "next",
+    "cross-spawn": "^7.0.3",
     "hapi-swagger": "^14.1.0",
     "uuid": "^8.3.2"
   },

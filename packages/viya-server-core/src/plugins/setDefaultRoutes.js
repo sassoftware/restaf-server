@@ -71,6 +71,25 @@ module.exports = function setDefaultRoutes (server, options) {
 			},
 		},*/
 		{
+			method: ['GET'],
+			path  : `${appName}/develop`,
+			config: {
+				auth   : false,
+				cors   : true,
+				handler: async (req, h) => {
+					const spawn = require('cross-spawn');
+					let child = spawn('yarn', ['start'], { stdio: 'inherit' });
+					let h2 = '<h2>Viya Server: ' + process.env.VIYA_SERVER + '<h2>';
+					return (
+						h2 +
+						'<h3>Your session is authenticated</h3>' +
+						'<h3>Your application is starting in another tab </h3>' +
+						'<h4> HMR is active</h4>'
+					);
+				},
+			},
+		},
+		{
 			method : ['GET'],
 			path   : `${appName}/logon`,
 			options: {
@@ -114,6 +133,8 @@ module.exports = function setDefaultRoutes (server, options) {
 				auth   : authDefault,
 				handler: (req, h) => {
 					let allAppEnv = options.allAppEnv;
+					console.log(allAppEnv);
+					console.log(options.userInfo);
 					if (options.userInfo != null) {
 						allAppEnv.APPENV = options.userInfo(options,'APPENV');
 					}
@@ -121,7 +142,7 @@ module.exports = function setDefaultRoutes (server, options) {
 					let s = `let LOGONPAYLOAD = ${JSON.stringify(allAppEnv.LOGONPAYLOAD)};` + 
 				            `let APPENV = ${JSON.stringify(allAppEnv.APPENV)};`;
 					return s;
-				},
+				}
 			},
 		},
 		{

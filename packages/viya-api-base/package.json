@@ -1,6 +1,6 @@
 {
   "name": "@sassoftware/viya-api-base",
-  "version": "1.2.21",
+  "version": "1.2.22",
   "keywords": [
     "react",
     "create-react-app",
@@ -28,6 +28,6 @@
     "template.json"
   ],
   "scripts": {
-    "pub": "npm publish --tag next --access public"
+    "pub": "npm publish --tag test --access public"
   }
 }
