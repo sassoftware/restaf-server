@@ -99,7 +99,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 
 		if (process.env.HTTPS === 'true') {
 			
-			if (process.env.TLS_CERT != null) {
+			if (process.env.TLS_CERT != null) { /* backward compatability */
 				console.log('TLS set: TLS_CERT');
 				tls.cert = fs.readFileSync(process.env.TLS_CERT);
 				tls.key = fs.readFileSync(process.env.TLS_KEY);
@@ -109,20 +109,19 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 				if (process.env.TLS_PW != null) {
 					tls.passphrase = process.env.TLS_PW;
 				}
-			} else if (process.env.TLS_CRT != null) {
+			} else if (process.env.TLS_CRT != null) { /* new key names to conform to k8s*/
 				console.log('TLS set: TLS_CRT');
 				tls.cert = process.env.TLS_CRT;
 				tls.key = process.env.TLS_KEY;
+			} else if (process.env.TLS_CREATE != null) {  /* unsigned certificate */
+				console.log('TLS set: TLS_CREATE');
+				tls = await getTls();
 			}
 
 			if (process.env.TLS_CABUNDLE != null) {
 				tls.CA = fs.readFileSync(process.env.TLS_CABUNDLE);
 			}
 			
-			if (Object.keys(tls).length === 0 && process.env.TLS_CREATE != null) {
-				console.log('TLS set: TLS_CREATE');
-				tls = await getTls();
-			}
 			if (Object.keys(tls).length > 0) {
 				sConfig.tls = tls;
 			} else {
@@ -216,14 +215,15 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 				"debug"            : true,
 				"jsonPath"         : `/${options.appName}/swagger.json`,
 			    "jsonRoutePath"    : `/${options.appName}/swagger.json`,
-			    "documentationPage": false,
+			    "documentationPage": true,
 	    		"documentationPath": `/${options.appName}/documentation`,
-				"swaggerUI"        : false,
+				"swaggerUI"        : true,
+				"swaggerUIPath"    : `/${options.appName}/swaggerui`,
 				auth               : options.authDefault
 				};
 
 			if (userInfo != null) {
-		    	let override = userInfo(options, 'swaggerOptions');
+		    	let override = userInfo(options, 'SWAGGEROPTIONS');
 				swaggerOptions = {...swaggerOptions, ...override};
 			}
 			

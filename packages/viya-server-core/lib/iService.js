@@ -167,51 +167,77 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
               tls = {};
 
               if (!(process.env.HTTPS === 'true')) {
-                _context2.next = 18;
+                _context2.next = 35;
                 break;
               }
 
-              if (process.env.TLS_CERT != null) {
-                console.log('TLS set: TLS_CERT');
-                tls.cert = fs.readFileSync(process.env.TLS_CERT);
-                tls.key = fs.readFileSync(process.env.TLS_KEY);
-              } else if (process.env.TLS_PFX != null) {
-                console.log('TLS set: PFX');
-                tls.pfx = fs.readFileSync(process.env.TLS_PFX);
-
-                if (process.env.TLS_PW != null) {
-                  tls.passphrase = process.env.TLS_PW;
-                }
-              } else if (process.env.TLS_CRT != null) {
-                console.log('TLS set: TLS_CRT');
-                tls.cert = process.env.TLS_CRT;
-                tls.key = process.env.TLS_KEY;
+              if (!(process.env.TLS_CERT != null)) {
+                _context2.next = 16;
+                break;
               }
 
+              /* backward compatability */
+              console.log('TLS set: TLS_CERT');
+              tls.cert = fs.readFileSync(process.env.TLS_CERT);
+              tls.key = fs.readFileSync(process.env.TLS_KEY);
+              _context2.next = 33;
+              break;
+
+            case 16:
+              if (!(process.env.TLS_PFX != null)) {
+                _context2.next = 22;
+                break;
+              }
+
+              console.log('TLS set: PFX');
+              tls.pfx = fs.readFileSync(process.env.TLS_PFX);
+
+              if (process.env.TLS_PW != null) {
+                tls.passphrase = process.env.TLS_PW;
+              }
+
+              _context2.next = 33;
+              break;
+
+            case 22:
+              if (!(process.env.TLS_CRT != null)) {
+                _context2.next = 28;
+                break;
+              }
+
+              /* new key names to conform to k8s*/
+              console.log('TLS set: TLS_CRT');
+              tls.cert = process.env.TLS_CRT;
+              tls.key = process.env.TLS_KEY;
+              _context2.next = 33;
+              break;
+
+            case 28:
+              if (!(process.env.TLS_CREATE != null)) {
+                _context2.next = 33;
+                break;
+              }
+
+              /* unsigned certificate */
+              console.log('TLS set: TLS_CREATE');
+              _context2.next = 32;
+              return getTls();
+
+            case 32:
+              tls = _context2.sent;
+
+            case 33:
               if (process.env.TLS_CABUNDLE != null) {
                 tls.CA = fs.readFileSync(process.env.TLS_CABUNDLE);
               }
 
-              if (!(Object.keys(tls).length === 0 && process.env.TLS_CREATE != null)) {
-                _context2.next = 17;
-                break;
-              }
-
-              console.log('TLS set: TLS_CREATE');
-              _context2.next = 16;
-              return getTls();
-
-            case 16:
-              tls = _context2.sent;
-
-            case 17:
               if (Object.keys(tls).length > 0) {
                 sConfig.tls = tls;
               } else {
                 console.log('Warning: No TLS certificate information specified');
               }
 
-            case 18:
+            case 35:
               if (asset !== null) {
                 sConfig.routes.files = {
                   relativeTo: asset
@@ -242,23 +268,23 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
                 relativeTo: __dirname,
                 path: '.'
               };
-              _context2.next = 27;
+              _context2.next = 44;
               return hapiServer.register(Vision);
 
-            case 27:
+            case 44:
               hapiServer.views(visionOptions);
-              _context2.next = 30;
+              _context2.next = 47;
               return hapiServer.register(inert);
 
-            case 30:
-              _context2.next = 32;
+            case 47:
+              _context2.next = 49;
               return hapiServer.register({
                 plugin: require('hapi-require-https'),
                 options: {}
               });
 
-            case 32:
-              _context2.next = 34;
+            case 49:
+              _context2.next = 51;
               return hapiServer.register({
                 plugin: require('hapi-pino'),
                 options: {
@@ -267,7 +293,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
                 }
               });
 
-            case 34:
+            case 51:
               // setup authentication related plugins
               options = {
                 serverMode: serverMode,
@@ -300,14 +326,14 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
 
               };
               hapiServer.log('Options', options);
-              _context2.next = 38;
+              _context2.next = 55;
               return (0, _setupAuth["default"])(hapiServer, options);
 
-            case 38:
+            case 55:
               hapiServer.log('Plugin', process.env.PLUGIN);
 
               if (!(process.env.PLUGIN === 'hapi-swagger' && serverMode === 'api')) {
-                _context2.next = 47;
+                _context2.next = 64;
                 break;
               }
 
@@ -322,43 +348,44 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
                 "debug": true,
                 "jsonPath": "/".concat(options.appName, "/swagger.json"),
                 "jsonRoutePath": "/".concat(options.appName, "/swagger.json"),
-                "documentationPage": false,
+                "documentationPage": true,
                 "documentationPath": "/".concat(options.appName, "/documentation"),
-                "swaggerUI": false,
+                "swaggerUI": true,
+                "swaggerUIPath": "/".concat(options.appName, "/swaggerui"),
                 auth: options.authDefault
               };
 
               if (userInfo != null) {
-                override = userInfo(options, 'swaggerOptions');
+                override = userInfo(options, 'SWAGGEROPTIONS');
                 swaggerOptions = _objectSpread(_objectSpread({}, swaggerOptions), override);
               }
 
               console.log(swaggerOptions);
-              _context2.next = 45;
+              _context2.next = 62;
               return hapiServer.register({
                 plugin: HapiSwagger,
                 options: swaggerOptions
               });
 
-            case 45:
-              _context2.next = 48;
+            case 62:
+              _context2.next = 65;
               break;
 
-            case 47:
+            case 64:
               if (process.env.PLUGIN == 'hapi-openapi' && serverMode === 'api') {
                 console.log('hapi-openapi', 'coming soon');
               }
 
-            case 48:
+            case 65:
               //
               // Start server
               //
               allRoutes = hapiServer.table();
               console.table(allRoutes);
-              _context2.next = 52;
+              _context2.next = 69;
               return hapiServer.start();
 
-            case 52:
+            case 69:
               hh = hapiServer.info.uri.replace(/0.0.0.0/, 'localhost');
               console.log('Server Start Time: ', Date());
               msg = options.serverMode === 'app' ? "Visit ".concat(hh, "/").concat(process.env.APPNAME, " to access application") : "Visit ".concat(hh, "/").concat(process.env.APPNAME, "/api to access swagger");
@@ -366,7 +393,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
               console.log('NOTE: If running in container then use the port number you mapped to');
               process.env.APPSERVER = "".concat(hh, "/").concat(process.env.APPNAME);
 
-            case 58:
+            case 75:
             case "end":
               return _context2.stop();
           }

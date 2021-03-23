@@ -67,6 +67,12 @@ Object.defineProperty(exports, "setupUserRoutes", {
     return _setupUserRoutes["default"];
   }
 });
+Object.defineProperty(exports, "reactDev", {
+  enumerable: true,
+  get: function get() {
+    return _reactDev["default"];
+  }
+});
 
 var _getApp = _interopRequireDefault(require("./getApp"));
 
@@ -87,5 +93,7 @@ var _logout = _interopRequireDefault(require("./logout"));
 var _getUser = _interopRequireDefault(require("./getUser"));
 
 var _setupUserRoutes = _interopRequireDefault(require("../plugins/setupUserRoutes"));
+
+var _reactDev = _interopRequireDefault(require("./reactDev"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }

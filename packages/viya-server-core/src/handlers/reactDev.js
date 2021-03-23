@@ -15,29 +15,15 @@
  * ---------------------------------------------------------------------------------------
  *
  */
-import setContext from './setContext';
-
-function setupUserRoutes (u, auth) {
-    if (u == null) {
-        return [];
-    }
-
-    let ux = (typeof u === 'function') ? u() : u;
-    let routes = ux.map(r => {
-        let rx = {...r};
-        /* change it to options */
-        if (rx.config != null) {
-            rx.options = {...rx.config};
-            delete rx.config;
-        }
-        rx.options.pre = [
-            {method: setContext, assign: 'context'}
-        ];
-        if (rx.options.auth == null) {
-            rx.options.auth = auth;   
-        }
-        return rx;
-    });
-    return routes;
+let spawn = require('cross-spawn');
+async function reactDev (req, h){
+    let child = spawn('yarn', ['start'], { stdio: 'inherit' });
+    let h2 = '<h2>Viya Server: ' + process.env.VIYA_SERVER + '<h2>';
+    return (
+        h2 +
+        '<h3>Your session is authenticated</h3>' +
+        '<h3>Your application is starting in another tab </h3>' +
+        '<h4> HMR is active</h4>'
+    );
 }
-export default setupUserRoutes;
+export default reactDev;

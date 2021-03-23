@@ -13,6 +13,7 @@ import keepAlive2 from './keepAlive2';
 import logout      from './logout';
 import getUser from './getUser';
 import setupUserRoutes from '../plugins/setupUserRoutes';
+import reactDev from './reactDev';
 
 export {
     getApp,
@@ -24,7 +25,8 @@ export {
     logon,
     logout,
     getUser,
-    setupUserRoutes
+    setupUserRoutes,
+    reactDev
 };
 
 
