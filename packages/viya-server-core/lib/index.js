@@ -114,6 +114,7 @@ function getAllEnv(userData) {
   var clientSecret = trimit('CLIENTSECRET');
   var keepAlive = trimit('KEEPALIVE');
   var appName = trimit('APPNAME');
+  var ns = trimit('NAMESPACE');
 
   if (authflow === 'server' || authflow === 'implicit') {
     if (authflow === 'implicit') {
@@ -135,7 +136,8 @@ function getAllEnv(userData) {
       host: host,
       clientID: clientID,
       appName: appName,
-      keepAlive: null
+      keepAlive: null,
+      ns: ns
     };
 
     if (authflow === 'server' && keepAlive === 'YES') {
@@ -158,22 +160,6 @@ function getAllEnv(userData) {
   } else {
     console.log('\nNo LOGONPAYLOAD specified');
   }
-  /*
-   env =
-     l !== null
-       ? `let LOGONPAYLOAD = ${JSON.stringify(l)};`
-       : `let LOGONPAYLOAD=null;`;
-  
-   if (userData !== null) {
-     console.log(`\nAPPENV 
-                  ${JSON.stringify(userData, null, 4)}`);
-     env += `let APPENV = ${JSON.stringify(userData)};`;
-   } else {
-     console.log('No APPENV information specified');
-     env += `let APPENV = {none: 'none'};`;
-   }
-   */
-
 
   env = {
     LOGONPAYLOAD: l,

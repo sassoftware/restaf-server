@@ -1398,10 +1398,10 @@
   resolved "https://registry.yarnpkg.com/@redux-saga/types/-/types-1.1.0.tgz#0e81ce56b4883b4b2a3001ebe1ab298b84237204"
   integrity sha512-afmTuJrylUU/0OtqzaRkbyYFFNgCF73Bvel/sw90pvGrWIZ+vyoIJqA6eMSoA6+nb443kTmulmBtC9NerXboNg==
 
-"@sassoftware/restaf@next":
-  version "3.2.5"
-  resolved "https://registry.yarnpkg.com/@sassoftware/restaf/-/restaf-3.2.5.tgz#337cfbc7abfa93b126a5984fec80e6a03f7b5e70"
-  integrity sha512-jNF+/MR4JDXeSaHM5fHChnSoIMFjJjiGvcu8PZ28C1+iFOj9f05WtbO4Yz5iAYwyyHiPG872Fwe3jkVtAUIjVQ==
+"@sassoftware/restaf@test":
+  version "3.2.61"
+  resolved "https://registry.yarnpkg.com/@sassoftware/restaf/-/restaf-3.2.61.tgz#c87e74cc07e5d789534a4f61d1c5f2a9b0ddebf8"
+  integrity sha512-NK5M1VE+I1XDBdMkbc1XacyWf//jlflrMba4wKTYv4lSe3IMVFTBUd7zXhnZlVuxrxp6cWbtwlvNlsI7IB4x6Q==
   dependencies:
     "@babel/runtime" "^7.7.7"
     axios "0.21.1"
@@ -1412,10 +1412,10 @@
     url-parse "^1.4.7"
     uuid "^3.3.3"
 
-"@sassoftware/restaflib@next":
-  version "3.2.6"
-  resolved "https://registry.yarnpkg.com/@sassoftware/restaflib/-/restaflib-3.2.6.tgz#519c966d8980aefe9b31dacba48492ade693f36c"
-  integrity sha512-x9QcHg7INygQPOtxANYVWqCPKTO8DJQ5GVJ4cXQONNwvWVD2vft2LB1Oo9XMFdxgBPQ+wVSEllJYP8DJKmae2A==
+"@sassoftware/restaflib@test":
+  version "3.2.61"
+  resolved "https://registry.yarnpkg.com/@sassoftware/restaflib/-/restaflib-3.2.61.tgz#bc90a3d6f4f901a99356a6846fc63424a1488e7f"
+  integrity sha512-yYXi0rwbcaggxMv/qGOKktMLMo6IYMCi+Crgd+AMOolRNBWfsFKZRZR63+OaDRDEflDXbuXWisnwYmN3dzhvLQ==
   dependencies:
     colors "^1.4.0"
     jsdoc "^3.6.3"
