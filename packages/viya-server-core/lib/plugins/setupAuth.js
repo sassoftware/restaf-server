@@ -50,30 +50,28 @@ function _setupAuth() {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            debugger;
-
             if (!(options.authFlow === 'server')) {
-              _context.next = 13;
+              _context.next = 12;
               break;
             }
 
-            _context.next = 4;
+            _context.next = 3;
             return server.register({
               plugin: SASauth,
               options: options
             });
 
-          case 4:
-            _context.next = 6;
+          case 3:
+            _context.next = 5;
             return appCookie(server, options);
 
-          case 6:
-            _context.next = 8;
+          case 5:
+            _context.next = 7;
             return server.register({
               plugin: token
             });
 
-          case 8:
+          case 7:
             def = 'session';
 
             if (options.serverMode === 'api') {
@@ -84,10 +82,10 @@ function _setupAuth() {
             server.auth["default"](def);
             console.log(server.registerations);
 
-          case 13:
+          case 12:
             setDefaultRoutes(server, options);
 
-          case 14:
+          case 13:
           case "end":
             return _context.stop();
         }

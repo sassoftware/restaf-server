@@ -41,7 +41,7 @@ module.exports = function core(uTable, useDefault, serverMode, customize) {
     useDefault = true;
   }
 
-  console.log("\nConfiguration:\n          Dockerfile: ".concat(docker, "\n          env file  : ").concat(env, "\n          app env   : ").concat(appenv, "\n          customize : ").concat(customize, "\n          "));
+  console.log("\nConfiguration:\n          Dockerfile: ".concat(docker, "\n          env file  : ").concat(env, "\n          appenv    : ").concat(appenv, "\n          customize : (customize != null)\n          "));
   iapp(appenv, env, docker, uTable, useDefault, serverMode, customize);
 };
 
@@ -64,7 +64,7 @@ function iapp(appSrc, rafEnv, dockerFile, uTable, useDefault, serverMode, custom
       }
     });
   } else {
-    var appEnv = getAllEnv(null);
+    var appEnv = getAllEnv({});
     (0, _iService["default"])(uTable, useDefault, asset, appEnv, serverMode, customize);
   }
 }
@@ -125,8 +125,7 @@ function getAllEnv(userData) {
         process.env.REDIRECT = 'callback';
       } else {
         redirect = redirect.indexOf('http') != -1 ? redirect : "".concat(process.env.APPNAME, "/").concat(redirect);
-      } // redirect = (redirect == null) ? `${appName}/callback` : `${process.env.APPNAME}/${redirect}`;
-
+      }
     }
 
     ;
@@ -151,14 +150,6 @@ function getAllEnv(userData) {
     if (process.env.TIMERS != null) {
       l.timers = process.env.TIMERS;
     }
-
-    console.log("\nAuthorization configuration\n         ".concat(JSON.stringify(l, null, 4), "\n       "));
-  }
-
-  if (l !== null) {
-    console.log("\nLOGONPAYLOAD\n                  ".concat(JSON.stringify(l, null, 4)));
-  } else {
-    console.log('\nNo LOGONPAYLOAD specified');
   }
 
   env = {

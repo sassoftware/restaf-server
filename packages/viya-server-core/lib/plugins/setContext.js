@@ -38,7 +38,6 @@ function _setContext() {
         switch (_context.prev = _context.next) {
           case 0:
             credentials = req.auth.credentials;
-            debugger;
             context = {
               path: req.path,
               params: req.params,
@@ -49,7 +48,7 @@ function _setContext() {
             };
             return _context.abrupt("return", context);
 
-          case 4:
+          case 3:
           case "end":
             return _context.stop();
         }

@@ -25,18 +25,16 @@ function _logon() {
         switch (_context.prev = _context.next) {
           case 0:
             req.log('in logon');
-            debugger;
             req.log('in logon 2');
-            _context.next = 5;
+            _context.next = 4;
             return (0, _setCookies["default"])(req, h);
 
-          case 5:
+          case 4:
             r = _context.sent;
             req.log('in logon after setcookie', r.redirect);
-            debugger;
             return _context.abrupt("return", h.redirect(r.redirect));
 
-          case 9:
+          case 7:
           case "end":
             return _context.stop();
         }

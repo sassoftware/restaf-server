@@ -24,7 +24,7 @@ module.exports = function SASTokenScheme (server, options) {
  
     const scheme = {
         authenticate: async function (request, h) {
-            debugger;
+            
             const authorization = request.headers.authorization;
             server.log('SASToken', authorization);
             if (!authorization) {

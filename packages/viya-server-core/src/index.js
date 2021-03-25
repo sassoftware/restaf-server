@@ -36,8 +36,8 @@ module.exports = function core (uTable, useDefault, serverMode, customize) {
     `\nConfiguration:
           Dockerfile: ${docker}
           env file  : ${env}
-          app env   : ${appenv}
-          customize : ${customize}
+          appenv    : ${appenv}
+          customize : (customize != null)
           `
   );
           
@@ -61,7 +61,7 @@ function iapp (appSrc, rafEnv, dockerFile, uTable, useDefault, serverMode,custom
       }
     });
   } else {
-    let appEnv = getAllEnv(null);
+    let appEnv = getAllEnv({});
     iService(uTable, useDefault, asset, appEnv,serverMode, customize);
   }
 }
@@ -120,7 +120,6 @@ function getAllEnv (userData) {
       } else {
         redirect = (redirect.indexOf('http') !=- 1) ? redirect : `${process.env.APPNAME}/${redirect}`;
       }
-      // redirect = (redirect == null) ? `${appName}/callback` : `${process.env.APPNAME}/${redirect}`;
     };
 
      l = {
@@ -140,18 +139,6 @@ function getAllEnv (userData) {
     if (process.env.TIMERS != null) {
       l.timers = process.env.TIMERS;
     }
-    console.log(
-      `\nAuthorization configuration
-         ${JSON.stringify(l, null,4)}
-       `  
-         );
-  }
-
-  if (l !== null) {
-    console.log(`\nLOGONPAYLOAD
-                  ${JSON.stringify(l, null, 4)}`);
-  } else {
-    console.log('\nNo LOGONPAYLOAD specified');
   }
 
   env = {

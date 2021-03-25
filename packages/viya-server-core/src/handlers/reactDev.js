@@ -16,7 +16,8 @@
  *
  */
 let spawn = require('cross-spawn');
-async function reactDev (req, h){
+async function reactDev (req, h) {
+    console.log('Spawning the dev server');
     let child = spawn('yarn', ['start'], { stdio: 'inherit' });
     let h2 = '<h2>Viya Server: ' + process.env.VIYA_SERVER + '<h2>';
     return (

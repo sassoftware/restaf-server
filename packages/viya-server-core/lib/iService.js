@@ -219,7 +219,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
               }
 
               /* unsigned certificate */
-              console.log('TLS set: TLS_CREATE');
+              console.log('TLS set: TLS_CREATE=', process.env.TLS_CREATE);
               _context2.next = 32;
               return getTls();
 
@@ -360,7 +360,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
                 swaggerOptions = _objectSpread(_objectSpread({}, swaggerOptions), override);
               }
 
-              console.log(swaggerOptions);
+              console.log('Swagger Options:', swaggerOptions);
               _context2.next = 62;
               return hapiServer.register({
                 plugin: HapiSwagger,
@@ -444,7 +444,9 @@ function _getTls() {
 
             attr = [{
               name: 'commonName',
-              value: process.env.APPHOST
+              value: d.CN
+              /*process.env.APPHOST*/
+
             }, {
               name: 'countryName',
               value: d.C

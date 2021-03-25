@@ -17,14 +17,14 @@ ENV APPHOST=0.0.0.0
 # ENV APPPORT=8080
 ENV APPNAME=viyaapp
 ENV AUTHFLOW=code
-ENV CLIENTID=viyaapp
+ENV CLIENTID=appcom
 ENV CLIENTSECRET=secret
 
 # ENV PLUGIN=hapi-swagger
 # ENV SWAGGER=./swagger.json
 
 # The following are defaults 
-ENV APPLOC=./public
+# ENV APPLOC=./public
 ENV APPENTRY=index.html
 # ENV APPENV=appenv.js
 

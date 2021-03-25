@@ -35,11 +35,10 @@ module.exports = /*#__PURE__*/function () {
                     while (1) {
                       switch (_context.prev = _context.next) {
                         case 0:
-                          debugger;
                           server.log('Cookie validateFunc', "path - ".concat(req.path));
 
                           if (!(session == null)) {
-                            _context.next = 5;
+                            _context.next = 4;
                             break;
                           }
 
@@ -48,7 +47,7 @@ module.exports = /*#__PURE__*/function () {
                             valid: false
                           });
 
-                        case 5:
+                        case 4:
                           credentials = null;
 
                           if (Array.isArray(session) === true && session.length > 0) {
@@ -58,21 +57,19 @@ module.exports = /*#__PURE__*/function () {
                           }
 
                           if (!(sid != null)) {
-                            _context.next = 11;
+                            _context.next = 10;
                             break;
                           }
 
-                          _context.next = 10;
+                          _context.next = 9;
                           return req.server.app.cache.get(sid);
 
-                        case 10:
+                        case 9:
                           credentials = _context.sent;
 
-                        case 11:
-                          debugger;
-
+                        case 10:
                           if (!(credentials == null)) {
-                            _context.next = 14;
+                            _context.next = 12;
                             break;
                           }
 
@@ -80,14 +77,14 @@ module.exports = /*#__PURE__*/function () {
                             valid: false
                           });
 
-                        case 14:
+                        case 12:
                           server.log('Cookie validateFunc', sid);
                           return _context.abrupt("return", {
                             valid: true,
                             credentials: credentials
                           });
 
-                        case 16:
+                        case 14:
                         case "end":
                           return _context.stop();
                       }

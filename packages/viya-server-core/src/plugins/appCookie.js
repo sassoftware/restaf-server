@@ -14,7 +14,7 @@ module.exports = async function appCookie (server, options){
         redirectTo  : options.redirectTo,
         appendNext  : {name: 'next'},
         validateFunc: async (req, session) => {
-            debugger;
+            
             server.log('Cookie validateFunc', `path - ${req.path}`);
             if (session == null) {
                 console.log('session is null');
@@ -30,7 +30,7 @@ module.exports = async function appCookie (server, options){
             if (sid != null) {
                 credentials = await req.server.app.cache.get(sid);
              }
-             debugger;
+             
             if (credentials == null) {
                 return {valid: false};
             }

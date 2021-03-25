@@ -4,13 +4,14 @@
 */
 let rafServer = require('./lib/index.js');
 debugger;
-rafServer.icli(null, true, customize);
+rafServer.icli(null, true, null);
 function customize (options, key){
     let info = {
         APPENV: {
             x: 1,
             y: 2
-        }
+        },
+        SWAGGEROPTIONS: {}
     };
     return info[key];
 }

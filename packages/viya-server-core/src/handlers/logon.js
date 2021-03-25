@@ -6,10 +6,10 @@
 import setCookies from './setCookies';
 async function logon (req, h) {
    req.log('in logon');
-   debugger;
+   
    req.log('in logon 2');
    let r = await setCookies(req, h);
-   req.log('in logon after setcookie', r.redirect);debugger;
+   req.log('in logon after setcookie', r.redirect);
    return h.redirect(r.redirect);
 }
 

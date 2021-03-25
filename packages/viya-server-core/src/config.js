@@ -44,7 +44,7 @@ function config (appEnv, dockerFile) {
 		console.log('Setting APPHOST to localhost');
 		process.env.APPHOST = 'localhost';
 	}
-
+	
 	if (process.env.APPLOC == null) {
 		process.env.APPLOC = './public';
 	}
@@ -71,7 +71,6 @@ function config (appEnv, dockerFile) {
 	if (vserver.indexOf('https://') !== -1) {
 		process.env.HTTPS = 'true';
 	}
-
 }
 
 function iconfig (appEnv) {

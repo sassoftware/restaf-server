@@ -114,7 +114,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 				tls.cert = process.env.TLS_CRT;
 				tls.key = process.env.TLS_KEY;
 			} else if (process.env.TLS_CREATE != null) {  /* unsigned certificate */
-				console.log('TLS set: TLS_CREATE');
+				console.log('TLS set: TLS_CREATE=', process.env.TLS_CREATE);
 				tls = await getTls();
 			}
 
@@ -227,7 +227,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 				swaggerOptions = {...swaggerOptions, ...override};
 			}
 			
-			console.log(swaggerOptions);
+			console.log('Swagger Options:' ,swaggerOptions);
 			await hapiServer.register({ plugin: HapiSwagger, options: swaggerOptions });
 		} else if (process.env.PLUGIN == 'hapi-openapi' && serverMode === 'api') {
 			console.log('hapi-openapi', 'coming soon');
@@ -265,7 +265,6 @@ async function getTls () {
 		clientCertificate: true,
 		extensions       : {}, 
 	};
-
 	let subjt = process.env.TLS_CREATE.replaceAll('"', '').trim();
 	let subj  = subjt.split(',');
 	
@@ -280,7 +279,7 @@ async function getTls () {
 	let attr = [
 		{
 			name : 'commonName',
-			value: process.env.APPHOST,
+			value: d.CN /*process.env.APPHOST*/,
 		},
 		{
 			name : 'countryName',
