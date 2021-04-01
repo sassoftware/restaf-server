@@ -50,19 +50,25 @@ function _setCookies() {
             return req.server.app.cache.set(sid, credentials, 0);
 
           case 9:
-            req.cookieAuth.set({
-              sid: sid
-            });
+            // Can we get away without setting cookie for this session?
+            // Need to also modify keepAlive
+            if (process.env.COOKIES !== 'NO') {
+              req.cookieAuth.set({
+                sid: sid
+              });
+            }
+
+            ;
             req.log('setcookie', credentials.query);
             redirect = credentials.query != null && credentials.query.next != null ? credentials.query.next : null;
-            req.server.log('setcookie-recirect', redirect);
+            req.server.log('setcookie-redirect', redirect);
             return _context.abrupt("return", {
               status: true,
               error: null,
               redirect: redirect
             });
 
-          case 14:
+          case 15:
           case "end":
             return _context.stop();
         }

@@ -29,36 +29,42 @@ exports.plugin = {
 
 async function iSASauth (server, options) {
     console.log(options);
-    let bellAuthOptions,
-        provider;
+    let bellAuthOptions;
+    let provider;
+    // test for k8s deployment
+    let host = options.host;
+    if (options.ns != null) {
+        host = `https://saslogon.${options.ns}.svc.cluster.local`;
+    }
+    // ...
+    
+    provider = {
+        name         : 'sas',
+        protocol     : 'oauth2',
+        useParamsAuth: false,
+        auth         : host + '/SASLogon/oauth/authorize',
+        token        : host + '/SASLogon/oauth/token',
 
-        provider = {
-			name         : 'sas',
-			protocol     : 'oauth2',
-			useParamsAuth: false,
-			auth         : options.host + '/SASLogon/oauth/authorize',
-            token        : options.host + '/SASLogon/oauth/token',
-
-            profileMethod: 'get',
-            
-            profile: async function (credentials, params, get) {           
-                server.log('SASAuth profile', credentials);
-            }
-            
-        };
+        profileMethod: 'get',
         
-        bellAuthOptions = {
-            provider    : provider,
-            password    : uuid.v4(),
-            clientId    : options.clientId,
-            clientSecret: options.clientSecret,
-         //   isSameSite  : options.isSameSite,
-            isSecure    : options.isSecure
-        };
-        console.log('SASAuth options', bellAuthOptions);
-        server.log('SASAuth',bellAuthOptions);
-        await server.register(bell);
-        server.auth.strategy('sas', 'bell', bellAuthOptions);
+        profile: async function (credentials, params, get) {           
+            server.log('SASAuth profile', credentials);
+        }
         
+    };
+    
+    bellAuthOptions = {
+        provider    : provider,
+        password    : uuid.v4(),
+        clientId    : options.clientId,
+        clientSecret: options.clientSecret,
+        //   isSameSite  : options.isSameSite,
+        isSecure    : options.isSecure
+    };
+    console.log('SASAuth options', bellAuthOptions);
+    server.log('SASAuth',bellAuthOptions);
+    await server.register(bell);
+    server.auth.strategy('sas', 'bell', bellAuthOptions);
+    
     }
     

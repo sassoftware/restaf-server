@@ -41,7 +41,8 @@ module.exports = function core(uTable, useDefault, serverMode, customize) {
     useDefault = true;
   }
 
-  console.log("\nConfiguration:\n          Dockerfile: ".concat(docker, "\n          env file  : ").concat(env, "\n          appenv    : ").concat(appenv, "\n          customize : (customize != null)\n          "));
+  console.log('Initialization started ============================================================');
+  console.log("\nConfiguration:\n          Dockerfile: ".concat(docker, "\n          env file  : ").concat(env, "\n          appenv    : ").concat(appenv, "\n          customize : ").concat(customize != null, "\n          "));
   iapp(appenv, env, docker, uTable, useDefault, serverMode, customize);
 };
 
@@ -59,7 +60,6 @@ function iapp(appSrc, rafEnv, dockerFile, uTable, useDefault, serverMode, custom
         console.log('createPayload failed');
         process.exit(1);
       } else {
-        console.log(customize);
         (0, _iService["default"])(uTable, useDefault, asset, r, serverMode, customize);
       }
     });
@@ -107,7 +107,6 @@ function getAllEnv(userData) {
   }
 
   process.env.AUTHFLOW = authflow;
-  console.log(authflow);
   var redirect = process.env.REDIRECT != null ? process.env.REDIRECT : null;
   var host = trimit('VIYA_SERVER');
   var clientID = trimit('CLIENTID');

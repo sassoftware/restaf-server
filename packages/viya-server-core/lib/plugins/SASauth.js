@@ -39,18 +39,26 @@ function iSASauth(_x, _x2) {
 
 function _iSASauth() {
   _iSASauth = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(server, options) {
-    var bellAuthOptions, provider;
+    var bellAuthOptions, provider, host;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
             console.log(options);
+            // test for k8s deployment
+            host = options.host;
+
+            if (options.ns != null) {
+              host = "https://saslogon.".concat(options.ns, ".svc.cluster.local");
+            } // ...
+
+
             provider = {
               name: 'sas',
               protocol: 'oauth2',
               useParamsAuth: false,
-              auth: options.host + '/SASLogon/oauth/authorize',
-              token: options.host + '/SASLogon/oauth/token',
+              auth: host + '/SASLogon/oauth/authorize',
+              token: host + '/SASLogon/oauth/token',
               profileMethod: 'get',
               profile: function () {
                 var _profile = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(credentials, params, get) {
@@ -85,13 +93,13 @@ function _iSASauth() {
             };
             console.log('SASAuth options', bellAuthOptions);
             server.log('SASAuth', bellAuthOptions);
-            _context2.next = 7;
+            _context2.next = 9;
             return server.register(bell);
 
-          case 7:
+          case 9:
             server.auth.strategy('sas', 'bell', bellAuthOptions);
 
-          case 8:
+          case 10:
           case "end":
             return _context2.stop();
         }

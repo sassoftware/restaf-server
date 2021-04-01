@@ -20,10 +20,14 @@ async function setCookies (req, h) {
     credentials.sid = sid;
     
     await req.server.app.cache.set(sid, credentials, 0);
-    req.cookieAuth.set({ sid });
+    // Can we get away without setting cookie for this session?
+    // Need to also modify keepAlive
+    if (process.env.COOKIES !== 'NO') {
+        req.cookieAuth.set({ sid });
+    };
     req.log('setcookie', credentials.query);
     let redirect = (credentials.query != null && credentials.query.next != null) ? credentials.query.next : null;
-    req.server.log('setcookie-recirect', redirect);
+    req.server.log('setcookie-redirect', redirect);
     return { status: true, error: null , redirect: redirect};
 }
 

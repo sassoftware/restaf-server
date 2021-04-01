@@ -1,6 +1,6 @@
 {
   "name": "@sassoftware/viya-appserverjs",
-  "version": "1.2.25",
+  "version": "1.2.26",
   "description": "Custom app server for Viya apps",
   "author": "Deva Kumaraswamy <deva.kumar@sas.com>",
   "license": "Apache-2.0",
@@ -32,9 +32,10 @@
   "scripts": {
     "build": "babel src --out-dir lib",
     "start": "cross-env VIYA_SERVER=%vx% node ./lib/cli.js --env=./.env --docker=./Dockerfile",
-    "app": "cross-env  VIYA_SERVER=%vx% node app.js --env=./.env --docker=./Dockerfile",
-    "debug": "cross-env VIYA_SERVER=%vx% node --inspect-brk ./lib/cli.js   --env=./.env --docker=./Dockerfile --appenv=appenv.js",
-    "debugapp": "cross-env VIYA_SERVER=%vx% node --inspect-brk app.js  --env=./.env --docker=./Dockerfile --appenv=appenv.js",
+    "app": "cross-env  VIYA_SERVER=%vx% node app.js --env=./.env --docker=./Dockerfile ",
+    "appenv": "cross-env  VIYA_SERVER=%vx% node app.js --env=./.env --appenv=./appenv.js --docker=./Dockerfile ",
+    "debug": "cross-env VIYA_SERVER=%vx% node --inspect-brk ./lib/cli.js   --env=./.env --docker=./Dockerfile",
+    "debugapp": "cross-env VIYA_SERVER=%vx% node --inspect-brk app.js  --env=./.env --docker=./Dockerfile",
     "pub": "npm publish --tag test --access public",
     "lint": "npx eslint --fix src/*.js"
   },
@@ -47,7 +48,7 @@
     "@hapi/inert": "^6.0.3",
     "@hapi/joi": "^17.1.1",
     "@hapi/vision": "^6.0.1",
-    "@sassoftware/viya-server-core": "1.2.25",
+    "@sassoftware/viya-server-core": "1.2.26",
     "axios": "^0.21.1",
     "core-js": "^3.8.1",
     "debug": "^4.3.1",

@@ -25,7 +25,7 @@ ENV CLIENTSECRET=secret
 
 # The following are defaults 
 # ENV APPLOC=./public
-ENV APPENTRY=index.html
+# ENV APPENTRY=index.html
 # ENV APPENV=appenv.js
 
 ENV TLS_CREATE="C:US,ST:NC,L:Cary,O:SAS Institute,OU:STO,CN:localhost"

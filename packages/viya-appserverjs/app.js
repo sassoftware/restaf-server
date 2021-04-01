@@ -4,8 +4,8 @@
 */
 let rafServer = require('./lib/index.js');
 debugger;
-rafServer.icli(null, true, null);
-function customize (options, key){
+rafServer.icli(null, true, customize);
+function customize (key, _options){
     let info = {
         APPENV: {
             x: 1,

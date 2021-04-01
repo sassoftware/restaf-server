@@ -73,7 +73,7 @@ module.exports = function setDefaultRoutes (server, options) {
 		{
 			method: ['GET'],
 			path  : `${appName}/develop`,
-			config: {
+			options: {
 				auth   : false,
 				cors   : true,
 				handler: reactDev
@@ -123,10 +123,8 @@ module.exports = function setDefaultRoutes (server, options) {
 				auth   : authDefault,
 				handler: (req, h) => {
 					let allAppEnv = options.allAppEnv;
-					console.log(allAppEnv);
-					console.log(options.userInfo);
 					if (options.userInfo != null) {
-						allAppEnv.APPENV = options.userInfo(options,'APPENV');
+						allAppEnv.APPENV = options.userInfo('APPENV', options);
 					}
 
 					let s = `let LOGONPAYLOAD = ${JSON.stringify(allAppEnv.LOGONPAYLOAD)};` + 
@@ -134,7 +132,7 @@ module.exports = function setDefaultRoutes (server, options) {
 					return s;
 				}
 			},
-		},
+		},  
 		{
 			method: ['GET'],
 			path  : `${appName}/{param*}`,

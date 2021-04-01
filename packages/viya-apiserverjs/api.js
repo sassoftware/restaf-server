@@ -61,7 +61,7 @@ function getCustomHandler () {
 	];
     return routes;
 } 
-function customize (options, key){
+function customize (key, options){
     let info = {
 		swaggerOptions: {
 			'info': {

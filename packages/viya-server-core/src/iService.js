@@ -125,7 +125,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 			if (Object.keys(tls).length > 0) {
 				sConfig.tls = tls;
 			} else {
-				console.log('Warning: No TLS certificate information specified');
+				console.log('Warning: The current protocol is https: No TLS certificate information has been specified.');
 			}
 		}
 
@@ -174,7 +174,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 				level      : process.env.LOGLEVEL == null ? 'silent' : process.env.LOGLEVEL,
 			},
 		});
-
+		
 		// setup authentication related plugins
 		let options = {
 			serverMode    : serverMode, /* api or app */
@@ -182,6 +182,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 			host          : process.env.VIYA_SERVER,
 			isSameSite    : isSameSite,
 			isSecure      : isSecure,
+			ns            : allAppEnv.LOGONPAYLOAD.ns,
 			redirect      : process.env.REDIRECT,
 			clientId      : process.env.CLIENTID,
 			clientSecret  : process.env.CLIENTSECRET,
@@ -199,6 +200,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
             authLogon     : false  /* set later in setDefaultRoutes */
 
 		};
+		
 		hapiServer.log('Options',options);
 
 		await setupAuth(hapiServer, options);
@@ -248,6 +250,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		console.log(msg);
 		console.log('NOTE: If running in container then use the port number you mapped to');
 		process.env.APPSERVER = `${hh}/${process.env.APPNAME}`;
+		console.log('Initialization completed ============================================================');
 	};
 
 	process.on('unhandledRejection', (err) => {

@@ -234,7 +234,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
               if (Object.keys(tls).length > 0) {
                 sConfig.tls = tls;
               } else {
-                console.log('Warning: No TLS certificate information specified');
+                console.log('Warning: The current protocol is https: No TLS certificate information has been specified.');
               }
 
             case 35:
@@ -303,6 +303,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
                 host: process.env.VIYA_SERVER,
                 isSameSite: isSameSite,
                 isSecure: isSecure,
+                ns: allAppEnv.LOGONPAYLOAD.ns,
                 redirect: process.env.REDIRECT,
                 clientId: process.env.CLIENTID,
                 clientSecret: process.env.CLIENTSECRET,
@@ -392,8 +393,9 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
               console.log(msg);
               console.log('NOTE: If running in container then use the port number you mapped to');
               process.env.APPSERVER = "".concat(hh, "/").concat(process.env.APPNAME);
+              console.log('Initialization completed ============================================================');
 
-            case 75:
+            case 76:
             case "end":
               return _context2.stop();
           }
