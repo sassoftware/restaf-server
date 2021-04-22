@@ -182,7 +182,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 			host          : process.env.VIYA_SERVER,
 			isSameSite    : isSameSite,
 			isSecure      : isSecure,
-			ns            : allAppEnv.LOGONPAYLOAD.ns,
+			ns            : (allAppEnv.LOGONPAYLOAD != null) ? allAppEnv.LOGONPAYLOAD.ns : null,
 			redirect      : process.env.REDIRECT,
 			clientId      : process.env.CLIENTID,
 			clientSecret  : process.env.CLIENTSECRET,

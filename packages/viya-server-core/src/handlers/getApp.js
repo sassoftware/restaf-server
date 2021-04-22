@@ -25,7 +25,6 @@ async function getApp (req, h) {
         debug(url);
         return h.redirect(url);
     } else if (process.env.AUTHFLOW === 'server') {
-        
         return codeAuth(req, h);
     } else {
         debug('default getapp');

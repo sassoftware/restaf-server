@@ -65,9 +65,12 @@ function config (appEnv, dockerFile) {
 		vserver = vserver.substring(0, vserver.length - 1);
 	}
 	if (vserver.indexOf('http') < 0) {
-		vserver = 'http://' + vserver;
+		vserver = 'https://' + vserver;
+		console.log('No protocol specified. Setting to https');
 	} 
 
+	process.env.VIYA_SERVER = vserver;
+	console.log('VIYA_SERVER is: ', process.env.VIYA_SERVER);
 	if (vserver.indexOf('https://') !== -1) {
 		process.env.HTTPS = 'true';
 	}
