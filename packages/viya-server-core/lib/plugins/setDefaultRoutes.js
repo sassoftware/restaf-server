@@ -62,7 +62,7 @@ module.exports = function setDefaultRoutes(server, options) {
         return handler;
       }()
     }
-  },
+  }
   /*{
   method : ['GET'],
   path   : `/swagger.json`,
@@ -73,9 +73,9 @@ module.exports = function setDefaultRoutes(server, options) {
   },
   },
   },*/
-  {
+  , {
     method: ['GET'],
-    path: "".concat(appName, "/develop"),
+    path: "/develop",
     options: {
       auth: false,
       cors: true,
@@ -118,6 +118,24 @@ module.exports = function setDefaultRoutes(server, options) {
   }, {
     method: ['GET'],
     path: "".concat(appName, "/appenv"),
+    options: {
+      auth: authDefault,
+      handler: function handler(req, h) {
+        var allAppEnv = options.allAppEnv;
+
+        if (options.userInfo != null) {
+          allAppEnv.APPENV = options.userInfo('APPENV', options);
+        }
+
+        var s = "let LOGONPAYLOAD = ".concat(JSON.stringify(allAppEnv.LOGONPAYLOAD), ";") + "let APPENV = ".concat(JSON.stringify(allAppEnv.APPENV), ";");
+        return s;
+      }
+    }
+  }, {
+    method: ['GET'],
+
+    /* nedd this when running under dev mode in react apps */
+    path: "/appenv",
     options: {
       auth: authDefault,
       handler: function handler(req, h) {

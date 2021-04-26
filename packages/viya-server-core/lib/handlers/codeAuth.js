@@ -25,7 +25,7 @@ function codeAuth(_x, _x2) {
 
 function _codeAuth() {
   _codeAuth = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, h) {
-    var r, indexHTML;
+    var indexHTML;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -34,25 +34,27 @@ function _codeAuth() {
             return (0, _setCookies["default"])(req, h);
 
           case 2:
-            r = _context.sent;
             indexHTML = process.env.APPENTRY == null ? 'index.html' : process.env.APPENTRY;
 
             if (!(indexHTML.indexOf('/') === 0)) {
-              _context.next = 9;
+              _context.next = 8;
               break;
             }
 
             // added to support create-react-restaf-viya-app cli
-            debug("/".concat(process.env.APPNAME).concat(indexHTML));
-            return _context.abrupt("return", h.redirect("/".concat(process.env.APPNAME).concat(indexHTML)));
+            if (indexHTML !== '/develop') {
+              indexHTML = "/".concat(process.env.APPNAME).concat(indexHTML);
+            }
 
-          case 9:
+            return _context.abrupt("return", h.redirect(indexHTML));
+
+          case 8:
             return _context.abrupt("return", h.file(indexHTML));
 
-          case 10:
+          case 9:
             ;
 
-          case 11:
+          case 10:
           case "end":
             return _context.stop();
         }

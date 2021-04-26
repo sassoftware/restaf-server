@@ -60,7 +60,7 @@ module.exports = function setDefaultRoutes (server, options) {
 					return h.redirect(`${appName}/documentation`);
 				},
 			},
-		},/*{
+		} /*{
 			method : ['GET'],
 			path   : `/swagger.json`,
 			options: {
@@ -69,14 +69,14 @@ module.exports = function setDefaultRoutes (server, options) {
 					return h.redirect(`${appName}/swagger.json`);
 				},
 			},
-		},*/
+		},*/,
 		{
-			method: ['GET'],
-			path  : `${appName}/develop`,
+			method : ['GET'],
+			path   : `/develop`,
 			options: {
 				auth   : false,
 				cors   : true,
-				handler: reactDev
+				handler: reactDev,
 			},
 		},
 		{
@@ -86,9 +86,9 @@ module.exports = function setDefaultRoutes (server, options) {
 				auth   : authLogon,
 				//https://futurestud.io/tutorials/hapi-redirect-to-previous-page-after-login
 				plugins: {
-					'hapi-auth-cookie': {redirectTo: false}
+					'hapi-auth-cookie': { redirectTo: false },
 				},
-				handler: logon
+				handler: logon,
 			},
 		},
 		{
@@ -110,7 +110,7 @@ module.exports = function setDefaultRoutes (server, options) {
 		{
 			method: ['GET', 'POST'],
 			path  : `${appName}/keepAlive`,
-	
+
 			options: {
 				auth   : authDefault,
 				handler: keepAlive,
@@ -127,12 +127,31 @@ module.exports = function setDefaultRoutes (server, options) {
 						allAppEnv.APPENV = options.userInfo('APPENV', options);
 					}
 
-					let s = `let LOGONPAYLOAD = ${JSON.stringify(allAppEnv.LOGONPAYLOAD)};` + 
-				            `let APPENV = ${JSON.stringify(allAppEnv.APPENV)};`;
+					let s =
+						`let LOGONPAYLOAD = ${JSON.stringify(allAppEnv.LOGONPAYLOAD)};` +
+						`let APPENV = ${JSON.stringify(allAppEnv.APPENV)};`;
 					return s;
-				}
+				},
 			},
-		},  
+		},
+		{
+			method : ['GET'],  /* nedd this when running under dev mode in react apps */
+			path   : `/appenv`,
+			options: {
+				auth   : authDefault,
+				handler: (req, h) => {
+					let allAppEnv = options.allAppEnv;
+					if (options.userInfo != null) {
+						allAppEnv.APPENV = options.userInfo('APPENV', options);
+					}
+
+					let s =
+						`let LOGONPAYLOAD = ${JSON.stringify(allAppEnv.LOGONPAYLOAD)};` +
+						`let APPENV = ${JSON.stringify(allAppEnv.APPENV)};`;
+					return s;
+				},
+			},
+		},
 		{
 			method: ['GET'],
 			path  : `${appName}/{param*}`,
@@ -145,7 +164,7 @@ module.exports = function setDefaultRoutes (server, options) {
 		{
 			method: ['GET'],
 			path  : `/{param*}`,
-	
+
 			options: {
 				auth   : authDefault,
 				handler: getApp2,
