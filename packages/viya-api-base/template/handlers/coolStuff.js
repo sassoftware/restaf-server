@@ -14,7 +14,7 @@ module.exports = async function coolstuff (req,h) {
         });
 };
 async function run (req,h) {
-    debugger;
+    
     let { computeSetup, computeRun } = restaflib;
     let context = req.pre.context;
     let store = await setupConnection(context);

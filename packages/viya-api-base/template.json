@@ -1,8 +1,8 @@
  {
 		"dependencies": {
-			"@sassoftware/restaf": "^3.0.1",
-			"@sassoftware/restaflib": "^3.0.1",
-			"@sassoftware/viya-apiserverjs": "^0.1.4",
+			"@sassoftware/restaf": "next",
+			"@sassoftware/restaflib": "next",
+			"@sassoftware/viya-apiserverjs": "^1.2.26",
 			"joi": "^17.3.0"
 		},
 
@@ -50,7 +50,7 @@
 		"scripts": {
 			"test": "npx jest",
 			"start": "node index.js --env=./.env --docker=./Dockerfile",
-			"indocker": "node index.js --docker=./Dockerfile",
+			"indocker": "node index.js",
 			"debug": "node --inspect-brk index.js   --env=./.env --docker=./Dockerfile",
 			"format": "prettier-eslint --eslint-config-path ./.eslintrc.json --write '**/*.js'",
             "lint": "eslint . --ext .js --fix"

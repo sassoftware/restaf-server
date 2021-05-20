@@ -13,12 +13,12 @@ module.exports = async function compute (req,h) {
         });
 };
 async function run (req,h) {
-    debugger;
+    
     let { computeSetup, computeRun } = restaflib;
     let context = req.pre.context;
     let store = await setupConnection(context);
 	let computeSession = await computeSetup(store, null, null);
-    debugger;
+    
     let computeSummary = await computeRun(
         store,
         computeSession,
@@ -26,7 +26,7 @@ async function run (req,h) {
         context.payload.input,
         15,2  /* just a place holder values for checking job status */
     );
-    debugger;
+    
     let log = await restaflib.computeResults(store, computeSummary, 'log');
     await store.apiCall(computeSession.links('delete'));
     // just return log for the example

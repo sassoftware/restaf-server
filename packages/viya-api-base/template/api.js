@@ -35,18 +35,16 @@ module.exports = function api () {
 				tags       : ['api'],
 			},
 		},
-		/*
 		{
-			method: ['GET'],
-			path: `${appName}/simpleExample`,
+			method : ['GET'],
+			path   : `${appName}/simpleExample`,
 			options: {
-				handler: handlers.simpleExample,
+				handler    : handlers.simpleExample,
 				description: 'Simple Example returning list of files',
-				notes: 'Uses axios to get a list of files from Viya file service',
-				tags: ['api'],
+				notes      : 'Uses axios to get a list of files from Viya file service',
+				tags       : ['api'],
 			},
 		},
-		*/
 		{
 			method : ['POST'],
 			path   : `${appName}/compute/{param*}`,

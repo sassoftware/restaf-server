@@ -4,6 +4,7 @@ let compute = require('./compute');
 let coolStuff = require('./coolStuff');
 let simpleExample = require('./simpleExample');
 let getData = require('./getData');
+let covid = require('./covid');
 
 module.exports = {
     casAction,
@@ -11,5 +12,6 @@ module.exports = {
     compute,
     coolStuff,
     simpleExample,
-    getData
+    getData,
+    covid
 };

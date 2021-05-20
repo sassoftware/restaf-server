@@ -1,0 +1,19 @@
+del appjs
+del apijs
+
+add appjs -t authorization_code -s secret -r http://localhost:8080/viyaapp,https://localhost:443/viyaapp,https://localhost/viyaapp
+
+add apijs -t authorization_code -s secret -r http://localhost:8080/viyaapi/logon,https://localhost:443/viyaapi/logon,https://localhost/viyaapi/logon
+
+
+clientid  : apicom  
+        grantTypes: password,authorization_code,refresh_token
+        redirect  : https://localhost:443/viyaapi/api,https://localhost:8080/viyaapi/logon,https://localhost/viyaapi/logon,https://localhost:5001/viyaapi/logon
+clientid  : appcom
+        grantTypes: authorization_code,refresh_token
+        redirect  : https://localhost:5000/viyaapp,https://localhost:80/viyaapp,https://localhost:8080/viyaapp,https://localhost/viyaapp,https://localhost:443/viyaapp
+clientid  : comapi
+        grantTypes: password,authorization_code,refresh_token
+        redirect  : https://localhost:443/viyaapi/api,https://localhost:8080/viyaapi/logon,https://localhost/viyaapi/logon,https://localhost:5001/viyaapi/logon
+undefined clientids detected
+undefined clientids detected
