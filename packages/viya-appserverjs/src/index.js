@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /*
  *  ------------------------------------------------------------------------------------
  *  * Copyright (c) SAS Institute Inc.
@@ -18,11 +19,11 @@
 
 'use strict';
 
-import core from "@sassoftware/viya-server-core";
+import core from '@sassoftware/viya-server-core';
 
 // silly  but a jump point to keep backward compatibility
 function icli (uTable, useDefault, customize) {
-  core(uTable,useDefault, 'app', customize);
+	core(uTable, useDefault, 'app', customize);
 }
 
-export {icli};
+export { icli };

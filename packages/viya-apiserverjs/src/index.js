@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /*
  *  ------------------------------------------------------------------------------------
  *  * Copyright (c) SAS Institute Inc.
@@ -24,4 +25,4 @@ import core from '@sassoftware/viya-server-core';
 function icli (uTable, useDefault, userInfo) {
 	core(uTable, useDefault, 'api', userInfo);
 }
-export {icli};
+export { icli };
