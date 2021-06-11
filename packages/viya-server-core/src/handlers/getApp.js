@@ -14,8 +14,9 @@ async function getApp (req, h) {
         if (process.env.REDIRECT != null) {
             redirect = process.env.REDIRECT.trim();
             if (redirect.indexOf('http') === -1) {
-                redirect =  `${process.env.APPNAME}/${redirect}`;
-                redirectUri = `http://${process.env.APPHOST}:${process.env.APPPORT}/${redirect}?host=${process.env.VIYA_SERVER}`;
+                redirect = `${process.env.APPNAME}/${redirect}`;
+                let protocol = process.env.HTTPS === 'true' ? 'https://' : 'http://';
+                redirectUri = `${protocol}${process.env.APPHOST}:${process.env.APPPORT}/${redirect}?host=${process.env.VIYA_SERVER}`;
             } else {
                 redirectUri = `${redirect}?host=${process.env.VIYA_SERVER}`;
             }

@@ -1,6 +1,6 @@
 {
   "name": "@sassoftware/restaf-server",
-  "version": "1.2.31",
+  "version": "1.2.32",
   "description": "app and api server for SAS Viya user applications",
   "main": "index.js",
   "scripts": {
@@ -16,12 +16,12 @@
     "apijs:start": "cd packages/viya-apiserverjs && yarn start",
     "apijs:debug": "cd packages/viya-apiserverjs && yarn debug",
     "build": "yarn core:build && yarn appjs:build && yarn apijs:build",
-    "core:pub": "cd packages/viya-server-core && yarn pub",
-    "appjs:pub": "cd packages/viya-appserverjs && yarn pub",
-    "apijs:pub": "cd packages/viya-apiserverjs && yarn pub",
-    "create:pub": "cd packages/create-viya-api && yarn pub",
-    "base:pub": "cd packages/viya-api-base && yarn pub",
-    "pub": "yarn core:pub && yarn appjs:pub && yarn apijs:pub && yarn create:pub && yarn base:pub",
+    "core:pub": "cd packages/viya-server-core && npm run pub",
+    "appjs:pub": "cd packages/viya-appserverjs && npm run pub",
+    "apijs:pub": "cd packages/viya-apiserverjs && npm pub",
+    "create:pub": "cd packages/create-viya-api && npm run pub",
+    "base:pub": "cd packages/viya-api-base && npm run pub",
+    "pub": "npm run core:pub && npm run appjs:pub && npm run apijs:pub && npm run create:pub && npm run base:pub",
     "format": "prettier-eslint --eslint-config-path ./.eslintrc.json --write '**/*.js'",
     "lint": "eslint . --ext .js --fix"
   },

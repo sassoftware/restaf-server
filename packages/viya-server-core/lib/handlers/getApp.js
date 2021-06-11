@@ -21,7 +21,7 @@ function getApp(_x, _x2) {
 
 function _getApp() {
   _getApp = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, h) {
-    var x, redirect, redirectUri, url, indexHTML;
+    var x, redirect, redirectUri, protocol, url, indexHTML;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -39,7 +39,8 @@ function _getApp() {
 
               if (redirect.indexOf('http') === -1) {
                 redirect = "".concat(process.env.APPNAME, "/").concat(redirect);
-                redirectUri = "http://".concat(process.env.APPHOST, ":").concat(process.env.APPPORT, "/").concat(redirect, "?host=").concat(process.env.VIYA_SERVER);
+                protocol = process.env.HTTPS === 'true' ? 'https://' : 'http://';
+                redirectUri = "".concat(protocol).concat(process.env.APPHOST, ":").concat(process.env.APPPORT, "/").concat(redirect, "?host=").concat(process.env.VIYA_SERVER);
               } else {
                 redirectUri = "".concat(redirect, "?host=").concat(process.env.VIYA_SERVER);
               }
