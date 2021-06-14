@@ -29,23 +29,16 @@ module.exports = function setDefaultRoutes(server, options) {
   var uTable = options.userRouteTable !== null ? (0, _handlers.setupUserRoutes)(options.userRouteTable, authDefault) : null;
   var defaultTable = [{
     method: ['GET'],
-    path: "".concat(appName),
+    path: '/',
     options: {
-      auth: options.serverMode === 'app' ? authLogon : authDefault,
-      handler: _handlers.getApp
-    }
-  }, {
-    method: ['GET'],
-    path: "".concat(appName, "/api"),
-    options: {
-      auth: authDefault,
+      auth: false,
       handler: function () {
         var _handler = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, h) {
           return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
-                  return _context.abrupt("return", h.redirect("".concat(appName, "/documentation")));
+                  return _context.abrupt("return", 'I am here');
 
                 case 1:
                 case "end":
@@ -57,6 +50,41 @@ module.exports = function setDefaultRoutes(server, options) {
 
         function handler(_x, _x2) {
           return _handler.apply(this, arguments);
+        }
+
+        return handler;
+      }()
+    }
+  }, {
+    method: ['GET'],
+    path: "".concat(appName),
+    options: {
+      auth: options.serverMode === 'app' ? authLogon : authDefault,
+      handler: _handlers.getApp
+    }
+  }, {
+    method: ['GET'],
+    path: "".concat(appName, "/api"),
+    options: {
+      auth: authDefault,
+      handler: function () {
+        var _handler2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(req, h) {
+          return regeneratorRuntime.wrap(function _callee2$(_context2) {
+            while (1) {
+              switch (_context2.prev = _context2.next) {
+                case 0:
+                  return _context2.abrupt("return", h.redirect("".concat(appName, "/documentation")));
+
+                case 1:
+                case "end":
+                  return _context2.stop();
+              }
+            }
+          }, _callee2);
+        }));
+
+        function handler(_x3, _x4) {
+          return _handler2.apply(this, arguments);
         }
 
         return handler;
@@ -132,9 +160,9 @@ module.exports = function setDefaultRoutes(server, options) {
       }
     }
   }, {
-    method: ['GET'],
-
+    method: ['GET']
     /* nedd this when running under dev mode in react apps */
+    ,
     path: "/appenv",
     options: {
       auth: authDefault,

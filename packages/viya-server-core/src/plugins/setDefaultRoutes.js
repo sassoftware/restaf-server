@@ -45,6 +45,16 @@ module.exports = function setDefaultRoutes (server, options) {
 	let defaultTable = [
 		{
 			method : ['GET'],
+			path   : '/',
+			options: {
+				auth   : false,
+				handler: async (req, h) =>{
+					return 'I am here';
+				}
+			}
+		},
+		{
+			method : ['GET'],
 			path   : `${appName}`,
 			options: {
 				auth   : options.serverMode === 'app' ? authLogon : authDefault,
@@ -135,7 +145,7 @@ module.exports = function setDefaultRoutes (server, options) {
 			},
 		},
 		{
-			method : ['GET'],  /* nedd this when running under dev mode in react apps */
+			method : ['GET'] /* nedd this when running under dev mode in react apps */,
 			path   : `/appenv`,
 			options: {
 				auth   : authDefault,

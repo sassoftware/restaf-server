@@ -52,6 +52,7 @@ function config(appEnv, dockerFile) {
 
   if (process.env.PORT != null) {
     process.env.APPPORT = process.env.PORT;
+    console.log("APPPORT overriden by PORT ".concat(process.env.PORT));
   }
 
   if (isDocker() === false && process.env.APPHOST === '0.0.0.0') {

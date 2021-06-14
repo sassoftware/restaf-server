@@ -43,6 +43,7 @@ function config (appEnv, dockerFile) {
 	// if PORT is set in env, let it override APPPORT value
 	if (process.env.PORT != null) {
 		process.env.APPPORT = process.env.PORT;
+		console.log(`APPPORT overriden by PORT ${process.env.PORT}`);
 	}
 	if (isDocker() === false && process.env.APPHOST === '0.0.0.0') {
 		console.log('Setting APPHOST to localhost');
