@@ -41,6 +41,7 @@ function config (appEnv, dockerFile) {
 		console.log(`APPPORT set to value of exposed port ${process.env.APPPORT}`);
 	}
 	// if PORT is set in env, let it override APPPORT value
+	console.log('PORT override ', process.env.PORT);
 	if (process.env.PORT != null) {
 		process.env.APPPORT = process.env.PORT;
 		console.log(`APPPORT overriden by PORT ${process.env.PORT}`);
