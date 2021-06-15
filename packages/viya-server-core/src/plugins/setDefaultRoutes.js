@@ -48,10 +48,21 @@ module.exports = function setDefaultRoutes (server, options) {
 			path   : '/',
 			options: {
 				auth   : false,
-				handler: async (req, h) =>{
-					return 'I am here';
-				}
-			}
+				handler: async (req, h) => {
+					return { Hello: `I am ${process.env.APPNAME}` };
+				},
+			},
+		},
+		{
+			method : ['GET'],
+			path   : '/health',
+			options: {
+				auth   : false,
+				handler: async (req, h) => {
+					console.log('In health check');
+					return { status: `I am ${process.env.APPNAME} and still around` };
+				},
+			},
 		},
 		{
 			method : ['GET'],
@@ -140,7 +151,7 @@ module.exports = function setDefaultRoutes (server, options) {
 					let s =
 						`let LOGONPAYLOAD = ${JSON.stringify(allAppEnv.LOGONPAYLOAD)};` +
 						`let APPENV = ${JSON.stringify(allAppEnv.APPENV)};`;
-					return s;
+					return h.response(s).headers({});
 				},
 			},
 		},
