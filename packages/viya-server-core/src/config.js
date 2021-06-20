@@ -40,6 +40,12 @@ function config (appEnv, dockerFile) {
 		process.env.APPPORT = process.env.EXPOSEDPORT;
 		console.log(`APPPORT set to value of exposed port ${process.env.APPPORT}`);
 	}
+	// if PORT is set in env, let it override APPPORT value.
+	console.log('PORT override ', process.env.PORT);
+	if (process.env.PORT != null) {
+		process.env.APPPORT = process.env.PORT;
+		console.log(`APPPORT overriden by PORT ${process.env.PORT}`);
+	}
 	if (isDocker() === false && process.env.APPHOST === '0.0.0.0') {
 		console.log('Setting APPHOST to localhost');
 		process.env.APPHOST = 'localhost';
@@ -56,7 +62,7 @@ function config (appEnv, dockerFile) {
 	// fixing usual user error of adding a space after the url
 	let vserver = process.env.VIYA_SERVER;
 	if (vserver == null) {
-		console.log('Please specify a Viya server (VIYA_SERVER)');
+		console.log('Note: VIYA_SERVER not specified');
 		process.exit(0);
 	}
 

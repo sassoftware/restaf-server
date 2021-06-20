@@ -45,6 +45,27 @@ module.exports = function setDefaultRoutes (server, options) {
 	let defaultTable = [
 		{
 			method : ['GET'],
+			path   : '/',
+			options: {
+				auth   : false,
+				handler: async (req, h) => {
+					return { Hello: `I am ${process.env.APPNAME}` };
+				},
+			},
+		},
+		{
+			method : ['GET'],
+			path   : '/health',
+			options: {
+				auth   : false,
+				handler: async (req, h) => {
+					console.log('In health check');
+					return { status: `I am ${process.env.APPNAME} and still around` };
+				},
+			},
+		},
+		{
+			method : ['GET'],
 			path   : `${appName}`,
 			options: {
 				auth   : options.serverMode === 'app' ? authLogon : authDefault,
@@ -130,12 +151,12 @@ module.exports = function setDefaultRoutes (server, options) {
 					let s =
 						`let LOGONPAYLOAD = ${JSON.stringify(allAppEnv.LOGONPAYLOAD)};` +
 						`let APPENV = ${JSON.stringify(allAppEnv.APPENV)};`;
-					return s;
+					return h.response(s).headers({});
 				},
 			},
 		},
 		{
-			method : ['GET'],  /* nedd this when running under dev mode in react apps */
+			method : ['GET'] /* nedd this when running under dev mode in react apps */,
 			path   : `/appenv`,
 			options: {
 				auth   : authDefault,
