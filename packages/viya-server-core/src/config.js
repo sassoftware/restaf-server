@@ -62,7 +62,7 @@ function config (appEnv, dockerFile) {
 	// fixing usual user error of adding a space after the url
 	let vserver = process.env.VIYA_SERVER;
 	if (vserver == null) {
-		console.log('Please specify a Viya server (VIYA_SERVER)');
+		console.log('Note: VIYA_SERVER not specified');
 		process.exit(0);
 	}
 
