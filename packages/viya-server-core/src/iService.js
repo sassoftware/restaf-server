@@ -116,6 +116,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 			} else if (process.env.TLS_CREATE != null) {  /* unsigned certificate */
 				console.log('TLS set: TLS_CREATE=', process.env.TLS_CREATE);
 				tls = await getTls();
+				console.log(tls);
 			}
 
 			if (process.env.TLS_CABUNDLE != null) {
@@ -304,14 +305,15 @@ async function getTls () {
 	];
 
 	options.extensions.altNames = [
-		{ type: 6, value: `http://${process.env.APPHOST}:${process.env.APPPORT}/${process.env.APPNAME}` },
+		//	{ type: 6, value: `http://${process.env.APPHOST}:${process.env.APPPORT}/${process.env.APPNAME}` },
 		{ type: 6, value: `https://${process.env.APPHOST}:${process.env.APPPORT}/${process.env.APPNAME}` },
 		{ type: 6, value: `https://${process.env.APPHOST}:${process.env.APPPORT}/${process.env.APPNAME}/api` },
+		{ type: 6, value: `https://${process.env.APPHOST}:${process.env.APPPORT}/${process.env.APPNAME}/logon` },
 		{ type: 6, value: `https://${process.env.APPHOST}/${process.env.APPNAME}` },
 		{ type: 6, value: `https://${process.env.APPHOST}/${process.env.APPNAME}/api` },
-		{ type: 6, value: `https://${process.env.APPHOST}/${process.env.APPNAME}/logon` }
+		{ type: 6, value: `https://${process.env.APPHOST}/${process.env.APPNAME}/logon` },
 	];
-
+	console.log('tls options ', JSON.stringify(options, null,4));
 	let pems = selfsigned.generate(attr, options);
 	let tls = {
 		cert: pems.cert,

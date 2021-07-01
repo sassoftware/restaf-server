@@ -167,7 +167,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
               tls = {};
 
               if (!(process.env.HTTPS === 'true')) {
-                _context2.next = 35;
+                _context2.next = 36;
                 break;
               }
 
@@ -180,7 +180,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
               console.log('TLS set: TLS_CERT');
               tls.cert = fs.readFileSync(process.env.TLS_CERT);
               tls.key = fs.readFileSync(process.env.TLS_KEY);
-              _context2.next = 33;
+              _context2.next = 34;
               break;
 
             case 16:
@@ -196,7 +196,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
                 tls.passphrase = process.env.TLS_PW;
               }
 
-              _context2.next = 33;
+              _context2.next = 34;
               break;
 
             case 22:
@@ -209,12 +209,12 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
               console.log('TLS set: TLS_CRT');
               tls.cert = process.env.TLS_CRT;
               tls.key = process.env.TLS_KEY;
-              _context2.next = 33;
+              _context2.next = 34;
               break;
 
             case 28:
               if (!(process.env.TLS_CREATE != null)) {
-                _context2.next = 33;
+                _context2.next = 34;
                 break;
               }
 
@@ -225,8 +225,9 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
 
             case 32:
               tls = _context2.sent;
+              console.log(tls);
 
-            case 33:
+            case 34:
               if (process.env.TLS_CABUNDLE != null) {
                 tls.CA = fs.readFileSync(process.env.TLS_CABUNDLE);
               }
@@ -237,7 +238,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
                 console.log('Warning: The current protocol is https: No TLS certificate information has been specified.');
               }
 
-            case 35:
+            case 36:
               if (asset !== null) {
                 sConfig.routes.files = {
                   relativeTo: asset
@@ -268,23 +269,23 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
                 relativeTo: __dirname,
                 path: '.'
               };
-              _context2.next = 44;
+              _context2.next = 45;
               return hapiServer.register(Vision);
 
-            case 44:
+            case 45:
               hapiServer.views(visionOptions);
-              _context2.next = 47;
+              _context2.next = 48;
               return hapiServer.register(inert);
 
-            case 47:
-              _context2.next = 49;
+            case 48:
+              _context2.next = 50;
               return hapiServer.register({
                 plugin: require('hapi-require-https'),
                 options: {}
               });
 
-            case 49:
-              _context2.next = 51;
+            case 50:
+              _context2.next = 52;
               return hapiServer.register({
                 plugin: require('hapi-pino'),
                 options: {
@@ -293,7 +294,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
                 }
               });
 
-            case 51:
+            case 52:
               // setup authentication related plugins
               options = {
                 serverMode: serverMode,
@@ -327,14 +328,14 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
 
               };
               hapiServer.log('Options', options);
-              _context2.next = 55;
+              _context2.next = 56;
               return (0, _setupAuth["default"])(hapiServer, options);
 
-            case 55:
+            case 56:
               hapiServer.log('Plugin', process.env.PLUGIN);
 
               if (!(process.env.PLUGIN === 'hapi-swagger' && serverMode === 'api')) {
-                _context2.next = 64;
+                _context2.next = 65;
                 break;
               }
 
@@ -362,31 +363,31 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
               }
 
               console.log('Swagger Options:', swaggerOptions);
-              _context2.next = 62;
+              _context2.next = 63;
               return hapiServer.register({
                 plugin: HapiSwagger,
                 options: swaggerOptions
               });
 
-            case 62:
-              _context2.next = 65;
+            case 63:
+              _context2.next = 66;
               break;
 
-            case 64:
+            case 65:
               if (process.env.PLUGIN == 'hapi-openapi' && serverMode === 'api') {
                 console.log('hapi-openapi', 'coming soon');
               }
 
-            case 65:
+            case 66:
               //
               // Start server
               //
               allRoutes = hapiServer.table();
               console.table(allRoutes);
-              _context2.next = 69;
+              _context2.next = 70;
               return hapiServer.start();
 
-            case 69:
+            case 70:
               hh = hapiServer.info.uri.replace(/0.0.0.0/, 'localhost');
               console.log('Server Start Time: ', Date());
               msg = options.serverMode === 'app' ? "Visit ".concat(hh, "/").concat(process.env.APPNAME, " to access application") : "Visit ".concat(hh, "/").concat(process.env.APPNAME, "/api to access swagger");
@@ -395,7 +396,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
               process.env.APPSERVER = "".concat(hh, "/").concat(process.env.APPNAME);
               console.log('Initialization completed ============================================================');
 
-            case 76:
+            case 77:
             case "end":
               return _context2.stop();
           }
@@ -465,15 +466,16 @@ function _getTls() {
               shortName: 'OU',
               value: d.OU
             }];
-            options.extensions.altNames = [{
-              type: 6,
-              value: "http://".concat(process.env.APPHOST, ":").concat(process.env.APPPORT, "/").concat(process.env.APPNAME)
-            }, {
+            options.extensions.altNames = [//	{ type: 6, value: `http://${process.env.APPHOST}:${process.env.APPPORT}/${process.env.APPNAME}` },
+            {
               type: 6,
               value: "https://".concat(process.env.APPHOST, ":").concat(process.env.APPPORT, "/").concat(process.env.APPNAME)
             }, {
               type: 6,
               value: "https://".concat(process.env.APPHOST, ":").concat(process.env.APPPORT, "/").concat(process.env.APPNAME, "/api")
+            }, {
+              type: 6,
+              value: "https://".concat(process.env.APPHOST, ":").concat(process.env.APPPORT, "/").concat(process.env.APPNAME, "/logon")
             }, {
               type: 6,
               value: "https://".concat(process.env.APPHOST, "/").concat(process.env.APPNAME)
@@ -484,6 +486,7 @@ function _getTls() {
               type: 6,
               value: "https://".concat(process.env.APPHOST, "/").concat(process.env.APPNAME, "/logon")
             }];
+            console.log('tls options ', JSON.stringify(options, null, 4));
             pems = selfsigned.generate(attr, options);
             tls = {
               cert: pems.cert,
@@ -491,7 +494,7 @@ function _getTls() {
             };
             return _context3.abrupt("return", tls);
 
-          case 10:
+          case 11:
           case "end":
             return _context3.stop();
         }
