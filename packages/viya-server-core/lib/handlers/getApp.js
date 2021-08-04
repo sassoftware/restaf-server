@@ -15,12 +15,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var debug = require('debug')('getapp');
 
-function getApp(_x, _x2) {
+function getApp(_x, _x2, _x3) {
   return _getApp.apply(this, arguments);
 }
 
 function _getApp() {
-  _getApp = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, h) {
+  _getApp = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(options, req, h) {
     var x, redirect, redirectUri, protocol, url, indexHTML;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -57,7 +57,7 @@ function _getApp() {
               break;
             }
 
-            return _context.abrupt("return", (0, _codeAuth["default"])(req, h));
+            return _context.abrupt("return", (0, _codeAuth["default"])(req, h, options));
 
           case 14:
             debug('default getapp');

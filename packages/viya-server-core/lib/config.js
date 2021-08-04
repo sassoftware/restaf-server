@@ -47,14 +47,17 @@ function config(appEnv, dockerFile) {
   if (process.env.APPPORT == null && process.env.EXPOSEDPORT != null) {
     process.env.APPPORT = process.env.EXPOSEDPORT;
     console.log("APPPORT set to value of exposed port ".concat(process.env.APPPORT));
-  } // if PORT is set in env, let it override APPPORT value
+  } // Hnndling PORT overrides.
 
 
-  console.log('PORT override ', process.env.PORT);
-
-  if (process.env.PORT != null) {
-    process.env.APPPORT = process.env.PORT;
-    console.log("APPPORT overriden by PORT ".concat(process.env.PORT));
+  if (process.env.WEBPORT != null) {
+    process.env.APPPORT = process.env[process.env.WEBPORT];
+    console.log("APPPORT overriden by PORT ".concat(process.env.APPPORT));
+  } else {
+    if (process.env.PORT != null) {
+      process.env.APPPORT = process.env.PORT;
+      console.log("APPPORT overriden by PORT ".concat(process.env.PORT));
+    }
   }
 
   if (isDocker() === false && process.env.APPHOST === '0.0.0.0') {
@@ -74,7 +77,7 @@ function config(appEnv, dockerFile) {
   var vserver = process.env.VIYA_SERVER;
 
   if (vserver == null) {
-    console.log('Please specify a Viya server (VIYA_SERVER)');
+    console.log('Note: VIYA_SERVER not specified');
     process.exit(0);
   }
 

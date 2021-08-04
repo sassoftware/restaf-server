@@ -4,17 +4,18 @@ let uuid = require('uuid');
 module.exports = async function appCookie (server, options){
 
     await server.register(require('@hapi/cookie'));
+    debugger;
     let cookieOptions = {
         cookie: {
             name      : 'cookie',
             password  : uuid.v4(),
             isSecure  : options.isSecure,
-            isSameSite: 'None'
+            isSameSite: options.isSameSite
         },
         redirectTo  : options.redirectTo,
         appendNext  : {name: 'next'},
         validateFunc: async (req, session) => {
-            
+            debugger;
             server.log('Cookie validateFunc', `path - ${req.path}`);
             if (session == null) {
                 console.log('session is null');

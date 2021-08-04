@@ -27,7 +27,7 @@ function _logon() {
             req.log('in logon');
             req.log('in logon 2');
             _context.next = 4;
-            return (0, _setCookies["default"])(req, h);
+            return (0, _setCookies["default"])(req, h, null);
 
           case 4:
             r = _context.sent;

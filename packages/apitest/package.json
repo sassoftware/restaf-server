@@ -1,0 +1,21 @@
+{
+  "name": "apitest",
+  "version": "1.2.48",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node api.js --env=./.env --docker=./Dockerfile",
+    "indocker": "node api.js",
+    "debug": "node --inspect-brk api.js   --env=./.env --docker=./Dockerfile",
+    "format": "prettier-eslint --eslint-config-path ./.eslintrc.json --write '**/*.js'",
+    "lint": "eslint . --ext .js --fix"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@sassoftware/viya-apiserverjs": "1.2.48",
+    "axios": "^0.21.1",
+    "joi": "^17.3.0"
+  }
+}

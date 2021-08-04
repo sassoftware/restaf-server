@@ -17,21 +17,15 @@ ENV APPHOST=0.0.0.0
 # ENV APPPORT=8080
 ENV APPNAME=viyaapp
 ENV AUTHFLOW=code
-ENV CLIENTID=appcom
+ENV CLIENTID=viyaapp
 ENV CLIENTSECRET=secret
-
-# ENV PLUGIN=hapi-swagger
-# ENV SWAGGER=./swagger.json
-
-# The following are defaults 
-# ENV APPLOC=./public
-# ENV APPENTRY=index.html
-# ENV APPENV=appenv.js
+ENV HAPIDEBUG=YES
+ENV LOGLEVEL=info
 
 ENV TLS_CREATE="C:US,ST:NC,L:Cary,O:SAS Institute,OU:STO,CN:localhost"
 # ENV TLS_CERT=../../../certs/cert64.cer
 # ENV TLS_KEY=../../../certs/pubkey64.pem
-ENV SAMESITE=None,secure
+ENV SAMESITE=Lax,secure
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
 #####################################################################

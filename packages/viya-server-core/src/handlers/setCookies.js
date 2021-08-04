@@ -5,7 +5,7 @@
 let uuid      = require('uuid');
 let debug = require('debug')('setcookies');
 
-async function setCookies (req, h) {
+async function setCookies (req, h, options) {
     
     
     let credentials = req.auth.credentials;
@@ -18,7 +18,10 @@ async function setCookies (req, h) {
     // create a cookie(sid) and save credentials in cache
     const sid = uuid.v4();
     credentials.sid = sid;
-    
+    if (options != null) {
+        options.allAppEnv.LOGONPAYLOAD.token = credentials.token;
+        options.allAppEnv.LOGONPAYLOAD.tokenType = 'bearer';
+    }
     await req.server.app.cache.set(sid, credentials, 0);
     // Can we get away without setting cookie for this session?
     // Need to also modify keepAlive

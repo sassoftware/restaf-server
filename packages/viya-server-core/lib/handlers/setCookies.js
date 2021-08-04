@@ -17,12 +17,12 @@ var uuid = require('uuid');
 
 var debug = require('debug')('setcookies');
 
-function setCookies(_x, _x2) {
+function setCookies(_x, _x2, _x3) {
   return _setCookies.apply(this, arguments);
 }
 
 function _setCookies() {
-  _setCookies = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, h) {
+  _setCookies = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, h, options) {
     var credentials, sid, redirect;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -46,10 +46,16 @@ function _setCookies() {
             // create a cookie(sid) and save credentials in cache
             sid = uuid.v4();
             credentials.sid = sid;
-            _context.next = 9;
+
+            if (options != null) {
+              options.allAppEnv.LOGONPAYLOAD.token = credentials.token;
+              options.allAppEnv.LOGONPAYLOAD.tokenType = 'bearer';
+            }
+
+            _context.next = 10;
             return req.server.app.cache.set(sid, credentials, 0);
 
-          case 9:
+          case 10:
             // Can we get away without setting cookie for this session?
             // Need to also modify keepAlive
             if (process.env.COOKIES !== 'NO') {
@@ -68,7 +74,7 @@ function _setCookies() {
               redirect: redirect
             });
 
-          case 15:
+          case 16:
           case "end":
             return _context.stop();
         }

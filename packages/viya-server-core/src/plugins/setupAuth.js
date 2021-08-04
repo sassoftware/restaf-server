@@ -32,12 +32,13 @@ async function setupAuth (server, options){
 		// await server.register({plugin: appCookie, options: options});
 		await appCookie(server,options);
 
-		await server.register({ plugin: token });
+		debugger;
 		let def = 'session';
-		if (options.serverMode === 'api'){
+		if (options.serverMode === 'api') {
+			await server.register({ plugin: token });
 			def = 'token';
 		}
-		server.log('Default auth', def);
+		server.log('***********************Default auth', def);
 		server.auth.default(def);
 		console.log(server.registerations);
 	}

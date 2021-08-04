@@ -19,19 +19,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var debug = require('debug')('codeauth');
 
-function codeAuth(_x, _x2) {
+function codeAuth(_x, _x2, _x3) {
   return _codeAuth.apply(this, arguments);
 }
 
 function _codeAuth() {
-  _codeAuth = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, h) {
+  _codeAuth = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, h, options) {
     var indexHTML;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return (0, _setCookies["default"])(req, h);
+            return (0, _setCookies["default"])(req, h, options);
 
           case 2:
             indexHTML = process.env.APPENTRY == null ? 'index.html' : process.env.APPENTRY;

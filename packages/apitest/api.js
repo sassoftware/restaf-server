@@ -17,12 +17,7 @@
  *
  */
 
-
-'use strict';
-
-
-let rafserver = require('./lib/index.js');
-debugger;
+let rafserver = require('@sassoftware/viya-apiserverjs');
 rafserver.icli (getCustomHandler, null, customize);
 
 function getCustomHandler () {

@@ -33,6 +33,7 @@ let os = require('os');
 function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, userInfo) {
 	// process.env.APPHOST_ADDR = process.env.APPHOST;
 	const init = async () => {
+	
 		if (process.env.APPHOST === '*') {
 			process.env.APPHOST = os.hostname();
 		}
@@ -95,41 +96,13 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		if (process.env.HAPIDEBUG === 'YES') {
 			sConfig.debug = { request: '*' };
 		}
-		let tls = {};
-
+		
 		if (process.env.HTTPS === 'true') {
-			
-			if (process.env.TLS_CERT != null) { /* backward compatability */
-				console.log('TLS set: TLS_CERT');
-				tls.cert = fs.readFileSync(process.env.TLS_CERT);
-				tls.key = fs.readFileSync(process.env.TLS_KEY);
-			} else if (process.env.TLS_PFX != null) {
-				console.log('TLS set: PFX');
-				tls.pfx = fs.readFileSync(process.env.TLS_PFX);
-				if (process.env.TLS_PW != null) {
-					tls.passphrase = process.env.TLS_PW;
-				}
-			} else if (process.env.TLS_CRT != null) { /* new key names to conform to k8s*/
-				console.log('TLS set: TLS_CRT');
-				tls.cert = process.env.TLS_CRT;
-				tls.key = process.env.TLS_KEY;
-			} else if (process.env.TLS_CREATE != null) {  /* unsigned certificate */
-				console.log('TLS set: TLS_CREATE=', process.env.TLS_CREATE);
-				tls = await getTls();
-				console.log(tls);
-			}
-
-			if (process.env.TLS_CABUNDLE != null) {
-				tls.CA = fs.readFileSync(process.env.TLS_CABUNDLE);
-			}
-			
-			if (Object.keys(tls).length > 0) {
-				sConfig.tls = tls;
-			} else {
-				console.log('Warning: The current protocol is https: No TLS certificate information has been specified.');
-			}
+			sConfig.tls = await getCertificates();
+			console.log('Setup of SSL certificates completed');
+		} else {
+			console.log('Running with no SSL certificates');
 		}
-
 		if (asset !== null) {
 			sConfig.routes.files= { relativeTo: asset };
 		}
@@ -142,10 +115,10 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		);
 		let hapiServer = Hapi.server(sConfig);
 
-	/* 
-	const cache = hapiServer.cache({ segment: 'sessions', expiresIn: 3 * 24 * 60 * 60 * 1000 });
-	hapiServer.app.cache = cache;
-	*/
+		/*
+		const cache = hapiServer.cache({ segment: 'sessions', expiresIn: 3 * 24 * 60 * 60 * 1000 });
+		hapiServer.app.cache = cache;
+		*/
 
 		let nodeCacheOptions = {
 			stdTTL        : 36000,
@@ -213,7 +186,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 					"version"    : "0.0.1",
 					"description": "This document was auto-generated at run time"
 				},
-				"schemes"          : ["https", "http"],
+				"schemes"          : ["http", "https"],
 				"cors"             : true,
 				"debug"            : true,
 				"jsonPath"         : `/${options.appName}/swagger.json`,
@@ -242,7 +215,8 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		let allRoutes = hapiServer.table();
 		console.table(allRoutes);
 		await hapiServer.start();
-		let hh = hapiServer.info.uri.replace(/0.0.0.0/, 'localhost');
+		let hh = hapiServer.info.uri;
+		hh = hh.replace(/0.0.0.0/, 'localhost');
 		console.log('Server Start Time: ', Date());
 		let msg =
 			options.serverMode === 'app'
@@ -251,6 +225,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		console.log(msg);
 		console.log('NOTE: If running in container then use the port number you mapped to');
 		process.env.APPSERVER = `${hh}/${process.env.APPNAME}`;
+		process.env.HEALTH = 'true';
 		console.log('Initialization completed ============================================================');
 	};
 
@@ -259,6 +234,44 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		process.exit(1);
 	});
 	init();
+}
+
+async function getCertificates () {
+
+	let tls = {};
+	if (process.env.TLS_CERT != null) {
+		/* backward compatability */
+		console.log('TLS set: TLS_CERT');
+		tls.cert = fs.readFileSync(process.env.TLS_CERT);
+		tls.key = fs.readFileSync(process.env.TLS_KEY);
+	} else if (process.env.TLS_PFX != null) {
+		console.log('TLS set: PFX');
+		tls.pfx = fs.readFileSync(process.env.TLS_PFX);
+		if (process.env.TLS_PW != null) {
+			tls.passphrase = process.env.TLS_PW;
+		}
+	} else if (process.env.TLS_CRT != null) {
+		/* new key names to conform to k8s*/
+		console.log('TLS set: TLS_CRT');
+		tls.cert = process.env.TLS_CRT;
+		tls.key = process.env.TLS_KEY;
+	} else if (process.env.TLS_CREATE != null) {
+		/* unsigned certificate */
+		console.log('TLS set: TLS_CREATE=', process.env.TLS_CREATE);
+		tls = await getTls();
+		console.log(tls);
+	}
+
+	if (process.env.TLS_CABUNDLE != null) {
+		tls.CA = fs.readFileSync(process.env.TLS_CABUNDLE);
+	}
+
+	if (Object.keys(tls).length > 0) {
+		return tls;
+	} else {
+		console.log('Warning: The current protocol is https: No TLS certificate information has been specified.');
+		return tls;
+	}
 }
 
 async function getTls () {

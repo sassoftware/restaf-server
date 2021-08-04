@@ -7,9 +7,9 @@
 let debug = require('debug')('codeauth');
 import setCookies from './setCookies';
 
-async function codeAuth (req, h) {  
+async function codeAuth (req, h, options) {  
 	
-	await setCookies(req, h);
+	await setCookies(req, h, options);
 	let indexHTML = process.env.APPENTRY == null ? 'index.html' : process.env.APPENTRY;
 	if (indexHTML.indexOf('/') === 0) {
 		// added to support create-react-restaf-viya-app cli

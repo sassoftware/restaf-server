@@ -12,8 +12,8 @@ module.exports = function setDefaultRoutes(server, options) {
   var authLogon = false;
 
   if (options.authFlow === 'server') {
-    authDefault = {
-      strategies: options.serverMode === 'api' ? ['token', 'session'] : ['session'],
+    authDefault = options.serverMode === 'app' ? false : {
+      strategies: ['token', 'session'],
       mode: 'required'
     };
     authLogon = {
@@ -22,6 +22,8 @@ module.exports = function setDefaultRoutes(server, options) {
     };
   }
 
+  var getAppb = _handlers.getApp.bind(null, process.env.USETOKEN === 'YES' ? options : null);
+
   server.log('Default strategy', authDefault);
   server.log('Logon strategy', authLogon);
   options.authDefault = authDefault;
@@ -29,7 +31,7 @@ module.exports = function setDefaultRoutes(server, options) {
   var uTable = options.userRouteTable !== null ? (0, _handlers.setupUserRoutes)(options.userRouteTable, authDefault) : null;
   var defaultTable = [{
     method: ['GET'],
-    path: '/',
+    path: "".concat(appName, "/health"),
     options: {
       auth: false,
       handler: function () {
@@ -38,9 +40,9 @@ module.exports = function setDefaultRoutes(server, options) {
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
-                  return _context.abrupt("return", {
-                    Hello: "I am ".concat(process.env.APPNAME)
-                  });
+                  return _context.abrupt("return", h.response({
+                    x: 1
+                  }).code(200));
 
                 case 1:
                 case "end":
@@ -59,21 +61,25 @@ module.exports = function setDefaultRoutes(server, options) {
     }
   }, {
     method: ['GET'],
-    path: '/health',
+    path: "".concat(appName),
     options: {
-      auth: false,
+      auth: options.serverMode === 'app' ? authLogon : authDefault,
+      handler: getAppb
+    }
+  }, {
+    method: ['GET'],
+    path: "".concat(appName, "/api"),
+    options: {
+      auth: authDefault,
       handler: function () {
         var _handler2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(req, h) {
           return regeneratorRuntime.wrap(function _callee2$(_context2) {
             while (1) {
               switch (_context2.prev = _context2.next) {
                 case 0:
-                  console.log('In health check');
-                  return _context2.abrupt("return", {
-                    status: "I am ".concat(process.env.APPNAME, " and still around")
-                  });
+                  return _context2.abrupt("return", h.redirect("".concat(appName, "/documentation")));
 
-                case 2:
+                case 1:
                 case "end":
                   return _context2.stop();
               }
@@ -89,52 +95,6 @@ module.exports = function setDefaultRoutes(server, options) {
       }()
     }
   }, {
-    method: ['GET'],
-    path: "".concat(appName),
-    options: {
-      auth: options.serverMode === 'app' ? authLogon : authDefault,
-      handler: _handlers.getApp
-    }
-  }, {
-    method: ['GET'],
-    path: "".concat(appName, "/api"),
-    options: {
-      auth: authDefault,
-      handler: function () {
-        var _handler3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(req, h) {
-          return regeneratorRuntime.wrap(function _callee3$(_context3) {
-            while (1) {
-              switch (_context3.prev = _context3.next) {
-                case 0:
-                  return _context3.abrupt("return", h.redirect("".concat(appName, "/documentation")));
-
-                case 1:
-                case "end":
-                  return _context3.stop();
-              }
-            }
-          }, _callee3);
-        }));
-
-        function handler(_x5, _x6) {
-          return _handler3.apply(this, arguments);
-        }
-
-        return handler;
-      }()
-    }
-  }
-  /*{
-  method : ['GET'],
-  path   : `/swagger.json`,
-  options: {
-  auth   : authDefault,
-  handler: async (req, h) => {
-  	return h.redirect(`${appName}/swagger.json`);
-  },
-  },
-  },*/
-  , {
     method: ['GET'],
     path: "/develop",
     options: {
@@ -188,8 +148,9 @@ module.exports = function setDefaultRoutes(server, options) {
           allAppEnv.APPENV = options.userInfo('APPENV', options);
         }
 
+        allAppEnv.credentials = options.credentials;
         var s = "let LOGONPAYLOAD = ".concat(JSON.stringify(allAppEnv.LOGONPAYLOAD), ";") + "let APPENV = ".concat(JSON.stringify(allAppEnv.APPENV), ";");
-        return h.response(s).headers({});
+        return s;
       }
     }
   }, {

@@ -22,18 +22,19 @@ module.exports = function setDefaultRoutes (server, options) {
 
 	let appName = '/' + options.appName;
 	let authDefault = false;
-	let authLogon   = false;
-	if (options.authFlow === 'server'){
-		authDefault = {
-			strategies: (options.serverMode === 'api') ? ['token', 'session'] : ['session'],
+	let authLogon = false;
+	if (options.authFlow === 'server') {
+		authDefault = (options.serverMode === 'app') ? false : {
+			strategies: ['token', 'session'],
 			mode      : 'required'
 		};
-
+		
 	    authLogon = {
 			mode    : 'required',
 			strategy: 'sas',
 		};
 	}
+	let getAppb = getApp.bind(null, (process.env.USETOKEN === 'YES' ? options : null));
 
 	server.log('Default strategy', authDefault);
 	server.log('Logon strategy', authLogon); 
@@ -45,22 +46,11 @@ module.exports = function setDefaultRoutes (server, options) {
 	let defaultTable = [
 		{
 			method : ['GET'],
-			path   : '/',
+			path   : `${appName}/health`,
 			options: {
 				auth   : false,
 				handler: async (req, h) => {
-					return { Hello: `I am ${process.env.APPNAME}` };
-				},
-			},
-		},
-		{
-			method : ['GET'],
-			path   : '/health',
-			options: {
-				auth   : false,
-				handler: async (req, h) => {
-					console.log('In health check');
-					return { status: `I am ${process.env.APPNAME} and still around` };
+					return h.response({x: 1}).code(200);
 				},
 			},
 		},
@@ -69,7 +59,7 @@ module.exports = function setDefaultRoutes (server, options) {
 			path   : `${appName}`,
 			options: {
 				auth   : options.serverMode === 'app' ? authLogon : authDefault,
-				handler: getApp,
+				handler: getAppb,
 			},
 		},
 		{
@@ -81,16 +71,7 @@ module.exports = function setDefaultRoutes (server, options) {
 					return h.redirect(`${appName}/documentation`);
 				},
 			},
-		} /*{
-			method : ['GET'],
-			path   : `/swagger.json`,
-			options: {
-				auth   : authDefault,
-				handler: async (req, h) => {
-					return h.redirect(`${appName}/swagger.json`);
-				},
-			},
-		},*/,
+		}, 
 		{
 			method : ['GET'],
 			path   : `/develop`,
@@ -147,11 +128,12 @@ module.exports = function setDefaultRoutes (server, options) {
 					if (options.userInfo != null) {
 						allAppEnv.APPENV = options.userInfo('APPENV', options);
 					}
+					allAppEnv.credentials = options.credentials;
 
 					let s =
 						`let LOGONPAYLOAD = ${JSON.stringify(allAppEnv.LOGONPAYLOAD)};` +
 						`let APPENV = ${JSON.stringify(allAppEnv.APPENV)};`;
-					return h.response(s).headers({});
+					return s;
 				},
 			},
 		},

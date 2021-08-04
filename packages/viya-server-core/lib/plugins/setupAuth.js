@@ -51,7 +51,7 @@ function _setupAuth() {
         switch (_context.prev = _context.next) {
           case 0:
             if (!(options.authFlow === 'server')) {
-              _context.next = 12;
+              _context.next = 14;
               break;
             }
 
@@ -66,26 +66,31 @@ function _setupAuth() {
             return appCookie(server, options);
 
           case 5:
-            _context.next = 7;
+            debugger;
+            def = 'session';
+
+            if (!(options.serverMode === 'api')) {
+              _context.next = 11;
+              break;
+            }
+
+            _context.next = 10;
             return server.register({
               plugin: token
             });
 
-          case 7:
-            def = 'session';
+          case 10:
+            def = 'token';
 
-            if (options.serverMode === 'api') {
-              def = 'token';
-            }
-
-            server.log('Default auth', def);
+          case 11:
+            server.log('***********************Default auth', def);
             server.auth["default"](def);
             console.log(server.registerations);
 
-          case 12:
+          case 14:
             setDefaultRoutes(server, options);
 
-          case 13:
+          case 15:
           case "end":
             return _context.stop();
         }

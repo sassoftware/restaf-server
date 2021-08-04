@@ -24,11 +24,11 @@ module.exports = function SASTokenScheme (server, options) {
  
     const scheme = {
         authenticate: async function (request, h) {
-            
             const authorization = request.headers.authorization;
             server.log('SASToken', authorization);
+            debugger;
             if (!authorization) {
-                throw Boom.unauthorized(null, 'session');
+               throw Boom.unauthorized(null, 'session');
             }
             const [tokenType, token] = authorization.split(' ');
             let credentials = {
