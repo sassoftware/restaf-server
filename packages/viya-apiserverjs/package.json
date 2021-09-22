@@ -46,7 +46,7 @@
     "@hapi/joi": "^17.1.1",
     "@hapi/vision": "^6.0.1",
     "@sassoftware/viya-server-core": "1.2.48",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "core-js": "^3.8.1",
     "debug": "^4.3.1",
     "docker-file-parser": "^1.0.5",

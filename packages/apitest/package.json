@@ -15,7 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "@sassoftware/viya-apiserverjs": "1.2.48",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "joi": "^17.3.0"
   }
 }
