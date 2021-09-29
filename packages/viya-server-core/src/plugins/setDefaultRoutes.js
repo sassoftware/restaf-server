@@ -46,7 +46,7 @@ module.exports = function setDefaultRoutes (server, options) {
 	let defaultTable = [
 		{
 			method : ['GET'],
-			path   : `${appName}/health`,
+			path   : `/health`,
 			options: {
 				auth   : false,
 				handler: async (req, h) => {
@@ -122,7 +122,7 @@ module.exports = function setDefaultRoutes (server, options) {
 			method : ['GET'],
 			path   : `${appName}/appenv`,
 			options: {
-				auth   : authDefault,
+				auth   : /*authDefault*/ false,
 				handler: (req, h) => {
 					let allAppEnv = options.allAppEnv;
 					if (options.userInfo != null) {
@@ -141,7 +141,7 @@ module.exports = function setDefaultRoutes (server, options) {
 			method : ['GET'] /* nedd this when running under dev mode in react apps */,
 			path   : `/appenv`,
 			options: {
-				auth   : authDefault,
+				auth   : /*authDefault*/ false,
 				handler: (req, h) => {
 					let allAppEnv = options.allAppEnv;
 					if (options.userInfo != null) {

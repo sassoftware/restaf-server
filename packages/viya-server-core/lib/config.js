@@ -59,11 +59,13 @@ function config(appEnv, dockerFile) {
       console.log("APPPORT overriden by PORT ".concat(process.env.PORT));
     }
   }
-
+  /*
   if (isDocker() === false && process.env.APPHOST === '0.0.0.0') {
-    console.log('Setting APPHOST to localhost');
-    process.env.APPHOST = 'localhost';
+  	console.log('Setting APPHOST to localhost');
+  	process.env.APPHOST = 'localhost';
   }
+  */
+
 
   if (process.env.APPLOC == null) {
     process.env.APPLOC = './public';

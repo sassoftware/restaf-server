@@ -24,7 +24,7 @@ const { isSameSiteNoneCompatible } = require('should-send-same-site-none');
 let NodeCache = require("node-cache-promise");
 let Vision = require('@hapi/vision');
 let inert = require('@hapi/inert');
-let HapiSwagger = require('hapi-swagger');
+// let HapiSwagger = require('hapi-swagger');
 let selfsigned = require('selfsigned');
 import setupAuth from './plugins/setupAuth';
 
@@ -63,7 +63,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 			state: {
 				isSameSite: isSameSite,
 				isSecure  : isSecure,
-
+				/*
 				contextualize: async (definition, request) => {
 					const userAgent = request.headers['user-agent'] || false;
 					if (userAgent && isSameSiteNoneCompatible(userAgent)) {
@@ -72,6 +72,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 					}
 					request.response.vary('User-Agent');
 				},
+				*/
 			},
 	
 
@@ -96,7 +97,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		if (process.env.HAPIDEBUG === 'YES') {
 			sConfig.debug = { request: '*' };
 		}
-		
+		console.log(sConfig);
 		if (process.env.HTTPS === 'true') {
 			sConfig.tls = await getCertificates();
 			console.log('Setup of SSL certificates completed');
@@ -113,6 +114,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		APPENTRY: ${process.env.APPENTRY}
 `
 		);
+
 		let hapiServer = Hapi.server(sConfig);
 
 		/*
@@ -139,8 +141,9 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		await hapiServer.register(Vision);
 		hapiServer.views(visionOptions);
 		await hapiServer.register(inert);
-
-		await hapiServer.register({ plugin: require('hapi-require-https'), options: {} });
+		if (process.env.HTTPS === 'true') {
+			await hapiServer.register({ plugin: require('hapi-require-https'), options: {} });
+		}
 		await hapiServer.register({
 			plugin : require('hapi-pino'),
 			options: {
@@ -204,7 +207,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 			}
 			
 			console.log('Swagger Options:' ,swaggerOptions);
-			await hapiServer.register({ plugin: HapiSwagger, options: swaggerOptions });
+			await hapiServer.register({ plugin: require('hapi-swagger'), options: swaggerOptions });
 		} else if (process.env.PLUGIN == 'hapi-openapi' && serverMode === 'api') {
 			console.log('hapi-openapi', 'coming soon');
 		} 

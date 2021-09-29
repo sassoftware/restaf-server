@@ -15,7 +15,7 @@ ENV APPHOST=0.0.0.0
 
 # set this the same as EXPOSE here and override in env or as -p option in dockerrun
 # ENV APPPORT=8080
-ENV APPNAME=viyaapp
+ENV APPNAME=
 ENV AUTHFLOW=code
 ENV CLIENTID=viyaapp
 ENV CLIENTSECRET=secret
@@ -25,8 +25,8 @@ ENV LOGLEVEL=info
 ENV TLS_CREATE="C:US,ST:NC,L:Cary,O:SAS Institute,OU:STO,CN:localhost"
 # ENV TLS_CERT=../../../certs/cert64.cer
 # ENV TLS_KEY=../../../certs/pubkey64.pem
-ENV SAMESITE=Lax,secure
+ENV SAMESITE=None,secure
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
 #####################################################################
-CMD ["npx", "@sassoftware/viya-appserverjs"]
+CMD ["npm", "run", "indocker"]
