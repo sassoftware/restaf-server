@@ -1,6 +1,6 @@
 {
   "name": "apitest",
-  "version": "1.2.51",
+  "version": "1.2.53",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@sassoftware/viya-apiserverjs": "1.2.51",
+    "@sassoftware/viya-apiserverjs": "1.2.53",
     "axios": "^0.21.1",
     "joi": "^17.3.0"
   }

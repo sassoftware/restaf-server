@@ -10,6 +10,7 @@ RUN npm install
 EXPOSE 8080
 # will auto change to localhost in non-docker environments
 ENV APPHOST=0.0.0.0
+ENV PORT=8080
 
 #######################################################################
 # You can override these(but in container leave APPHOST as shown below)
