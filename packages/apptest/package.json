@@ -1,6 +1,6 @@
 {
   "name": "apptest",
-  "version": "1.2.51",
+  "version": "1.2.53",
   "description": "",
   "main": "app.js",
   "scripts": {
@@ -13,6 +13,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@sassoftware/viya-appserverjs": "1.2.51"
+    "@sassoftware/viya-appserverjs": "1.2.53"
   }
 }
