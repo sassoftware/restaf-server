@@ -6,6 +6,8 @@ services:
       ports:
         - 8080:8080
       environment:
-        - VIYA_SERVER= 
-        - DEBUG=logout,user,cookie,bell,loc
+        - VIYA_SERVER=
+        - APPNAME=viyaapp
+        - USETOKEN=YES
+        - DEBUG=
 

@@ -47,22 +47,22 @@ function config(appEnv, dockerFile) {
   if (process.env.APPPORT == null && process.env.EXPOSEDPORT != null) {
     process.env.APPPORT = process.env.EXPOSEDPORT;
     console.log("APPPORT set to value of exposed port ".concat(process.env.APPPORT));
-  } // Hnndling PORT overrides.
-
-
-  if (process.env.WEBPORT != null) {
-    process.env.APPPORT = process.env[process.env.WEBPORT];
-    console.log("APPPORT overriden by PORT ".concat(process.env.APPPORT));
-  } else {
-    if (process.env.PORT != null) {
-      process.env.APPPORT = process.env.PORT;
-      console.log("APPPORT overriden by PORT ".concat(process.env.PORT));
-    }
   }
 
+  if (process.env.PORT != null) {
+    process.env.APPPORT = process.env.PORT;
+    console.log("APPPORT overriden by PORT ".concat(process.env.PORT));
+  }
+  /*
   if (isDocker() === false && process.env.APPHOST === '0.0.0.0') {
-    console.log('Setting APPHOST to localhost');
-    process.env.APPHOST = 'localhost';
+  	console.log('Setting APPHOST to localhost');
+  	process.env.APPHOST = 'localhost';
+  }
+  */
+
+
+  if (process.env.APPPORT == null) {
+    process.env.APPPORT = 8080;
   }
 
   if (process.env.APPLOC == null) {

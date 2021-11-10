@@ -1,10 +1,11 @@
 {
   "name": "apptest",
-  "version": "1.2.48",
+  "version": "1.2.54",
   "description": "",
   "main": "app.js",
   "scripts": {
     "start": "node index.js --env=./.env --docker=./Dockerfile",
+    "istart": "node index.js --env=./.envimpl --docker=./Dockerfile",
     "debug": "node --inspect-brk index.js   --env=./.env --docker=./Dockerfile",
     "indocker": "node index.js"
   },
@@ -12,6 +13,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@sassoftware/viya-appserverjs": "1.2.48"
+    "@sassoftware/viya-appserverjs": "1.2.54"
   }
 }

@@ -40,21 +40,22 @@ function config (appEnv, dockerFile) {
 		process.env.APPPORT = process.env.EXPOSEDPORT;
 		console.log(`APPPORT set to value of exposed port ${process.env.APPPORT}`);
 	}
-	// Hnndling PORT overrides.
-	if (process.env.WEBPORT != null) {
-		process.env.APPPORT = process.env[ process.env.WEBPORT ];
-		console.log(`APPPORT overriden by PORT ${process.env.APPPORT}`);
-	} else {
-		if (process.env.PORT != null) {
-			process.env.APPPORT = process.env.PORT;
-			console.log(`APPPORT overriden by PORT ${process.env.PORT}`);
-		}
+	
+	if (process.env.PORT != null) {
+		process.env.APPPORT = process.env.PORT;
+		console.log(`APPPORT overriden by PORT ${process.env.PORT}`);
 	}
+	
+	/*
 	if (isDocker() === false && process.env.APPHOST === '0.0.0.0') {
 		console.log('Setting APPHOST to localhost');
 		process.env.APPHOST = 'localhost';
 	}
+	*/
 	
+	if (process.env.APPPORT == null) {
+		process.env.APPPORT=8080;
+	}
 	if (process.env.APPLOC == null) {
 		process.env.APPLOC = './public';
 	}

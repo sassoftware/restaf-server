@@ -1,6 +1,6 @@
 {
   "name": "@sassoftware/restaf-server",
-  "version": "1.2.48",
+  "version": "1.2.54",
   "description": "app and api server for SAS Viya user applications",
   "main": "index.js",
   "scripts": {
@@ -8,6 +8,7 @@
     "core:build": "cd packages/viya-server-core && yarn build",
     "appjs:build": "cd packages/viya-appserverjs && yarn build",
     "appjs:start": "cd packages/apptest && yarn start",
+    "appjs:istart": "cd packages/apptest && yarn istart",
     "appjs:app": "cd packages/viya-appserverjs && yarn app",
     "appjs:appenv": "cd packages/viya-appserverjs && yarn appenv",
     "appjs:debug": "cd packages/apptest && yarn debug",
@@ -15,11 +16,11 @@
     "apijs:build": "cd packages/viya-apiserverjs && yarn build",
     "apijs:start": "cd packages/apitest && yarn start",
     "build": "yarn core:build && yarn appjs:build && yarn apijs:build",
-    "core:pub": "cd packages/viya-server-core  &&  npm publish  --tag dev",
-    "appjs:pub": "cd packages/viya-appserverjs && npm publish --tag dev",
-    "apijs:pub": "cd packages/viya-apiserverjs && npm publish --tag dev",
-    "create:pub": "cd packages/create-viya-api && npm publish --tag dev",
-    "base:pub": "cd packages/viya-api-base     && npm  publish --tag dev",
+    "core:pub": "cd packages/viya-server-core  &&  npm publish  --tag test",
+    "appjs:pub": "cd packages/viya-appserverjs && npm publish --tag test",
+    "apijs:pub": "cd packages/viya-apiserverjs && npm publish --tag test",
+    "create:pub": "cd packages/create-viya-api && npm publish --tag test",
+    "base:pub": "cd packages/viya-api-base     && npm  publish --tag test",
     "pub": "npm run core:pub && npm run appjs:pub && npm run apijs:pub && npm run create:pub && npm run base:pub",
     "format": "prettier-eslint --eslint-config-path ./.eslintrc.json --write '**/*.js'",
     "lint": "eslint . --ext .js --fix"

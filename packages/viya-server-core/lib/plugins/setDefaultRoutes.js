@@ -31,7 +31,7 @@ module.exports = function setDefaultRoutes(server, options) {
   var uTable = options.userRouteTable !== null ? (0, _handlers.setupUserRoutes)(options.userRouteTable, authDefault) : null;
   var defaultTable = [{
     method: ['GET'],
-    path: "".concat(appName, "/health"),
+    path: "/health",
     options: {
       auth: false,
       handler: function () {
@@ -140,7 +140,9 @@ module.exports = function setDefaultRoutes(server, options) {
     method: ['GET'],
     path: "".concat(appName, "/appenv"),
     options: {
-      auth: authDefault,
+      auth:
+      /*authDefault*/
+      false,
       handler: function handler(req, h) {
         var allAppEnv = options.allAppEnv;
 
@@ -159,7 +161,9 @@ module.exports = function setDefaultRoutes(server, options) {
     ,
     path: "/appenv",
     options: {
-      auth: authDefault,
+      auth:
+      /*authDefault*/
+      false,
       handler: function handler(req, h) {
         var allAppEnv = options.allAppEnv;
 
