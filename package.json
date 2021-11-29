@@ -86,17 +86,17 @@
     ]
   },
   "dependencies": {
-    "@sassoftware/restaf": "test",
-    "@sassoftware/restaflib": "test",
+    "@sassoftware/restaf": "4.0.1",
+    "@sassoftware/restaflib": "4.0.1",
     "cross-spawn": "^7.0.3",
     "hapi-swagger": "^14.2.0",
-    "user": "*",
     "uuid": "^8.3.2"
   },
   "resolutions": {
     "yargs-parser": ">=18.1.2",
-    "underscore": "1.12.1",
+    "underscore": "1.13.1",
     "trim-newlines": "3.0.1",
-    "glob-parent": ">=5.1.2"
+    "glob-parent": ">=5.1.2",
+    "validator": ">=13.7.0"
   }
 }

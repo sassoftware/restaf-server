@@ -7,6 +7,18 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+Object.defineProperty(exports, "appCallback", {
+  enumerable: true,
+  get: function get() {
+    return _appCallback["default"];
+  }
+});
+Object.defineProperty(exports, "favicon", {
+  enumerable: true,
+  get: function get() {
+    return _favicon["default"];
+  }
+});
 Object.defineProperty(exports, "getApp", {
   enumerable: true,
   get: function get() {
@@ -19,22 +31,10 @@ Object.defineProperty(exports, "getApp2", {
     return _getApp2["default"];
   }
 });
-Object.defineProperty(exports, "favicon", {
+Object.defineProperty(exports, "getUser", {
   enumerable: true,
   get: function get() {
-    return _favicon["default"];
-  }
-});
-Object.defineProperty(exports, "appCallback", {
-  enumerable: true,
-  get: function get() {
-    return _appCallback["default"];
-  }
-});
-Object.defineProperty(exports, "logon", {
-  enumerable: true,
-  get: function get() {
-    return _logon["default"];
+    return _getUser["default"];
   }
 });
 Object.defineProperty(exports, "keepAlive", {
@@ -49,28 +49,28 @@ Object.defineProperty(exports, "keepAlive2", {
     return _keepAlive2["default"];
   }
 });
+Object.defineProperty(exports, "logon", {
+  enumerable: true,
+  get: function get() {
+    return _logon["default"];
+  }
+});
 Object.defineProperty(exports, "logout", {
   enumerable: true,
   get: function get() {
     return _logout["default"];
   }
 });
-Object.defineProperty(exports, "getUser", {
+Object.defineProperty(exports, "reactDev", {
   enumerable: true,
   get: function get() {
-    return _getUser["default"];
+    return _reactDev["default"];
   }
 });
 Object.defineProperty(exports, "setupUserRoutes", {
   enumerable: true,
   get: function get() {
     return _setupUserRoutes["default"];
-  }
-});
-Object.defineProperty(exports, "reactDev", {
-  enumerable: true,
-  get: function get() {
-    return _reactDev["default"];
   }
 });
 
