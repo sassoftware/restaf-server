@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "json-format": "^1.0.1",
-    "shelljs": "^0.8.4",
+    "shelljs": "^0.8.5",
     "yargs": "^16.2.0"
   }
 }
