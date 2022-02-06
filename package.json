@@ -16,11 +16,11 @@
     "apijs:build": "cd packages/viya-apiserverjs && yarn build",
     "apijs:start": "cd packages/apitest && yarn start",
     "build": "yarn core:build && yarn appjs:build && yarn apijs:build",
-    "core:pub": "cd packages/viya-server-core  &&  npm publish  --tag test",
-    "appjs:pub": "cd packages/viya-appserverjs && npm publish --tag test",
-    "apijs:pub": "cd packages/viya-apiserverjs && npm publish --tag test",
-    "create:pub": "cd packages/create-viya-api && npm publish --tag test",
-    "base:pub": "cd packages/viya-api-base     && npm  publish --tag test",
+    "core:pub": "cd packages/viya-server-core  &&  npm publish  --tag test public --access public",
+    "appjs:pub": "cd packages/viya-appserverjs && npm publish --tag test --access public",
+    "apijs:pub": "cd packages/viya-apiserverjs && npm publish --tag test --access public",
+    "create:pub": "cd packages/create-viya-api && npm publish --tag test --access public",
+    "base:pub": "cd packages/viya-api-base     && npm  publish --tag test --access public",
     "pub": "npm run core:pub && npm run appjs:pub && npm run apijs:pub && npm run create:pub && npm run base:pub",
     "format": "prettier-eslint --eslint-config-path ./.eslintrc.json --write '**/*.js'",
     "lint": "eslint . --ext .js --fix"
@@ -38,7 +38,6 @@
     "url": "https://github.com/sassoftware/restaf-server/issues"
   },
   "homepage": "https://github.com/sassoftware/restaf-server#readme",
-  "private": true,
   "devDependencies": {
     "@babel/cli": "^7.17.0",
     "@babel/core": "^7.17.0",
