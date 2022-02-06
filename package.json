@@ -71,7 +71,6 @@
     "prettier-eslint": "^12.0.0",
     "prettier-eslint-cli": "^5.0.1",
     "rimraf": "^3.0.2",
-    "set-versions": "^1.0.3",
     "shx": "^0.3.3"
   },
   "workspaces": {
@@ -90,13 +89,17 @@
     "@sassoftware/restaflib": "4.0.1",
     "cross-spawn": "^7.0.3",
     "hapi-swagger": "^14.2.0",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "yargs": "17.3.1"
   },
   "resolutions": {
-    "yargs-parser": ">=18.1.2",
+    "ansi-regex": ">=5.0.1",
+    "node-forge": ">=1.0.0",
     "underscore": "1.13.1",
     "trim-newlines": "3.0.1",
     "glob-parent": ">=5.1.2",
+    "swagger-ui": "4.5.0",
+    "swagger-ui-dist": "^4.5.0",
     "validator": ">=13.7.0"
   }
 }
