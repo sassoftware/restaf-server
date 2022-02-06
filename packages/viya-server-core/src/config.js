@@ -19,7 +19,6 @@
 'use strict';
 
 let fs = require('fs');
-let isDocker = require('is-docker');
 import parseDocker from './parseDocker';
 import debug from 'debug';
 let configDebug = debug('config');

@@ -30,8 +30,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 var fs = require('fs');
 
-var isDocker = require('is-docker');
-
 var configDebug = (0, _debug["default"])('config');
 
 function config(appEnv, dockerFile) {
