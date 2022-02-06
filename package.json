@@ -70,6 +70,7 @@
     "rimraf": "^3.0.2",
     "shx": "^0.3.4"
   },
+  "private": true,
   "workspaces": {
     "packages": [
       "packages/viya-apiserverjs",
