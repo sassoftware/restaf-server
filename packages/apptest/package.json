@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node index.js --env=./.env --docker=./Dockerfile",
+    "start": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0 node index.js --env=./.env --docker=./Dockerfile",
     "istart": "node index.js --env=./.envimpl --docker=./Dockerfile",
     "debug": "node --inspect-brk index.js   --env=./.env --docker=./Dockerfile",
     "indocker": "node index.js"
