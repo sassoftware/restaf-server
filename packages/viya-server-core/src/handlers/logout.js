@@ -30,6 +30,7 @@ async function logout (req, h) {
     } 
     return h.redirect(url).unstate('ocookie');
 }
+// eslint-disable-next-line no-unused-vars
 async function ViyaLogout () {
     let p = {
         method: 'GET',

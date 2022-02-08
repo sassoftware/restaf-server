@@ -1,26 +1,15 @@
-/*
- *  ------------------------------------------------------------------------------------
- *  * Copyright (c) SAS Institute Inc.
- *  *  Licensed under the Apache License, Version 2.0 (the "License");
- *  * you may not use this file except in compliance with the License.
- *  * You may obtain a copy of the License at
- *  *
- *  * http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  *  Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  limitations under the License.
- * ----------------------------------------------------------------------------------------
- *
- */
-import { getApp, getApp2, appCallback, favicon, keepAlive, keepAlive2, logout, logon, setupUserRoutes, reactDev } from '../handlers';
+"use strict";
+
+var _handlers = require("../handlers");
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 module.exports = function setDefaultRoutes(server, options) {
-  let appName = '/' + options.appName;
-  let authDefault = false;
-  let authLogon = false;
+  var appName = '/' + options.appName;
+  var authDefault = false;
+  var authLogon = false;
 
   if (options.authFlow === 'server') {
     authDefault = options.serverMode === 'app' ? false : {
@@ -33,50 +22,89 @@ module.exports = function setDefaultRoutes(server, options) {
     };
   }
 
-  let getAppb = getApp.bind(null, process.env.USETOKEN === 'YES' ? options : null);
+  var getAppb = _handlers.getApp.bind(null, process.env.USETOKEN === 'YES' ? options : null);
+
   server.log('Default strategy', authDefault);
   server.log('Logon strategy', authLogon);
   options.authDefault = authDefault;
   options.authLogon = authLogon;
-  let uTable = options.userRouteTable !== null ? setupUserRoutes(options.userRouteTable, authDefault) : null;
-  let defaultTable = [{
+  var uTable = options.userRouteTable !== null ? (0, _handlers.setupUserRoutes)(options.userRouteTable, authDefault) : null;
+  var defaultTable = [{
     method: ['GET'],
-    path: `/health`,
+    path: "/health",
     options: {
       auth: false,
-      handler: async (req, h) => {
-        return h.response({
-          x: 1
-        }).code(200);
-      }
+      handler: function () {
+        var _handler = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, h) {
+          return regeneratorRuntime.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  return _context.abrupt("return", h.response({
+                    x: 1
+                  }).code(200));
+
+                case 1:
+                case "end":
+                  return _context.stop();
+              }
+            }
+          }, _callee);
+        }));
+
+        function handler(_x, _x2) {
+          return _handler.apply(this, arguments);
+        }
+
+        return handler;
+      }()
     }
   }, {
     method: ['GET'],
-    path: `${appName}`,
+    path: "".concat(appName),
     options: {
       auth: options.serverMode === 'app' ? authLogon : authDefault,
       handler: getAppb
     }
   }, {
     method: ['GET'],
-    path: `${appName}/api`,
+    path: "".concat(appName, "/api"),
     options: {
       auth: authDefault,
-      handler: async (req, h) => {
-        return h.redirect(`${appName}/documentation`);
-      }
+      handler: function () {
+        var _handler2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(req, h) {
+          return regeneratorRuntime.wrap(function _callee2$(_context2) {
+            while (1) {
+              switch (_context2.prev = _context2.next) {
+                case 0:
+                  return _context2.abrupt("return", h.redirect("".concat(appName, "/documentation")));
+
+                case 1:
+                case "end":
+                  return _context2.stop();
+              }
+            }
+          }, _callee2);
+        }));
+
+        function handler(_x3, _x4) {
+          return _handler2.apply(this, arguments);
+        }
+
+        return handler;
+      }()
     }
   }, {
     method: ['GET'],
-    path: `/develop`,
+    path: "/develop",
     options: {
       auth: false,
       cors: true,
-      handler: reactDev
+      handler: _handlers.reactDev
     }
   }, {
     method: ['GET'],
-    path: `${appName}/logon`,
+    path: "".concat(appName, "/logon"),
     options: {
       auth: authLogon,
       //https://futurestud.io/tutorials/hapi-redirect-to-previous-page-after-login
@@ -85,45 +113,45 @@ module.exports = function setDefaultRoutes(server, options) {
           redirectTo: false
         }
       },
-      handler: logon
+      handler: _handlers.logon
     }
   }, {
     method: ['GET'],
-    path: `${appName}/callback`,
+    path: "".concat(appName, "/callback"),
     options: {
       auth: authDefault,
-      handler: appCallback
+      handler: _handlers.appCallback
     }
   }, {
     method: ['GET'],
-    path: `${appName}/logout`,
+    path: "".concat(appName, "/logout"),
     options: {
       auth: authDefault,
-      handler: logout
+      handler: _handlers.logout
     }
   }, {
     method: ['GET', 'POST'],
-    path: `${appName}/keepAlive`,
+    path: "".concat(appName, "/keepAlive"),
     options: {
       auth: authDefault,
-      handler: keepAlive
+      handler: _handlers.keepAlive
     }
   }, {
     method: ['GET'],
-    path: `${appName}/appenv`,
+    path: "".concat(appName, "/appenv"),
     options: {
       auth:
       /*authDefault*/
       false,
-      handler: (req, h) => {
-        let allAppEnv = options.allAppEnv;
+      handler: function handler(req, h) {
+        var allAppEnv = options.allAppEnv;
 
         if (options.userInfo != null) {
           allAppEnv.APPENV = options.userInfo('APPENV', options);
         }
 
         allAppEnv.credentials = options.credentials;
-        let s = `let LOGONPAYLOAD = ${JSON.stringify(allAppEnv.LOGONPAYLOAD)};` + `let APPENV = ${JSON.stringify(allAppEnv.APPENV)};`;
+        var s = "let LOGONPAYLOAD = ".concat(JSON.stringify(allAppEnv.LOGONPAYLOAD), ";") + "let APPENV = ".concat(JSON.stringify(allAppEnv.APPENV), ";");
         return s;
       }
     }
@@ -131,52 +159,52 @@ module.exports = function setDefaultRoutes(server, options) {
     method: ['GET']
     /* nedd this when running under dev mode in react apps */
     ,
-    path: `/appenv`,
+    path: "/appenv",
     options: {
       auth:
       /*authDefault*/
       false,
-      handler: (req, h) => {
-        let allAppEnv = options.allAppEnv;
+      handler: function handler(req, h) {
+        var allAppEnv = options.allAppEnv;
 
         if (options.userInfo != null) {
           allAppEnv.APPENV = options.userInfo('APPENV', options);
         }
 
-        let s = `let LOGONPAYLOAD = ${JSON.stringify(allAppEnv.LOGONPAYLOAD)};` + `let APPENV = ${JSON.stringify(allAppEnv.APPENV)};`;
+        var s = "let LOGONPAYLOAD = ".concat(JSON.stringify(allAppEnv.LOGONPAYLOAD), ";") + "let APPENV = ".concat(JSON.stringify(allAppEnv.APPENV), ";");
         return s;
       }
     }
   }, {
     method: ['GET'],
-    path: `${appName}/{param*}`,
+    path: "".concat(appName, "/{param*}"),
     options: {
       auth: authDefault,
-      handler: getApp2
+      handler: _handlers.getApp2
     }
   }, {
     method: ['GET'],
-    path: `/{param*}`,
+    path: "/{param*}",
     options: {
       auth: authDefault,
-      handler: getApp2
+      handler: _handlers.getApp2
     }
   }, {
     method: ['GET'],
-    path: `/favicon.ico`,
+    path: "/favicon.ico",
     options: {
       auth: false,
-      handler: favicon
+      handler: _handlers.favicon
     }
   }, {
     method: ['GET', 'POST'],
-    path: `${appName}/keepAlive2`,
+    path: "".concat(appName, "/keepAlive2"),
     options: {
       auth: authDefault,
-      handler: keepAlive2
+      handler: _handlers.keepAlive2
     }
   }];
-  let routeTables = uTable !== null ? defaultTable.concat(uTable) : defaultTable;
+  var routeTables = uTable !== null ? defaultTable.concat(uTable) : defaultTable;
   server.log('routes', routeTables);
   console.table(routeTables);
   server.route(routeTables);

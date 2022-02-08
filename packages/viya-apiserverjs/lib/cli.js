@@ -4,5 +4,8 @@
 * Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
 * SPDX-License-Identifier: Apache-2.0
 */
-import rafserver from './index.js';
+"use strict";
+
+var rafServer = require('./index.js');
+
 rafServer.icli(null, true);

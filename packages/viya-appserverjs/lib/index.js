@@ -24,11 +24,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.icli = icli;
 
-var _viyaServerCore = _interopRequireDefault(require("@sassoftware/viya-server-core"));
+var core = require('@sassoftware/viya-server-core'); // silly  but a jump point to keep backward compatibility
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-// silly  but a jump point to keep backward compatibility
 function icli(uTable, useDefault, customize) {
-  (0, _viyaServerCore["default"])(uTable, useDefault, 'app', customize);
+  core(uTable, useDefault, 'app', customize);
 }

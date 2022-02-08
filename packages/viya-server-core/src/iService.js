@@ -20,7 +20,7 @@ let fs = require('fs');
 
 // let isDocker = require('is-docker');
 let Hapi = require('@hapi/hapi');
-const { isSameSiteNoneCompatible } = require('should-send-same-site-none');
+// const { isSameSiteNoneCompatible } = require('should-send-same-site-none');
 let NodeCache = require("node-cache-promise");
 let Vision = require('@hapi/vision');
 let inert = require('@hapi/inert');
@@ -46,7 +46,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		}
 		let isSameSite = 'None';
 		let isSecure = false;
-
+		
 		if (process.env.SAMESITE != null) {
 			let [s1, s2] = process.env.SAMESITE.split(',');
 			isSameSite = s1;
@@ -55,6 +55,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 				isSecure = false;
 			}
 		}
+	
 
 		let sConfig = {
 			port: process.env.APPPORT,
@@ -73,6 +74,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 					request.response.vary('User-Agent');
 				},
 				*/
+
 			},
 	
 

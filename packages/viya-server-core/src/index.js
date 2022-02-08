@@ -105,6 +105,7 @@ function getAllEnv (userData) {
 
   let host         = trimit('VIYA_SERVER');
   let clientID     = trimit('CLIENTID');
+  // eslint-disable-next-line no-unused-vars
   let clientSecret = trimit('CLIENTSECRET');
   let keepAlive    = trimit('KEEPALIVE');
   let appName = trimit('APPNAME');
@@ -130,6 +131,7 @@ function getAllEnv (userData) {
       keepAlive: null,
       ns       : ns
     };
+   
     if (authflow === 'server' && keepAlive === 'YES') {
       let protocol = (process.env.HTTPS === 'true') ? 'https://' : 'http://';
       l.keepAlive = `${protocol}${process.env.APPHOST}:${process.env.APPPORT}/${appName}/keepAlive`;

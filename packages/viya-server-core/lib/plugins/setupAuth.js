@@ -1,3 +1,14 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 /*
  *  ------------------------------------------------------------------------------------
  *  * Copyright (c) SAS Institute Inc.
@@ -15,43 +26,79 @@
  * ----------------------------------------------------------------------------------------
  *
  */
-let SASauth = require('./SASauth');
+var SASauth = require('./SASauth');
 
-let appCookie = require('./appCookie');
+var appCookie = require('./appCookie');
 
-let token = require('./token');
+var token = require('./token');
 
-let setDefaultRoutes = require('./setDefaultRoutes');
+var setDefaultRoutes = require('./setDefaultRoutes');
 /** Notes:
  * I api then register sasAuth and token - no cookies
  * If app, then register sasAuth and cookie(session) but no token 
  */
 
 
-async function setupAuth(server, options) {
-  if (options.authFlow === 'server') {
-    await server.register({
-      plugin: SASauth,
-      options: options
-    }); // await server.register({plugin: appCookie, options: options});
+function setupAuth(_x, _x2) {
+  return _setupAuth.apply(this, arguments);
+}
 
-    await appCookie(server, options);
-    let def = 'session';
+function _setupAuth() {
+  _setupAuth = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(server, options) {
+    var def;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            if (!(options.authFlow === 'server')) {
+              _context.next = 13;
+              break;
+            }
 
-    if (options.serverMode === 'api') {
-      await server.register({
-        plugin: token
-      });
-      def = 'token';
-    }
+            _context.next = 3;
+            return server.register({
+              plugin: SASauth,
+              options: options
+            });
 
-    server.log('***********************Default auth', def);
-    server.auth.default(def);
-    console.log(server.registerations);
-  }
+          case 3:
+            _context.next = 5;
+            return appCookie(server, options);
 
-  setDefaultRoutes(server, options);
+          case 5:
+            def = 'session';
+
+            if (!(options.serverMode === 'api')) {
+              _context.next = 10;
+              break;
+            }
+
+            _context.next = 9;
+            return server.register({
+              plugin: token
+            });
+
+          case 9:
+            def = 'token';
+
+          case 10:
+            server.log('***********************Default auth', def);
+            server.auth["default"](def);
+            console.log(server.registerations);
+
+          case 13:
+            setDefaultRoutes(server, options);
+
+          case 14:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _setupAuth.apply(this, arguments);
 }
 
 ;
-export default setupAuth;
+var _default = setupAuth;
+exports["default"] = _default;

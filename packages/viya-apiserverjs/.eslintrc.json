@@ -8,6 +8,8 @@
 	"parser": "@babel/eslint-parser",
 	"extends": ["eslint:recommended", "prettier"],
 	"parserOptions": {
+		"requireConfigFile": false,
+		"babelOptions": {"configFile": "./.babelrc"},
 		"ecmaVersion": 6,
 		"sourceType": "module",
 		"ecmaFeatures": {
@@ -24,7 +26,7 @@
 		"jsx-quotes": [2, "prefer-double"],
 		"no-console": 0,
 		"no-unused-vars": [
-			0,
+			1,
 			{
 				"args": "none"
 			}

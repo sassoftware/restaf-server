@@ -30,7 +30,7 @@
     "url": "https://github.com/sassoftware/restaf-server/issues"
   },
   "scripts": {
-    "build": "babel src --out-dir lib",
+    "build": "rimraf -rf lib && babel src --out-dir lib",
     "start": "cross-env VIYA_SERVER=%vx% node ./lib/cli.js --env=./.env --docker=./Dockerfile",
     "app": "cross-env  VIYA_SERVER=%vx% node app.js --env=./.env --docker=./Dockerfile ",
     "appenv": "cross-env  VIYA_SERVER=%vx% node app.js --env=./.env --appenv=./appenv.js --docker=./Dockerfile ",

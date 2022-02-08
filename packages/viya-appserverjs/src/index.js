@@ -19,7 +19,7 @@
 
 'use strict';
 
-import core from '@sassoftware/viya-server-core';
+let core = require('@sassoftware/viya-server-core');
 
 // silly  but a jump point to keep backward compatibility
 function icli (uTable, useDefault, customize) {

@@ -1,3 +1,9 @@
+"use strict";
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 /*
  *  ------------------------------------------------------------------------------------
  *  * Copyright (c) SAS Institute Inc.
@@ -15,9 +21,9 @@
  * ----------------------------------------------------------------------------------------
  *
  */
-let bell = require('@hapi/bell');
+var bell = require('@hapi/bell');
 
-let uuid = require('uuid');
+var uuid = require('uuid');
 
 exports.plugin = {
   name: 'SASauth',
@@ -25,39 +31,78 @@ exports.plugin = {
   register: iSASauth
 };
 
-async function iSASauth(server, options) {
-  console.log(options);
-  let bellAuthOptions;
-  let provider; // test for k8s deployment
+function iSASauth(_x, _x2) {
+  return _iSASauth.apply(this, arguments);
+}
 
-  let host = options.host;
+function _iSASauth() {
+  _iSASauth = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(server, options) {
+    var bellAuthOptions, provider, host;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            console.log(options);
+            // test for k8s deployment
+            host = options.host;
 
-  if (options.ns != null) {
-    host = `https://saslogon.${options.ns}.svc.cluster.local`;
-  } // ...
+            if (options.ns != null) {
+              host = "https://saslogon.".concat(options.ns, ".svc.cluster.local");
+            } // ...
 
 
-  provider = {
-    name: 'sas',
-    protocol: 'oauth2',
-    useParamsAuth: false,
-    auth: host + '/SASLogon/oauth/authorize',
-    token: host + '/SASLogon/oauth/token',
-    profileMethod: 'get',
-    profile: async function (credentials, params, get) {
-      server.log('SASAuth profile', credentials);
-    }
-  };
-  bellAuthOptions = {
-    provider: provider,
-    password: uuid.v4(),
-    clientId: options.clientId,
-    clientSecret: options.clientSecret,
-    //   isSameSite  : options.isSameSite,
-    isSecure: options.isSecure
-  };
-  console.log('SASAuth options', bellAuthOptions);
-  server.log('SASAuth', bellAuthOptions);
-  await server.register(bell);
-  server.auth.strategy('sas', 'bell', bellAuthOptions);
+            provider = {
+              name: 'sas',
+              protocol: 'oauth2',
+              useParamsAuth: false,
+              auth: host + '/SASLogon/oauth/authorize',
+              token: host + '/SASLogon/oauth/token',
+              profileMethod: 'get',
+              profile: function () {
+                var _profile = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(credentials, params, get) {
+                  return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                      switch (_context.prev = _context.next) {
+                        case 0:
+                          server.log('SASAuth profile', credentials);
+
+                        case 1:
+                        case "end":
+                          return _context.stop();
+                      }
+                    }
+                  }, _callee);
+                }));
+
+                function profile(_x3, _x4, _x5) {
+                  return _profile.apply(this, arguments);
+                }
+
+                return profile;
+              }()
+            };
+            bellAuthOptions = {
+              provider: provider,
+              password: uuid.v4(),
+              clientId: options.clientId,
+              clientSecret: options.clientSecret,
+              //   isSameSite  : options.isSameSite,
+              isSecure: options.isSecure
+            };
+            console.log('SASAuth options', bellAuthOptions);
+            server.log('SASAuth', bellAuthOptions);
+            _context2.next = 9;
+            return server.register(bell);
+
+          case 9:
+            server.auth.strategy('sas', 'bell', bellAuthOptions);
+
+          case 10:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+  return _iSASauth.apply(this, arguments);
 }

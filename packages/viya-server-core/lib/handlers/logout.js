@@ -4,42 +4,110 @@
 */
 'use strict';
 
-import axios from 'axios';
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
 
-let debug = require('debug')('logout');
+var _axios = _interopRequireDefault(require("axios"));
 
-async function logout(req, h) {
-  let q = req.query;
-  debug(req.state);
-  let hh = req.server.info.uri.replace(/0.0.0.0/, 'localhost');
-  let callbackUrl = `${hh}/${process.env.APPNAME}`;
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-  if (q.callbackUrl != null) {
-    callbackUrl = `${callbackUrl}/${q.callbackUrl}`;
-  }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
-  ;
-  let url = `${process.env.VIYA_SERVER}/SASLogon/logout.do?callbackUrl=${callbackUrl}`;
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-  if (process.env.AUTHFLOW === 'server') {
-    if (req.state.ocookie != null) {
-      let sid = req.state.ocookie.sid;
-      await req.server.app.cache.del(sid);
-    } else {
-      console.log('Warning: No cookie returned by the browser');
-    }
-  }
+var debug = require('debug')('logout');
 
-  return h.redirect(url).unstate('ocookie');
+function logout(_x, _x2) {
+  return _logout.apply(this, arguments);
+} // eslint-disable-next-line no-unused-vars
+
+
+function _logout() {
+  _logout = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, h) {
+    var q, hh, callbackUrl, url, sid;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            q = req.query;
+            debug(req.state);
+            hh = req.server.info.uri.replace(/0.0.0.0/, 'localhost');
+            callbackUrl = "".concat(hh, "/").concat(process.env.APPNAME);
+
+            if (q.callbackUrl != null) {
+              callbackUrl = "".concat(callbackUrl, "/").concat(q.callbackUrl);
+            }
+
+            ;
+            url = "".concat(process.env.VIYA_SERVER, "/SASLogon/logout.do?callbackUrl=").concat(callbackUrl);
+
+            if (!(process.env.AUTHFLOW === 'server')) {
+              _context.next = 15;
+              break;
+            }
+
+            if (!(req.state.ocookie != null)) {
+              _context.next = 14;
+              break;
+            }
+
+            sid = req.state.ocookie.sid;
+            _context.next = 12;
+            return req.server.app.cache.del(sid);
+
+          case 12:
+            _context.next = 15;
+            break;
+
+          case 14:
+            console.log('Warning: No cookie returned by the browser');
+
+          case 15:
+            return _context.abrupt("return", h.redirect(url).unstate('ocookie'));
+
+          case 16:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _logout.apply(this, arguments);
 }
 
-async function ViyaLogout() {
-  let p = {
-    method: 'GET',
-    url: `${process.env.VIYA_SERVER}/SASLogon/logout`
-  };
-  let r = await axios(p);
-  debug(r);
+function ViyaLogout() {
+  return _ViyaLogout.apply(this, arguments);
 }
 
-export default logout;
+function _ViyaLogout() {
+  _ViyaLogout = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+    var p, r;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            p = {
+              method: 'GET',
+              url: "".concat(process.env.VIYA_SERVER, "/SASLogon/logout")
+            };
+            _context2.next = 3;
+            return (0, _axios["default"])(p);
+
+          case 3:
+            r = _context2.sent;
+            debug(r);
+
+          case 5:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+  return _ViyaLogout.apply(this, arguments);
+}
+
+var _default = logout;
+exports["default"] = _default;

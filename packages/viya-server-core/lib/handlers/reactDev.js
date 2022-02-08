@@ -1,3 +1,14 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 /*
  * ------------------------------------------------------------------------------------
  *   Copyright (c) SAS Institute Inc.
@@ -15,15 +26,35 @@
  * ---------------------------------------------------------------------------------------
  *
  */
-let spawn = require('cross-spawn');
+var spawn = require('cross-spawn');
 
-async function reactDev(req, h) {
-  console.log('Spawning the dev server');
-  let child = spawn('yarn', ['start'], {
-    stdio: 'inherit'
-  });
-  let h2 = '<h2>Viya Server: ' + process.env.VIYA_SERVER + '<h2>';
-  return h2 + '<h3>Your session is authenticated</h3>' + '<h3>Your application is starting in another tab </h3>' + '<h4> HMR is active</h4>';
+function reactDev(_x, _x2) {
+  return _reactDev.apply(this, arguments);
 }
 
-export default reactDev;
+function _reactDev() {
+  _reactDev = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, h) {
+    var h2;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            console.log('Spawning the dev server');
+            spawn('yarn', ['start'], {
+              stdio: 'inherit'
+            });
+            h2 = '<h2>Viya Server: ' + process.env.VIYA_SERVER + '<h2>';
+            return _context.abrupt("return", h2 + '<h3>Your session is authenticated</h3>' + '<h3>Your application is starting in another tab </h3>' + '<h4> HMR is active</h4>');
+
+          case 4:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _reactDev.apply(this, arguments);
+}
+
+var _default = reactDev;
+exports["default"] = _default;

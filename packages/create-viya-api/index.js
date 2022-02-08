@@ -37,13 +37,13 @@ async function run (appDirectory, version) {
 
 	sh.cd(appDirectory);
 	// init 
-	let rc = await execcmd('npm init -y');
+	await execcmd('npm init -y');
 
 	// install base and copy code over from node_modules
 	let base = `npm install @sassoftware/viya-api-base@${version}`;
 	console.log(`Installing @sassoftware/viya-api-base@${version}`);
-    rc = await execcmd(base);
-	rc = sh.cp('-rf', './node_modules/@sassoftware/viya-api-base/template/*', '.');
+    await execcmd(base);
+	sh.cp('-rf', './node_modules/@sassoftware/viya-api-base/template/*', '.');
 
 	// update package.json with the template.json
 	let templatejs = await fs.readFile('./node_modules/@sassoftware/viya-api-base/template.json', 'utf8');
@@ -58,9 +58,9 @@ async function run (appDirectory, version) {
 	sh.mv('eslintrc.json', '.eslintrc.json');
 	// rename the . files
 	
-    rc = sh.rm('-rf', './node_modules');
-	rc = await execcmd('npm install');
-	rc = await execcmd('npm run lint');
+    sh.rm('-rf', './node_modules');
+	await execcmd('npm install');
+	await execcmd('npm run lint');
 }
 
 run(appDir,version)

@@ -1,3 +1,17 @@
+"use strict";
+
+require("core-js/stable");
+
+require("regenerator-runtime/runtime");
+
+var _fs = _interopRequireDefault(require("fs"));
+
+var _iService = _interopRequireDefault(require("./iService"));
+
+var _config = _interopRequireDefault(require("./config"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
 /*
  *  ------------------------------------------------------------------------------------
  *  * Copyright (c) SAS Institute Inc.
@@ -15,18 +29,12 @@
  * ----------------------------------------------------------------------------------------
  *
  */
-import "core-js/stable";
-import "regenerator-runtime/runtime";
-import fs from 'fs';
-import iService from './iService';
-import config from './config';
-
 module.exports = function core(uTable, useDefault, serverMode, customize) {
-  let argv = require('yargs').argv;
+  var argv = require('yargs').argv;
 
-  let env = argv.env == null ? null : argv.env;
-  let appenv = argv.appenv == null ? null : argv.appenv;
-  let docker = argv.docker == null ? null : argv.docker;
+  var env = argv.env == null ? null : argv.env;
+  var appenv = argv.appenv == null ? null : argv.appenv;
+  var docker = argv.docker == null ? null : argv.docker;
   process.env.SERVERMODE = serverMode;
 
   if (useDefault == null) {
@@ -34,93 +42,88 @@ module.exports = function core(uTable, useDefault, serverMode, customize) {
   }
 
   console.log('Initialization started ============================================================');
-  console.log(`\nConfiguration:
-          Dockerfile: ${docker}
-          env file  : ${env}
-          appenv    : ${appenv}
-          customize : ${customize != null}
-          `);
+  console.log("\nConfiguration:\n          Dockerfile: ".concat(docker, "\n          env file  : ").concat(env, "\n          appenv    : ").concat(appenv, "\n          customize : ").concat(customize != null, "\n          "));
   iapp(appenv, env, docker, uTable, useDefault, serverMode, customize);
 };
 
 function iapp(appSrc, rafEnv, dockerFile, uTable, useDefault, serverMode, customize) {
-  let asset = setup(rafEnv, dockerFile);
+  var asset = setup(rafEnv, dockerFile);
 
   if (appSrc === null) {
     appSrc = process.env.APPENV == null ? null : process.env.APPENV;
   }
 
   if (appSrc != null) {
-    createPayload(appSrc, (err, r) => {
+    createPayload(appSrc, function (err, r) {
       if (err) {
         console.log(err);
         console.log('createPayload failed');
         process.exit(1);
       } else {
-        iService(uTable, useDefault, asset, r, serverMode, customize);
+        (0, _iService["default"])(uTable, useDefault, asset, r, serverMode, customize);
       }
     });
   } else {
-    let appEnv = getAllEnv({});
-    iService(uTable, useDefault, asset, appEnv, serverMode, customize);
+    var appEnv = getAllEnv({});
+    (0, _iService["default"])(uTable, useDefault, asset, appEnv, serverMode, customize);
   }
 }
 
 function setup(rafEnv, dockerFile) {
-  config(rafEnv, dockerFile);
-  let asset = process.env.APPLOC === '.' ? process.cwd() : process.env.APPLOC;
+  (0, _config["default"])(rafEnv, dockerFile);
+  var asset = process.env.APPLOC === '.' ? process.cwd() : process.env.APPLOC;
   process.env.APPASSET = asset;
   return asset;
 }
 
 function createPayload(srcName, cb) {
-  let src = fs.readFileSync(srcName, 'utf8');
+  var src = _fs["default"].readFileSync(srcName, 'utf8');
 
   if (src === null) {
-    cb(`Error: ${srcName} was not found. `);
+    cb("Error: ".concat(srcName, " was not found. "));
   }
 
   try {
     // console.log(src);
-    let f = new Function(src);
-    console.log(`${srcName} compile completed`);
-    let r = f();
+    var f = new Function(src);
+    console.log("".concat(srcName, " compile completed"));
+    var r = f();
     f = null;
-    let ar = getAllEnv(r);
+    var ar = getAllEnv(r);
     cb(null, ar);
   } catch (err) {
-    console.log(`${srcName} compile failed`);
+    console.log("".concat(srcName, " compile failed"));
     cb(err);
   }
 }
 
 function getAllEnv(userData) {
-  let env;
-  let l = null;
-  let authflow = trimit('AUTHFLOW');
+  var env;
+  var l = null;
+  var authflow = trimit('AUTHFLOW');
 
   if (authflow === 'authorization_code' || authflow === 'code') {
     authflow = 'server';
   }
 
   process.env.AUTHFLOW = authflow;
-  let redirect = process.env.REDIRECT != null ? process.env.REDIRECT : null;
-  let host = trimit('VIYA_SERVER');
-  let clientID = trimit('CLIENTID');
-  let clientSecret = trimit('CLIENTSECRET');
-  let keepAlive = trimit('KEEPALIVE');
-  let appName = trimit('APPNAME');
-  let ns = trimit('NAMESPACE');
+  var redirect = process.env.REDIRECT != null ? process.env.REDIRECT : null;
+  var host = trimit('VIYA_SERVER');
+  var clientID = trimit('CLIENTID');
+  var clientSecret = trimit('CLIENTSECRET');
+  var keepAlive = trimit('KEEPALIVE');
+  var appName = trimit('APPNAME');
+  var ns = trimit('NAMESPACE');
 
   if (authflow === 'server' || authflow === 'implicit') {
     if (authflow === 'implicit') {
       redirect = trimit('REDIRECT');
 
       if (redirect === null) {
-        redirect = `${appName}/callback`;
+        redirect = "".concat(appName, "/callback");
         process.env.REDIRECT = 'callback';
       } else {
-        redirect = redirect.indexOf('http') != -1 ? redirect : `${process.env.APPNAME}/${redirect}`;
+        redirect = redirect.indexOf('http') != -1 ? redirect : "".concat(process.env.APPNAME, "/").concat(redirect);
       }
     }
 
@@ -135,9 +138,13 @@ function getAllEnv(userData) {
       ns: ns
     };
 
+    if (clientSecret !== null) {
+      l.clientSecret = clientSecret;
+    }
+
     if (authflow === 'server' && keepAlive === 'YES') {
-      let protocol = process.env.HTTPS === 'true' ? 'https://' : 'http://';
-      l.keepAlive = `${protocol}${process.env.APPHOST}:${process.env.APPPORT}/${appName}/keepAlive`;
+      var protocol = process.env.HTTPS === 'true' ? 'https://' : 'http://';
+      l.keepAlive = "".concat(protocol).concat(process.env.APPHOST, ":").concat(process.env.APPPORT, "/").concat(appName, "/keepAlive");
       l.keepAlive = l.keepAlive.replace(/0.0.0.0/, 'localhost');
     }
 
@@ -158,6 +165,6 @@ function getAllEnv(userData) {
 }
 
 function trimit(e) {
-  let a = process.env[e];
+  var a = process.env[e];
   return a == null ? null : a.trim();
 }

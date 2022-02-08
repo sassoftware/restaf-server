@@ -17,15 +17,24 @@
  */
 'use strict';
 
-let fs = require('fs');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
 
-import parseDocker from './parseDocker';
-import debug from 'debug';
-let configDebug = debug('config');
+var _parseDocker = _interopRequireDefault(require("./parseDocker"));
+
+var _debug = _interopRequireDefault(require("debug"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var fs = require('fs');
+
+var configDebug = (0, _debug["default"])('config');
 
 function config(appEnv, dockerFile) {
   if (dockerFile != null) {
-    parseDocker(dockerFile);
+    (0, _parseDocker["default"])(dockerFile);
   }
 
   if (appEnv != null) {
@@ -35,12 +44,12 @@ function config(appEnv, dockerFile) {
 
   if (process.env.APPPORT == null && process.env.EXPOSEDPORT != null) {
     process.env.APPPORT = process.env.EXPOSEDPORT;
-    console.log(`APPPORT set to value of exposed port ${process.env.APPPORT}`);
+    console.log("APPPORT set to value of exposed port ".concat(process.env.APPPORT));
   }
 
   if (process.env.PORT != null) {
     process.env.APPPORT = process.env.PORT;
-    console.log(`APPPORT overriden by PORT ${process.env.PORT}`);
+    console.log("APPPORT overriden by PORT ".concat(process.env.PORT));
   }
   /*
   if (isDocker() === false && process.env.APPHOST === '0.0.0.0') {
@@ -63,7 +72,7 @@ function config(appEnv, dockerFile) {
   } // fixing usual user error of adding a space after the url
 
 
-  let vserver = process.env.VIYA_SERVER;
+  var vserver = process.env.VIYA_SERVER;
 
   if (vserver == null) {
     console.log('Note: VIYA_SERVER not specified');
@@ -91,12 +100,12 @@ function config(appEnv, dockerFile) {
 
 function iconfig(appEnv) {
   try {
-    let data = fs.readFileSync(appEnv, 'utf8');
-    let d = data.split(/\r?\n/);
-    d.forEach(l => {
+    var data = fs.readFileSync(appEnv, 'utf8');
+    var d = data.split(/\r?\n/);
+    d.forEach(function (l) {
       if (l.length > 0 && l.indexOf('#') === -1) {
-        let la = l.split('=');
-        let envName = la[0];
+        var la = l.split('=');
+        var envName = la[0];
 
         if (la.length === 2 && la[1].length > 0) {
           process.env[envName] = la[1];
@@ -111,4 +120,5 @@ function iconfig(appEnv) {
   }
 }
 
-export default config;
+var _default = config;
+exports["default"] = _default;
