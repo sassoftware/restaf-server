@@ -109,7 +109,8 @@ function getAllEnv(userData) {
   process.env.AUTHFLOW = authflow;
   var redirect = process.env.REDIRECT != null ? process.env.REDIRECT : null;
   var host = trimit('VIYA_SERVER');
-  var clientID = trimit('CLIENTID');
+  var clientID = trimit('CLIENTID'); // eslint-disable-next-line no-unused-vars
+
   var clientSecret = trimit('CLIENTSECRET');
   var keepAlive = trimit('KEEPALIVE');
   var appName = trimit('APPNAME');
@@ -137,10 +138,6 @@ function getAllEnv(userData) {
       keepAlive: null,
       ns: ns
     };
-
-    if (clientSecret !== null) {
-      l.clientSecret = clientSecret;
-    }
 
     if (authflow === 'server' && keepAlive === 'YES') {
       var protocol = process.env.HTTPS === 'true' ? 'https://' : 'http://';
