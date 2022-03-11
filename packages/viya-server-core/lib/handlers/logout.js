@@ -21,7 +21,8 @@ var debug = require('debug')('logout');
 
 function logout(_x, _x2) {
   return _logout.apply(this, arguments);
-}
+} // eslint-disable-next-line no-unused-vars
+
 
 function _logout() {
   _logout = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, h) {

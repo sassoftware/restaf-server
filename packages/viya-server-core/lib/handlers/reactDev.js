@@ -34,13 +34,13 @@ function reactDev(_x, _x2) {
 
 function _reactDev() {
   _reactDev = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, h) {
-    var child, h2;
+    var h2;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             console.log('Spawning the dev server');
-            child = spawn('yarn', ['start'], {
+            spawn('yarn', ['start'], {
               stdio: 'inherit'
             });
             h2 = '<h2>Viya Server: ' + process.env.VIYA_SERVER + '<h2>';

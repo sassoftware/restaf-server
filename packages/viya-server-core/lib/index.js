@@ -42,6 +42,7 @@ module.exports = function core(uTable, useDefault, serverMode, customize) {
   }
 
   console.log('Initialization started ============================================================');
+  console.log('version: 1.3.4');
   console.log("\nConfiguration:\n          Dockerfile: ".concat(docker, "\n          env file  : ").concat(env, "\n          appenv    : ").concat(appenv, "\n          customize : ").concat(customize != null, "\n          "));
   iapp(appenv, env, docker, uTable, useDefault, serverMode, customize);
 };
@@ -109,7 +110,8 @@ function getAllEnv(userData) {
   process.env.AUTHFLOW = authflow;
   var redirect = process.env.REDIRECT != null ? process.env.REDIRECT : null;
   var host = trimit('VIYA_SERVER');
-  var clientID = trimit('CLIENTID');
+  var clientID = trimit('CLIENTID'); // eslint-disable-next-line no-unused-vars
+
   var clientSecret = trimit('CLIENTSECRET');
   var keepAlive = trimit('KEEPALIVE');
   var appName = trimit('APPNAME');

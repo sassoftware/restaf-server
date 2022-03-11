@@ -26,7 +26,7 @@ module.exports = function SASTokenScheme (server, options) {
         authenticate: async function (request, h) {
             const authorization = request.headers.authorization;
             server.log('SASToken', authorization);
-            debugger;
+        
             if (!authorization) {
                throw Boom.unauthorized(null, 'session');
             }

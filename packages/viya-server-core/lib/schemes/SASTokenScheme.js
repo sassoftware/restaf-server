@@ -49,16 +49,15 @@ module.exports = function SASTokenScheme(server, options) {
               case 0:
                 authorization = request.headers.authorization;
                 server.log('SASToken', authorization);
-                debugger;
 
                 if (authorization) {
-                  _context.next = 5;
+                  _context.next = 4;
                   break;
                 }
 
                 throw Boom.unauthorized(null, 'session');
 
-              case 5:
+              case 4:
                 _authorization$split = authorization.split(' '), _authorization$split2 = _slicedToArray(_authorization$split, 2), tokenType = _authorization$split2[0], token = _authorization$split2[1];
                 credentials = {
                   token: token,
@@ -68,7 +67,7 @@ module.exports = function SASTokenScheme(server, options) {
                   credentials: credentials
                 }));
 
-              case 8:
+              case 7:
               case "end":
                 return _context.stop();
             }

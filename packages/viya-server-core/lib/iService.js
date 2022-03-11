@@ -51,10 +51,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var fs = require('fs'); // let isDocker = require('is-docker');
 
 
-var Hapi = require('@hapi/hapi');
+var Hapi = require('@hapi/hapi'); // const { isSameSiteNoneCompatible } = require('should-send-same-site-none');
 
-var _require = require('should-send-same-site-none'),
-    isSameSiteNoneCompatible = _require.isSameSiteNoneCompatible;
 
 var NodeCache = require("node-cache-promise");
 

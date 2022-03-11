@@ -24,27 +24,26 @@ function appCallback(_x, _x2) {
 
 function _appCallback() {
   _appCallback = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, h) {
-    var debug, indexHTML;
+    var indexHTML;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            debug = require('debug')('callback');
             console.log("..... AUTHFLOW: ".concat(process.env.AUTHFLOW));
 
             if (!(process.env.AUTHFLOW === 'server')) {
-              _context.next = 6;
+              _context.next = 5;
               break;
             }
 
             return _context.abrupt("return", (0, _codeAuth["default"])(req, h));
 
-          case 6:
+          case 5:
             indexHTML = process.env.APPENTRY == null ? 'index.html' : process.env.APPENTRY;
             console.log("Redirecting to default ".concat(indexHTML));
             return _context.abrupt("return", h.file("".concat(indexHTML)));
 
-          case 9:
+          case 8:
           case "end":
             return _context.stop();
         }

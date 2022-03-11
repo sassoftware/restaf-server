@@ -25,8 +25,6 @@ var bell = require('@hapi/bell');
 
 var uuid = require('uuid');
 
-var debug = require('debug')('SASauth');
-
 exports.plugin = {
   name: 'SASauth',
   version: '1.0.0',

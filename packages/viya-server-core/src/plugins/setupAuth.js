@@ -32,7 +32,6 @@ async function setupAuth (server, options){
 		// await server.register({plugin: appCookie, options: options});
 		await appCookie(server,options);
 
-		debugger;
 		let def = 'session';
 		if (options.serverMode === 'api') {
 			await server.register({ plugin: token });

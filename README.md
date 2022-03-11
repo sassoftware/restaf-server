@@ -2,23 +2,27 @@
 
 This package has two servers:
 
-1. restaf-server - Use this for developing an app server for web applications(see packages/appjs)
-    - alternate name: viya-aappserverjs to be consisetent with item 2 below
-2. viya-apiserverjs - Use this to develop rest api servers(see packages/apijs)
+1. viya-appserverjs - Use this for developing an app server for web applications(see packages/appjs)
 
-> The restaf-server will be soon super-seeded by viya-app-server with better support for protecting all routes
+2. viya-apiserverjs - Use this to develop rest api servers(see packages/apijs)
 
 ## `Basic configuration`
 
 1. Set the default settings in Dockerfile. This will ensure these are set when you build containers.
-2. Use the .env file when running bare-os and docker-compose file to set run time overrides.
+2. The defaults can be overriden using environment variables.
+
+
 
 ### `Sample env file`
+
+When running on a non-docker environment, you can use a .env 
+
 ```env
 VIYA_SERVER=<your viya server>
 APPHOST=localhost < can also be dns name of your server. ex: viyaiscool.unx.sas.com>
 APPPORT=5000   <any port of your choice>
 ```
+
 ### `Sample Dockerfile`
 
 ```env
@@ -50,6 +54,9 @@ ENV APPENTRY=index.html
 ENV TLS_CREATE="C:US,ST:NC,L:Cary,O:yourcompany,OU:STO,CN:localhost"
 ENV SAMESITE=None,secure
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+
+# set this to YES if you want access to the authentication token in the app
+ENV USETOKEN=TRUE
 
 #####################################################################
 CMD ["npx", "@sassoftware/viya-appserverjs"]

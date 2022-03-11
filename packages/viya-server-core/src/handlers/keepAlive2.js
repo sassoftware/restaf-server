@@ -5,7 +5,7 @@
 'use strict';
 
 // primarly to do a keepAlive of sasLogon
-let debug = require('debug')('keepAlive');
+
 async function keepAlive2 (req, h) {
    
    return '<h2> Token refresh failed. Contact you admin </h2>';
