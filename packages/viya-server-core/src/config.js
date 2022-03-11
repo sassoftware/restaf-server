@@ -25,6 +25,7 @@ let configDebug = debug('config');
 
 function config (appEnv, dockerFile) {
 	
+	
 	if (dockerFile !=null) {
 		parseDocker(dockerFile);
 	}
@@ -40,21 +41,13 @@ function config (appEnv, dockerFile) {
 		console.log(`APPPORT set to value of exposed port ${process.env.APPPORT}`);
 	}
 	
-	if (process.env.PORT != null) {
+	
+	if (process.env.PORT != null && process.env.APPPORT == null) {
 		process.env.APPPORT = process.env.PORT;
 		console.log(`APPPORT overriden by PORT ${process.env.PORT}`);
 	}
-	
-	/*
-	if (isDocker() === false && process.env.APPHOST === '0.0.0.0') {
-		console.log('Setting APPHOST to localhost');
-		process.env.APPHOST = 'localhost';
-	}
-	*/
-	
-	if (process.env.APPPORT == null) {
-		process.env.APPPORT=8080;
-	}
+
+
 	if (process.env.APPLOC == null) {
 		process.env.APPLOC = './public';
 	}
