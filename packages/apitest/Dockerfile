@@ -23,18 +23,18 @@ ENV AUTHFLOW=code
 ENV CLIENTID=viyaapi
 ENV CLIENTSECRET=secret
 
-ENV HAPIDEBUG=YES
-ENV LOGLEVEL=info
-# ENV PLUGIN=hapi-swagger
+# ENV HAPIDEBUG=YES
+# ENV LOGLEVEL=info
+# ENV PLUGIN=hapi-swagger   - disable swagger-ui - has core-js/es6 issues
 
 # The following are defaults 
 ENV APPLOC=./public
 ENV APPENTRY=index.html
 # ENV APPENV=appenv.js
 
-ENV TLS_KEY=./secrets/tls.key
-ENV TLS_CERT=./secrets/tls.crt
-# ENV TLS_CREATE="C:US,ST:NC,L:Cary,O:SAS Institute,OU:STO,CN:localhost"
+# ENV TLS_KEY=./secrets/tls.key
+# ENV TLS_CERT=./secrets/tls.crt
+ENV TLS_CREATE="C:US,ST:NC,L:Cary,O:SAS Institute,OU:STO,CN:localhost"
 ENV SAMESITE=None,secure
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
