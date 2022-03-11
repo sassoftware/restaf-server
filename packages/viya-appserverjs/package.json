@@ -40,6 +40,6 @@
     "lint": "npx eslint --fix src/*.js"
   },
   "dependencies": {
-    "@sassoftware/viya-server-core": "1.3.0"
+    "@sassoftware/viya-server-core": "1.3.1"
   }
 }

@@ -39,7 +39,7 @@
   "dependencies": {
     "@sassoftware/restaf": "4.0.2",
     "@sassoftware/restaflib": "4.0.2",
-    "@sassoftware/viya-server-core": "1.3.0"
+    "@sassoftware/viya-server-core": "1.3.1"
     
   }
 }

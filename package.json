@@ -16,11 +16,12 @@
     "apijs:build": "cd packages/viya-apiserverjs && yarn build",
     "apijs:start": "cd packages/apitest && yarn start",
     "build": "yarn core:build && yarn appjs:build && yarn apijs:build",
-    "core:pub": "cd packages/viya-server-core  &&  npm publish  --tag dbg public --access public",
+    "core:pub": "cd packages/viya-server-core  &&  npm publish  --tag dbg --access public",
     "appjs:pub": "cd packages/viya-appserverjs && npm publish --tag dbg --access public",
     "apijs:pub": "cd packages/viya-apiserverjs && npm publish --tag dbg --access public",
     "create:pub": "cd packages/create-viya-api && npm publish --tag dbg --access public",
     "base:pub": "cd packages/viya-api-base     && npm  publish --tag dbg --access public",
+    "puball": "npm run core:pub && npm run appjs:pub && npm run apijs:pub && npm run create:pub && npm run base:pub",
     "pub": "npm run core:pub && npm run appjs:pub && npm run apijs:pub && npm run create:pub && npm run base:pub",
     "format": "prettier-eslint --eslint-config-path ./.eslintrc.json --write '**/*.js'",
     "lint": "eslint . --ext .js --fix"
