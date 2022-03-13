@@ -25,8 +25,7 @@ ENV CLIENTSECRET=secret
 
 # ENV HAPIDEBUG=YES
 # ENV LOGLEVEL=info
-# ENV PLUGIN=hapi-swagger   - disable swagger-ui - has core-js/es6 issues
-
+# ENV PLUGIN=hapi-swagger  
 # The following are defaults 
 ENV APPLOC=./public
 ENV APPENTRY=index.html
