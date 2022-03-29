@@ -18,7 +18,8 @@
 
 
 let bell = require('@hapi/bell');
-let uuid = require('uuid');   
+let uuid = require('uuid');  
+let debug = require('debug')('isasauth');
 
 exports.plugin = {
     name    : 'SASauth',
@@ -27,7 +28,7 @@ exports.plugin = {
 };
 
 async function iSASauth (server, options) {
-    console.log(options);
+    debug(options);
     let bellAuthOptions;
     let provider;
     // test for k8s deployment

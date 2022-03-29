@@ -25,6 +25,8 @@ var bell = require('@hapi/bell');
 
 var uuid = require('uuid');
 
+var debug = require('debug')('isasauth');
+
 exports.plugin = {
   name: 'SASauth',
   version: '1.0.0',
@@ -42,7 +44,7 @@ function _iSASauth() {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            console.log(options);
+            debug(options);
             // test for k8s deployment
             host = options.host;
 
