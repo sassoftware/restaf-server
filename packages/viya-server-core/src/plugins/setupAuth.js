@@ -39,7 +39,7 @@ async function setupAuth (server, options){
 		}
 		server.log('***********************Default auth', def);
 		server.auth.default(def);
-		console.log(server.registerations);
+		// console.log(server.registerations);
 	}
 	setDefaultRoutes(server, options);
 };

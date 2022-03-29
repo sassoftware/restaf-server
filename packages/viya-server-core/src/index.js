@@ -130,6 +130,7 @@ function getAllEnv (userData) {
       clientID : clientID,
       appName  : appName,
       keepAlive: null,
+      useToken : process.env.USETOKEN,
       ns       : ns
     };
    

@@ -38,7 +38,7 @@ module.exports = async function appCookie (server, options){
             return {valid: true, credentials: credentials};
         }
     };
-    console.log('cookie options', cookieOptions);
+    // console.log('cookie options', cookieOptions);
     server.log('Cookie Options',cookieOptions);
     server.auth.strategy('session', 'cookie', cookieOptions);
 

@@ -88,16 +88,16 @@ function _iSASauth() {
               clientSecret: options.clientSecret,
               //   isSameSite  : options.isSameSite,
               isSecure: options.isSecure
-            };
-            console.log('SASAuth options', bellAuthOptions);
+            }; // console.log('SASAuth options', bellAuthOptions);
+
             server.log('SASAuth', bellAuthOptions);
-            _context2.next = 9;
+            _context2.next = 8;
             return server.register(bell);
 
-          case 9:
+          case 8:
             server.auth.strategy('sas', 'bell', bellAuthOptions);
 
-          case 10:
+          case 9:
           case "end":
             return _context2.stop();
         }

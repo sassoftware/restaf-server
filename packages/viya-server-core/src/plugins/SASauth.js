@@ -60,7 +60,7 @@ async function iSASauth (server, options) {
         //   isSameSite  : options.isSameSite,
         isSecure    : options.isSecure
     };
-    console.log('SASAuth options', bellAuthOptions);
+    // console.log('SASAuth options', bellAuthOptions);
     server.log('SASAuth',bellAuthOptions);
     await server.register(bell);
     server.auth.strategy('sas', 'bell', bellAuthOptions);

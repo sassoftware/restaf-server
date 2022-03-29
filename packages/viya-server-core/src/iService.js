@@ -17,7 +17,7 @@
  */
 
 let fs = require('fs');
-
+let debug = require('debug')('iservice');
 // let isDocker = require('is-docker');
 let Hapi = require('@hapi/hapi');
 // const { isSameSiteNoneCompatible } = require('should-send-same-site-none');
@@ -64,16 +64,6 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 			state: {
 				isSameSite: isSameSite,
 				isSecure  : isSecure,
-				/*
-				contextualize: async (definition, request) => {
-					const userAgent = request.headers['user-agent'] || false;
-					if (userAgent && isSameSiteNoneCompatible(userAgent)) {
-						definition.isSecure = isSecure;
-						definition.isSameSite = isSameSite;
-					}
-					request.response.vary('User-Agent');
-				},
-				*/
 
 			},
 	
@@ -99,18 +89,18 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		if (process.env.HAPIDEBUG === 'YES') {
 			sConfig.debug = { request: '*' };
 		}
-		console.log(sConfig);
+		debug(JSON.stringify(sConfig, null,4));
 		if (process.env.HTTPS === 'true') {
 			sConfig.tls = await getCertificates();
-			console.log('Setup of SSL certificates completed');
+			debug('Setup of SSL certificates completed');
 		} else {
-			console.log('Running with no SSL certificates');
+			debug('Running with no SSL certificates');
 		}
 		if (asset !== null) {
 			sConfig.routes.files= { relativeTo: asset };
 		}
 
-		console.log(
+		debug(
 			`Application information: 
 		APPLOC  : ${process.env.APPLOC}
 		APPENTRY: ${process.env.APPENTRY}
@@ -180,7 +170,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 
 		};
 		
-		hapiServer.log('Options',options);
+		debug('Options',options);
 
 		await setupAuth(hapiServer, options);
 		hapiServer.log('Plugin', process.env.PLUGIN);
@@ -208,7 +198,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 				swaggerOptions = {...swaggerOptions, ...override};
 			}
 			
-			console.log('Swagger Options:' ,swaggerOptions);
+			debug('Swagger Options:' ,swaggerOptions);
 			await hapiServer.register({ plugin: require('hapi-swagger'), options: swaggerOptions });
 		} else if (process.env.PLUGIN == 'hapi-openapi' && serverMode === 'api') {
 			console.log('hapi-openapi', 'coming soon');
@@ -218,7 +208,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		// Start server
 		//
 		let allRoutes = hapiServer.table();
-		console.table(allRoutes);
+		debug(allRoutes);
 		await hapiServer.start();
 		let hh = hapiServer.info.uri;
 		hh = hh.replace(/0.0.0.0/, 'localhost');
@@ -246,25 +236,25 @@ async function getCertificates () {
 	let tls = {};
 	if (process.env.TLS_CERT != null) {
 		/* backward compatability */
-		console.log('TLS set: TLS_CERT');
+		debug('TLS set: TLS_CERT');
 		tls.cert = fs.readFileSync(process.env.TLS_CERT);
 		tls.key = fs.readFileSync(process.env.TLS_KEY);
 	} else if (process.env.TLS_PFX != null) {
-		console.log('TLS set: PFX');
+		debug('TLS set: PFX');
 		tls.pfx = fs.readFileSync(process.env.TLS_PFX);
 		if (process.env.TLS_PW != null) {
 			tls.passphrase = process.env.TLS_PW;
 		}
 	} else if (process.env.TLS_CRT != null) {
 		/* new key names to conform to k8s*/
-		console.log('TLS set: TLS_CRT');
+		debug('TLS set: TLS_CRT');
 		tls.cert = process.env.TLS_CRT;
 		tls.key = process.env.TLS_KEY;
 	} else if (process.env.TLS_CREATE != null) {
 		/* unsigned certificate */
-		console.log('TLS set: TLS_CREATE=', process.env.TLS_CREATE);
+		debug('TLS set: TLS_CREATE=', process.env.TLS_CREATE);
 		tls = await getTls();
-		console.log(tls);
+		debug(tls);
 	}
 
 	if (process.env.TLS_CABUNDLE != null) {
@@ -274,7 +264,7 @@ async function getCertificates () {
 	if (Object.keys(tls).length > 0) {
 		return tls;
 	} else {
-		console.log('Warning: The current protocol is https: No TLS certificate information has been specified.');
+		debug('Warning: The current protocol is https: No TLS certificate information has been specified.');
 		return tls;
 	}
 }
@@ -331,7 +321,7 @@ async function getTls () {
 		{ type: 6, value: `https://${process.env.APPHOST}/${process.env.APPNAME}/api` },
 		{ type: 6, value: `https://${process.env.APPHOST}/${process.env.APPNAME}/logon` },
 	];
-	console.log('tls options ', JSON.stringify(options, null,4));
+	debug('tls options ', JSON.stringify(options, null,4));
 	let pems = selfsigned.generate(attr, options);
 	let tls = {
 		cert: pems.cert,
