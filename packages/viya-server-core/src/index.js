@@ -33,7 +33,7 @@ module.exports = function core (uTable, useDefault, serverMode, customize) {
     useDefault = true;
   }
   console.log('Initialization started ============================================================');
-  console.log('version: 1.3.6');
+  console.log('version: 1.3.7');
   console.log(
     `\nConfiguration:
           Dockerfile: ${docker}
@@ -130,6 +130,7 @@ function getAllEnv (userData) {
       clientID : clientID,
       appName  : appName,
       keepAlive: null,
+      useToken : process.env.USETOKEN,
       ns       : ns
     };
    

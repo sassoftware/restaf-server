@@ -48,7 +48,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
  * ----------------------------------------------------------------------------------------
  *
  */
-var fs = require('fs'); // let isDocker = require('is-docker');
+var fs = require('fs');
+
+var debug = require('debug')('iservice'); // let isDocker = require('is-docker');
 
 
 var Hapi = require('@hapi/hapi'); // const { isSameSiteNoneCompatible } = require('should-send-same-site-none');
@@ -106,17 +108,6 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
                 state: {
                   isSameSite: isSameSite,
                   isSecure: isSecure
-                  /*
-                  contextualize: async (definition, request) => {
-                  	const userAgent = request.headers['user-agent'] || false;
-                  	if (userAgent && isSameSiteNoneCompatible(userAgent)) {
-                  		definition.isSecure = isSecure;
-                  		definition.isSameSite = isSameSite;
-                  	}
-                  	request.response.vary('User-Agent');
-                  },
-                  */
-
                 },
                 routes: {
                   payload: {
@@ -142,7 +133,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
                 };
               }
 
-              console.log(sConfig);
+              debug(JSON.stringify(sConfig, null, 4));
 
               if (!(process.env.HTTPS === 'true')) {
                 _context.next = 16;
@@ -154,12 +145,12 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
 
             case 12:
               sConfig.tls = _context.sent;
-              console.log('Setup of SSL certificates completed');
+              debug('Setup of SSL certificates completed');
               _context.next = 17;
               break;
 
             case 16:
-              console.log('Running with no SSL certificates');
+              debug('Running with no SSL certificates');
 
             case 17:
               if (asset !== null) {
@@ -168,7 +159,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
                 };
               }
 
-              console.log("Application information: \n\t\tAPPLOC  : ".concat(process.env.APPLOC, "\n\t\tAPPENTRY: ").concat(process.env.APPENTRY, "\n"));
+              debug("Application information: \n\t\tAPPLOC  : ".concat(process.env.APPLOC, "\n\t\tAPPENTRY: ").concat(process.env.APPENTRY, "\n"));
               hapiServer = Hapi.server(sConfig);
               /*
               const cache = hapiServer.cache({ segment: 'sessions', expiresIn: 3 * 24 * 60 * 60 * 1000 });
@@ -255,7 +246,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
                 /* set later in setDefaultRoutes */
 
               };
-              hapiServer.log('Options', options);
+              debug('Options', options);
               _context.next = 38;
               return (0, _setupAuth["default"])(hapiServer, options);
 
@@ -290,7 +281,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
                 swaggerOptions = _objectSpread(_objectSpread({}, swaggerOptions), override);
               }
 
-              console.log('Swagger Options:', swaggerOptions);
+              debug('Swagger Options:', swaggerOptions);
               _context.next = 45;
               return hapiServer.register({
                 plugin: require('hapi-swagger'),
@@ -311,7 +302,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
               // Start server
               //
               allRoutes = hapiServer.table();
-              console.table(allRoutes);
+              debug(allRoutes);
               _context.next = 52;
               return hapiServer.start();
 
@@ -365,7 +356,7 @@ function _getCertificates() {
             }
 
             /* backward compatability */
-            console.log('TLS set: TLS_CERT');
+            debug('TLS set: TLS_CERT');
             tls.cert = fs.readFileSync(process.env.TLS_CERT);
             tls.key = fs.readFileSync(process.env.TLS_KEY);
             _context2.next = 25;
@@ -377,7 +368,7 @@ function _getCertificates() {
               break;
             }
 
-            console.log('TLS set: PFX');
+            debug('TLS set: PFX');
             tls.pfx = fs.readFileSync(process.env.TLS_PFX);
 
             if (process.env.TLS_PW != null) {
@@ -394,7 +385,7 @@ function _getCertificates() {
             }
 
             /* new key names to conform to k8s*/
-            console.log('TLS set: TLS_CRT');
+            debug('TLS set: TLS_CRT');
             tls.cert = process.env.TLS_CRT;
             tls.key = process.env.TLS_KEY;
             _context2.next = 25;
@@ -407,13 +398,13 @@ function _getCertificates() {
             }
 
             /* unsigned certificate */
-            console.log('TLS set: TLS_CREATE=', process.env.TLS_CREATE);
+            debug('TLS set: TLS_CREATE=', process.env.TLS_CREATE);
             _context2.next = 23;
             return getTls();
 
           case 23:
             tls = _context2.sent;
-            console.log(tls);
+            debug(tls);
 
           case 25:
             if (process.env.TLS_CABUNDLE != null) {
@@ -428,7 +419,7 @@ function _getCertificates() {
             return _context2.abrupt("return", tls);
 
           case 30:
-            console.log('Warning: The current protocol is https: No TLS certificate information has been specified.');
+            debug('Warning: The current protocol is https: No TLS certificate information has been specified.');
             return _context2.abrupt("return", tls);
 
           case 32:
@@ -511,7 +502,7 @@ function _getTls() {
               type: 6,
               value: "https://".concat(process.env.APPHOST, "/").concat(process.env.APPNAME, "/logon")
             }];
-            console.log('tls options ', JSON.stringify(options, null, 4));
+            debug('tls options ', JSON.stringify(options, null, 4));
             pems = selfsigned.generate(attr, options);
             tls = {
               cert: pems.cert,

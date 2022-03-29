@@ -205,7 +205,10 @@ module.exports = function setDefaultRoutes(server, options) {
     }
   }];
   var routeTables = uTable !== null ? defaultTable.concat(uTable) : defaultTable;
+  /*
   server.log('routes', routeTables);
   console.table(routeTables);
+  */
+
   server.route(routeTables);
 };

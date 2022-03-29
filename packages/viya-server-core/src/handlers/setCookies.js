@@ -21,7 +21,10 @@ async function setCookies (req, h, options) {
     if (options != null) {
         options.allAppEnv.LOGONPAYLOAD.token = credentials.token;
         options.allAppEnv.LOGONPAYLOAD.tokenType = 'bearer';
+        debug(options.allAppEnv.LOGONPAYLOAD);
     }
+    
+    
     await req.server.app.cache.set(sid, credentials, 0);
     // Can we get away without setting cookie for this session?
     // Need to also modify keepAlive

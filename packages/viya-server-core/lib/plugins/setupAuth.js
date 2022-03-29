@@ -51,7 +51,7 @@ function _setupAuth() {
         switch (_context.prev = _context.next) {
           case 0:
             if (!(options.authFlow === 'server')) {
-              _context.next = 13;
+              _context.next = 12;
               break;
             }
 
@@ -83,13 +83,12 @@ function _setupAuth() {
 
           case 10:
             server.log('***********************Default auth', def);
-            server.auth["default"](def);
-            console.log(server.registerations);
+            server.auth["default"](def); // console.log(server.registerations);
 
-          case 13:
+          case 12:
             setDefaultRoutes(server, options);
 
-          case 14:
+          case 13:
           case "end":
             return _context.stop();
         }

@@ -42,7 +42,7 @@ module.exports = function core(uTable, useDefault, serverMode, customize) {
   }
 
   console.log('Initialization started ============================================================');
-  console.log('version: 1.3.6');
+  console.log('version: 1.3.7');
   console.log("\nConfiguration:\n          Dockerfile: ".concat(docker, "\n          env file  : ").concat(env, "\n          appenv    : ").concat(appenv, "\n          customize : ").concat(customize != null, "\n          "));
   iapp(appenv, env, docker, uTable, useDefault, serverMode, customize);
 };
@@ -137,6 +137,7 @@ function getAllEnv(userData) {
       clientID: clientID,
       appName: appName,
       keepAlive: null,
+      useToken: process.env.USETOKEN,
       ns: ns
     };
 

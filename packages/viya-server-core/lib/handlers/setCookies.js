@@ -50,6 +50,7 @@ function _setCookies() {
             if (options != null) {
               options.allAppEnv.LOGONPAYLOAD.token = credentials.token;
               options.allAppEnv.LOGONPAYLOAD.tokenType = 'bearer';
+              debug(options.allAppEnv.LOGONPAYLOAD);
             }
 
             _context.next = 10;

@@ -192,7 +192,9 @@ module.exports = function setDefaultRoutes (server, options) {
 	];
 
 	let routeTables = (uTable !== null) ? defaultTable.concat(uTable) : defaultTable;
+	/*
 	server.log('routes', routeTables);
 	console.table(routeTables);
+	*/
 	server.route(routeTables);
 };

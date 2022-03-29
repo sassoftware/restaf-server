@@ -98,12 +98,12 @@ module.exports = /*#__PURE__*/function () {
 
                 return validateFunc;
               }()
-            };
-            console.log('cookie options', cookieOptions);
+            }; // console.log('cookie options', cookieOptions);
+
             server.log('Cookie Options', cookieOptions);
             server.auth.strategy('session', 'cookie', cookieOptions);
 
-          case 6:
+          case 5:
           case "end":
             return _context2.stop();
         }
