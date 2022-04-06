@@ -11,11 +11,9 @@ This package has two servers:
 1. Set the default settings in Dockerfile. This will ensure these are set when you build containers.
 2. The defaults can be overriden using environment variables.
 
-
-
 ### `Sample env file`
 
-When running on a non-docker environment, you can use a .env 
+When running on a non-docker environment, you can use a .env
 
 ```env
 VIYA_SERVER=<your viya server>
@@ -53,6 +51,8 @@ ENV APPENTRY=index.html
 # See notes below on running with SSL enabled
 ENV TLS_CREATE="C:US,ST:NC,L:Cary,O:yourcompany,OU:STO,CN:localhost"
 ENV SAMESITE=None,secure
+
+# It is better to set this before invoking the server
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
 # set this to YES if you want access to the authentication token in the app
@@ -80,13 +80,9 @@ ENV SAMESITE=None,secure
 ```
 
 You should be able to set these browser settings to default:
+
 - SameSite by default cookies
 - Coookies with SameSite must be secure
-
-I am not really sure about the impact of setting for new Schemeful Same-site option to default. So enable it at your own risk.
-
-2. The certificates for SSL can be set in one of the following ways(all values are just examples). 
-
 
 - Let server create a temporary unsigned certificate
 
@@ -137,8 +133,3 @@ If you also run without ssl enabled then set it to something like this:
 
 If you are using port 443 for ssl-enabled, then add this redirect also
 <https://localhost/viyaapp>
-
-
-## Viya Server Configuration and more
-
-Please see <https://github.com/sassoftware/restaf-server/wiki>
