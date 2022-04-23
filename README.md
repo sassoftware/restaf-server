@@ -103,23 +103,6 @@ ENV TLS_CERT=../certs/self/certificate.pem
 ENV TLS_PFX=../certs/sascert/sascert2.pfx
 ```
 
-### `Running without SSL`
-
-Make sure your specify VIYA_SERVER with a protocol of http
-
-1. `SAMESITE`
-    - Set this as None,false
-
-```env
-ENV SAMESITE=None,false
-```
-
-You might also have to disable all the SAMESITE options in your browser:
-
-- SameSite by default cookies
-- Coookies with SameSite must be secure
-- Schemeful Same-site
-
 ### CLIENTID and CLIENTSECRET
 
 Recommend you use the authorization_flow code. Set the redirect url to this pattern:
