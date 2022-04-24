@@ -1,6 +1,6 @@
 {
   "name": "@sassoftware/viya-apiserverjs",
-  "version": "1.3.7",
+  "version":"1.3.9",
   "description": "Custom app server for Viya apps",
   "author": "Deva Kumaraswamy <deva.kumar@sas.com>",
   "license": "Apache-2.0",
@@ -32,14 +32,14 @@
   "scripts": {
     "build": "rimraf lib && babel src --out-dir lib",
     "start": "node api --env=./.env --docker=./Dockerfile",
-    "pub": "npm publish --tag test --access public",
+    "pub": "npm publish --tag dbg --access public",
     "debug": "cross-env VIYA_SERVER=%vx% node --inspect-brk api   --env=./.env --docker=./Dockerfile --appenv=appenv.js",
     "lint": "npx eslint --fix src/*.js"
   },
   "dependencies": {
     "@sassoftware/restaf": "4.0.2",
     "@sassoftware/restaflib": "4.0.2",
-    "@sassoftware/viya-server-core": "1.3.7"
+    "@sassoftware/viya-server-core":"1.3.9"
     
   }
 }
