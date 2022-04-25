@@ -84,15 +84,13 @@
     ]
   },
   "resolutions": {
-    "core-js": "3.21.1",
+    "core-js": "3.22.2",
+    "minimist": "^1.2.6",
     "node-forge": ">=1.0.0",
     "underscore": "1.13.1",
     "trim-newlines": "3.0.1",
     "glob-parent": ">=5.1.2",
     "@braintree/sanitize-url": ">=6.0.0",
-    "swagger-ui": "4.5.0",
-    "swagger-ui-dist": "^4.5.0",
-    "validator": "13.7.0",
-    "z-schema": "5.0.3"
+    "validator": "13.7.0"
   }
 }
