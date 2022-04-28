@@ -65,6 +65,6 @@ async function run (appDirectory, version) {
 
 run(appDir,version)
 	.then(() => {
-		console.log('Please visit https://github.com/sassoftware/restaf-server/wiki/viya-apiserverjs for documentation');
+		console.log('Please visit https://github.com/sassoftware/viya-servers/wiki/viya-apiserverjs for documentation');
 	})
 	.catch((err) => console.log(err));

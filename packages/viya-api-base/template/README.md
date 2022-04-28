@@ -48,14 +48,14 @@ But maybe some one will be motivated to do one in Python or Go - so that we coul
 
 1. [hapi](https://hapi.dev/)  - the underlying nodejs based web server.
 2. [hapi-swagger](https://www.npmjs.com/package/hapi-swagger) - for defining routes and accessing swagger
-3. [@sassoftware/viya-apiserverjs](https://github.com/@sassoftware/restaf-server) - is the api server built using hapi.
+3. [@sassoftware/viya-apiserverjs](https://github.com/@sassoftware/viya-servers) - is the api server built using hapi.
 
 ## `Creating the project`
 
 ```sh
-git clone https://github.com/sassoftware/restaf-server -b apiSample some-name
+git clone https://github.com/sassoftware/viya-servers -b apiSample some-name
 
-ex: git clone https://github.com/sassoftware/restaf-server -b apiSample myapi
+ex: git clone https://github.com/sassoftware/viya-servers -b apiSample myapi
 
 Then do the usual install of dependencies
 
