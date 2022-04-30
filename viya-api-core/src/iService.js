@@ -24,6 +24,7 @@ let Hapi = require('@hapi/hapi');
 let NodeCache = require("node-cache-promise");
 let Vision = require('@hapi/vision');
 let inert = require('@hapi/inert');
+// let HapiSwagger = require('hapi-swagger');
 let selfsigned = require('selfsigned');
 import setupAuth from './plugins/setupAuth';
 
@@ -173,7 +174,6 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 
 		await setupAuth(hapiServer, options);
 		hapiServer.log('Plugin', process.env.PLUGIN);
-		/*
 		if (process.env.PLUGIN === 'hapi-swagger' && serverMode === 'api') {
 			let	swaggerOptions = {
 				"info": {
@@ -203,7 +203,6 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		} else if (process.env.PLUGIN == 'hapi-openapi' && serverMode === 'api') {
 			console.log('hapi-openapi', 'coming soon');
 		} 
-		*/
 
 		//
 		// Start server

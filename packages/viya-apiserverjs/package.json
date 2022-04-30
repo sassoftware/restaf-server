@@ -1,6 +1,6 @@
 {
   "name": "@sassoftware/viya-apiserverjs",
-  "version":"1.3.14",
+  "version":"1.3.15",
   "description": "Custom app server for Viya apps",
   "author": "Deva Kumaraswamy <deva.kumar@sas.com>",
   "license": "Apache-2.0",
@@ -39,7 +39,7 @@
   "dependencies": {
     "@sassoftware/restaf": "4.0.9",
     "@sassoftware/restaflib": "4.0.9",
-    "@sassoftware/viya-server-core":"1.3.14"
+    "@sassoftware/viya-server-core":"1.3.15"
     
   }
 }
