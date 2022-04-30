@@ -28,6 +28,7 @@
   },
   "unpkg": "./lib/cli.js",
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "build": "rimraf -rf lib && babel src --out-dir lib",
     "pub": "npm publish --tag dbg --access public",
     "lint": "npx eslint --fix src/*.js"
@@ -65,5 +66,15 @@
     "tcp-ping": "^0.1.1",
     "uuid": "^8.3.2",
     "yargs": "17.4.1"
+  },
+  "resolutions": {
+    "core-js": "3.21.1",
+    "node-forge": ">=1.0.0",
+    "underscore": "1.13.1",
+    "trim-newlines": "3.0.1",
+    "glob-parent": ">=5.1.2",
+    "@braintree/sanitize-url": ">=6.0.0",
+    "validator": "13.7.0",
+    "z-schema": "5.0.3"
   }
 }
