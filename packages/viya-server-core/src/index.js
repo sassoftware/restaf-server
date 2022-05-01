@@ -33,7 +33,7 @@ module.exports = function core (uTable, useDefault, serverMode, customize, swagg
     useDefault = true;
   }
   console.log('Initialization started ============================================================');
-  console.log(`version: 1.3.18. Build Time:`, Date());
+  console.log(`version: 2, Build Date: `, Date());
   console.log(
     `\nConfiguration:
           Dockerfile: ${docker}

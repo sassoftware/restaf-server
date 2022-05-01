@@ -42,7 +42,7 @@ module.exports = function core(uTable, useDefault, serverMode, customize, swagge
   }
 
   console.log('Initialization started ============================================================');
-  console.log("version: 1.3.18. Build Time:", Date());
+  console.log("version: 2, Build Date: ", Date());
   console.log("\nConfiguration:\n          Dockerfile: ".concat(docker, "\n          env file  : ").concat(env, "\n          appenv    : ").concat(appenv, "\n          customize : ").concat(customize != null, "\n          "));
   iapp(appenv, env, docker, uTable, useDefault, serverMode, customize);
 };
