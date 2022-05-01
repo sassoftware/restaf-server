@@ -28,7 +28,6 @@
   },
   "unpkg": "./lib/index.js",
   "scripts": {
-  
     "build": "rimraf -rf lib && babel src --out-dir lib",
     "pub": "npm publish --tag dbg --access public",
     "lint": "npx eslint --fix src/*.js"
