@@ -19,10 +19,10 @@
     "apijs:build": "cd packages/viya-apiserverjs && npm run build",
 
 
-    "appjs:start": "cd packages/apptest &&  npm run start",
-    "apijs:start": "cd packages/apitest && npm run start",
-    "appjs:debug": "cd packages/apptest && npm run debug",
-    "apijs:debug": "cd packages/apitest && npm run debug",
+    "appjs:start": "cd examples/apptest &&  npm run start",
+    "apijs:start": "cd examples/apitest && npm run start",
+    "appjs:debug": "cd examples/apptest && npm run debug",
+    "apijs:debug": "cd examples/apitest && npm run debug",
 
   
     "buildall": "npm run build -ws --if-present",
