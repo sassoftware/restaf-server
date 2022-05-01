@@ -29,20 +29,20 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * ----------------------------------------------------------------------------------------
  *
  */
-module.exports = function core(uTable, useDefault, serverMode, customize) {
+module.exports = function core(uTable, useDefault, serverMode, customize, swaggerfcn) {
   var argv = require('yargs').argv;
 
   var env = argv.env == null ? null : argv.env;
   var appenv = argv.appenv == null ? null : argv.appenv;
   var docker = argv.docker == null ? null : argv.docker;
-  process.env.SERVERMODE = serverMode;
+  process.env.SERVERMODE = serverMode !== null ? 'api' : 'app';
 
   if (useDefault == null) {
     useDefault = true;
   }
 
   console.log('Initialization started ============================================================');
-  console.log("version: 1.3.14. Build Time:", Date());
+  console.log("version: 1.3.17. Build Time:", Date());
   console.log("\nConfiguration:\n          Dockerfile: ".concat(docker, "\n          env file  : ").concat(env, "\n          appenv    : ").concat(appenv, "\n          customize : ").concat(customize != null, "\n          "));
   iapp(appenv, env, docker, uTable, useDefault, serverMode, customize);
 };

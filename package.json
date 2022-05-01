@@ -25,7 +25,11 @@
     "puball": "npm run core:pub && npm run appjs:pub && npm run apijs:pub && npm run create:pub && npm run base:pub",
     "pub": "npm run core:pub && npm run appjs:pub && npm run apijs:pub",
     "format": "prettier-eslint --eslint-config-path ./.eslintrc.json --write '**/*.js'",
-    "lint": "eslint . --ext .js --fix"
+    "lint": "eslint . --ext .js --fix",
+    "corelock": "cd packages/viya-server-core && npm i --package.lock.only",
+    "applock": "cd packages/viya-appserverjs && npm i --package.lock.only",
+    "apilock": "cd packages/viya-apiserverjs && npm i --package.lock.only",
+    "setlock": "npm run corelock && npm run applock && npm run apilock"
   },
   "repository": "git+https://github.com/sassoftware/viya-servers.git",
   "keywords": [

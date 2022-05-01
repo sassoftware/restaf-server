@@ -1,6 +1,6 @@
 {
   "name": "@sassoftware/viya-apiserverjs",
-  "version":"1.3.15",
+  "version":"1.3.18",
   "description": "Custom app server for Viya apps",
   "author": "Deva Kumaraswamy <deva.kumar@sas.com>",
   "license": "Apache-2.0",
@@ -30,6 +30,7 @@
     "url": "https://github.com/sassoftware/viya-servers/issues"
   },
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "build": "rimraf lib && babel src --out-dir lib",
     "start": "node api --env=./.env --docker=./Dockerfile",
     "pub": "npm publish --tag dbg --access public",
@@ -37,9 +38,13 @@
     "lint": "npx eslint --fix src/*.js"
   },
   "dependencies": {
-    "@sassoftware/restaf": "4.0.9",
-    "@sassoftware/restaflib": "4.0.9",
-    "@sassoftware/viya-server-core":"1.3.15"
+    "@sassoftware/viya-server-core":"1.3.18",
+    "hapi-swagger": "14.3.0"
     
+  },
+  "resolutions": {
+    "z-schema": "5.0.3",
+    "validator": "13.7.0"
   }
+
 }

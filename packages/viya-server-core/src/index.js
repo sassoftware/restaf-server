@@ -22,18 +22,18 @@ import fs from 'fs';
 import iService from './iService';
 import config from './config';
 
-module.exports = function core (uTable, useDefault, serverMode, customize) {
+module.exports = function core (uTable, useDefault, serverMode, customize, swaggerfcn) {
   let argv = require('yargs').argv;
   let env = argv.env == null ? null : argv.env;
   let appenv = argv.appenv == null ? null : argv.appenv;
   let docker = argv.docker == null ? null : argv.docker;
-  process.env.SERVERMODE=serverMode;
+  process.env.SERVERMODE= (serverMode !== null) ? 'api' : 'app';
   
   if (useDefault == null) {
     useDefault = true;
   }
   console.log('Initialization started ============================================================');
-  console.log(`version: 1.3.14. Build Time:`, Date());
+  console.log(`version: 1.3.17. Build Time:`, Date());
   console.log(
     `\nConfiguration:
           Dockerfile: ${docker}

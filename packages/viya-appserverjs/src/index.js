@@ -23,7 +23,7 @@ let core = require('@sassoftware/viya-server-core');
 
 // silly  but a jump point to keep backward compatibility
 function icli (uTable, useDefault, customize) {
-	core(uTable, useDefault, 'app', customize);
+	core(uTable, useDefault, null, customize);
 }
 
 export { icli };

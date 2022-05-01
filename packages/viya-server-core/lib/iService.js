@@ -9,6 +9,12 @@ var _setupAuth = _interopRequireDefault(require("./plugins/setupAuth"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -64,7 +70,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
   // process.env.APPHOST_ADDR = process.env.APPHOST;
   var init = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var defaultMaxBytes, maxBytes, isSameSite, isSecure, _process$env$SAMESITE, _process$env$SAMESITE2, s1, s2, sConfig, hapiServer, nodeCacheOptions, storeCache, visionOptions, options, allRoutes, hh, msg;
+      var defaultMaxBytes, maxBytes, isSameSite, isSecure, _process$env$SAMESITE, _process$env$SAMESITE2, s1, s2, sConfig, hapiServer, nodeCacheOptions, storeCache, visionOptions, options, swaggerOptions, override, allRoutes, hh, msg;
 
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
@@ -209,7 +215,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
             case 34:
               // setup authentication related plugins
               options = {
-                serverMode: serverMode,
+                serverMode: serverMode === null ? 'app' : 'api',
 
                 /* api or app */
                 authFlow: process.env.AUTHFLOW,
@@ -245,46 +251,61 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
 
             case 38:
               hapiServer.log('Plugin', process.env.PLUGIN);
-              /*
-              if (process.env.PLUGIN === 'hapi-swagger' && serverMode === 'api') {
-              	let	swaggerOptions = {
-              		"info": {
-              			"title"      : `API for ${process.env.APPNAME}`,
-              			"version"    : "0.0.1",
-              			"description": "This document was auto-generated at run time"
-              		},
-              		"schemes"          : ["http", "https"],
-              		"cors"             : true,
-              		"debug"            : true,
-              		"jsonPath"         : `/${options.appName}/swagger.json`,
-              	    "jsonRoutePath"    : `/${options.appName}/swagger.json`,
-              	    "documentationPage": true,
-                 		"documentationPath": `/${options.appName}/documentation`,
-              		"swaggerUI"        : true,
-              		"swaggerUIPath"    : `/${options.appName}/swaggerui`,
-              		auth               : options.authDefault
-              		};
-              			if (userInfo != null) {
-                  	let override = userInfo(options, 'SWAGGEROPTIONS');
-              		swaggerOptions = {...swaggerOptions, ...override};
-              	}
-              	
-              	debug('Swagger Options:' ,swaggerOptions);
-              	await hapiServer.register({ plugin: require('hapi-swagger'), options: swaggerOptions });
-              } else if (process.env.PLUGIN == 'hapi-openapi' && serverMode === 'api') {
-              	console.log('hapi-openapi', 'coming soon');
-              } 
-              */
+
+              if (!(process.env.PLUGIN === 'hapi-swagger' && serverMode !== null)) {
+                _context.next = 47;
+                break;
+              }
+
+              swaggerOptions = {
+                "info": {
+                  "title": "API for ".concat(process.env.APPNAME),
+                  "version": "0.0.1",
+                  "description": "This document was auto-generated at run time"
+                },
+                "schemes": ["http", "https"],
+                "cors": true,
+                "debug": true,
+                "jsonPath": "/".concat(options.appName, "/swagger.json"),
+                "jsonRoutePath": "/".concat(options.appName, "/swagger.json"),
+                "documentationPage": true,
+                "documentationPath": "/".concat(options.appName, "/documentation"),
+                "swaggerUI": true,
+                "swaggerUIPath": "/".concat(options.appName, "/swaggerui"),
+                auth: options.authDefault
+              };
+
+              if (userInfo != null) {
+                override = userInfo(options, 'SWAGGEROPTIONS');
+                swaggerOptions = _objectSpread(_objectSpread({}, swaggerOptions), override);
+              }
+
+              debug('Swagger Options:', swaggerOptions);
+              _context.next = 45;
+              return hapiServer.register({
+                plugin: serverMode,
+                options: swaggerOptions
+              });
+
+            case 45:
+              _context.next = 48;
+              break;
+
+            case 47:
+              if (process.env.PLUGIN == 'hapi-openapi' && serverMode !== null) {
+                console.log('hapi-openapi', 'coming soon');
+              }
+
+            case 48:
               //
               // Start server
               //
-
               allRoutes = hapiServer.table();
               debug(allRoutes);
-              _context.next = 43;
+              _context.next = 52;
               return hapiServer.start();
 
-            case 43:
+            case 52:
               hh = hapiServer.info.uri;
               hh = hh.replace(/0.0.0.0/, 'localhost');
               console.log('Server Start Time: ', Date());
@@ -295,7 +316,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
               process.env.HEALTH = 'true';
               console.log('Initialization completed ============================================================');
 
-            case 52:
+            case 61:
             case "end":
               return _context.stop();
           }
