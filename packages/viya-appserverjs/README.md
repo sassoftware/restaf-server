@@ -1,6 +1,8 @@
 # `@sassoftware/viya-appserverjs - Application server for use with SAS Viya`
 
- Use this for developing an app server for web applications
+ Use this for developing an app server for web applications.
+
+ See this [wiki page](https://github.com/sassoftware/restaf-server/wiki) for details
 
 ## Usage
 
@@ -9,7 +11,7 @@ Specify it as a dependency in your package.json just as you do with other depend
 Use npx command to start the server
 
 ```sh
-npx @sassoftware/viyaappserverjs
+npx @sassoftware/viya-appserverjs
 ```
 
 ## `Basic configuration`
