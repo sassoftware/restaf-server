@@ -9,24 +9,17 @@
     "url": "https://github.com/sassoftware/restaf-server/issues"
   },
   "homepage": "https://github.com/sassoftware/restaf-server#readme",
-  "scripts": {  
+  "scripts": {
     "preinstall": "npx npm-force-resolutions",
     "test": "echo \"Error: no test specified\" && exit 1",
-
-
     "core:build": "cd packages/viya-server-core && npm run build",
     "appjs:build": "cd packages/viya-appserverjs && npm run build",
     "apijs:build": "cd packages/viya-apiserverjs && npm run build",
-
-
     "appjs:start": "cd examples/apptest &&  npm run start",
     "apijs:start": "cd examples/apitest && npm run start",
     "appjs:debug": "cd examples/apptest && npm run debug",
     "apijs:debug": "cd examples/apitest && npm run debug",
-
-  
     "buildall": "npm run build -ws --if-present",
-
     "format": "prettier-eslint --eslint-config-path ./.eslintrc.json --write '**/*.js'",
     "lint": "eslint . --ext .js --fix"
   },
@@ -44,5 +37,8 @@
   },
   "workspaces": [
     "./packages/*"
-  ]
+  ],
+  "dependencies": {
+    "@hapi/hapi": "^20.2.2"
+  }
 }
