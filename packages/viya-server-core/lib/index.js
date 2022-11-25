@@ -101,6 +101,11 @@ function createPayload(srcName, cb) {
 function getAllEnv(userData) {
   var env;
   var l = null;
+
+  if (process.env.AUTHTYPE != null) {
+    process.env.AUTHFLOW = process.env.AUTHTYPE;
+  }
+
   var authflow = trimit('AUTHFLOW');
 
   if (authflow === 'authorization_code' || authflow === 'code') {

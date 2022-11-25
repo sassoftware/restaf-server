@@ -22,6 +22,8 @@ import fs from 'fs';
 import iService from './iService';
 import config from './config';
 
+
+
 module.exports = function core (uTable, useDefault, serverMode, customize, swaggerfcn) {
   let argv = require('yargs').argv;
   let env = argv.env == null ? null : argv.env;
@@ -97,6 +99,9 @@ function createPayload (srcName, cb) {
 function getAllEnv (userData) {
   let env;
   let l = null;
+  if ( process.env.AUTHTYPE != null) {
+    process.env.AUTHFLOW=process.env.AUTHTYPE;
+  }
   let authflow = trimit('AUTHFLOW');
   if (authflow === 'authorization_code' ||authflow === 'code') {
     authflow = 'server';
