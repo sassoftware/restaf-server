@@ -37,7 +37,6 @@
     "lint": "npx eslint --fix src/*.js"
   },
   "dependencies": {
-    "@sassoftware/viya-server-core": "*",
     "hapi-swagger": "14.3.0"
   },
   "resolutions": {

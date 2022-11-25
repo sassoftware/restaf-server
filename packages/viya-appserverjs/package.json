@@ -38,8 +38,5 @@
     "debugapp": "cross-env VIYA_SERVER=%vx% node --inspect-brk app.js  --env=./.env --docker=./Dockerfile",
     "pub": "npm publish --tag test --access public",
     "lint": "npx eslint --fix src/*.js"
-  },
-  "dependencies": {
-    "@sassoftware/viya-server-core": "*"
   }
 }
