@@ -20,6 +20,7 @@
     "appjs:debug": "cd examples/apptest && npm run debug",
     "apijs:debug": "cd examples/apitest && npm run debug",
     "buildall": "npm run build -ws --if-present",
+    "puball": "npm run pub -ws --if-present",
     "format": "prettier-eslint --eslint-config-path ./.eslintrc.json --write '**/*.js'",
     "lint": "eslint . --ext .js --fix"
   },
@@ -36,7 +37,9 @@
     "validator": "13.7.0"
   },
   "workspaces": [
-    "./packages/*"
+    "./packages/viya-server-core",
+    "./packages/viya-appserverjs",
+    "./packages/viya-apiserverjs"
   ],
   "dependencies": {
     "@hapi/hapi": "^20.2.2"

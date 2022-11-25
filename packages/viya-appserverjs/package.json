@@ -36,10 +36,10 @@
     "appenv": "cross-env  VIYA_SERVER=%vx% node app.js --env=./.env --appenv=./appenv.js --docker=./Dockerfile ",
     "debug": "cross-env VIYA_SERVER=%vx% node --inspect-brk ./lib/cli.js   --env=./.env --docker=./Dockerfile",
     "debugapp": "cross-env VIYA_SERVER=%vx% node --inspect-brk app.js  --env=./.env --docker=./Dockerfile",
-    "pub": "npm publish --tag dbg --access public",
+    "pub": "npm publish --tag test --access public",
     "lint": "npx eslint --fix src/*.js"
   },
   "dependencies": {
-    "@sassoftware/viya-server-core": "^2.0.1"
+    "@sassoftware/viya-server-core": "*"
   }
 }
