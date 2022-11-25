@@ -28,5 +28,5 @@ var core = require('@sassoftware/viya-server-core'); // silly  but a jump point 
 
 
 function icli(uTable, useDefault, customize) {
-  core(uTable, useDefault, 'app', customize);
+  core(uTable, useDefault, null, customize);
 }

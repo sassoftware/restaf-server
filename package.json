@@ -1,28 +1,25 @@
 {
   "name": "@sassoftware/restaf-server",
-  "version": "1.3.9",
+  "version": "2.1.0",
   "description": "app and api server for SAS Viya user applications",
   "main": "index.js",
+  "author": "Deva Kumar",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/sassoftware/restaf-server/issues"
+  },
+  "homepage": "https://github.com/sassoftware/restaf-server#readme",
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "core:build": "cd packages/viya-server-core && yarn build",
-    "appjs:build": "cd packages/viya-appserverjs && yarn build",
-    "appjs:start": "cd packages/apptest &&  yarn start",
-    "appjs:istart": "cd packages/apptest && yarn istart",
-    "appjs:app": "cd packages/viya-appserverjs && yarn app",
-    "appjs:appenv": "cd packages/viya-appserverjs && yarn appenv",
-    "appjs:debug": "cd packages/apptest && yarn debug",
-    "apijs:debug": "cd packages/apitest && yarn debug",
-    "apijs:build": "cd packages/viya-apiserverjs && yarn build",
-    "apijs:start": "cd packages/apitest && yarn start",
-    "buildall": "yarn core:build && yarn appjs:build && yarn apijs:build",
-    "core:pub": "cd packages/viya-server-core  &&  npm publish  --tag dbg --access public",
-    "appjs:pub": "cd packages/viya-appserverjs && npm publish --tag dbg --access public",
-    "apijs:pub": "cd packages/viya-apiserverjs && npm publish --tag dbg --access public",
-    "create:pub": "cd packages/create-viya-api && npm publish --tag dbg --access public",
-    "base:pub": "cd packages/viya-api-base     && npm  publish --tag dbg --access public",
-    "puball": "npm run core:pub && npm run appjs:pub && npm run apijs:pub && npm run create:pub && npm run base:pub",
-    "pub": "npm run core:pub && npm run appjs:pub && npm run apijs:pub",
+    "core:build": "cd packages/viya-server-core && npm run build",
+    "appjs:build": "cd packages/viya-appserverjs && npm run build",
+    "apijs:build": "cd packages/viya-apiserverjs && npm run build",
+    "appjs:start": "cd examples/apptest &&  npm run start",
+    "apijs:start": "cd examples/apitest && npm run start",
+    "appjs:debug": "cd examples/apptest && npm run debug",
+    "apijs:debug": "cd examples/apitest && npm run debug",
+    "buildall": "npm run build -ws --if-present",
     "format": "prettier-eslint --eslint-config-path ./.eslintrc.json --write '**/*.js'",
     "lint": "eslint . --ext .js --fix"
   },
@@ -31,69 +28,17 @@
     "REST",
     "API",
     "Viya",
-    "restaf"
+    "appserver",
+    "apiserver"
   ],
-  "author": "Deva Kumar",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/sassoftware/restaf-server/issues"
-  },
-  "homepage": "https://github.com/sassoftware/restaf-server#readme",
-  "devDependencies": {
-    "@babel/cli": "^7.17.0",
-    "@babel/core": "^7.17.0",
-    "@babel/eslint-parser": "7.17.0",
-    "@babel/plugin-proposal-class-properties": "^7.16.7",
-    "@babel/plugin-proposal-decorators": "^7.17.0",
-    "@babel/plugin-proposal-do-expressions": "^7.16.7",
-    "@babel/plugin-proposal-export-default-from": "^7.16.7",
-    "@babel/plugin-proposal-export-namespace-from": "^7.16.7",
-    "@babel/plugin-proposal-function-bind": "^7.16.7",
-    "@babel/plugin-proposal-function-sent": "^7.16.7",
-    "@babel/plugin-proposal-json-strings": "^7.16.7",
-    "@babel/plugin-proposal-logical-assignment-operators": "^7.16.7",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.16.7",
-    "@babel/plugin-proposal-numeric-separator": "^7.16.7",
-    "@babel/plugin-proposal-object-rest-spread": "^7.16.7",
-    "@babel/plugin-proposal-optional-chaining": "^7.16.7",
-    "@babel/plugin-proposal-pipeline-operator": "^7.16.7",
-    "@babel/plugin-proposal-throw-expressions": "^7.16.7",
-    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-    "@babel/plugin-syntax-import-meta": "^7.10.4",
-    "@babel/plugin-transform-regenerator": "^7.16.7",
-    "@babel/plugin-transform-runtime": "^7.17.0",
-    "@babel/plugin-transform-spread": "^7.16.7",
-    "@babel/plugin-transform-strict-mode": "^7.16.7",
-    "@babel/preset-env": "^7.16.11",
-    "cross-env": "^7.0.3",
-    "eslint": "^8.8.0",
-    "prettier": "^2.5.1",
-    "rimraf": "^3.0.2",
-    "shx": "^0.3.4"
-  },
-  "private": true,
-  "workspaces": {
-    "packages": [
-      "packages/viya-apiserverjs",
-      "packages/viya-appserverjs",
-      "packages/viya-server-core",
-      "packages/create-viya-api",
-      "packages/viya-api-base",
-      "packages/apptest",
-      "packages/apitest"
-    ]
-  },
   "resolutions": {
-    "core-js": "3.21.1",
-    "node-forge": ">=1.0.0",
-    "underscore": "1.13.1",
-    "trim-newlines": "3.0.1",
-    "glob-parent": ">=5.1.2",
-    "@braintree/sanitize-url": ">=6.0.0",
-    "swagger-ui": "4.5.0",
-    "swagger-ui-dist": "^4.5.0",
-    "validator": "13.7.0",
-    "z-schema": "5.0.3"
+    "z-schema": "5.0.3",
+    "validator": "13.7.0"
+  },
+  "workspaces": [
+    "./packages/*"
+  ],
+  "dependencies": {
+    "@hapi/hapi": "^20.2.2"
   }
 }
-

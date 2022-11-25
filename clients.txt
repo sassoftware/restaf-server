@@ -1,7 +1,0 @@
-del appjs
-del apijs
-
-add appjs -t authorization_code -s secret -r http://localhost:8080/viyaapp,https://localhost:443/viyaapp,https://localhost/viyaapp
-
-add apijs -t authorization_code -s secret -r http://localhost:8080/viyaapi/logon,https://localhost:443/viyaapi/logon,https://localhost/viyaapi/logon
-

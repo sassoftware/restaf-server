@@ -60,8 +60,7 @@ var NodeCache = require("node-cache-promise");
 
 var Vision = require('@hapi/vision');
 
-var inert = require('@hapi/inert'); // let HapiSwagger = require('hapi-swagger');
-
+var inert = require('@hapi/inert');
 
 var selfsigned = require('selfsigned');
 
@@ -216,7 +215,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
             case 34:
               // setup authentication related plugins
               options = {
-                serverMode: serverMode,
+                serverMode: serverMode === null ? 'app' : 'api',
 
                 /* api or app */
                 authFlow: process.env.AUTHFLOW,
@@ -253,7 +252,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
             case 38:
               hapiServer.log('Plugin', process.env.PLUGIN);
 
-              if (!(process.env.PLUGIN === 'hapi-swagger' && serverMode === 'api')) {
+              if (!(process.env.PLUGIN === 'hapi-swagger' && serverMode !== null)) {
                 _context.next = 47;
                 break;
               }
@@ -284,7 +283,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
               debug('Swagger Options:', swaggerOptions);
               _context.next = 45;
               return hapiServer.register({
-                plugin: require('hapi-swagger'),
+                plugin: serverMode,
                 options: swaggerOptions
               });
 
@@ -293,7 +292,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
               break;
 
             case 47:
-              if (process.env.PLUGIN == 'hapi-openapi' && serverMode === 'api') {
+              if (process.env.PLUGIN == 'hapi-openapi' && serverMode !== null) {
                 console.log('hapi-openapi', 'coming soon');
               }
 

@@ -29,20 +29,20 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * ----------------------------------------------------------------------------------------
  *
  */
-module.exports = function core(uTable, useDefault, serverMode, customize) {
+module.exports = function core(uTable, useDefault, serverMode, customize, swaggerfcn) {
   var argv = require('yargs').argv;
 
   var env = argv.env == null ? null : argv.env;
   var appenv = argv.appenv == null ? null : argv.appenv;
   var docker = argv.docker == null ? null : argv.docker;
-  process.env.SERVERMODE = serverMode;
+  process.env.SERVERMODE = serverMode !== null ? 'api' : 'app';
 
   if (useDefault == null) {
     useDefault = true;
   }
 
   console.log('Initialization started ============================================================');
-  console.log('version: 1.3.7');
+  console.log("version: 2, Build Date: ", Date());
   console.log("\nConfiguration:\n          Dockerfile: ".concat(docker, "\n          env file  : ").concat(env, "\n          appenv    : ").concat(appenv, "\n          customize : ").concat(customize != null, "\n          "));
   iapp(appenv, env, docker, uTable, useDefault, serverMode, customize);
 };
@@ -101,6 +101,11 @@ function createPayload(srcName, cb) {
 function getAllEnv(userData) {
   var env;
   var l = null;
+
+  if (process.env.AUTHTYPE != null) {
+    process.env.AUTHFLOW = process.env.AUTHTYPE;
+  }
+
   var authflow = trimit('AUTHFLOW');
 
   if (authflow === 'authorization_code' || authflow === 'code') {

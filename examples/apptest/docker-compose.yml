@@ -1,4 +1,4 @@
-version: "3.3"
+version: "3.8"
 services:
   viyaapp:
       build: .
@@ -6,8 +6,7 @@ services:
       ports:
         - 8080:8080
       environment:
-        - VIYA_SERVER=
+        - VIYA_SERVER=$V1
         - APPNAME=viyaapp
-        - USETOKEN=YES
         - DEBUG=
 

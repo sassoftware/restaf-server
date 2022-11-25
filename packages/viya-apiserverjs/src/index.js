@@ -20,9 +20,10 @@
 'use strict';
 
 import core from '@sassoftware/viya-server-core';
+let swagger = require('hapi-swagger');
 
 // silly  but a jump point to keep backward compatibility
 function icli (uTable, useDefault, userInfo) {
-	core(uTable, useDefault, 'api', userInfo);
+	core(uTable, useDefault, swagger, userInfo);
 }
 export { icli };

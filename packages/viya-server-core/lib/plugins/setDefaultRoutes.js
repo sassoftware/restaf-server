@@ -152,6 +152,12 @@ module.exports = function setDefaultRoutes(server, options) {
 
         allAppEnv.credentials = options.credentials;
         var s = "let LOGONPAYLOAD = ".concat(JSON.stringify(allAppEnv.LOGONPAYLOAD), ";") + "let APPENV = ".concat(JSON.stringify(allAppEnv.APPENV), ";");
+
+        if (process.env.SHOWENV != null) {
+          console.log(options.allAppEnv);
+          console.log(s);
+        }
+
         return s;
       }
     }
