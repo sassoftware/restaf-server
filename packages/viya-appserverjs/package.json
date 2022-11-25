@@ -1,6 +1,6 @@
 {
   "name": "@sassoftware/viya-appserverjs",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Custom app server for Viya apps",
   "author": "Deva Kumaraswamy <deva.kumar@sas.com>",
   "license": "Apache-2.0",
@@ -38,5 +38,8 @@
     "debugapp": "cross-env VIYA_SERVER=%vx% node --inspect-brk app.js  --env=./.env --docker=./Dockerfile",
     "pub": "npm publish --tag test --access public",
     "lint": "npx eslint --fix src/*.js"
+  },
+  "dependencies": {
+    "@sassoftware/viya-server-core": "^2.1.2"
   }
 }
