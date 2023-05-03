@@ -1,6 +1,6 @@
 {
   "name": "@sassoftware/viya-server-core",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "description": "core library for the servers",
   "author": "Deva Kumaraswamy <deva.kumar@sas.com>",
   "license": "Apache-2.0",
@@ -16,7 +16,7 @@
     "RESTAPI"
   ],
   "engines": {
-    "node": ">=12.14.0"
+    "node": ">= 16.13.1"
   },
   "homepage": "https://github.com/sassoftware/viya-servers#readme",
   "repository": {

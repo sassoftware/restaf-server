@@ -32,6 +32,9 @@
     "appserver",
     "apiserver"
   ],
+  "engine": {
+    "node": ">= 16.13.1"
+  },
   "resolutions": {
     "z-schema": "5.0.3",
     "validator": "13.7.0"
