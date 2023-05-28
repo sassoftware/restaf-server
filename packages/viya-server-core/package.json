@@ -48,7 +48,6 @@
     "docker-file-parser": "^1.0.7",
     "eslint-config-prettier": "^8.5.0",
     "handlebars": "^4.7.7",
-    "hapi-pino": "^9.3.0",
     "hapi-require-https": "^5.0.0",
     "joi": "^17.6.0",
     "jwt-decode": "^3.1.2",
