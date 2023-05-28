@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@hapi/hapi": "^21.3.2",
-    "@sassoftware/viya-server-core": "*",
+    "@sassoftware/viya-server-core": "2.3.3",
     "joi": "^17.9.2"
   }
 }
