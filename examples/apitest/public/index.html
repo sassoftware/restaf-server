@@ -20,20 +20,20 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-
-		<script
-			crossorigin
-			src="https://unpkg.com/react@16/umd/react.production.min.js"
-		></script>
-		<script
-			crossorigin
-			src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"
-		></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"></script>
-		<script src="https://unpkg.com/@sassoftware/restaf/dist/restaf.js"></script>
-		<script src="https://unpkg.com/@sassoftware/restaflib/dist/restaflib.js"></script>
-		<script src="/viyaapp/appenv"></script>
+		<script
+			crossorigin
+			src="https://unpkg.com/react/umd/react.production.min.js"
+		></script>
+		<script
+			crossorigin
+			src="https://unpkg.com/react-dom/umd/react-dom.production.min.js"
+		></script>
+	
+		<script src="https://unpkg.com/@sassoftware/restaf@4.10.0"></script>
+		<script src="https://unpkg.com/@sassoftware/restaflib@4.10.0"></script>
+		<script type="text/javascript" src="%REACT_APP_APPNAME%/appenv"></script>
 	
 		<style>
 			.container {
@@ -112,7 +112,7 @@
 					
 			}
 			async function initSession() {
-				
+				debugger;
 				console.log(LOGONPAYLOAD);
 				let msg = await store.logon(LOGONPAYLOAD);
 				

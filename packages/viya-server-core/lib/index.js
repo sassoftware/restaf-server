@@ -1,17 +1,11 @@
 "use strict";
 
 require("core-js/stable");
-
 require("regenerator-runtime/runtime");
-
 var _fs = _interopRequireDefault(require("fs"));
-
 var _iService = _interopRequireDefault(require("./iService"));
-
 var _config = _interopRequireDefault(require("./config"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 /*
  *  ------------------------------------------------------------------------------------
  *  * Copyright (c) SAS Institute Inc.
@@ -29,31 +23,26 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * ----------------------------------------------------------------------------------------
  *
  */
+
 module.exports = function core(uTable, useDefault, serverMode, customize, swaggerfcn) {
   var argv = require('yargs').argv;
-
   var env = argv.env == null ? null : argv.env;
   var appenv = argv.appenv == null ? null : argv.appenv;
   var docker = argv.docker == null ? null : argv.docker;
   process.env.SERVERMODE = serverMode !== null ? 'api' : 'app';
-
   if (useDefault == null) {
     useDefault = true;
   }
-
   console.log('Initialization started ============================================================');
   console.log("version: 2, Build Date: ", Date());
   console.log("\nConfiguration:\n          Dockerfile: ".concat(docker, "\n          env file  : ").concat(env, "\n          appenv    : ").concat(appenv, "\n          customize : ").concat(customize != null, "\n          "));
   iapp(appenv, env, docker, uTable, useDefault, serverMode, customize);
 };
-
 function iapp(appSrc, rafEnv, dockerFile, uTable, useDefault, serverMode, customize) {
   var asset = setup(rafEnv, dockerFile);
-
   if (appSrc === null) {
     appSrc = process.env.APPENV == null ? null : process.env.APPENV;
   }
-
   if (appSrc != null) {
     createPayload(appSrc, function (err, r) {
       if (err) {
@@ -69,21 +58,17 @@ function iapp(appSrc, rafEnv, dockerFile, uTable, useDefault, serverMode, custom
     (0, _iService["default"])(uTable, useDefault, asset, appEnv, serverMode, customize);
   }
 }
-
 function setup(rafEnv, dockerFile) {
   (0, _config["default"])(rafEnv, dockerFile);
   var asset = process.env.APPLOC === '.' ? process.cwd() : process.env.APPLOC;
   process.env.APPASSET = asset;
   return asset;
 }
-
 function createPayload(srcName, cb) {
   var src = _fs["default"].readFileSync(srcName, 'utf8');
-
   if (src === null) {
     cb("Error: ".concat(srcName, " was not found. "));
   }
-
   try {
     // console.log(src);
     var f = new Function(src);
@@ -97,35 +82,28 @@ function createPayload(srcName, cb) {
     cb(err);
   }
 }
-
 function getAllEnv(userData) {
   var env;
   var l = null;
-
   if (process.env.AUTHTYPE != null) {
     process.env.AUTHFLOW = process.env.AUTHTYPE;
   }
-
   var authflow = trimit('AUTHFLOW');
-
   if (authflow === 'authorization_code' || authflow === 'code') {
     authflow = 'server';
   }
-
   process.env.AUTHFLOW = authflow;
   var redirect = process.env.REDIRECT != null ? process.env.REDIRECT : null;
   var host = trimit('VIYA_SERVER');
-  var clientID = trimit('CLIENTID'); // eslint-disable-next-line no-unused-vars
-
+  var clientID = trimit('CLIENTID');
+  // eslint-disable-next-line no-unused-vars
   var clientSecret = trimit('CLIENTSECRET');
   var keepAlive = trimit('KEEPALIVE');
   var appName = trimit('APPNAME');
   var ns = trimit('NAMESPACE');
-
   if (authflow === 'server' || authflow === 'implicit') {
     if (authflow === 'implicit') {
       redirect = trimit('REDIRECT');
-
       if (redirect === null) {
         redirect = "".concat(appName, "/callback");
         process.env.REDIRECT = 'callback';
@@ -133,7 +111,6 @@ function getAllEnv(userData) {
         redirect = redirect.indexOf('http') != -1 ? redirect : "".concat(process.env.APPNAME, "/").concat(redirect);
       }
     }
-
     ;
     l = {
       authType: authflow,
@@ -145,20 +122,16 @@ function getAllEnv(userData) {
       useToken: process.env.USETOKEN,
       ns: ns
     };
-
     if (authflow === 'server' && keepAlive === 'YES') {
       var protocol = process.env.HTTPS === 'true' ? 'https://' : 'http://';
       l.keepAlive = "".concat(protocol).concat(process.env.APPHOST, ":").concat(process.env.APPPORT, "/").concat(appName, "/keepAlive");
       l.keepAlive = l.keepAlive.replace(/0.0.0.0/, 'localhost');
     }
-
     ;
-
     if (process.env.TIMERS != null) {
       l.timers = process.env.TIMERS;
     }
   }
-
   env = {
     LOGONPAYLOAD: l,
     APPENV: userData
@@ -167,7 +140,6 @@ function getAllEnv(userData) {
   console.log(JSON.stringify(env, null, 4));
   return env;
 }
-
 function trimit(e) {
   var a = process.env[e];
   return a == null ? null : a.trim();

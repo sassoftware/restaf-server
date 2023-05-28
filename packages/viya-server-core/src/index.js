@@ -99,7 +99,7 @@ function createPayload (srcName, cb) {
 function getAllEnv (userData) {
   let env;
   let l = null;
-  if ( process.env.AUTHTYPE != null) {
+  if (process.env.AUTHTYPE != null) {
     process.env.AUTHFLOW=process.env.AUTHTYPE;
   }
   let authflow = trimit('AUTHFLOW');

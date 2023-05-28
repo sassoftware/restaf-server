@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 /*
  *  ------------------------------------------------------------------------------------
  *  * Copyright (c) SAS Institute Inc.
@@ -23,10 +22,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.icli = icli;
+var core = require('@sassoftware/viya-server-core');
 
-var core = require('@sassoftware/viya-server-core'); // silly  but a jump point to keep backward compatibility
-
-
+// silly  but a jump point to keep backward compatibility
 function icli(uTable, useDefault, customize) {
   core(uTable, useDefault, null, customize);
 }

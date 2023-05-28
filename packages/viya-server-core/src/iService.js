@@ -135,6 +135,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		if (process.env.HTTPS === 'true') {
 			await hapiServer.register({ plugin: require('hapi-require-https'), options: {} });
 		}
+		/*
 		await hapiServer.register({
 			plugin : require('hapi-pino'),
 			options: {
@@ -142,6 +143,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 				level      : process.env.LOGLEVEL == null ? 'silent' : process.env.LOGLEVEL,
 			},
 		});
+		*/
 		
 		// setup authentication related plugins
 		let options = {
@@ -213,16 +215,17 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		await hapiServer.start();
 		let hh = hapiServer.info.uri;
 		hh = hh.replace(/0.0.0.0/, 'localhost');
+		console.log('====================================================================================');
 		console.log('Server Start Time: ', Date());
 		let msg =
 			options.serverMode === 'app'
 				? `Visit ${hh}/${process.env.APPNAME} to access application`
 				: `Visit ${hh}/${process.env.APPNAME}/api to access swagger`;
-		console.log(msg);
-		console.log('NOTE: If running in container then use the port number you mapped to');
+		console.log('\x1b[1m%s\x1b[0m',msg);
+		console.log('NOTE: If running in container use the exported port');
 		process.env.APPSERVER = `${hh}/${process.env.APPNAME}`;
 		process.env.HEALTH = 'true';
-		console.log('Initialization completed ============================================================');
+		console.log('====================================================================================');
 	};
 
 	process.on('unhandledRejection', (err) => {

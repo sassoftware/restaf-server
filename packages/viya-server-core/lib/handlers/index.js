@@ -73,27 +73,15 @@ Object.defineProperty(exports, "setupUserRoutes", {
     return _setupUserRoutes["default"];
   }
 });
-
 var _getApp = _interopRequireDefault(require("./getApp"));
-
 var _getApp2 = _interopRequireDefault(require("./getApp2"));
-
 var _favicon = _interopRequireDefault(require("./favicon"));
-
 var _appCallback = _interopRequireDefault(require("./appCallback"));
-
 var _logon = _interopRequireDefault(require("./logon"));
-
 var _keepAlive = _interopRequireDefault(require("./keepAlive"));
-
 var _keepAlive2 = _interopRequireDefault(require("./keepAlive2"));
-
 var _logout = _interopRequireDefault(require("./logout"));
-
 var _getUser = _interopRequireDefault(require("./getUser"));
-
 var _setupUserRoutes = _interopRequireDefault(require("../plugins/setupUserRoutes"));
-
 var _reactDev = _interopRequireDefault(require("./reactDev"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }

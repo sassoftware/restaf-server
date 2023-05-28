@@ -8,11 +8,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
-
 var parser = require('docker-file-parser');
-
 var fs = require('fs');
-
 function parseDocker(dockerFile) {
   ;
   var d = fs.readFileSync(dockerFile, 'utf8');
@@ -24,7 +21,6 @@ function parseDocker(dockerFile) {
     } else if (d.name === 'ENV') {
       for (var key in d.args) {
         var v = d.args[key];
-
         if (v.length === 0) {
           console.log("Value for ".concat(key, " inherited as ").concat(process.env[key]));
         } else {
@@ -34,6 +30,5 @@ function parseDocker(dockerFile) {
     }
   });
 }
-
 var _default = parseDocker;
 exports["default"] = _default;
