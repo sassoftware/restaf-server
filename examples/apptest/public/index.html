@@ -64,9 +64,9 @@
 		</style>
 	
 		<script>
-			let store = restaf.initStore({casProxy: true});
 			debugger;
-			console.log(store.config);
+			let store = restaf.initStore({casProxy: true});
+			debugger;	console.log(store.config);
 
 			let session = null;
 			let servers = null;
@@ -76,7 +76,7 @@
 			let compute = null;
 
 			function setup() {
-				
+				debugger;
 				document.getElementById('output').innerHTML = '...initializing';
 				
 				initSession()
@@ -256,7 +256,9 @@
 			}
 			async function dsCompute(store) {
 				let log = null;
+				debugger;
 				let {compute} = await store.addServices('compute');
+				let servers = await store.apiCall(compute.links('servers'));
 
 				let contexts = await store.apiCall(compute.links('contexts'));
 

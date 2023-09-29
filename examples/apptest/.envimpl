@@ -1,7 +1,7 @@
 VIYA_SERVER=
 
 # APPHOST=localhost
-APPPORT=8080
+APPPORT=808
 AUTHFLOW=implicit
 APPNAME=viyaapp
 CLIENTID=implflow

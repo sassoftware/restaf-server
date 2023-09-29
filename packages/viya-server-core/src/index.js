@@ -37,7 +37,7 @@ module.exports = function core (uTable, useDefault, serverMode, customize, swagg
   console.log('Initialization started ============================================================');
   console.log(`version: 2, Build Date: `, Date());
   console.log(
-    `\nConfiguration:
+    `\nCommand Line Configuration:
           Dockerfile: ${docker}
           env file  : ${env}
           appenv    : ${appenv}
@@ -149,11 +149,20 @@ function getAllEnv (userData) {
     }
   }
 
+  // pick up the app env's - replacement for appenv.js
+  // appenv.js still supported for backward compatibility
+  for (let key in process.env) {
+    if (key.indexOf('APPENV_') === 0) {
+      let k = key.substring(7);
+      userData[k] = process.env[key];
+    }
+  }
+
   env = {
     LOGONPAYLOAD: l,
     APPENV      : userData
   };
-  console.log('Configurations');
+  console.log('Final configuration for the server');
   console.log(JSON.stringify(env, null,4));
 
   return env;

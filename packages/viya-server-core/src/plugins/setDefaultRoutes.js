@@ -16,6 +16,7 @@
  *
  */
 
+
 import { getApp, getApp2,  appCallback, favicon, keepAlive, keepAlive2,logout, logon, setupUserRoutes, reactDev} from '../handlers';
 
 module.exports = function setDefaultRoutes (server, options) {
@@ -127,7 +128,10 @@ module.exports = function setDefaultRoutes (server, options) {
 					
 					let allAppEnv = options.allAppEnv;
 					if (options.userInfo != null) {
-						allAppEnv.APPENV = options.userInfo('APPENV', options);
+						let uappenv = options.userInfo('APPENV', options);
+						if (uappenv != null) {
+							allAppEnv.APPENV = {...allAppEnv.APPENV, ...uappenv};
+						}
 					}
 					allAppEnv.credentials = options.credentials;
 

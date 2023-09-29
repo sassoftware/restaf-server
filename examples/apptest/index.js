@@ -6,12 +6,10 @@ const rafServer = require('@sassoftware/viya-appserverjs');
 debugger;
 rafServer.icli(null, true, customize);
 function customize (key, _options){
+    debugger;
     let info = {
-        APPENV: {
-            x: 1,
-            y: 2
-        },
-        SWAGGEROPTIONS: {}
+        SWAGGEROPTIONS: {},
+        APPENV        : null
     };
-    return info[key];
+    return info[key];  
 }

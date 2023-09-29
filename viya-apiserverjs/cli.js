@@ -10,6 +10,6 @@ function customize (key){
     let info = {
         swaggerOptions: {}
     };
-    console.log('+++++++++++++++++++', key);
-    return info(key);
+    console.log('customize ', {key, info});
+    return info((key !== null ? info[key] : {}));
 }

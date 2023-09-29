@@ -35,7 +35,7 @@ module.exports = function core(uTable, useDefault, serverMode, customize, swagge
   }
   console.log('Initialization started ============================================================');
   console.log("version: 2, Build Date: ", Date());
-  console.log("\nConfiguration:\n          Dockerfile: ".concat(docker, "\n          env file  : ").concat(env, "\n          appenv    : ").concat(appenv, "\n          customize : ").concat(customize != null, "\n          "));
+  console.log("\nCommand Line Configuration:\n          Dockerfile: ".concat(docker, "\n          env file  : ").concat(env, "\n          appenv    : ").concat(appenv, "\n          customize : ").concat(customize != null, "\n          "));
   iapp(appenv, env, docker, uTable, useDefault, serverMode, customize);
 };
 function iapp(appSrc, rafEnv, dockerFile, uTable, useDefault, serverMode, customize) {
@@ -132,11 +132,20 @@ function getAllEnv(userData) {
       l.timers = process.env.TIMERS;
     }
   }
+
+  // pick up the app env's - replacement for appenv.js
+  // appenv.js still supported for backward compatibility
+  for (var key in process.env) {
+    if (key.indexOf('APPENV_') === 0) {
+      var k = key.substring(7);
+      userData[k] = process.env[key];
+    }
+  }
   env = {
     LOGONPAYLOAD: l,
     APPENV: userData
   };
-  console.log('Configurations');
+  console.log('Final configuration for the server');
   console.log(JSON.stringify(env, null, 4));
   return env;
 }
