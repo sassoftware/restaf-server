@@ -152,11 +152,10 @@ function getAllEnv (userData) {
   // pick up the app env's - replacement for appenv.js
   // appenv.js still supported for backward compatibility
   for (let key in process.env) {
-    console.log(`${key} : ${process.env[key]}`);
     if (key.indexOf('APPENV_') === 0) {
       let k = key.substring(7);
       userData[k] = process.env[key];
-      console.log(`${k} : ${process.env[key]}`);
+     // console.log(`${k} : ${process.env[key]}`);
     }
   }
 
@@ -164,8 +163,8 @@ function getAllEnv (userData) {
     LOGONPAYLOAD: l,
     APPENV      : userData
   };
-  console.log('Final configuration for the server');
-  console.log(JSON.stringify(env, null,4));
+  console.log('Final APPENV configuration for the server');
+  console.log(JSON.stringify(userData, null,4));
 
   return env;
 }
