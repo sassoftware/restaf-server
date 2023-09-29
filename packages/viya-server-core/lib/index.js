@@ -136,9 +136,11 @@ function getAllEnv(userData) {
   // pick up the app env's - replacement for appenv.js
   // appenv.js still supported for backward compatibility
   for (var key in process.env) {
+    console.log("".concat(key, " : ").concat(process.env[key]));
     if (key.indexOf('APPENV_') === 0) {
       var k = key.substring(7);
       userData[k] = process.env[key];
+      console.log("".concat(k, " : ").concat(process.env[key]));
     }
   }
   env = {
