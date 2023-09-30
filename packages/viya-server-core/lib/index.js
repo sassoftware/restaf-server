@@ -131,6 +131,18 @@ function getAllEnv(userData) {
     if (process.env.TIMERS != null) {
       l.timers = process.env.TIMERS;
     }
+  } else {
+    // allow for no authtype 
+    l = {
+      authType: authflow,
+      redirect: null,
+      host: host,
+      clientID: clientID,
+      appName: appName,
+      keepAlive: null,
+      useToken: process.env.USETOKEN,
+      ns: ns
+    };
   }
 
   // pick up the app env's - replacement for appenv.js
