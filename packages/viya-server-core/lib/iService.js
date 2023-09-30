@@ -204,12 +204,16 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
             };
 
             debug('Options', options);
-            _context.next = 36;
+            if (!(process.env.AUTHFLOW != null)) {
+              _context.next = 37;
+              break;
+            }
+            _context.next = 37;
             return (0, _setupAuth["default"])(hapiServer, options);
-          case 36:
+          case 37:
             hapiServer.log('Plugin', process.env.PLUGIN);
             if (!(process.env.PLUGIN === 'hapi-swagger' && serverMode !== null)) {
-              _context.next = 45;
+              _context.next = 46;
               break;
             }
             swaggerOptions = {
@@ -234,27 +238,27 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
               swaggerOptions = _objectSpread(_objectSpread({}, swaggerOptions), override);
             }
             debug('Swagger Options:', swaggerOptions);
-            _context.next = 43;
+            _context.next = 44;
             return hapiServer.register({
               plugin: serverMode,
               options: swaggerOptions
             });
-          case 43:
-            _context.next = 46;
+          case 44:
+            _context.next = 47;
             break;
-          case 45:
+          case 46:
             if (process.env.PLUGIN == 'hapi-openapi' && serverMode !== null) {
               console.log('hapi-openapi', 'coming soon');
             }
-          case 46:
+          case 47:
             //
             // Start server
             //
             allRoutes = hapiServer.table();
             debug(allRoutes);
-            _context.next = 50;
+            _context.next = 51;
             return hapiServer.start();
-          case 50:
+          case 51:
             hh = hapiServer.info.uri;
             hh = hh.replace(/0.0.0.0/, 'localhost');
             console.log('====================================================================================');
@@ -265,7 +269,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
             process.env.APPSERVER = "".concat(hh, "/").concat(process.env.APPNAME);
             process.env.HEALTH = 'true';
             console.log('====================================================================================');
-          case 60:
+          case 61:
           case "end":
             return _context.stop();
         }

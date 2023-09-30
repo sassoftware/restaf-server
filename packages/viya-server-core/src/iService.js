@@ -172,8 +172,9 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		};
 		
 		debug('Options',options);
-
-		await setupAuth(hapiServer, options);
+        if (process.env.AUTHFLOW != null) {
+		   await setupAuth(hapiServer, options);
+		}
 		hapiServer.log('Plugin', process.env.PLUGIN);
 		
 		if (process.env.PLUGIN === 'hapi-swagger' && serverMode !== null) {
