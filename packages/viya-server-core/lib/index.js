@@ -150,11 +150,12 @@ function getAllEnv(userData) {
   for (var key in process.env) {
     if (key.indexOf('APPENV_') === 0) {
       var k = key.substring(7);
-      userData[k] = process.env[key];
-      // console.log(`${k} : ${process.env[key]}`);
+      var v = process.env[key];
+      if (v != null && v.trim().length > 0) {
+        userData[k] = v.trim();
+      }
     }
   }
-
   env = {
     LOGONPAYLOAD: l,
     APPENV: userData
