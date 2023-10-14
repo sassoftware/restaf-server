@@ -18,6 +18,7 @@
 
 let fs = require('fs');
 let debug = require('debug')('iservice');
+let debug2 = require('debug')('tls');
 // let isDocker = require('is-docker');
 let Hapi = require('@hapi/hapi');
 // const { isSameSiteNoneCompatible } = require('should-send-same-site-none');
@@ -99,7 +100,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 			sConfig.routes.files= { relativeTo: asset };
 		}
 
-		debug(
+		debug2(
 			`Application information: 
 		APPLOC  : ${process.env.APPLOC}
 		APPENTRY: ${process.env.APPENTRY}
@@ -171,7 +172,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 
 		};
 		
-		debug('Options',options);
+		debug2('Options',options);
         if (process.env.AUTHFLOW != null) {
 		   await setupAuth(hapiServer, options);
 		}
@@ -241,25 +242,25 @@ async function getCertificates () {
 	let tls = {};
 	if (process.env.TLS_CERT != null) {
 		/* backward compatability */
-		debug('TLS set: TLS_CERT');
+		debug2('TLS set: TLS_CERT');
 		tls.cert = fs.readFileSync(process.env.TLS_CERT);
 		tls.key = fs.readFileSync(process.env.TLS_KEY);
 	} else if (process.env.TLS_PFX != null) {
-		debug('TLS set: PFX');
+		debug2('TLS set: PFX');
 		tls.pfx = fs.readFileSync(process.env.TLS_PFX);
 		if (process.env.TLS_PW != null) {
 			tls.passphrase = process.env.TLS_PW;
 		}
 	} else if (process.env.TLS_CRT != null) {
 		/* new key names to conform to k8s*/
-		debug('TLS set: TLS_CRT');
+		debug2('TLS set: TLS_CRT');
 		tls.cert = process.env.TLS_CRT;
 		tls.key = process.env.TLS_KEY;
 	} else if (process.env.TLS_CREATE != null) {
 		/* unsigned certificate */
-		debug('TLS set: TLS_CREATE=', process.env.TLS_CREATE);
+		debug2('TLS set: TLS_CREATE=', process.env.TLS_CREATE);
 		tls = await getTls();
-		debug(tls);
+		debug2(tls);
 	}
 
 	if (process.env.TLS_CABUNDLE != null) {
@@ -269,7 +270,7 @@ async function getCertificates () {
 	if (Object.keys(tls).length > 0) {
 		return tls;
 	} else {
-		debug('Warning: The current protocol is https: No TLS certificate information has been specified.');
+		debug2('Warning: The current protocol is https: No TLS certificate information has been specified.');
 		return tls;
 	}
 }

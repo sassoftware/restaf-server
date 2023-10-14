@@ -24,6 +24,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *
  */
 
+var debug = require('debug')('startup');
 module.exports = function core(uTable, useDefault, serverMode, customize, swaggerfcn) {
   var argv = require('yargs').argv;
   var env = argv.env == null ? null : argv.env;
@@ -108,7 +109,9 @@ function getAllEnv(userData) {
         redirect = "".concat(appName, "/callback");
         process.env.REDIRECT = 'callback';
       } else {
-        redirect = redirect.indexOf('http') != -1 ? redirect : "".concat(process.env.APPNAME, "/").concat(redirect);
+        if (redirect.indexOf('/') !== 0) {
+          redirect = redirect.indexOf('http') != -1 ? redirect : "".concat(process.env.APPNAME, "/").concat(redirect);
+        }
       }
     }
     ;
@@ -148,6 +151,7 @@ function getAllEnv(userData) {
   // pick up the app env's - replacement for appenv.js
   // appenv.js still supported for backward compatibility
   for (var key in process.env) {
+    debug(key);
     if (key.indexOf('APPENV_') === 0) {
       var k = key.substring(7);
       var v = process.env[key];

@@ -21,6 +21,7 @@ import "regenerator-runtime/runtime";
 import fs from 'fs';
 import iService from './iService';
 import config from './config';
+let debug = require('debug')('startup');
 
 module.exports = function core (uTable, useDefault, serverMode, customize, swaggerfcn) {
   let argv = require('yargs').argv;
@@ -122,7 +123,9 @@ function getAllEnv (userData) {
         redirect = `${appName}/callback`;
         process.env.REDIRECT='callback';
       } else {
-        redirect = (redirect.indexOf('http') !=- 1) ? redirect : `${process.env.APPNAME}/${redirect}`;
+        if (redirect.indexOf('/') !== 0) {
+           redirect = (redirect.indexOf('http') !=- 1) ? redirect : `${process.env.APPNAME}/${redirect}`;
+        }
       }
     };
 
@@ -161,6 +164,7 @@ function getAllEnv (userData) {
   // pick up the app env's - replacement for appenv.js
   // appenv.js still supported for backward compatibility
   for (let key in process.env) {
+    debug(key);
     if (key.indexOf('APPENV_') === 0) {
       let k = key.substring(7);
       let v = process.env[key];

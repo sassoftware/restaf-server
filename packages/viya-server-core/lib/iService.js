@@ -41,6 +41,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var fs = require('fs');
 var debug = require('debug')('iservice');
+var debug2 = require('debug')('tls');
 // let isDocker = require('is-docker');
 var Hapi = require('@hapi/hapi');
 // const { isSameSiteNoneCompatible } = require('should-send-same-site-none');
@@ -125,7 +126,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
                 relativeTo: asset
               };
             }
-            debug("Application information: \n\t\tAPPLOC  : ".concat(process.env.APPLOC, "\n\t\tAPPENTRY: ").concat(process.env.APPENTRY, "\n"));
+            debug2("Application information: \n\t\tAPPLOC  : ".concat(process.env.APPLOC, "\n\t\tAPPENTRY: ").concat(process.env.APPENTRY, "\n"));
             hapiServer = Hapi.server(sConfig);
             /*
             const cache = hapiServer.cache({ segment: 'sessions', expiresIn: 3 * 24 * 60 * 60 * 1000 });
@@ -203,7 +204,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
               authLogon: false /* set later in setDefaultRoutes */
             };
 
-            debug('Options', options);
+            debug2('Options', options);
             if (!(process.env.AUTHFLOW != null)) {
               _context.next = 37;
               break;
@@ -300,7 +301,7 @@ function _getCertificates() {
             break;
           }
           /* backward compatability */
-          debug('TLS set: TLS_CERT');
+          debug2('TLS set: TLS_CERT');
           tls.cert = fs.readFileSync(process.env.TLS_CERT);
           tls.key = fs.readFileSync(process.env.TLS_KEY);
           _context2.next = 25;
@@ -310,7 +311,7 @@ function _getCertificates() {
             _context2.next = 13;
             break;
           }
-          debug('TLS set: PFX');
+          debug2('TLS set: PFX');
           tls.pfx = fs.readFileSync(process.env.TLS_PFX);
           if (process.env.TLS_PW != null) {
             tls.passphrase = process.env.TLS_PW;
@@ -323,7 +324,7 @@ function _getCertificates() {
             break;
           }
           /* new key names to conform to k8s*/
-          debug('TLS set: TLS_CRT');
+          debug2('TLS set: TLS_CRT');
           tls.cert = process.env.TLS_CRT;
           tls.key = process.env.TLS_KEY;
           _context2.next = 25;
@@ -334,12 +335,12 @@ function _getCertificates() {
             break;
           }
           /* unsigned certificate */
-          debug('TLS set: TLS_CREATE=', process.env.TLS_CREATE);
+          debug2('TLS set: TLS_CREATE=', process.env.TLS_CREATE);
           _context2.next = 23;
           return getTls();
         case 23:
           tls = _context2.sent;
-          debug(tls);
+          debug2(tls);
         case 25:
           if (process.env.TLS_CABUNDLE != null) {
             tls.CA = fs.readFileSync(process.env.TLS_CABUNDLE);
@@ -350,7 +351,7 @@ function _getCertificates() {
           }
           return _context2.abrupt("return", tls);
         case 30:
-          debug('Warning: The current protocol is https: No TLS certificate information has been specified.');
+          debug2('Warning: The current protocol is https: No TLS certificate information has been specified.');
           return _context2.abrupt("return", tls);
         case 32:
         case "end":
