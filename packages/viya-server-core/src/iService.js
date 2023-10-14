@@ -17,7 +17,7 @@
  */
 
 let fs = require('fs');
-let debug = require('debug')('iservice');
+let debug = require('debug')('service');
 let debug2 = require('debug')('tls');
 // let isDocker = require('is-docker');
 let Hapi = require('@hapi/hapi');
@@ -212,8 +212,8 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		//
 		// Start server
 		//
+		// eslint-disable-next-line no-unused-vars
 		let allRoutes = hapiServer.table();
-		debug(allRoutes);
 		await hapiServer.start();
 		let hh = hapiServer.info.uri;
 		hh = hh.replace(/0.0.0.0/, 'localhost');

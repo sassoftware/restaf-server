@@ -8,9 +8,9 @@
 import codeAuth from './codeAuth';
 
 // handle all callback
-
+let debug = require('debug')('callback');
 async function appCallback (req, h) {
-    
+    debug('in callback');
     console.log(`..... AUTHFLOW: ${process.env.AUTHFLOW}`);
     if (process.env.AUTHFLOW === 'server') {
         return codeAuth(req, h);

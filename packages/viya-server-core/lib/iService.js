@@ -40,7 +40,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
  */
 
 var fs = require('fs');
-var debug = require('debug')('iservice');
+var debug = require('debug')('service');
 var debug2 = require('debug')('tls');
 // let isDocker = require('is-docker');
 var Hapi = require('@hapi/hapi');
@@ -255,11 +255,11 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
             //
             // Start server
             //
+            // eslint-disable-next-line no-unused-vars
             allRoutes = hapiServer.table();
-            debug(allRoutes);
-            _context.next = 51;
+            _context.next = 50;
             return hapiServer.start();
-          case 51:
+          case 50:
             hh = hapiServer.info.uri;
             hh = hh.replace(/0.0.0.0/, 'localhost');
             console.log('====================================================================================');
@@ -270,7 +270,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
             process.env.APPSERVER = "".concat(hh, "/").concat(process.env.APPNAME);
             process.env.HEALTH = 'true';
             console.log('====================================================================================');
-          case 61:
+          case 60:
           case "end":
             return _context.stop();
         }

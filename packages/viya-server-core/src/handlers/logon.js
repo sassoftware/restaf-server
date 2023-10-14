@@ -4,11 +4,12 @@
 */
 
 import setCookies from './setCookies';
+let debug = require('debug')('logon');
 async function logon (req, h) {
+   debug('in logon');
    req.log('in logon');
-   
-   req.log('in logon 2');
    let r = await setCookies(req, h, null);
+   debug(r.redirect);
    req.log('in logon after setcookie', r.redirect);
    return h.redirect(r.redirect);
 }

@@ -26,7 +26,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                                                                                                                                                                                                                                                                                                                                                                                                        * ----------------------------------------------------------------------------------------
                                                                                                                                                                                                                                                                                                                                                                                                        *
                                                                                                                                                                                                                                                                                                                                                                                                        */
+var debug = require('debug')('routes');
 module.exports = function setDefaultRoutes(server, options) {
+  debug('setDefaultRoutes');
   var appName = '/' + options.appName;
   var authDefault = false;
   var authLogon = false;

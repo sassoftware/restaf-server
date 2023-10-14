@@ -13,6 +13,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                                                                                                                                                                                                                                                                                                                                                                                                       * Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
                                                                                                                                                                                                                                                                                                                                                                                                       * SPDX-License-Identifier: Apache-2.0
                                                                                                                                                                                                                                                                                                                                                                                                       */
+var debug = require('debug')('logon');
 function logon(_x, _x2) {
   return _logon.apply(this, arguments);
 }
@@ -22,15 +23,16 @@ function _logon() {
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
+          debug('in logon');
           req.log('in logon');
-          req.log('in logon 2');
           _context.next = 4;
           return (0, _setCookies["default"])(req, h, null);
         case 4:
           r = _context.sent;
+          debug(r.redirect);
           req.log('in logon after setcookie', r.redirect);
           return _context.abrupt("return", h.redirect(r.redirect));
-        case 7:
+        case 8:
         case "end":
           return _context.stop();
       }

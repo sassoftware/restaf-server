@@ -19,7 +19,7 @@
 
 let bell = require('@hapi/bell');
 let uuid = require('uuid');  
-let debug = require('debug')('isasauth');
+let debug = require('debug')('sasauth');
 
 exports.plugin = {
     name    : 'SASauth',
@@ -28,6 +28,7 @@ exports.plugin = {
 };
 
 async function iSASauth (server, options) {
+    debug('in iSASauth');
     debug(options);
     let bellAuthOptions;
     let provider;
@@ -39,7 +40,7 @@ async function iSASauth (server, options) {
         host = options.nsHost;
     }
     // ...
-    
+    debug(host);
     provider = {
         name         : 'sas',
         protocol     : 'oauth2',
@@ -64,6 +65,7 @@ async function iSASauth (server, options) {
         isSecure    : options.isSecure
     };
     // console.log('SASAuth options', bellAuthOptions);
+    debug(bellAuthOptions);
     server.log('SASAuth',bellAuthOptions);
     await server.register(bell);
     server.auth.strategy('sas', 'bell', bellAuthOptions);

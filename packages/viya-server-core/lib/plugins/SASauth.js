@@ -24,7 +24,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var bell = require('@hapi/bell');
 var uuid = require('uuid');
-var debug = require('debug')('isasauth');
+var debug = require('debug')('sasauth');
 exports.plugin = {
   name: 'SASauth',
   version: '1.0.0',
@@ -39,6 +39,7 @@ function _iSASauth() {
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
+          debug('in iSASauth');
           debug(options);
           // test for k8s deployment
           host = options.host;
@@ -48,7 +49,7 @@ function _iSASauth() {
             host = options.nsHost;
           }
           // ...
-
+          debug(host);
           provider = {
             name: 'sas',
             protocol: 'oauth2',
@@ -83,12 +84,13 @@ function _iSASauth() {
             isSecure: options.isSecure
           };
           // console.log('SASAuth options', bellAuthOptions);
+          debug(bellAuthOptions);
           server.log('SASAuth', bellAuthOptions);
-          _context2.next = 8;
+          _context2.next = 11;
           return server.register(bell);
-        case 8:
+        case 11:
           server.auth.strategy('sas', 'bell', bellAuthOptions);
-        case 9:
+        case 12:
         case "end":
           return _context2.stop();
       }

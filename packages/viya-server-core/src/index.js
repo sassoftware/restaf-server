@@ -161,7 +161,8 @@ function getAllEnv (userData) {
       appName  : appName,
       keepAlive: null,
       useToken : process.env.USETOKEN,
-      ns       : ns
+      ns       : ns,
+      nsHost   : nsHost
     };
   }
 

@@ -18,9 +18,9 @@
 
 
 import { getApp, getApp2,  appCallback, favicon, keepAlive, keepAlive2,logout, logon, setupUserRoutes, reactDev} from '../handlers';
-
+let debug = require('debug')('routes');
 module.exports = function setDefaultRoutes (server, options) {
-
+	debug('setDefaultRoutes');
 	let appName = '/' + options.appName;
 	let authDefault = false;
 	let authLogon = false;

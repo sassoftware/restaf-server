@@ -16,9 +16,10 @@
  *
  */
 'use strict';
-
+let debug = require('debug')('getApp2'); 
 async function getApp2 (req, h) {
-    
+    debug('in getApp2');
+    debug(req.params);
     return h.file(`${req.params.param}`);
 }
 

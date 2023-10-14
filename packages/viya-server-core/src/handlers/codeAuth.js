@@ -5,9 +5,9 @@
 'use strict';
 
 import setCookies from './setCookies';
-
+let debug = require('debug')('codeauth');
 async function codeAuth (req, h, options) {  
-	
+	debug('in codeauth');
 	await setCookies(req, h, options);
 	let indexHTML = process.env.APPENTRY == null ? 'index.html' : process.env.APPENTRY;
 	if (indexHTML.indexOf('/') === 0) {
@@ -15,8 +15,10 @@ async function codeAuth (req, h, options) {
 		if (indexHTML !== '/develop') {
 			indexHTML = `/${process.env.APPNAME}${indexHTML}`;
 		}
+		debug(`Redirecting to ${indexHTML}`);
 		return h.redirect(indexHTML);
 	} else {
+		debug(`Redirecting to ${indexHTML}`);
 		return h.file(indexHTML);
 	};
 }
