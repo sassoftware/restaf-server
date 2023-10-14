@@ -240,6 +240,13 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 async function getCertificates () {
 
 	let tls = {};
+	debug2('Getting tls certificates');
+	debug2('TLS_CRT', process.env.TLS_CRT != null);
+	debug2('TLS_KEY', process.env.TLS_KEY != null);
+	debug2('TLS_PFX', process.env.TLS_PFX != null);
+	debug2('TLS_PW', process.env.TLS_PW != null);
+	debug2('TLS_CERT', process.env.TLS_CERT != null);
+	debug2('TLS_CREATE', process.env.TLS_CREATE != null);
 	if (process.env.TLS_CERT != null) {
 		/* backward compatability */
 		debug2('TLS set: TLS_CERT');
@@ -260,17 +267,16 @@ async function getCertificates () {
 		/* unsigned certificate */
 		debug2('TLS set: TLS_CREATE=', process.env.TLS_CREATE);
 		tls = await getTls();
-		debug2(tls);
 	}
 
 	if (process.env.TLS_CABUNDLE != null) {
 		tls.CA = fs.readFileSync(process.env.TLS_CABUNDLE);
 	}
-
+	debug2('TLS', tls);
 	if (Object.keys(tls).length > 0) {
 		return tls;
 	} else {
-		debug2('Warning: The current protocol is https: No TLS certificate information has been specified.');
+		console.log('Warning: The current host protocol is https: No TLS certificate information has been specified.');
 		return tls;
 	}
 }
