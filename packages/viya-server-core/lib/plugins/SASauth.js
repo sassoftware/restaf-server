@@ -44,6 +44,8 @@ function _iSASauth() {
           host = options.host;
           if (options.ns != null) {
             host = "https://saslogon.".concat(options.ns, ".svc.cluster.local");
+          } else if (options.nsHost != null) {
+            host = options.nsHost;
           }
           // ...
 

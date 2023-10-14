@@ -102,6 +102,7 @@ function getAllEnv(userData) {
   var keepAlive = trimit('KEEPALIVE');
   var appName = trimit('APPNAME');
   var ns = trimit('NAMESPACE');
+  var nsHost = trimit('NSHOST');
   if (authflow === 'server' || authflow === 'implicit') {
     if (authflow === 'implicit') {
       redirect = trimit('REDIRECT');
@@ -113,32 +114,31 @@ function getAllEnv(userData) {
           redirect = redirect.indexOf('http') != -1 ? redirect : "".concat(process.env.APPNAME, "/").concat(redirect);
         }
       }
+      l = {
+        authType: authflow,
+        redirect: redirect,
+        host: host,
+        clientID: clientID,
+        appName: appName,
+        keepAlive: null,
+        useToken: process.env.USETOKEN,
+        ns: ns,
+        nsHost: nsHost
+      };
+      if (authflow === 'server' && keepAlive === 'YES') {
+        var protocol = process.env.HTTPS === 'true' ? 'https://' : 'http://';
+        l.keepAlive = "".concat(protocol).concat(process.env.APPHOST, ":").concat(process.env.APPPORT, "/").concat(appName, "/keepAlive");
+        l.keepAlive = l.keepAlive.replace(/0.0.0.0/, 'localhost');
+      }
+      ;
+      if (process.env.TIMERS != null) {
+        l.timers = process.env.TIMERS;
+      }
     }
-    ;
-    l = {
-      authType: authflow,
-      redirect: redirect,
-      host: host,
-      clientID: clientID,
-      appName: appName,
-      keepAlive: null,
-      useToken: process.env.USETOKEN,
-      ns: ns
-    };
-    if (authflow === 'server' && keepAlive === 'YES') {
-      var protocol = process.env.HTTPS === 'true' ? 'https://' : 'http://';
-      l.keepAlive = "".concat(protocol).concat(process.env.APPHOST, ":").concat(process.env.APPPORT, "/").concat(appName, "/keepAlive");
-      l.keepAlive = l.keepAlive.replace(/0.0.0.0/, 'localhost');
-    }
-    ;
-    if (process.env.TIMERS != null) {
-      l.timers = process.env.TIMERS;
-    }
-  } else {
     // allow for no authtype 
     l = {
       authType: authflow,
-      redirect: null,
+      redirect: redirect,
       host: host,
       clientID: clientID,
       appName: appName,
@@ -165,7 +165,7 @@ function getAllEnv(userData) {
     APPENV: userData
   };
   console.log('Final APPENV configuration for the server');
-  console.log(JSON.stringify(userData, null, 4));
+  console.log(JSON.stringify(env, null, 4));
   return env;
 }
 function trimit(e) {

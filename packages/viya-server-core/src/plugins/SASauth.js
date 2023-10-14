@@ -35,6 +35,8 @@ async function iSASauth (server, options) {
     let host = options.host;
     if (options.ns != null) {
         host = `https://saslogon.${options.ns}.svc.cluster.local`;
+    } else if (options.nsHost != null) {
+        host = options.nsHost;
     }
     // ...
     

@@ -115,6 +115,7 @@ function getAllEnv (userData) {
   let keepAlive    = trimit('KEEPALIVE');
   let appName = trimit('APPNAME');
   let ns      = trimit('NAMESPACE');
+  let nsHost  = trimit('NSHOST');
   
   if (authflow === 'server' || authflow === 'implicit') {
     if (authflow === 'implicit') {
@@ -123,11 +124,12 @@ function getAllEnv (userData) {
         redirect = `${appName}/callback`;
         process.env.REDIRECT='callback';
       } else {
-        if (redirect.indexOf('/') !== 0) {
-           redirect = (redirect.indexOf('http') !=- 1) ? redirect : `${process.env.APPNAME}/${redirect}`;
-        }
+      if (redirect.indexOf('/') !== 0) {
+          redirect = (redirect.indexOf('http') !=- 1) ? redirect : `${process.env.APPNAME}/${redirect}`;
       }
-    };
+    }
+      
+    
 
      l = {
       authType : authflow,
@@ -137,7 +139,8 @@ function getAllEnv (userData) {
       appName  : appName,
       keepAlive: null,
       useToken : process.env.USETOKEN,
-      ns       : ns
+      ns       : ns,
+      nsHost   : nsHost
     };
    
     if (authflow === 'server' && keepAlive === 'YES') {
@@ -148,10 +151,11 @@ function getAllEnv (userData) {
     if (process.env.TIMERS != null) {
       l.timers = process.env.TIMERS;
     }
-  } else { // allow for no authtype 
+   } 
+   // allow for no authtype 
     l = { 
       authType : authflow,
-      redirect : null,
+      redirect : redirect,
       host     : host,
       clientID : clientID,
       appName  : appName,
@@ -179,7 +183,7 @@ function getAllEnv (userData) {
     APPENV      : userData
   };
   console.log('Final APPENV configuration for the server');
-  console.log(JSON.stringify(userData, null,4));
+  console.log(JSON.stringify(env, null,4));
 
   return env;
 }
