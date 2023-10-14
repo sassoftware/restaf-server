@@ -154,6 +154,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 			isSameSite    : isSameSite,
 			isSecure      : isSecure,
 			ns            : (allAppEnv.LOGONPAYLOAD != null) ? allAppEnv.LOGONPAYLOAD.ns : null,
+			nsHost        : (allAppEnv.LOGONPAYLOAD != null) ? allAppEnv.LOGONPAYLOAD.nsHost : null,
 			redirect      : process.env.REDIRECT,
 			clientId      : process.env.CLIENTID,
 			clientSecret  : process.env.CLIENTSECRET,
@@ -241,11 +242,12 @@ async function getCertificates () {
 
 	let tls = {};
 	debug2('Getting tls certificates');
-	debug2('TLS_CRT', process.env.TLS_CRT != null);
-	debug2('TLS_KEY', process.env.TLS_KEY != null);
+	debug2('tls.crt', process.env['tls.crt'] != null);
+	debug2('tls.key', process.env['tls.key'] != null);
 	debug2('TLS_PFX', process.env.TLS_PFX != null);
 	debug2('TLS_PW', process.env.TLS_PW != null);
 	debug2('TLS_CERT', process.env.TLS_CERT != null);
+	debug2('TLS_CRT', process.env.TLS_CRT != null);
 	debug2('TLS_CREATE', process.env.TLS_CREATE != null);
 	if (process.env.TLS_CERT != null) {
 		/* backward compatability */
@@ -263,6 +265,9 @@ async function getCertificates () {
 		debug2('TLS set: TLS_CRT');
 		tls.cert = process.env.TLS_CRT;
 		tls.key = process.env.TLS_KEY;
+	} else if (process.env['tls.crt'] != null) {
+		tls.cert = process.env['tls.crt'];
+		tls.key = process.env['tls.key'];
 	} else if (process.env.TLS_CREATE != null) {
 		/* unsigned certificate */
 		debug2('TLS set: TLS_CREATE=', process.env.TLS_CREATE);

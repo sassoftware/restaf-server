@@ -34,6 +34,7 @@ async function iSASauth (server, options) {
     let provider;
     // test for k8s deployment
     let host = options.host;
+
     if (options.ns != null) {
         host = `https://saslogon.${options.ns}.svc.cluster.local`;
     } else if (options.nsHost != null) {

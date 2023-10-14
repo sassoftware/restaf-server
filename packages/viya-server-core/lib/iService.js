@@ -185,6 +185,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
               isSameSite: isSameSite,
               isSecure: isSecure,
               ns: allAppEnv.LOGONPAYLOAD != null ? allAppEnv.LOGONPAYLOAD.ns : null,
+              nsHost: allAppEnv.LOGONPAYLOAD != null ? allAppEnv.LOGONPAYLOAD.nsHost : null,
               redirect: process.env.REDIRECT,
               clientId: process.env.CLIENTID,
               clientSecret: process.env.CLIENTSECRET,
@@ -297,25 +298,26 @@ function _getCertificates() {
         case 0:
           tls = {};
           debug2('Getting tls certificates');
-          debug2('TLS_CRT', process.env.TLS_CRT != null);
-          debug2('TLS_KEY', process.env.TLS_KEY != null);
+          debug2('tls.crt', process.env['tls.crt'] != null);
+          debug2('tls.key', process.env['tls.key'] != null);
           debug2('TLS_PFX', process.env.TLS_PFX != null);
           debug2('TLS_PW', process.env.TLS_PW != null);
           debug2('TLS_CERT', process.env.TLS_CERT != null);
+          debug2('TLS_CRT', process.env.TLS_CRT != null);
           debug2('TLS_CREATE', process.env.TLS_CREATE != null);
           if (!(process.env.TLS_CERT != null)) {
-            _context2.next = 14;
+            _context2.next = 15;
             break;
           }
           /* backward compatability */
           debug2('TLS set: TLS_CERT');
           tls.cert = fs.readFileSync(process.env.TLS_CERT);
           tls.key = fs.readFileSync(process.env.TLS_KEY);
-          _context2.next = 31;
+          _context2.next = 37;
           break;
-        case 14:
+        case 15:
           if (!(process.env.TLS_PFX != null)) {
-            _context2.next = 20;
+            _context2.next = 21;
             break;
           }
           debug2('TLS set: PFX');
@@ -323,44 +325,53 @@ function _getCertificates() {
           if (process.env.TLS_PW != null) {
             tls.passphrase = process.env.TLS_PW;
           }
-          _context2.next = 31;
+          _context2.next = 37;
           break;
-        case 20:
+        case 21:
           if (!(process.env.TLS_CRT != null)) {
-            _context2.next = 26;
+            _context2.next = 27;
             break;
           }
           /* new key names to conform to k8s*/
           debug2('TLS set: TLS_CRT');
           tls.cert = process.env.TLS_CRT;
           tls.key = process.env.TLS_KEY;
-          _context2.next = 31;
+          _context2.next = 37;
           break;
-        case 26:
+        case 27:
+          if (!(process.env['tls.crt'] != null)) {
+            _context2.next = 32;
+            break;
+          }
+          tls.cert = process.env['tls.crt'];
+          tls.key = process.env['tls.key'];
+          _context2.next = 37;
+          break;
+        case 32:
           if (!(process.env.TLS_CREATE != null)) {
-            _context2.next = 31;
+            _context2.next = 37;
             break;
           }
           /* unsigned certificate */
           debug2('TLS set: TLS_CREATE=', process.env.TLS_CREATE);
-          _context2.next = 30;
+          _context2.next = 36;
           return getTls();
-        case 30:
+        case 36:
           tls = _context2.sent;
-        case 31:
+        case 37:
           if (process.env.TLS_CABUNDLE != null) {
             tls.CA = fs.readFileSync(process.env.TLS_CABUNDLE);
           }
           debug2('TLS', tls);
           if (!(Object.keys(tls).length > 0)) {
-            _context2.next = 37;
+            _context2.next = 43;
             break;
           }
           return _context2.abrupt("return", tls);
-        case 37:
+        case 43:
           console.log('Warning: The current host protocol is https: No TLS certificate information has been specified.');
           return _context2.abrupt("return", tls);
-        case 39:
+        case 45:
         case "end":
           return _context2.stop();
       }
