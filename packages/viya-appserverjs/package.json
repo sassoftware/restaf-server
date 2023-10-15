@@ -1,6 +1,6 @@
 {
   "name": "@sassoftware/viya-appserverjs",
-  "version": "2.13.0",
+  "version": "2.14.0",
   "description": "Custom app server for Viya apps",
   "author": "Deva Kumaraswamy <deva.kumar@sas.com>",
   "license": "Apache-2.0",
@@ -40,6 +40,6 @@
     "lint": "npx eslint --fix src/*.js"
   },
   "dependencies": {
-    "@sassoftware/viya-server-core": "^2.13.0"
+    "@sassoftware/viya-server-core": "^2.14.0"
   }
 }
