@@ -42,9 +42,9 @@ function _iSASauth() {
           debug('in iSASauth');
           debug(options);
           // test for k8s deployment
-          host = options.host;
+          host = options.host + '/SASLogon';
           if (options.ns != null) {
-            host = "https://saslogon.".concat(options.ns, ".svc.cluster.local");
+            host = "https://sas-logon-app.".concat(options.ns, ".svc.cluster.local");
           } else if (options.nsHost != null) {
             host = options.nsHost;
           }
@@ -54,8 +54,8 @@ function _iSASauth() {
             name: 'sas',
             protocol: 'oauth2',
             useParamsAuth: false,
-            auth: host + '/SASLogon/oauth/authorize',
-            token: host + '/SASLogon/oauth/token',
+            auth: host + '/oauth/authorize',
+            token: host + '/oauth/token',
             profileMethod: 'get',
             profile: function () {
               var _profile = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(credentials, params, get) {

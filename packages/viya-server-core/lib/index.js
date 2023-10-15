@@ -94,7 +94,8 @@ function getAllEnv(userData) {
     authflow = 'server';
   }
   process.env.AUTHFLOW = authflow;
-  var redirect = process.env.REDIRECT != null ? process.env.REDIRECT : null;
+  // let redirect = (process.env.REDIRECT != null) ? process.env.REDIRECT : null;
+  var redirect = trimit('REDIRECT');
   var host = trimit('VIYA_SERVER');
   var clientID = trimit('CLIENTID');
   // eslint-disable-next-line no-unused-vars
@@ -105,12 +106,11 @@ function getAllEnv(userData) {
   var nsHost = trimit('NSHOST');
   if (authflow === 'server' || authflow === 'implicit') {
     if (authflow === 'implicit') {
-      redirect = trimit('REDIRECT');
       if (redirect === null) {
         redirect = "".concat(appName, "/callback");
         process.env.REDIRECT = 'callback';
       } else {
-        if (redirect.indexOf('/') !== 0) {
+        if (redirect !== null && redirect.indexOf('/') !== 0) {
           redirect = redirect.indexOf('http') != -1 ? redirect : "".concat(process.env.APPNAME, "/").concat(redirect);
         }
       }
@@ -171,5 +171,9 @@ function getAllEnv(userData) {
 }
 function trimit(e) {
   var a = process.env[e];
-  return a == null ? null : a.trim();
+  if (a == null) {
+    return null;
+  }
+  a = a.trim();
+  return a.length === 0 ? null : a;
 }

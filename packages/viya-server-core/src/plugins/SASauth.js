@@ -33,10 +33,10 @@ async function iSASauth (server, options) {
     let bellAuthOptions;
     let provider;
     // test for k8s deployment
-    let host = options.host;
+    let host = options.host + '/SASLogon';
 
     if (options.ns != null) {
-        host = `https://saslogon.${options.ns}.svc.cluster.local`;
+        host = `https://sas-logon-app.${options.ns}.svc.cluster.local`;
     } else if (options.nsHost != null) {
         host = options.nsHost;
     }
@@ -46,8 +46,8 @@ async function iSASauth (server, options) {
         name         : 'sas',
         protocol     : 'oauth2',
         useParamsAuth: false,
-        auth         : host + '/SASLogon/oauth/authorize',
-        token        : host + '/SASLogon/oauth/token',
+        auth         : host + '/oauth/authorize',
+        token        : host + '/oauth/token',
 
         profileMethod: 'get',
         
