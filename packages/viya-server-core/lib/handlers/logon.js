@@ -23,16 +23,17 @@ function _logon() {
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
-          debug('in logon');
+          debug('.................................................in logon');
           req.log('in logon');
-          _context.next = 4;
+          debugger;
+          _context.next = 5;
           return (0, _setCookies["default"])(req, h, null);
-        case 4:
+        case 5:
           r = _context.sent;
           debug(r.redirect);
           req.log('in logon after setcookie', r.redirect);
           return _context.abrupt("return", h.redirect(r.redirect));
-        case 8:
+        case 9:
         case "end":
           return _context.stop();
       }

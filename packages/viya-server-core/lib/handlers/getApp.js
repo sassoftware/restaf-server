@@ -23,8 +23,9 @@ function _getApp() {
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
+          console.log('entering getapp........................................');
           if (!(process.env.AUTHFLOW === 'implicit')) {
-            _context.next = 10;
+            _context.next = 11;
             break;
           }
           x = "".concat(process.env.VIYA_SERVER, "/SASLogon/oauth/authorize?response_type=token&client_id=").concat(process.env.CLIENTID);
@@ -43,18 +44,20 @@ function _getApp() {
           url = "".concat(x, "&redirect_uri=").concat(redirectUri);
           debug(url);
           return _context.abrupt("return", h.redirect(url));
-        case 10:
+        case 11:
           if (!(process.env.AUTHFLOW === 'server')) {
-            _context.next = 14;
+            _context.next = 17;
             break;
           }
+          debugger;
+          debug('calling codeauth');
           return _context.abrupt("return", (0, _codeAuth["default"])(req, h, options));
-        case 14:
+        case 17:
           debug('default getapp');
           indexHTML = process.env.APPENTRY == null ? 'index.html' : process.env.APPENTRY;
           console.log("Redirecting to default ".concat(indexHTML));
           return _context.abrupt("return", h.file(indexHTML));
-        case 18:
+        case 21:
         case "end":
           return _context.stop();
       }

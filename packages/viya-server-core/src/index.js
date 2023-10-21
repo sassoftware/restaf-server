@@ -18,22 +18,30 @@
 
 import "core-js/stable";
 import "regenerator-runtime/runtime";
-import fs from 'fs';
-import iService from './iService';
-import config from './config';
-let debug = require('debug')('startup');
+import fs from "fs";
+import iService from "./iService";
+import config from "./config";
+let debug = require("debug")("startup");
 
-module.exports = function core (uTable, useDefault, serverMode, customize, swaggerfcn) {
-  let argv = require('yargs').argv;
+module.exports = function core (
+  uTable,
+  useDefault,
+  serverMode,
+  customize,
+  swaggerfcn
+) {
+  let argv = require("yargs").argv;
   let env = argv.env == null ? null : argv.env;
   let appenv = argv.appenv == null ? null : argv.appenv;
   let docker = argv.docker == null ? null : argv.docker;
-  process.env.SERVERMODE= (serverMode !== null) ? 'api' : 'app';
-  
+  process.env.SERVERMODE = serverMode !== null ? "api" : "app";
+
   if (useDefault == null) {
     useDefault = true;
   }
-  console.log('Initialization started ============================================================');
+  console.log(
+    "Initialization started ============================================================"
+  );
   console.log(`version: 2, Build Date: `, Date());
   console.log(
     `\nCommand Line Configuration:
@@ -43,20 +51,28 @@ module.exports = function core (uTable, useDefault, serverMode, customize, swagg
           customize : ${customize != null}
           `
   );
-          
+
   iapp(appenv, env, docker, uTable, useDefault, serverMode, customize);
 };
 
-function iapp (appSrc, rafEnv, dockerFile, uTable, useDefault, serverMode,customize) {
+function iapp (
+  appSrc,
+  rafEnv,
+  dockerFile,
+  uTable,
+  useDefault,
+  serverMode,
+  customize
+) {
   let asset = setup(rafEnv, dockerFile);
   if (appSrc === null) {
-    appSrc = (process.env.APPENV == null) ? null: process.env.APPENV;
+    appSrc = process.env.APPENV == null ? null : process.env.APPENV;
   }
   if (appSrc != null) {
     createPayload(appSrc, (err, r) => {
       if (err) {
         console.log(err);
-        console.log('createPayload failed');
+        console.log("createPayload failed");
         process.exit(1);
       } else {
         iService(uTable, useDefault, asset, r, serverMode, customize);
@@ -64,21 +80,21 @@ function iapp (appSrc, rafEnv, dockerFile, uTable, useDefault, serverMode,custom
     });
   } else {
     let appEnv = getAllEnv({});
-    iService(uTable, useDefault, asset, appEnv,serverMode, customize);
+    iService(uTable, useDefault, asset, appEnv, serverMode, customize);
   }
 }
 
 function setup (rafEnv, dockerFile) {
   config(rafEnv, dockerFile);
-  let asset = process.env.APPLOC === '.' ? process.cwd() : process.env.APPLOC;
+  let asset = process.env.APPLOC === "." ? process.cwd() : process.env.APPLOC;
   process.env.APPASSET = asset;
   return asset;
 }
 
 function createPayload (srcName, cb) {
-  let src = fs.readFileSync(srcName, 'utf8');
+  let src = fs.readFileSync(srcName, "utf8");
   if (src === null) {
-    cb(`Error: ${srcName} was not found. `); 
+    cb(`Error: ${srcName} was not found. `);
   }
   try {
     // console.log(src);
@@ -99,70 +115,73 @@ function getAllEnv (userData) {
   let env;
   let l = null;
   if (process.env.AUTHTYPE != null) {
-    process.env.AUTHFLOW=process.env.AUTHTYPE;
+    process.env.AUTHFLOW = process.env.AUTHTYPE;
   }
-  let authflow = trimit('AUTHFLOW');
-  if (authflow === 'authorization_code' ||authflow === 'code') {
-    authflow = 'server';
+  let authflow = trimit("AUTHFLOW");
+  if (authflow === "authorization_code" || authflow === "code") {
+    authflow = "server";
   }
   process.env.AUTHFLOW = authflow;
   // let redirect = (process.env.REDIRECT != null) ? process.env.REDIRECT : null;
-  let redirect = trimit('REDIRECT');
-  let host         = trimit('VIYA_SERVER');
-  let clientID     = trimit('CLIENTID');
+  let redirect = trimit("REDIRECT");
+  let host = trimit("VIYA_SERVER");
+  let clientID = trimit("CLIENTID");
   // eslint-disable-next-line no-unused-vars
-  let clientSecret = trimit('CLIENTSECRET');
-  let keepAlive    = trimit('KEEPALIVE');
-  let appName = trimit('APPNAME');
-  let ns      = trimit('NAMESPACE');
-  let nsHost  = trimit('NSHOST');
- 
-  
-  if (authflow === 'server' || authflow === 'implicit') {
-    if (authflow === 'implicit') {
+  let clientSecret = trimit("CLIENTSECRET");
+  let keepAlive = trimit("KEEPALIVE");
+  let appName = trimit("APPNAME");
+  let ns = trimit("NAMESPACE");
+  let nsHost = trimit("NSHOST");
+
+  if (authflow === "server" || authflow === "implicit") {
+    if (authflow === "implicit") {
       if (redirect === null) {
         redirect = `${appName}/callback`;
-        process.env.REDIRECT='callback';
+        process.env.REDIRECT = "callback";
       } else {
-      if (redirect !== null && redirect.indexOf('/') !== 0) {
-          redirect = (redirect.indexOf('http') !=- 1) ? redirect : `${process.env.APPNAME}/${redirect}`;
+        if (redirect !== null && redirect.indexOf("/") !== 0) {
+          redirect =
+            redirect.indexOf("http") != -1
+              ? redirect
+              : `${process.env.APPNAME}/${redirect}`;
+        }
+      }
+
+      l = {
+        authType : authflow,
+        redirect : redirect,
+        host     : host,
+        clientID : clientID,
+        appName  : appName,
+        keepAlive: null,
+        useToken : process.env.USETOKEN,
+        ns       : ns,
+        nsHost   : nsHost,
+      };
+
+      if (authflow === "server" && keepAlive === "YES") {
+        let protocol = process.env.HTTPS === "true" ? "https://" : "http://";
+        l.keepAlive = `${protocol}${process.env.APPHOST}:${process.env.APPPORT}/${appName}/keepAlive`;
+        l.keepAlive = l.keepAlive.replace(/0.0.0.0/, "localhost");
+      }
+      if (process.env.TIMERS != null) {
+        l.timers = process.env.TIMERS;
       }
     }
-      
-    
+    // allow for no authtype
+    l = {
+      authType: authflow,
+      redirect: redirect,
 
-     l = {
-      authType : authflow,
-      redirect : redirect,
-      host     : host,
-      clientID : clientID,
-      appName  : appName,
+      host    : host,
+      clientID: clientID,
+      appName : appName,
+
       keepAlive: null,
       useToken : process.env.USETOKEN,
-      ns       : ns,
-      nsHost   : nsHost
-    };
-   
-    if (authflow === 'server' && keepAlive === 'YES') {
-      let protocol = (process.env.HTTPS === 'true') ? 'https://' : 'http://';
-      l.keepAlive = `${protocol}${process.env.APPHOST}:${process.env.APPPORT}/${appName}/keepAlive`;
-      l.keepAlive = l.keepAlive.replace(/0.0.0.0/, 'localhost');
-    } ;
-    if (process.env.TIMERS != null) {
-      l.timers = process.env.TIMERS;
-    }
-   } 
-   // allow for no authtype 
-    l = { 
-      authType : authflow,
-      redirect : redirect,
-      host     : host,
-      clientID : clientID,
-      appName  : appName,
-      keepAlive: null,
-      useToken : process.env.USETOKEN,
-      ns       : ns,
-      nsHost   : nsHost
+
+      ns    : ns,
+      nsHost: nsHost,
     };
   }
 
@@ -170,7 +189,7 @@ function getAllEnv (userData) {
   // appenv.js still supported for backward compatibility
   for (let key in process.env) {
     debug(key);
-    if (key.indexOf('APPENV_') === 0) {
+    if (key.indexOf("APPENV_") === 0) {
       let k = key.substring(7);
       let v = process.env[key];
       if (v != null && v.trim().length > 0) {
@@ -181,10 +200,10 @@ function getAllEnv (userData) {
 
   env = {
     LOGONPAYLOAD: l,
-    APPENV      : userData
+    APPENV      : userData,
   };
-  console.log('Final APPENV configuration for the server');
-  console.log(JSON.stringify(env, null,4));
+  console.log("Final APPENV configuration for the server");
+  console.log(JSON.stringify(env, null, 4));
 
   return env;
 }
@@ -195,5 +214,5 @@ function trimit (e) {
     return null;
   }
   a = a.trim();
-  return (a.length === 0) ? null : a
+  return a.length === 0 ? null : a;
 }

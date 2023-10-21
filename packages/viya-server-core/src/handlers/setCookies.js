@@ -6,9 +6,8 @@ let uuid      = require('uuid');
 let debug = require('debug')('setcookies');
 
 async function setCookies (req, h, options) {
-    
-    
     let credentials = req.auth.credentials;
+    debugger;
     req.log('setcookie', credentials);
     if (credentials != null && req.auth.error != null) {
         debug('logon failed');
@@ -31,7 +30,8 @@ async function setCookies (req, h, options) {
     if (process.env.COOKIES !== 'NO') {
         req.cookieAuth.set({ sid });
     };
-    req.log('setcookie', credentials.query);
+    req.log('credentialsquery', credentials.query);
+    debug(credentials.query);
     let redirect = (credentials.query != null && credentials.query.next != null) ? credentials.query.next : null;
     req.server.log('setcookie-redirect', redirect);
     return { status: true, error: null , redirect: redirect};

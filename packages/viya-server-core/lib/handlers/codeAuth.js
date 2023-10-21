@@ -28,9 +28,13 @@ function _codeAuth() {
           _context.next = 3;
           return (0, _setCookies["default"])(req, h, options);
         case 3:
+          console.log(options);
           indexHTML = process.env.APPENTRY == null ? 'index.html' : process.env.APPENTRY;
+          if (process.env.REDIRECT != null) {
+            indexHTML = process.env.REDIRECT;
+          }
           if (!(indexHTML.indexOf('/') === 0)) {
-            _context.next = 10;
+            _context.next = 12;
             break;
           }
           // added to support create-react-restaf-viya-app cli
@@ -39,12 +43,12 @@ function _codeAuth() {
           }
           debug("Redirecting to ".concat(indexHTML));
           return _context.abrupt("return", h.redirect(indexHTML));
-        case 10:
+        case 12:
           debug("Redirecting to ".concat(indexHTML));
           return _context.abrupt("return", h.file(indexHTML));
-        case 12:
+        case 14:
           ;
-        case 13:
+        case 15:
         case "end":
           return _context.stop();
       }

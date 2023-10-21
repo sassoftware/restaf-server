@@ -24,9 +24,10 @@ function _setCookies() {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           credentials = req.auth.credentials;
+          debugger;
           req.log('setcookie', credentials);
           if (!(credentials != null && req.auth.error != null)) {
-            _context.next = 5;
+            _context.next = 6;
             break;
           }
           debug('logon failed');
@@ -34,7 +35,7 @@ function _setCookies() {
             status: false,
             error: req.auth.error
           });
-        case 5:
+        case 6:
           // create a cookie(sid) and save credentials in cache
           sid = uuid.v4();
           credentials.sid = sid;
@@ -43,9 +44,9 @@ function _setCookies() {
             options.allAppEnv.LOGONPAYLOAD.tokenType = 'bearer';
             debug(options.allAppEnv.LOGONPAYLOAD);
           }
-          _context.next = 10;
+          _context.next = 11;
           return req.server.app.cache.set(sid, credentials, 0);
-        case 10:
+        case 11:
           // Can we get away without setting cookie for this session?
           // Need to also modify keepAlive
           if (process.env.COOKIES !== 'NO') {
@@ -54,7 +55,8 @@ function _setCookies() {
             });
           }
           ;
-          req.log('setcookie', credentials.query);
+          req.log('credentialsquery', credentials.query);
+          debug(credentials.query);
           redirect = credentials.query != null && credentials.query.next != null ? credentials.query.next : null;
           req.server.log('setcookie-redirect', redirect);
           return _context.abrupt("return", {
@@ -62,7 +64,7 @@ function _setCookies() {
             error: null,
             redirect: redirect
           });
-        case 16:
+        case 18:
         case "end":
           return _context.stop();
       }
