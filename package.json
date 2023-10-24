@@ -1,6 +1,6 @@
 {
   "name": "@sassoftware/restaf-server",
-  "version": "2.8.0",
+  "version": "2.8.1",
   "description": "app and api server for SAS Viya user applications",
   "main": "index.js",
   "author": "Deva Kumar",
@@ -18,7 +18,6 @@
     "start:appjs": "cd packages/examples/apptest &&  npm run start",
     "start:appjsi": "cd packages/examples/apptest && npm run starti",
     "start:apijs": "cd packages/examples/apitest && npm run start",
-
     "debug:appjs": "cd packages/examples/apptest && npm run debug",
     "debug:apijs": "cd packages/examples/apitest && npm run debug",
     "build": "npm run build -ws --if-present",
