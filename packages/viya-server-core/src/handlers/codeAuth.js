@@ -14,7 +14,7 @@ async function codeAuth (req, h, options) {
 	if (process.env.REDIRECT != null) {
 		indexHTML = process.env.REDIRECT;
 	}
-	console.log('..................' indexHTML);
+	console.log('..................', indexHTML);
 	if (indexHTML.indexOf('/') === 0) {
 		// added to support create-react-restaf-viya-app cli
 		if (indexHTML !== '/develop') {
