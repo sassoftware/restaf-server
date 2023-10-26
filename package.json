@@ -1,6 +1,6 @@
 {
   "name": "@sassoftware/restaf-server",
-  "version": "2.8.2",
+  "version": "2.8.3",
   "description": "app and api server for SAS Viya user applications",
   "main": "index.js",
   "author": "Deva Kumar",
