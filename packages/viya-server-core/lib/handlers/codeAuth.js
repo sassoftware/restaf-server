@@ -33,8 +33,9 @@ function _codeAuth() {
           if (process.env.REDIRECT != null) {
             indexHTML = process.env.REDIRECT;
           }
+          console.log('..................', indexHTML);
           if (!(indexHTML.indexOf('/') === 0)) {
-            _context.next = 12;
+            _context.next = 13;
             break;
           }
           // added to support create-react-restaf-viya-app cli
@@ -43,12 +44,12 @@ function _codeAuth() {
           }
           debug("Redirecting to ".concat(indexHTML));
           return _context.abrupt("return", h.redirect(indexHTML));
-        case 12:
+        case 13:
           debug("Redirecting to ".concat(indexHTML));
           return _context.abrupt("return", h.file(indexHTML));
-        case 14:
-          ;
         case 15:
+          ;
+        case 16:
         case "end":
           return _context.stop();
       }

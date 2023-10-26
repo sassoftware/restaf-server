@@ -210,6 +210,23 @@ module.exports = function setDefaultRoutes(server, options) {
       handler: _handlers.keepAlive2
     }
   }];
+  if (process.env.PROXYSERVER !== null) {
+    defaultTable.push({
+      method: ['GET', 'POST'],
+      path: "".concat(appName, "/viya/{param*}"),
+      options: {
+        auth: authDefault,
+        handler: {
+          proxy: {
+            mapUri: _handlers.proxyMapUri,
+            onResponse: _handlers.proxyOnResponse,
+            passThrough: true,
+            xforward: true
+          }
+        }
+      }
+    });
+  }
   var routeTables = uTable !== null ? defaultTable.concat(uTable) : defaultTable;
   /*
   server.log('routes', routeTables);

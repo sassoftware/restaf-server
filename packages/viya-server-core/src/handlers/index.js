@@ -14,6 +14,8 @@ import logout      from './logout';
 import getUser from './getUser';
 import setupUserRoutes from '../plugins/setupUserRoutes';
 import reactDev from './reactDev';
+import proxyMapUri from './proxyMapUri';
+import proxyOnResponse from './proxyOnResponse';
 
 export {
     getApp,
@@ -26,7 +28,9 @@ export {
     logout,
     getUser,
     setupUserRoutes,
-    reactDev
+    reactDev,
+    proxyMapUri,
+    proxyOnResponse
 };
 
 

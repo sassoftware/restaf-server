@@ -61,6 +61,18 @@ Object.defineProperty(exports, "logout", {
     return _logout["default"];
   }
 });
+Object.defineProperty(exports, "proxyMapUri", {
+  enumerable: true,
+  get: function get() {
+    return _proxyMapUri["default"];
+  }
+});
+Object.defineProperty(exports, "proxyOnResponse", {
+  enumerable: true,
+  get: function get() {
+    return _proxyOnResponse["default"];
+  }
+});
 Object.defineProperty(exports, "reactDev", {
   enumerable: true,
   get: function get() {
@@ -84,4 +96,6 @@ var _logout = _interopRequireDefault(require("./logout"));
 var _getUser = _interopRequireDefault(require("./getUser"));
 var _setupUserRoutes = _interopRequireDefault(require("../plugins/setupUserRoutes"));
 var _reactDev = _interopRequireDefault(require("./reactDev"));
+var _proxyMapUri = _interopRequireDefault(require("./proxyMapUri"));
+var _proxyOnResponse = _interopRequireDefault(require("./proxyOnResponse"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }

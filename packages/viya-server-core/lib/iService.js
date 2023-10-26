@@ -44,6 +44,7 @@ var debug = require('debug')('service');
 var debug2 = require('debug')('tls');
 // let isDocker = require('is-docker');
 var Hapi = require('@hapi/hapi');
+var H202 = require('@hapi/h2o2');
 // const { isSameSiteNoneCompatible } = require('should-send-same-site-none');
 var NodeCache = require("node-cache-promise");
 var Vision = require('@hapi/vision');
@@ -167,6 +168,9 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
               options: {}
             });
           case 32:
+            _context.next = 34;
+            return hapiServer.register(H202);
+          case 34:
             /*
             await hapiServer.register({
             	plugin : require('hapi-pino'),
@@ -207,15 +211,15 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
 
             debug2('Options', options);
             if (!(process.env.AUTHFLOW != null)) {
-              _context.next = 37;
+              _context.next = 39;
               break;
             }
-            _context.next = 37;
+            _context.next = 39;
             return (0, _setupAuth["default"])(hapiServer, options);
-          case 37:
+          case 39:
             hapiServer.log('Plugin', process.env.PLUGIN);
             if (!(process.env.PLUGIN === 'hapi-swagger' && serverMode !== null)) {
-              _context.next = 46;
+              _context.next = 48;
               break;
             }
             swaggerOptions = {
@@ -240,27 +244,27 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
               swaggerOptions = _objectSpread(_objectSpread({}, swaggerOptions), override);
             }
             debug('Swagger Options:', swaggerOptions);
-            _context.next = 44;
+            _context.next = 46;
             return hapiServer.register({
               plugin: serverMode,
               options: swaggerOptions
             });
-          case 44:
-            _context.next = 47;
-            break;
           case 46:
+            _context.next = 49;
+            break;
+          case 48:
             if (process.env.PLUGIN == 'hapi-openapi' && serverMode !== null) {
               console.log('hapi-openapi', 'coming soon');
             }
-          case 47:
+          case 49:
             //
             // Start server
             //
             // eslint-disable-next-line no-unused-vars
             allRoutes = hapiServer.table();
-            _context.next = 50;
+            _context.next = 52;
             return hapiServer.start();
-          case 50:
+          case 52:
             hh = hapiServer.info.uri;
             hh = hh.replace(/0.0.0.0/, 'localhost');
             console.log('====================================================================================');
@@ -271,7 +275,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
             process.env.APPSERVER = "".concat(hh, "/").concat(process.env.APPNAME);
             process.env.HEALTH = 'true';
             console.log('====================================================================================');
-          case 60:
+          case 62:
           case "end":
             return _context.stop();
         }

@@ -7,7 +7,6 @@ import codeAuth from './codeAuth';
 let debug = require('debug')('getapp');
 
 async function getApp (options, req, h) {
-    console.log('entering getapp........................................');
     if (process.env.AUTHFLOW === 'implicit') {
         let x = `${process.env.VIYA_SERVER}/SASLogon/oauth/authorize?response_type=token&client_id=${process.env.CLIENTID}`;
         let redirect = `${process.env.APPNAME}/callback`;

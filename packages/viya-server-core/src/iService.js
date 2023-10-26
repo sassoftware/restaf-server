@@ -21,6 +21,7 @@ let debug = require('debug')('service');
 let debug2 = require('debug')('tls');
 // let isDocker = require('is-docker');
 let Hapi = require('@hapi/hapi');
+let H202 = require('@hapi/h2o2');
 // const { isSameSiteNoneCompatible } = require('should-send-same-site-none');
 let NodeCache = require("node-cache-promise");
 let Vision = require('@hapi/vision');
@@ -136,6 +137,10 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		if (process.env.HTTPS === 'true') {
 			await hapiServer.register({ plugin: require('hapi-require-https'), options: {} });
 		}
+		// register H202 for proxy handling
+		// https://hapi.dev/module/h2o2/api/?v=10.0.1
+		
+		await hapiServer.register(H202);
 		/*
 		await hapiServer.register({
 			plugin : require('hapi-pino'),
