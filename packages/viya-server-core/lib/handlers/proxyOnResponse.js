@@ -13,18 +13,9 @@ function proxyOnResponse(_x, _x2, _x3, _x4, _x5, _x6) {
 }
 function _proxyOnResponse() {
   _proxyOnResponse = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(err, res, request, h, settings, ttl) {
-    var response;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
-          console.log('receiving the response from the upstream.');
-          // const payload = await Wreck.read(res, { json: true });
-
-          // console.log('some payload manipulation if you want to.');
-          response = h.response(res.payload);
-          response.headers = res.headers;
-          return _context.abrupt("return", response);
-        case 4:
         case "end":
           return _context.stop();
       }

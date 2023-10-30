@@ -13,18 +13,23 @@ function proxyMapUri(_x) {
 }
 function _proxyMapUri() {
   _proxyMapUri = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(req) {
-    var path, params;
+    var credentials, sid, path, params, uri;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
+          credentials = req.auth.credentials;
+          sid = credentials.sid;
+          console.log('sid=', sid);
           path = process.env.PROXYSERVER;
           console.log('proxying to: ', path);
           params = req.params;
           console.log(params);
+          uri = 'https://' + path + '/' + params.param;
+          console.log(uri);
           return _context.abrupt("return", {
-            uri: path
+            uri: uri
           });
-        case 5:
+        case 10:
         case "end":
           return _context.stop();
       }

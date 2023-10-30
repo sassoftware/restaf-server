@@ -210,22 +210,25 @@ module.exports = function setDefaultRoutes(server, options) {
       handler: _handlers.keepAlive2
     }
   }];
-  if (process.env.PROXYSERVER !== null) {
-    defaultTable.push({
-      method: ['GET', 'POST'],
-      path: "".concat(appName, "/viya/{param*}"),
+  if (process.env.PROXYSERVER != null) {
+    var pr = {
+      method: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+      path: "".concat(appName, "/proxy/{param*}"),
+      //	vhost  : [process.env.PROXYSERVER],
       options: {
-        auth: authDefault,
         handler: {
           proxy: {
             mapUri: _handlers.proxyMapUri,
-            onResponse: _handlers.proxyOnResponse,
-            passThrough: true,
-            xforward: true
+            //uri: process.env.PROXYSERVER + '/' + '{param}',
+
+            xforward: true,
+            passThrough: true
           }
         }
       }
-    });
+    };
+    console.log(pr);
+    defaultTable.push(pr);
   }
   var routeTables = uTable !== null ? defaultTable.concat(uTable) : defaultTable;
   /*

@@ -18,7 +18,7 @@
 
 
 import { getApp, getApp2,  appCallback, favicon, keepAlive, keepAlive2,logout, logon, 
-	     setupUserRoutes, reactDev, proxyMapUri,proxyOnResponse} from '../handlers';
+	     setupUserRoutes, reactDev, proxyMapUri} from '../handlers';
 let debug = require('debug')('routes');
 module.exports = function setDefaultRoutes (server, options) {
 	debug('setDefaultRoutes');
@@ -203,23 +203,26 @@ module.exports = function setDefaultRoutes (server, options) {
 		},
 	];
 
-	if (process.env.PROXYSERVER !== null) {
-		defaultTable.push({
-			method : ['GET', 'POST'],
-			path   : `${appName}/viya/{param*}`,
+	if (process.env.PROXYSERVER != null) {
+		let pr ={
+			method : ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+			path   : `${appName}/proxy/{param*}`,
+		//	vhost  : [process.env.PROXYSERVER],
 			options: {
-				auth   : authDefault,
 				handler: {
 					proxy: {
-						mapUri     : proxyMapUri,
-						onResponse : proxyOnResponse,
-						passThrough: true,
+						mapUri: proxyMapUri,
+						//uri: process.env.PROXYSERVER + '/' + '{param}',
+							
 						xforward   : true,
+						passThrough: true
 					},
 					
 				},
 			},
-		});
+		};
+		console.log(pr);
+		defaultTable.push(pr);
 	}
 
 	let routeTables = (uTable !== null) ? defaultTable.concat(uTable) : defaultTable;

@@ -31,8 +31,10 @@
 		></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"></script>
-		<script src="https://unpkg.com/@sassoftware/restaf@dev"></script>
-		<script src="https://unpkg.com/@sassoftware/restaflib@dev"></script>
+		<!--script src="https://unpkg.com/@sassoftware/restaf@dev"></script>-->
+		<!--script src="https://unpkg.com/@sassoftware/restaflib@dev"></script>-->
+		<script src="./restaf.js"></script>
+		<script src="./restaflib.js"></script>
 		<script src="/viyaapp/appenv"></script>
 	
 		<style>
@@ -67,7 +69,8 @@
 			debugger;
 			let store = restaf.initStore({
 				casProxy: true,
-			    proxyServer: 'http://localhost:8080'});
+			    options: {
+					proxyServer: APPENV.PROXYSERVER}});
 			debugger;	console.log(store.config);
 
 			let session = null;
@@ -260,7 +263,7 @@
 				let log = null;
 				debugger;
 				let {compute} = await store.addServices('compute');
-				let servers = await store.apiCall(compute.links('servers'));
+				//let servers = await store.apiCall(compute.links('servers'));
 
 				let contexts = await store.apiCall(compute.links('contexts'));
 
