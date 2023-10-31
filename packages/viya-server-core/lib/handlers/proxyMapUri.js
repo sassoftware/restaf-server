@@ -18,7 +18,7 @@ function _proxyMapUri() {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           credentials = req.auth.credentials;
-          if (credentials !== null) {
+          if (credentials != null) {
             sid = credentials.sid;
             console.log('sid=', sid);
           }
