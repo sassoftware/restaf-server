@@ -18,8 +18,10 @@ function _proxyMapUri() {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           credentials = req.auth.credentials;
-          sid = credentials.sid;
-          console.log('sid=', sid);
+          if (credentials !== null) {
+            sid = credentials.sid;
+            console.log('sid=', sid);
+          }
           path = process.env.PROXYSERVER;
           console.log('proxying to: ', path);
           params = req.params;
@@ -29,7 +31,7 @@ function _proxyMapUri() {
           return _context.abrupt("return", {
             uri: uri
           });
-        case 10:
+        case 9:
         case "end":
           return _context.stop();
       }

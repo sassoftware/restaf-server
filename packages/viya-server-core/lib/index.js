@@ -104,6 +104,17 @@ function getAllEnv(userData) {
   var appName = trimit("APPNAME");
   var ns = trimit("NAMESPACE");
   var nsHost = trimit("NSHOST");
+  l = {
+    authType: authflow,
+    redirect: redirect,
+    host: host,
+    clientID: clientID,
+    appName: appName,
+    keepAlive: null,
+    useToken: process.env.USETOKEN,
+    ns: ns,
+    nsHost: nsHost
+  };
   if (authflow === "server" || authflow === "implicit") {
     if (authflow === "implicit") {
       if (redirect === null) {
