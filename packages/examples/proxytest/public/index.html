@@ -69,10 +69,16 @@
 	
 		<script>
 			debugger;
+			console.log(location);
+			let l = window.location;
+			proxyServer = `${l.protocol}//${l.host}${l.pathname}/proxy`;
+
 			let store = restaf.initStore({
 				casProxy: true,
 			    options: {
-					proxyServer: APPENV.PROXYSERVER}});
+					proxyServer: proxyServer /*APPENV.PROXYSERVER*/
+				}
+			})
 			debugger;	console.log(store.config);
 
 			let session = null;

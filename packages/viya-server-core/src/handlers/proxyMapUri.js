@@ -8,7 +8,7 @@ async function proxyMapUri (req) {
   console.log('proxying to: ', path);
   let params = req.params;
   console.log(params);
-  let uri = 'https://'+ path + '/' + params.param;
+  let uri = path + '/' + params.param;
   console.log(uri);
     return {
       uri: uri
