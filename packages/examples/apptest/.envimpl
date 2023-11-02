@@ -5,6 +5,7 @@ APPPORT=8080
 AUTHFLOW=implicit
 APPNAME=viyaapp
 CLIENTID=clientappi
+APPENTRY=index.html
 CLIENTSECRET=
 # USETOKEN=NO
 # NAMESPACE=viya

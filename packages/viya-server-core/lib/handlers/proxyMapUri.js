@@ -25,7 +25,9 @@ function _proxyMapUri() {
           path = process.env.PROXYSERVER;
           console.log('proxying to: ', path);
           params = req.params;
-          console.log(params);
+          console.log({
+            params: params
+          });
           uri = path + '/' + params.param;
           console.log(uri);
           return _context.abrupt("return", {

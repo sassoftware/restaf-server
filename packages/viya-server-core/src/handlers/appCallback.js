@@ -11,16 +11,19 @@ let debug = require("debug")("callback");
 debugger;
 async function appCallback (req, h) {
   debug("in callback");
-  console.log(`..... AUTHFLOW: ${process.env.AUTHFLOW}`);
+  debug(`AUTHFLOW: ${process.env.AUTHFLOW}`);
   if (process.env.AUTHFLOW === "server") {
     return codeAuth(req, h);
   } else {
-    let indexHTML =
-      process.entry.REDIRECT_ENTRY != null
-        ? process.entry.REDIRECT_ENTRY
-        : process.env.APPENTRY == null
-        ? "index.html"
-        : process.env.APPENTRY;
+    let indexHTML = "index.html";
+    if (process.entry != null) {
+      indexHTML =
+        process.entry.REDIRECT_ENTRY != null
+          ? process.entry.REDIRECT_ENTRY
+          : process.env.APPENTRY == null
+          ? "index.html"
+          : process.env.APPENTRY;
+    }
     console.log(`Redirecting to default ${indexHTML}`);
     return h.file(`${indexHTML}`);
   }

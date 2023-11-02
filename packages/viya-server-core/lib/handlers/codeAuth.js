@@ -31,6 +31,7 @@ function _codeAuth() {
           console.log(options);
           indexHTML = process.env.APPENTRY == null ? 'index.html' : process.env.APPENTRY;
           if (process.env.REDIRECT != null) {
+            debug('using REDIRECT env variable', process.env.REDIRECT);
             indexHTML = process.env.REDIRECT;
           }
           console.log('..................', indexHTML);
@@ -42,10 +43,10 @@ function _codeAuth() {
           if (indexHTML !== '/develop') {
             indexHTML = "/".concat(process.env.APPNAME).concat(indexHTML);
           }
-          debug("Redirecting to ".concat(indexHTML));
+          console.log("Redirecting to ".concat(indexHTML));
           return _context.abrupt("return", h.redirect(indexHTML));
         case 13:
-          debug("Redirecting to ".concat(indexHTML));
+          console.log("Redirecting to ".concat(indexHTML));
           return _context.abrupt("return", h.file(indexHTML));
         case 15:
           ;
