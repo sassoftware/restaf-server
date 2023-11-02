@@ -46,5 +46,8 @@
   ],
   "dependencies": {
     "@hapi/hapi": "^21.3.2"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.18.6"
   }
 }
