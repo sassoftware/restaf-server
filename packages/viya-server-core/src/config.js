@@ -73,10 +73,15 @@ function config (appEnv, dockerFile) {
 	} 
 
 	process.env.VIYA_SERVER = vserver;
-	console.log('VIYA_SERVER is: ', process.env.VIYA_SERVER);
-	if (vserver.indexOf('https://') !== -1) {
+	if (process.env.HTTPS == null) {
 		process.env.HTTPS = 'true';
 	}
+	console.log('VIYA_SERVER is: ', process.env.VIYA_SERVER);
+	/*
+	if (vserver.indexOf('https://') !== -1 && process.env.HTTPS == null) {
+		process.env.HTTPS = 'true';
+	}
+	*/
 }
 
 function iconfig (appEnv) {
