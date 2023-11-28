@@ -6,6 +6,8 @@ async function proxyMapUri (req) {
   }
   let path = process.env.PROXYSERVER;
   console.log('proxying to: ', path);
+  let query = req.query;
+  console.log({query});
   let params = req.params;
   console.log({params});
   let uri = path + '/' + params.param;
