@@ -11,9 +11,9 @@ async function proxyMapUri (req) {
   console.log('---------------------');
   console.log({params});
   let payload = req.payload;
-  console.log('Payload:' , JSON.stringify(payload));
+  console.log({payload});
   let query = req.query;
-  console.log('query:', JSON.stringify(query));
+  console.log({query});
 
   let uri = path + '/' + params.param;
   console.log(uri);
