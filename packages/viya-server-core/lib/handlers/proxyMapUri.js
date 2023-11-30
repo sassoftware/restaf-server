@@ -30,9 +30,13 @@ function _proxyMapUri() {
             params: params
           });
           payload = req.payload;
-          console.log('Payload:', JSON.stringify(payload));
+          console.log({
+            payload: payload
+          });
           query = req.query;
-          console.log('query:', JSON.stringify(query));
+          console.log({
+            query: query
+          });
           uri = path + '/' + params.param;
           console.log(uri);
           return _context.abrupt("return", {
