@@ -1,0 +1,19 @@
+{
+  "name": "apitest",
+  "version": "2.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node api.js --env=./.env --docker=./Dockerfile",
+    "indocker": "node api.js",
+    "debug": "node --inspect-brk api.js   --env=./.env --docker=./Dockerfile",
+    "format": "prettier-eslint --eslint-config-path ./.eslintrc.json --write '**/*.js'",
+    "lint": "eslint . --ext .js --fix"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "joi": "17.6.0"
+  }
+}
