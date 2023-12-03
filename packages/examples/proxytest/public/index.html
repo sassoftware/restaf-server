@@ -283,7 +283,8 @@
 				let payload = {
 					data: {
 						code: [`data _null_; do i = 1 to 100; x=1; end; run; `]
-					}
+					},
+					qs: {x:1, b:'hello', c:true}
 				};
 
 				// Now execute the data step and wait for completion
@@ -292,7 +293,7 @@
 					payload
 				);
 				let status = await store.jobState(job, null, 5, 2);
-
+				
 				if (status.data === 'running') {
 					throw `ERROR: Job did not complete in allotted time`;
 				} else {
@@ -309,6 +310,7 @@
 				}
 				return log === null ? status : log.items();
 			}
+	
 		</script>
 	</head>
 	<body onload="setup()">

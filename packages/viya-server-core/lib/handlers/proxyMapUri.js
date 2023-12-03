@@ -13,36 +13,31 @@ function proxyMapUri(_x) {
 }
 function _proxyMapUri() {
   _proxyMapUri = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(req) {
-    var credentials, sid, path, params, payload, query, uri;
+    var credentials, sid, path, params, search, uri;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           credentials = req.auth.credentials;
+          console.log('------------------------------------------');
           if (credentials != null) {
             sid = credentials.sid;
             console.log('sid=', sid);
           }
           path = process.env.PROXYSERVER;
-          console.log('proxying to: ', path);
+          console.log('proxying to= ', path);
           params = req.params;
-          console.log('---------------------');
-          console.log({
-            params: params
-          });
-          payload = req.payload;
-          console.log({
-            payload: payload
-          });
-          query = req.query;
-          console.log({
-            query: query
-          });
+          console.log('params=', params);
+          search = req.url.search;
+          console.log('query=', search);
           uri = path + '/' + params.param;
-          console.log(uri);
+          if (search != null && search.trim().length > 0) {
+            uri = uri + search;
+          }
+          console.log('destination= ', uri);
           return _context.abrupt("return", {
             uri: uri
           });
-        case 14:
+        case 13:
         case "end":
           return _context.stop();
       }
@@ -51,4 +46,32 @@ function _proxyMapUri() {
   return _proxyMapUri.apply(this, arguments);
 }
 var _default = proxyMapUri;
+/*
+let qsstring = req.raw.search;
+  console.log('qsstring=', qsstring);
+  let query = req.query;
+  let newQuery = null;
+ 
+  if (query != null) {
+    console.log('query=', query);
+    newQuery = {};
+    for (let key in query) {
+      let value = query[key];
+      if (value === 'true' || value === 'false') {
+        value = value === 'true';
+      }
+      newQuery[key] = value;
+      }
+      console.log('newQuery=', newQuery);
+    }
+  console.log(req.URLSearchParams);
+  let uri = path + '/' + params.param;
+  if (newQuery != null) {
+    uri = `${uri}?${new URLSearchParams(newQuery)}`;
+  }
+ console.log('req.url', req.url); 
+ console.log('req.url', req.url.search);
+ console.log('uri=', req.uri);
+ console.log('path=', req.path);
+*/
 exports["default"] = _default;
