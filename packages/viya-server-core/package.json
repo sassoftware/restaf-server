@@ -40,7 +40,7 @@
     "@hapi/hapi": "^21.3.2",
     "@hapi/inert": "^6.0.5",
     "@hapi/vision": "^6.1.0",
-    "axios": "^0.26.1",
+    "axios": "^1.6.0",
     "core-js": "^3.22.2",
     "cross-spawn": "^7.0.3",
     "debug": "^4.3.4",
