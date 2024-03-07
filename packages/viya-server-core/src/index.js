@@ -211,6 +211,9 @@ function getAllEnv (userData) {
           v = process.env[v.substring(1)];
         }
         userData[k] = (v != null) ?  v.trim() : null;
+      } else {
+        userData[k] = null;
+
       }
     }
   }
