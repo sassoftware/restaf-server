@@ -170,7 +170,7 @@ function getAllEnv(userData) {
         if (v.startsWith('$')) {
           v = process.env[v.substring(1)];
         }
-        userData[k] = v.trim();
+        userData[k] = v != null ? v.trim() : null;
       }
     }
   }

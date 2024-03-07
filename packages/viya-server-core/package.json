@@ -1,6 +1,6 @@
 {
   "name": "@sassoftware/viya-server-core",
-  "version": "2.16.0",
+  "version": "2.16.1",
   "description": "core library for the servers",
   "author": "Deva Kumaraswamy <deva.kumar@sas.com>",
   "license": "Apache-2.0",
@@ -29,7 +29,7 @@
   "unpkg": "./lib/index.js",
   "scripts": {
     "build": "rimraf -rf lib && babel src --out-dir lib",
-    "pub": "npm publish --tag proxy --access public",
+    "pub": "npm publish --tag dev --access public",
     "lint": "npx eslint --fix src/*.js"
   },
   "dependencies": {
