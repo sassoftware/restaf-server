@@ -93,7 +93,8 @@ function iconfig (appEnv) {
 				let la = l.split('=');
 				let envName = la[0];
 				if (la.length === 2 && la[1].length > 0) {
-					process.env[envName] = la[1];
+					let t = la[1].trim();
+					process.env[envName] = t;
 				} 
 				configDebug(la[ 1 ]);
 			}

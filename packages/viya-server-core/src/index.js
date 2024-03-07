@@ -207,6 +207,9 @@ function getAllEnv (userData) {
       let k = key.substring(7);
       let v = process.env[key];
       if (v != null && v.trim().length > 0) {
+        if (v.startsWith('$')) {
+          v = process.env[v.substring(1)];
+        }
         userData[k] = v.trim();
       }
     }
