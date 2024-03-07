@@ -166,7 +166,6 @@ function getAllEnv(userData) {
     if (key.indexOf("APPENV_") === 0) {
       var k = key.substring(7);
       var v = process.env[key];
-      console.log(k, v);
       if (v != null && v.trim().length > 0) {
         if (v.startsWith('$')) {
           v = process.env[v.substring(1)];
@@ -174,7 +173,6 @@ function getAllEnv(userData) {
         userData[k] = v != null ? v.trim() : null;
       } else {
         userData[k] = null;
-        console.log('setting null');
       }
     }
   }
