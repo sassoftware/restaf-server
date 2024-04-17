@@ -66,8 +66,9 @@
 		<script>
 			debugger;
 			let store = restaf.initStore({
-				casProxy: false});
+				casProxy: true});
 			debugger;	console.log(store.config);
+			console.log('document.cookie', document.cookie);
 
 			let session = null;
 			let servers = null;
@@ -131,12 +132,13 @@
 				}
 				console.log(name);
 				debugger;
-				/*
+				
 				services = await store.addServices(
-					'files', 'compute', 'casManagement'
+					'files', 'compute', 'casManagement' 
 				);
+				console.log(store.getXsrfData());
 				console.log(services.casManagement.links().toJS())
-				*/
+				
 				debugger;
 				return 'done';
 			}
@@ -212,22 +214,28 @@
 			}
 			async function runCas(store) {
 				
-				let {casManagement} = await store.addServices('casManagement');
-				let servers = await store.apiCall(
-					casManagement.links('servers')
-				);
-				let serverName = servers.itemsList(0);
-				let session = await store.apiCall(
-					servers.itemsCmd(serverName, 'createSession')
-				);
+				if (session == null) {
+					let {casManagement} = await store.addServices('casManagement');
+					let servers = await store.apiCall(
+						casManagement.links('servers')
+					);
+					let serverName = servers.itemsList(0);
+				  session = await store.apiCall(
+						servers.itemsCmd(serverName, 'createSession')
+					);
+				}
 				let payload = {
 					action: 'builtins.echo',
 					data: { code: { x: 1 } }
 				};
 				console.log(JSON.stringify(session.links("execute"), null, 4));
 				let r = await store.runAction(session, payload);
+				debugger;
 				console.log('echo completed');
-				await store.apiCall(session.links('delete'));
+				// await store.apiCall(session.links('delete'));
+				let xsrf = store.getXsrfData();
+
+				console.log(xsrf);
 				return r.items();
 			}
 
@@ -235,7 +243,7 @@
 				debugger;
 				try {
 					debugger;
-				let {files} = await store.addServices('files');
+				let {files} = await store.addServices('files', 'compute');
 				debugger;
 				console.log(JSON.stringify(files.links(), null, 4));
 				console.log('items - should be an array of files(empty array is ok)')
@@ -253,12 +261,15 @@
 				debugger;
 			}
 				
-				return content.items();
+			// return content.items();
+			console.log(store.getXsrfData());
+			return store.getXsrfData();
 			}
 			async function dsCompute(store) {
 				let log = null;
 				debugger;
 				let {compute} = await store.addServices('compute');
+				debugger;
 				let servers = await store.apiCall(compute.links('servers'));
 
 				let contexts = await store.apiCall(compute.links('contexts'));

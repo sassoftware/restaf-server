@@ -1,0 +1,35 @@
+{
+  "name": "@sassoftware/viya-serverjs",
+  "version": "0.0.2",
+  "description": "App server for Custom Viya Applications",
+  "author": "Deva Kumaraswamy <deva.kumar@sas.com>",
+  "license": "Apache-2.0",
+  "main": "./lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "keywords": [
+    "restaf",
+    "Viya",
+    "SAS",
+    "server",
+    "RESTAPI"
+  ],
+  "engines": {
+    "node": ">= 16.13.1"
+  },
+  "homepage": "https://github.com/sassoftware/viya-servers#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sassoftware/viya-servers.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sassoftware/viya-servers/issues"
+  },
+  "unpkg": "./lib/index.js",
+  "scripts": {
+    "build": "rimraf -rf lib && babel src --out-dir lib",
+    "pub": "npm publish --tag dev --access public",
+    "lint": "npx eslint --fix src/*.js"
+  }
+}

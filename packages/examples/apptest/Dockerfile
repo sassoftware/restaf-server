@@ -25,7 +25,8 @@ ENV APPNAME=viyaapp
 # ENV LOGLEVEL=info
 # ENV USETOKEN=YES
 
-#sample setup for creating a temporary cert and key
+# sample setup for creating a temporary cert and key
+# defaults to this if no tls info is specified.
 ENV TLS_CREATE="C:US,ST:NC,L:Cary,O:SAS Institute,OU:STO,CN:localhost"
 
 # You can specify your own cet and key
