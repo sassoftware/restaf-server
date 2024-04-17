@@ -1,4 +1,4 @@
-# `@sassoftware/viya-appserverjs - Application server for use with SAS Viya`
+# `@sassoftware/viya-serverjs - Application server for use with SAS Viya`
 
  Use this for developing an app server for web applications.
 
@@ -11,7 +11,7 @@ Specify it as a dependency in your package.json just as you do with other depend
 Use npx command to start the server
 
 ```sh
-npx @sassoftware/viya-appserverjs
+npx @sassoftware/viya-serverjs
 ```
 
 ## `Basic configuration`
@@ -65,7 +65,7 @@ ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 # set this to YES if you want access to the authentication token in the app
 ENV USETOKEN=NO
 
-CMD ["npx", "@sassoftware/viya-appserverjs"]
+CMD ["npx", "@sassoftware/viya-serverjs"]
 
 ```
 
@@ -95,3 +95,8 @@ ENV TLS_CERT=../certs/self/certificate.pem
 ```env
 ENV TLS_PFX=../certs/sascert/sascert2.pfx
 ```
+
+## Recommended clientid settings
+
+Use authorization_code flow. Create a clientid with the following settings:
+
