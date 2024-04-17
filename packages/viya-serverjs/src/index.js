@@ -20,8 +20,6 @@
 'use strict';
 let core = require('./core');
 // silly  but a jump point to keep backward compatibility
-function icli (uTable, useDefault, customize) {
+export function icli (uTable, useDefault, customize) {
 	core(uTable, useDefault, null, customize);
 }
-
-export { icli };

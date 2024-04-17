@@ -4,10 +4,7 @@
   "description": "App server for Custom Viya Applications",
   "author": "Deva Kumaraswamy <deva.kumar@sas.com>",
   "license": "Apache-2.0",
-  "main": "./lib/index.js",
-  "files": [
-    "lib"
-  ],
+  "main": "index.js",
   "keywords": [
     "restaf",
     "Viya",
@@ -35,7 +32,7 @@
     "start:appjs": "cd packages/examples/apptest &&  npm run start",
     "start:proxy": "cd packages/examples/proxytest && npm run start",
     "debug:appjs": "cd packages/examples/apptest && npm run debug",
-    "puball": "npm run pub --ws --if-present",
+    "pub": "npm run pub --ws --if-present",
     "format": "prettier-eslint --eslint-config-path ./.eslintrc.json --write '**/*.js'"
   },
   "dependencies": {

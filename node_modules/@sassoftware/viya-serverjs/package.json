@@ -1,10 +1,10 @@
 {
   "name": "@sassoftware/viya-serverjs",
-  "version": "0.0.2",
+  "version": "0.1.1",
   "description": "App server for Custom Viya Applications",
   "author": "Deva Kumaraswamy <deva.kumar@sas.com>",
   "license": "Apache-2.0",
-  "main": "./lib/index.js",
+  "main": "./lib/cli.js",
   "files": [
     "lib"
   ],
@@ -26,7 +26,9 @@
   "bugs": {
     "url": "https://github.com/sassoftware/viya-servers/issues"
   },
-  "unpkg": "./lib/index.js",
+  "bin": {
+    "@sassoftware/viya-serverjs": "./lib/cli.js"
+  },
   "scripts": {
     "build": "rimraf -rf lib && babel src --out-dir lib",
     "pub": "npm publish --tag dev --access public",

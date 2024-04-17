@@ -26,7 +26,7 @@ let setDefaultRoutes = require('./setDefaultRoutes');
  * If app, then register sasAuth and cookie(session) but no token 
  */
 async function setupAuth (server, options){
-	debugger;
+	
 	if (options.authFlow === 'server') {
 		await server.register({plugin: SASauth,   options: options});
 		// await server.register({plugin: appCookie, options: options});
