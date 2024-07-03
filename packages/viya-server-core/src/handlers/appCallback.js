@@ -16,6 +16,13 @@ async function appCallback (req, h) {
     return codeAuth(req, h);
   } else {
     let indexHTML = "index.html";
+    console.log(`REDIRECT_ENTRY: ${process.env.REDIRECT_ENTRY}`)
+    if (process.env.REDIRECT_ENTRY != null) {
+      indexHTML = process.env.REDIRECT_ENTRY;
+      console.log(`----Redirecting to ${indexHTML}`);
+
+    }
+    /*
     if (process.entry != null) {
       indexHTML =
         process.entry.REDIRECT_ENTRY != null
@@ -24,6 +31,7 @@ async function appCallback (req, h) {
           ? "index.html"
           : process.env.APPENTRY;
     }
+          */
     console.log(`Redirecting to default ${indexHTML}`);
     return h.file(`${indexHTML}`);
   }

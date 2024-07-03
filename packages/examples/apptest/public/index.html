@@ -31,8 +31,8 @@
 		></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"></script>
-		<script src="https://unpkg.com/@sassoftware/restaf@5.1.14/dist/restaf.js"></script>
-		<script src="https://unpkg.com/@sassoftware/restaflib@5.1.14/dist/restaflib.js"></script>
+		<script src="https://unpkg.com/@sassoftware/restaf@5.2.4/dist/restaf.js"></script>
+		<script src="https://unpkg.com/@sassoftware/restaflib@5.2.4/dist/restaflib.js"></script>
 		<script src="/viyaapp/appenv"></script>
 	
 		<style>
@@ -66,7 +66,7 @@
 		<script>
 			debugger;
 			let store = restaf.initStore({
-				casProxy: false});
+				casProxy: true});
 			debugger;	console.log(store.config);
 
 			let session = null;
@@ -123,12 +123,12 @@
 				let msg = await store.logon(LOGONPAYLOAD);
 				console.log(msg);
 
-				let { identities } = await store.addServices('identities');
+			//	let { identities } = await store.addServices('identities');
 				let name = 'user';
-				if (identities.links('currentUser') !=  null) {
-					let c = await store.apiCall(identities.links('currentUser'));
-					name = c.items('id');
-				}
+			//	if (identities.links('currentUser') !=  null) {
+			//		let c = await store.apiCall(identities.links('currentUser'));
+			//		name = c.items('id');
+			//	}
 				console.log(name);
 				debugger;
 				/*
@@ -233,26 +233,29 @@
 
 			async function SASfileService(store) {
 				debugger;
+				let content;
 				try {
 					debugger;
 				let {files} = await store.addServices('files');
 				debugger;
 				console.log(JSON.stringify(files.links(), null, 4));
-				console.log('items - should be an array of files(empty array is ok)')
-				console.log(files.items().toJS());
+				//console.log('items - should be an array of files(empty array is ok)')
+			//	console.log(files.items().toJS());
 				let payload = {
 					data: { x: 1, y: 'This was saved earlier in the step' },
 					headers: { 'content-type': 'application/json' }
 				};
 				let createCmd = files.links('create');
 				let newFile = await store.apiCall(createCmd, payload);
-
-				let content = await store.apiCall(newFile.links('content'));
+				debugger;
+				console.log(JSON.stringify(newFile.links('content'), null, 4));
+				content = await store.apiCall(newFile.links('content'));
+				
 			} catch(err) {
-				console.log(err);
+				console.log(JSON.stringify(err, null, 4));
 				debugger;
 			}
-				
+				console.log(content);
 				return content.items();
 			}
 			async function dsCompute(store) {

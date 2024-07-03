@@ -35,12 +35,24 @@ function _appCallback() {
           return _context.abrupt("return", (0, _codeAuth["default"])(req, h));
         case 6:
           indexHTML = "index.html";
-          if (process.entry != null) {
-            indexHTML = process.entry.REDIRECT_ENTRY != null ? process.entry.REDIRECT_ENTRY : process.env.APPENTRY == null ? "index.html" : process.env.APPENTRY;
+          console.log("REDIRECT_ENTRY: ".concat(process.env.REDIRECT_ENTRY));
+          if (process.env.REDIRECT_ENTRY != null) {
+            indexHTML = process.env.REDIRECT_ENTRY;
+            console.log("----Redirecting to ".concat(indexHTML));
           }
+          /*
+          if (process.entry != null) {
+            indexHTML =
+              process.entry.REDIRECT_ENTRY != null
+                ? process.entry.REDIRECT_ENTRY
+                : process.env.APPENTRY == null
+                ? "index.html"
+                : process.env.APPENTRY;
+          }
+                */
           console.log("Redirecting to default ".concat(indexHTML));
           return _context.abrupt("return", h.file("".concat(indexHTML)));
-        case 10:
+        case 11:
         case "end":
           return _context.stop();
       }

@@ -18,6 +18,7 @@
     "start:appjs": "cd packages/examples/apptest &&  npm run start",
     "start:appjsi": "cd packages/examples/apptesti &&  npm run start",
     "start:proxy": "cd packages/examples/proxytest && npm run start",
+    "start:app": "cd packages/examples/app && npm run start",
     "start:apijs": "cd packages/examples/apitest && npm run start",
     "debug:appjs": "cd packages/examples/apptest && npm run debug",
     "build": "npm run build -ws --if-present",
@@ -45,7 +46,8 @@
     "./packages/viya-appserverjs"
   ],
   "dependencies": {
-    "@hapi/hapi": "^21.3.2"
+    "@hapi/hapi": "^21.3.2",
+    "axios": "^1.6.8"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.18.6",

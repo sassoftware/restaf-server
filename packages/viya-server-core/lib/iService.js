@@ -101,7 +101,6 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
                 }
               }
             };
-
             if (process.env.HAPIDEBUG === 'YES') {
               sConfig.debug = {
                 request: '*'
@@ -208,7 +207,6 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
               /* set later in setDefaultRoutes */
               authLogon: false /* set later in setDefaultRoutes */
             };
-
             debug2('Options', options);
             if (!(process.env.AUTHFLOW != null)) {
               _context.next = 39;

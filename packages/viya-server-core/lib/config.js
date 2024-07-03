@@ -76,7 +76,6 @@ function config(appEnv, dockerFile) {
   }
   */
 }
-
 function iconfig(appEnv) {
   try {
     var data = fs.readFileSync(appEnv, 'utf8');

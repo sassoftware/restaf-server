@@ -19,7 +19,7 @@ ENV PORT=8080
 # set this the same as EXPOSE here and override in env or as -p option in dockerrun
 # ENV APPPORT=8080
 ENV APPNAME=viyaapi
-ENV AUTHFLOW=code
+ENV AUTHFLOW=
 ENV CLIENTID=viyaapi
 ENV CLIENTSECRET=secret
 
