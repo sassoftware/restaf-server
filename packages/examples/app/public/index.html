@@ -31,9 +31,9 @@
 		></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"></script>
-		<script src="https://unpkg.com/@sassoftware/restaf@5.1.14/dist/restaf.js"></script>
-		<script src="https://unpkg.com/@sassoftware/restaflib@5.1.14/dist/restaflib.js"></script>
-		<script src="/viyaapp/appenv"></script>
+		<script src="https://unpkg.com/@sassoftware/restaf@5.2.4"></script>
+		<script src="https://unpkg.com/@sassoftware/restaflib@5.2.4"></script>
+		<script src="/viyaapp/appenv"></script> 
 	
 		<style>
 			.container {
@@ -65,9 +65,10 @@
 	
 		<script>
 			debugger;
-			let store = restaf.initStore(/*{
-				casProxy: false}*/);
-			debugger;	console.log(store.config);
+			
+
+			let store = restaf.initStore({casProxy: false});
+			console.log(store.config);
 
 			let session = null;
 			let servers = null;
@@ -103,7 +104,7 @@
 					store.keepViyaAlive(LOGONPAYLOAD.keepAlive, interval, timeout, () => {
 						console.log('timed out at', Date());
 						let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=0,height=0,left=-1000,top=-1000`;
-						window.open(`${appOptions.logonPayload.host}/SASLogon/timedout`, 'Timed Out', params);
+						window.open(`${LOGONPAYLOAD.host}/SASLogon/timedout`, 'Timed Out', params);
 						return true;
 					});
 				}
@@ -120,7 +121,7 @@
 				let msg = await store.logon(LOGONPAYLOAD);
 				debugger;
 				console.log(msg)
-				console.log(APPENV);
+	
 				console.log(LOGONPAYLOAD);
 	
 				return 'done';

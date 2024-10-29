@@ -47,7 +47,7 @@ module.exports = function setDefaultRoutes(server, options) {
   server.log('Logon strategy', authLogon);
   options.authDefault = authDefault;
   options.authLogon = authLogon;
-  var uTable = options.userRouteTable !== null ? (0, _handlers.setupUserRoutes)(options.userRouteTable, authDefault) : null;
+  var uTable = options.userRouteTable !== null ? (0, _handlers.setupUserRoutes)(options.userRouteTable, authLogon) : null;
   var defaultTable = [{
     method: ['GET'],
     path: "/health",
@@ -230,6 +230,17 @@ module.exports = function setDefaultRoutes(server, options) {
     console.log(pr);
     defaultTable.push(pr);
   }
+  /*
+   if (uTable !== null) {
+  	for (let i = 0 ; i < uTable.length; i++) {
+  		let p = uTable[i];
+  		if (p.options.auth !== false) {
+  			p.options.auth = authDefault;	
+  		} 
+  	}
+  }
+  */
+  console.log(uTable);
   var routeTables = uTable !== null ? defaultTable.concat(uTable) : defaultTable;
   /*
   server.log('routes', routeTables);

@@ -32,6 +32,7 @@ function setupUserRoutes(u, auth) {
   if (u == null) {
     return [];
   }
+  console.log('-----------------------', auth);
   var ux = typeof u === 'function' ? u() : u;
   var routes = ux.map(function (r) {
     var rx = _objectSpread({}, r);
@@ -44,7 +45,7 @@ function setupUserRoutes(u, auth) {
       method: _setContext["default"],
       assign: 'context'
     }];
-    if (rx.options.auth == null) {
+    if (rx.options.auth !== false) {
       rx.options.auth = auth;
     }
     return rx;

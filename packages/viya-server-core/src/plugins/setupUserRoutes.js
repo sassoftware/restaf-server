@@ -21,7 +21,7 @@ function setupUserRoutes (u, auth) {
     if (u == null) {
         return [];
     }
-
+    console.log('-----------------------', auth);
     let ux = (typeof u === 'function') ? u() : u;
     let routes = ux.map(r => {
         let rx = {...r};
@@ -33,7 +33,7 @@ function setupUserRoutes (u, auth) {
         rx.options.pre = [
             {method: setContext, assign: 'context'}
         ];
-        if (rx.options.auth == null) {
+        if (rx.options.auth !== false) {
             rx.options.auth = auth;   
         }
         return rx;

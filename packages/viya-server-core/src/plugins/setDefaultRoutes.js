@@ -43,7 +43,7 @@ module.exports = function setDefaultRoutes (server, options) {
 	options.authDefault = authDefault;
     options.authLogon   = authLogon;
 
-	let uTable = (options.userRouteTable !== null) ? setupUserRoutes(options.userRouteTable, authDefault) : null;
+	let uTable = (options.userRouteTable !== null) ? setupUserRoutes(options.userRouteTable, authLogon) : null;
 	
 	let defaultTable = [
 		{
@@ -224,7 +224,17 @@ module.exports = function setDefaultRoutes (server, options) {
 		console.log(pr);
 		defaultTable.push(pr);
 	}
-
+	/*
+  if (uTable !== null) {
+		for (let i = 0 ; i < uTable.length; i++) {
+			let p = uTable[i];
+			if (p.options.auth !== false) {
+				p.options.auth = authDefault;	
+			} 
+		}
+	}
+	*/
+	console.log(uTable);
 	let routeTables = (uTable !== null) ? defaultTable.concat(uTable) : defaultTable;
 	/*
 	server.log('routes', routeTables);

@@ -174,7 +174,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 			userInfo      : userInfo,
 			https         : process.env.HTTPS,
 			authDefault   : false, /* set later in setDefaultRoutes */
-            authLogon     : false  /* set later in setDefaultRoutes */
+      authLogon     : false  /* set later in setDefaultRoutes */
 
 		};
 		

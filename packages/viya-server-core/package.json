@@ -1,6 +1,6 @@
 {
   "name": "@sassoftware/viya-server-core",
-  "version": "2.16.2",
+  "version": "2.16.3",
   "description": "core library for the servers",
   "author": "Deva Kumaraswamy <deva.kumar@sas.com>",
   "license": "Apache-2.0",
@@ -31,6 +31,8 @@
     "build": "rimraf -rf lib && babel src --out-dir lib",
     "pub": "npm publish --tag dev --access public",
     "lint": "npx eslint --fix src/*.js"
+   
+
   },
   "dependencies": {
     "@hapi/bell": "^12.3.0",

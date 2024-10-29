@@ -31,9 +31,9 @@
 		></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"></script>
-		<script src="https://unpkg.com/@sassoftware/restaf@5.2.4/dist/restaf.js"></script>
-		<script src="https://unpkg.com/@sassoftware/restaflib@5.2.4/dist/restaflib.js"></script>
-		<script src="framebuilder/appenv"></script>
+		<script src="https://unpkg.com/@sassoftware/restaf@5.2.4"></script>
+		<script src="https://unpkg.com/@sassoftware/restaflib@5.2.4"></script>
+		
 	
 		<style>
 			.container {
@@ -65,9 +65,13 @@
 	
 		<script>
 			debugger;
-			let store = restaf.initStore({
-				casProxy: true});
-			debugger;	console.log(store.config);
+			let LOGONPAYLOAD = {
+				host: "https://viya.kumar-po1-azure-nginx-8febafe0.unx.sas.com",
+				authType: 'server',
+			}
+			
+			let store = restaf.initStore({casProxy: false});
+		  console.log(store.config);
 
 			let session = null;
 			let servers = null;
@@ -83,61 +87,22 @@
 				initSession()
 					.then(r => {
 						document.getElementById('output').innerHTML = 'ready';
-						keepAlive();
+						//keepAlive();
 					})
 					.catch(e => {
 						
 						console.log(e);
 					});
 			}
-			function keepAlive() {
-				if (LOGONPAYLOAD.keepAlive != null) {
-					let interval = 120;
-					let timeout = 14400;
-					if (LOGONPAYLOAD.timers != null) {
-						let opts = LOGONPAYLOAD.timers.split(',');
-						interval = parseInt(opts[ 0 ]);
-						timeout = parseInt(opts[ 1 ]);
-					}
-					console.log(`Keepalive is active`);
-					store.keepViyaAlive(LOGONPAYLOAD.keepAlive, interval, timeout, () => {
-						console.log('timed out at', Date());
-						let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=0,height=0,left=-1000,top=-1000`;
-						window.open(`${appOptions.logonPayload.host}/SASLogon/timedout`, 'Timed Out', params);
-						return true;
-					});
-				}
-
-			}
-			function logoff() {
-				let url = `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/logout?callbackUrl=onlogoff.html`;
-				window.location.replace(url);
-
-					
-			}
+			
 			async function initSession() {
-				
-				console.log(APPENV);
-				console.log(LOGONPAYLOAD);
 				debugger;
 				let msg = await store.logon(LOGONPAYLOAD);
-				console.log(msg);
-
-			//	let { identities } = await store.addServices('identities');
-				let name = 'user';
-			//	if (identities.links('currentUser') !=  null) {
-			//		let c = await store.apiCall(identities.links('currentUser'));
-			//		name = c.items('id');
-			//	}
-				console.log(name);
 				debugger;
-				/*
-				services = await store.addServices(
-					'files', 'compute', 'casManagement'
-				);
-				console.log(services.casManagement.links().toJS())
-				*/
-				debugger;
+				console.log(msg)
+				console.log(store.connection());
+				console.log(LOGONPAYLOAD);
+	
 				return 'done';
 			}
 			function runit(type) {
@@ -233,29 +198,26 @@
 
 			async function SASfileService(store) {
 				debugger;
-				let content;
 				try {
 					debugger;
 				let {files} = await store.addServices('files');
 				debugger;
 				console.log(JSON.stringify(files.links(), null, 4));
-				//console.log('items - should be an array of files(empty array is ok)')
-			//	console.log(files.items().toJS());
+				console.log('items - should be an array of files(empty array is ok)')
+				console.log(files.items().toJS());
 				let payload = {
 					data: { x: 1, y: 'This was saved earlier in the step' },
 					headers: { 'content-type': 'application/json' }
 				};
 				let createCmd = files.links('create');
 				let newFile = await store.apiCall(createCmd, payload);
-				debugger;
-				console.log(JSON.stringify(newFile.links('content'), null, 4));
-				content = await store.apiCall(newFile.links('content'));
-				
+
+				let content = await store.apiCall(newFile.links('content'));
 			} catch(err) {
-				console.log(JSON.stringify(err, null, 4));
+				console.log(err);
 				debugger;
 			}
-				console.log(content);
+				
 				return content.items();
 			}
 			async function dsCompute(store) {
