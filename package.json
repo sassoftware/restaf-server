@@ -12,6 +12,7 @@
   "scripts": {
     "preinstall": "npx npm-force-resolutions",
     "test": "cd packages/examples/apptest && npm start",
+    "testi": "cd packages/examples/apptesti && npm start",
     "core:build": "cd packages/viya-server-core && npm run build",
     "build:appjs": "cd packages/viya-appserverjs && npm run build",
     "build:apijs": "cd packages/viya-apiserverjs && npm run build",
@@ -43,7 +44,8 @@
   },
   "workspaces": [
     "./packages/viya-server-core",
-    "./packages/viya-appserverjs"
+    "./packages/viya-appserverjs",
+    "./packages/viya-apiserverjs"
   ],
   "dependencies": {
     "@hapi/hapi": "^21.3.2",

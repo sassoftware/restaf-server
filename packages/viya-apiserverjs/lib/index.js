@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 /*
  *  ------------------------------------------------------------------------------------
  *  * Copyright (c) SAS Institute Inc.
@@ -23,14 +22,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.icli = icli;
-
 var _viyaServerCore = _interopRequireDefault(require("@sassoftware/viya-server-core"));
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
+var swagger = require('hapi-swagger');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-var swagger = require('hapi-swagger'); // silly  but a jump point to keep backward compatibility
-
-
+// silly  but a jump point to keep backward compatibility
 function icli(uTable, useDefault, userInfo) {
   (0, _viyaServerCore["default"])(uTable, useDefault, swagger, userInfo);
 }

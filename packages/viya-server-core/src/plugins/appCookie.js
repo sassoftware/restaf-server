@@ -1,10 +1,13 @@
 
 let uuid = require('uuid');
+let debug = require('debug')('cookie');
 
 module.exports = async function appCookie (server, options){
 
     await server.register(require('@hapi/cookie'));
-
+    debugger;
+    debug('in appCookie');
+    debug(options.redirectTo);
     let cookieOptions = {
         cookie: {
             name      : 'cookie',
@@ -16,6 +19,7 @@ module.exports = async function appCookie (server, options){
         appendNext  : {name: 'next'},
         validateFunc: async (req, session) => {
             server.log('Cookie validateFunc', `path - ${req.path}`);
+            debugger;
             if (session == null) {
                 console.log('session is null');
                 return {valid: false};

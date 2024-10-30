@@ -7,5 +7,4 @@
 "use strict";
 
 var rafServer = require('./index.js');
-
 rafServer.icli(null, true);

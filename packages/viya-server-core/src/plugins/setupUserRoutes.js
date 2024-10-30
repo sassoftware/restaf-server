@@ -17,11 +17,10 @@
  */
 import setContext from './setContext';
 
-function setupUserRoutes (u, auth) {
+function setupUserRoutes (u, options) {
     if (u == null) {
         return [];
     }
-    console.log('-----------------------', auth);
     let ux = (typeof u === 'function') ? u() : u;
     let routes = ux.map(r => {
         let rx = {...r};
@@ -33,9 +32,11 @@ function setupUserRoutes (u, auth) {
         rx.options.pre = [
             {method: setContext, assign: 'context'}
         ];
-        if (rx.options.auth !== false) {
-            rx.options.auth = auth;   
-        }
+        if (rx.options.auth === 'default') {
+            rx.options.auth = options.authDefault;   
+        } else if (rx.options.auth === 'logon') {
+            rx.options.auth = options.authLogon;
+        } 
         return rx;
     });
     return routes;

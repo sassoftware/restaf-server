@@ -18,12 +18,13 @@ function getCustomHandler() {
   let routes = [
     {
       method: ["GET"],
-      path: `${appName}/app`,
+      path: `${appName}/hello`,
       options: {
         handler: async (req, h) => {
           debugger;
           console.log("++++++++++++++++++++++ entering app");
           let context = req.pre.context;
+          console.log(context);
           let hh = `<h1>` + ` Hello World ${process.env.APPNAME}` + `</h1>`;
           return hh;
         },
@@ -35,7 +36,7 @@ function getCustomHandler() {
     },
     {
       method: ["GET"],
-      path: `${appName}/design`,
+      path: `${appName}/app`,
       options: {
         handler: async (req, h) => {
           debugger;
@@ -44,14 +45,14 @@ function getCustomHandler() {
           console.log(`Design html is ${indexHTML}`);
           return h.file(indexHTML);
         },
-        auth: false,
+        auth: 'logon',
         description: "Design Route",
         notes: "Default Design Route",
         tags: ["app"],
       },
     },
     {
-      method: ["POST"],
+      method: ["GET"],
       path: `${appName}/testpost`,
       options: {
         handler: async (req, h) => {
@@ -60,7 +61,7 @@ function getCustomHandler() {
           let context = req.pre.context;
           return context;
         },
-        auth: false,
+        auth: 'logon',
         description:
           "Create a dataset with specified nummber of columns and rows",
         notes: "Uses restaf",

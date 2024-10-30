@@ -30,5 +30,4 @@ function parseDocker(dockerFile) {
     }
   });
 }
-var _default = parseDocker;
-exports["default"] = _default;
+var _default = exports["default"] = parseDocker;

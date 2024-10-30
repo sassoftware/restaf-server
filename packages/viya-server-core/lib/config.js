@@ -24,7 +24,7 @@ Object.defineProperty(exports, "__esModule", {
 exports["default"] = void 0;
 var _parseDocker = _interopRequireDefault(require("./parseDocker"));
 var _debug = _interopRequireDefault(require("debug"));
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 var fs = require('fs');
 var configDebug = (0, _debug["default"])('config');
 function config(appEnv, dockerFile) {
@@ -96,5 +96,4 @@ function iconfig(appEnv) {
     process.exit(0);
   }
 }
-var _default = config;
-exports["default"] = _default;
+var _default = exports["default"] = config;

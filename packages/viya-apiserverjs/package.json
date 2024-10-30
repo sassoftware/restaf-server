@@ -33,13 +33,13 @@
     "build": "rimraf lib && babel src --out-dir lib",
     "start": "node api --env=./.env --docker=./Dockerfile",
     "pub": "npm publish --tag test --access public",
-    "debug": "cross-env VIYA_SERVER=%vx% node --inspect-brk api   --env=./.env --docker=./Dockerfile --appenv=appenv.js",
+    "debug": "node --inspect-brk api   --env=./.env --docker=./Dockerfile --appenv=appenv.js",
     "lint": "npx eslint --fix src/*.js"
   },
   "dependencies": {
     "@hapi/hapi": "^21.3.2",
     "@sassoftware/viya-server-core": "^2.1.2",
-    "hapi-swagger": "14.3.0"
+    "hapi-swagger": "17.3.0"
   },
   "resolutions": {
     "z-schema": "5.0.3",

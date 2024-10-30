@@ -34,6 +34,7 @@ async function iSASauth (server, options) {
     let provider;
     // test for k8s deployment
     let host = options.host + '/SASLogon';
+    debugger;
 
     if (options.ns != null) {
         host = `https://sas-logon-app.${options.ns}.svc.cluster.local`;
@@ -51,8 +52,10 @@ async function iSASauth (server, options) {
 
         profileMethod: 'get',
         
-        profile: async function (credentials, params, get) {           
+        profile: async function (credentials, params, get) {  
+            debugger;         
             server.log('SASAuth profile', credentials);
+            debug(credentials);
         }
         
     };
