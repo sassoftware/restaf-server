@@ -47,7 +47,10 @@ module.exports = function setDefaultRoutes(server, options) {
   console.log("Logon strategy", authLogon);
   options.authDefault = authDefault;
   options.authLogon = authLogon;
+  debugger;
+  console.log(options.userRouteTable);
   var uTable = options.userRouteTable !== null ? (0, _handlers.setupUserRoutes)(options.userRouteTable, options) : null;
+  debugger;
   var defaultTable = [{
     method: ["GET"],
     path: "/health",

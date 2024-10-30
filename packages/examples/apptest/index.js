@@ -15,6 +15,7 @@ function customize(key, _options) {
 }
 function getCustomHandler() {
   let appName = `/${process.env.APPNAME}`; /* does not have to be this - your choice */
+  debugger;
   let routes = [
     {
       method: ["GET"],

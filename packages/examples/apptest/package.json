@@ -15,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cross-env": ">=7.0.0"
+    "cross-env": ">=7.0.0",
+    "@sassoftware/viya-appserverjs": "3.0.0"
   }
 }

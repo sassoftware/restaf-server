@@ -22,7 +22,9 @@
     "start:app": "cd packages/examples/app && npm run start",
     "start:apijs": "cd packages/examples/apitest && npm run start",
     "debug:appjs": "cd packages/examples/apptest && npm run debug",
-    "build": "npm run build -ws --if-present",
+    "buildcore": "cd packages/viya-server-core && npm run build",
+    "buildrest": "npm run build  -ws --if-present",
+    "build": "npm run buildcore && npm run buildrest",
     "puball": "npm run pub -ws --if-present",
     "format": "prettier-eslint --eslint-config-path ./.eslintrc.json --write '**/*.js'",
     "lint": "eslint . --ext .js --fix"

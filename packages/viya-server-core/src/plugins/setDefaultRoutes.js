@@ -58,12 +58,13 @@ module.exports = function setDefaultRoutes(server, options) {
   console.log("Logon strategy", authLogon);
   options.authDefault = authDefault;
   options.authLogon = authLogon;
-
+  debugger;
+  console.log(options.userRouteTable);
   let uTable =
     options.userRouteTable !== null
       ? setupUserRoutes(options.userRouteTable, options)
       : null;
-
+  debugger;
   let defaultTable = [
     {
       method: ["GET"],
