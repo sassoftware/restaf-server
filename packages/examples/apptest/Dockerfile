@@ -10,6 +10,8 @@ RUN npm install
 ENV APPHOST=0.0.0.0
 ENV PORT=8080
 EXPOSE $PORT
+ENV HTTPS=true
+# ENV APPSERVERLEVEL=v2
 #######################################################################
 # You can override these(but in container leave APPHOST as shown below)
 ########################################################################
@@ -25,8 +27,7 @@ ENV APPNAME=viyaapp
 # ENV LOGLEVEL=info
 # ENV USETOKEN=YES
 
-# sample setup for creating a temporary cert and key
-# defaults to this if no tls info is specified.
+#sample setup for creating a temporary cert and key
 ENV TLS_CREATE="C:US,ST:NC,L:Cary,O:SAS Institute,OU:STO,CN:localhost"
 
 # You can specify your own cet and key

@@ -1,0 +1,19 @@
+APPHOST=localhost
+APPENTRY=indexProxy.html
+VIYA_SERVER=
+APPPORT=8080
+APPNAME=viyaapp
+AUTHFLOW=code
+CLIENTID=clientapp
+CLIENTSECRET=secret
+REDIRECT=
+USETOKEN=YES
+APPENV_PROXYSERVER=https://viya.kumar-po1-azure-nginx-8febafe0.unx.sas.com
+# APPENV_PUPID=NSHOST=https://sas-logon-app.viya.svc.cluster.local
+
+# NAMESPACE=viya
+# TLS_CERT=./certs/tls.crt
+# TLS_KEY=./certs/tls.key
+
+
+

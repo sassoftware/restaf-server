@@ -1,10 +1,13 @@
 {
   "name": "@sassoftware/viya-serverjs",
-  "version": "0.1.1",
-  "description": "App server for Custom Viya Applications",
+  "version": "0.1.0",
+  "description": "app server for Viya applications",
   "author": "Deva Kumaraswamy <deva.kumar@sas.com>",
   "license": "Apache-2.0",
-  "main": "index.js",
+  "main": "./lib/index.js",
+  "bin": {
+    "@sassoftware/viya-appserverjs": "cli.js"
+  },
   "keywords": [
     "restaf",
     "Viya",
@@ -13,27 +16,64 @@
     "RESTAPI"
   ],
   "engines": {
-    "node": ">= 16.13.1"
+    "node": ">=20.4.0"
   },
-  "homepage": "https://github.com/sassoftware/viya-servers#readme",
+  "homepage": "https://github.com/sassoftware/viya-server#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sassoftware/viya-servers.git"
+    "url": "https://github.com/sassoftware/viya-server.git"
   },
   "bugs": {
-    "url": "https://github.com/sassoftware/viya-servers/issues"
+    "url": "https://github.com/sassoftware/viya-server/issues"
   },
-  "workspaces": [
-    "./packages/viya-serverjs"
-  ],
+  "unpkg": "./lib/index.js",
   "scripts": {
-    "build": "npm run build -ws --if-present",
-    "lint": "npx eslint --fix src/*.js",
-    "start:appjs": "cd packages/examples/apptest &&  npm run start",
-    "start:proxy": "cd packages/examples/proxytest && npm run start",
-    "debug:appjs": "cd packages/examples/apptest && npm run debug",
-    "pub": "npm run pub --ws --if-present",
-    "format": "prettier-eslint --eslint-config-path ./.eslintrc.json --write '**/*.js'"
+    "build": "rimraf lib && babel src --out-dir lib",
+    "test": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0 node cli --env=./.env --docker=./Dockerfile",
+    "server": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0 node server.js --env=./.env.server --docker=./Dockerfile",
+    "proxy": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0 node cli --env=./.env.proxy --docker=./Dockerfile",
+    "pub": "npm publish --tag dev --access public",
+    "lint": "npx eslint --fix src/*.js"
+  },
+  "dependencies": {
+    "@hapi/bell": "^12.3.0",
+    "@hapi/boom": "^9.1.4",
+    "@hapi/cookie": "^11.0.2",
+    "@hapi/h2o2": "^9.1.0",
+    "@hapi/hapi": "^21.3.2",
+    "@hapi/inert": "^6.0.5",
+    "@hapi/vision": "^6.1.0",
+    "axios": "^1.6.8",
+    "core-js": "^3.22.2",
+    "cross-spawn": "^7.0.3",
+    "debug": "^4.3.4",
+    "docker-file-parser": "^1.0.7",
+    "eslint-config-prettier": "^8.5.0",
+    "handlebars": "^4.7.7",
+    "hapi-require-https": "^5.0.0",
+    "joi": "^17.6.0",
+    "jwt-decode": "^3.1.2",
+    "node-cache-promise": "^1.0.2",
+    "only": "0.0.2",
+    "qs": "^6.10.3",
+    "regenerator-runtime": "^0.13.9",
+    "request-debug": "^0.2.0",
+    "selfsigned": "^2.0.1",
+    "uuid": "^8.3.2",
+    "yargs": "17.4.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.9",
+    "@babel/eslint-parser": "7.19.1",
+    "@babel/preset-env": "^7.26.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.14.0",
+    "prettier": "^2.6.2",
+    "rimraf": "^3.0.2",
+    "shx": "^0.3.4"
+  },
+  "resolutions": {
+    "@babel/traverse": "7.26.10"
   }
-
 }

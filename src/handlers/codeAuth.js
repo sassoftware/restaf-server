@@ -1,0 +1,31 @@
+/*
+ * Copyright © 2025, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+'use strict';
+
+import setCookies from './setCookies';
+let debug = require('debug')('codeauth');
+async function codeAuth (req, h, options) {  
+	debug('in codeauth');
+	await setCookies(req, h, options);
+	debug(options);
+	let indexHTML = process.env.APPENTRY == null ? 'index.html' : process.env.APPENTRY;
+	if (process.env.REDIRECT != null) {
+		debug('using REDIRECT env variable', process.env.REDIRECT);
+		indexHTML = process.env.REDIRECT;
+	}
+	debug('..................', indexHTML);
+	if (indexHTML.indexOf('/') === 0) {
+		// added to support create-react-restaf-viya-app cli
+		if (indexHTML !== '/develop') {
+			indexHTML = `/${process.env.APPNAME}${indexHTML}`;
+		}
+		console.log(`Redirecting to ${indexHTML}`);
+		return h.redirect(indexHTML);
+	} else {
+		console.log(`Visiting ${indexHTML}`);
+		return h.file(indexHTML);
+	};
+}
+export default codeAuth;

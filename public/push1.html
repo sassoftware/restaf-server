@@ -1,0 +1,187 @@
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>appBuilder</title>
+
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script async="" src="https://cdn.developer.sas.com/packages/va-report-components/latest/dist/umd/va-report-components.js"></script>
+
+<script type="text/javascript" src="https://unpkg.com/@sassoftware/react-app-builder"></script>
+
+<script type="text/javascript" src="https://unpkg.com/@sassoftware/smart-controls-mui"></script>
+<script>
+debugger;
+    let LOGONPAYLOAD = {
+      host: "https://viya.kumar-zv1-azure-nginx-84560a6e.unx.sas.com",
+      authType: "server",
+      appName: "appBuilder",
+      };
+  const urlParams = new URLSearchParams(window.location.search);
+  debugger;
+  console.log(urlParams);
+  let APPENV={};
+  urlParams.forEach((value, key) => {
+    console.log(key, value);
+    APPENV[key.toUpperCase()] = value;
+  })
+  if (APPENV.HOST != null) {
+    LOGONPAYLOAD.host = APPENV.HOST;
+  } 
+  let USERCONTROLS = {
+    controls: smartControls.controls,
+    defaultControls: {
+      numeric: 'Input',
+      char: 'InputText',
+    }
+  };
+  let userData = {};
+
+  let APPCONFIG =  {
+    sasServer: "viya",
+    source: "cas",
+    saveLocation: 'local',/* only valid value is 'local'. github is coming */
+    logonPayload: LOGONPAYLOAD, /* logon information or null */
+    computeContext:  "", 
+    sessionID: null, /* an existing sessionID or null - for react component scenario*/
+    table: null, /* only for building forms for a table */
+    model: null, /* only for building forms for a model */
+    callbacks: null,
+    proxyServer: null,
+    passContext: "YES",   
+    userData: {},
+    USERCONTROLS: "https://unpkg.com/@sassoftware/smart-controls-mui",
+    USERCONTROLSVAR: "smartControls",
+    USERCONTROLSPACKAGE: "@sassoftware/smart-controls-mui",
+  };
+</script>
+<script type="text/babel">
+   function _display(viewMode) {
+    console.log(reactAppBuilder);
+    let MAINENTRY=(viewMode === 'design') ? reactAppBuilder.DesignApp : reactAppBuilder.DisplayApp;
+    const createRoot = ReactDOM.createRoot;
+    const container = document.getElementById('container1');
+    const root = createRoot(container);
+    let style = {};
+    root.render(
+      <MAINENTRY form={FORM} userControls={USERCONTROLS} appConfig={APPCONFIG} htmlTemplate={PAGESOURCE}  style={style}/>
+    );
+  }
+</script>
+
+<script>
+  function _setup (viewMode) {
+   _display(viewMode);
+}
+
+</script>
+
+<!--------------------------------------------------------------------------------------------------->
+<!-- PAGESOURCE is used as the html for the output -------------------------------------------------->
+<!-- By default this uses the current html  --------------------------------------------------------->
+<!-- You can replace PAGESOURCE with your custom HTML -----------------------------------------------> 
+<!--------------------------------------------------------------------------------------------------->
+
+<script>
+  let PAGESOURCE = document.documentElement.outerHTML;
+</script></head>
+        <body onload="_display('design')">
+          <script type="text/javascript">
+          function getForm() {
+ return { version:1,
+  label:"push1.form",
+  viewType:"form",
+  source:"cas",
+  table:null,
+  byvars:[  ],
+  preamble:null,
+  sessionID:null,
+  userSessionID:null,
+  servers:null,
+  computeContext:"SAS Job Execution compute context",
+  casServerName:"cas-shared-default",
+  serverContext:undefined,
+  initialFetch:{ qs:{ start:0,
+      limit:1,
+      format:false,
+      where:"",
+      includeIndex:true } },
+  customColumns:{ _c1:{ Column:"_c1",
+      Label:"_c1",
+      Type:"number",
+      FormattedLength:12,
+      value:0 } },
+  editControl:{ autoSave:true,
+    autoSaveTable:true,
+    handlers:{ initApp:async (appEnv) => {
+              return {
+                statusCode: 0,
+                msg: ' '
+              };
+            },
+      init:async (data, rowno, appEnv) => data,
+      main:async (data, rowno, appEnv) => data,
+      term:async (data, rowno, appEnv) => data } },
+  viewerOptions:{ show:[  ],
+    drop:[  ],
+    disabled:[ "_index_" ],
+    cellStyles:{},
+    userMenus:{},
+    domLayout:"autoHeight",
+    agGridTheme:"ag-theme-alpine-custom" },
+  formControl:{ version:"v3",
+    status:"saved",
+    drop:[  ],
+    show:[  ],
+    defaultComponent:"Input",
+    itemCounter:1,
+    currentItems:[ "_c1" ],
+    items:[ { x:60,
+        y:62.727272033691406,
+        width:200,
+        height:30,
+        backgroundColor:"none",
+        touchAction:"None",
+        zIndex:2,
+        position:"absolute",
+        id:1,
+        name:"_c1" } ],
+    visuals:[ { id:1,
+        name:"_c1",
+        component:"Input",
+        label:"Input",
+        hide:false,
+        custom:true,
+        props:{ name:"_c1",
+          type:"number",
+          value:0,
+          label:"_c1",
+          length:12,
+          dataProps:"",
+          onEdit:"",
+          props:"{ name:\" \",\n  label:\"\",\n  align:\"right\" }",
+          "export":false,
+          visible:true,
+          handlerType:"sync",
+          handlers:{ props:(data,name, row, appEnv) => {return { name:" ",
+  label:"",
+  align:"right" };},
+            dataProps:null,
+            onEdit:null } },
+        propDetails:{},
+        grow:"horizontal" } ],
+    style:{ height:761.491455078125,
+      width:906.3635864257812,
+      overflow:"hidden",
+      border:"1px",
+      resize:"both",
+      borderStyle:"solid",
+      borderColor:"black" } } }};
+          </script>
+         <script>
+          let FORM=getForm();
+         // let MAINENTRY=reactAppBuilder.DesignApp;
+         </script>
+          <div id="container1" class="main" > </div>
+      </body></html>
