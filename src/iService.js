@@ -116,7 +116,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		*/
 
 		let nodeCacheOptions = {
-			stdTTL        : 36000,
+			stdTTL        : 1 * 24 * 60 * 60 * 1000,
 			checkPeriod   : 3600,
 			errorOnMissing: true,
 			useClones     : false,

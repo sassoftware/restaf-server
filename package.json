@@ -1,7 +1,7 @@
 {
   "name": "@sassoftware/viya-serverjs",
   "version": "0.2.0",
-  "description": "app server for Viya applications",
+  "description": "Easy to use app server for SAS Viya applications",
   "author": "Deva Kumaraswamy <deva.kumar@sas.com>",
   "license": "Apache-2.0",
   "main": "./lib/index.js",
