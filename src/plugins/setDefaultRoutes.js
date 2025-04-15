@@ -165,7 +165,6 @@ module.exports = function setDefaultRoutes(server, options) {
             `let LOGONPAYLOAD = ${JSON.stringify(allAppEnv.LOGONPAYLOAD)};` +
             `let APPENV = ${JSON.stringify(allAppEnv.APPENV)};`;
           if (process.env.SHOWENV != null) {
-            console.log(options.allAppEnv);
             console.log(s);
           }
           debug(s);
@@ -192,8 +191,8 @@ module.exports = function setDefaultRoutes(server, options) {
             `let LOGONPAYLOAD = ${JSON.stringify(allAppEnv.LOGONPAYLOAD)};` +
             `let APPENV = ${JSON.stringify(allAppEnv.APPENV)};`;
           if (process.env.SHOWENV != null) {
-            console.log(options.allAppEnv);
-            console.log(s);
+            debug(options.allAppEnv);
+
           }
           debug(s)
           return s;
@@ -252,10 +251,9 @@ module.exports = function setDefaultRoutes(server, options) {
         },
       },
     };
-    console.log(pr);
+    debug(pr);
     defaultTable.push(pr);
   }
-  console.log(uTable);
   let routeTables =
     uTable !== null ? defaultTable.concat(uTable) : defaultTable;
   server.route(routeTables);

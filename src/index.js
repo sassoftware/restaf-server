@@ -23,18 +23,19 @@ import iService from "./iService";
 import config from "./config";
 let debug = require("debug")("startup");
 
-module.exports = function appServer(
+module.exports = function core(
   uTable,
   useDefault,
   serverMode,
-  customize
+  customize,
+  swaggerfcn
 ) {
   let argv = require("yargs").argv;
   let env = argv.env == null ? null : argv.env;
   let appenv = argv.appenv == null ? null : argv.appenv;
   let docker = argv.docker == null ? null : argv.docker;
-  serverMode = serverMode == null ? "app": serverMode;
-  process.env.SERVERMODE = serverMode;
+  //process.env.SERVERMODE = serverMode !== null ? "api" : "app";
+
 
   if (useDefault == null) {
     useDefault = true;
@@ -48,8 +49,7 @@ module.exports = function appServer(
           Dockerfile: ${docker}
           env file  : ${env}
           appenv    : ${appenv}
-          customize : ${customize != null},
-          serverMode: ${serverMode}
+          customize : ${customize != null}
           `
   );
 
@@ -122,13 +122,19 @@ function getAllEnv(userData) {
     host = null;
   }
 
+  /*
   if (process.env.AUTHTYPE != null) {
     process.env.AUTHFLOW = process.env.AUTHTYPE;
   }
+    */ 
 
   let authflow = trimit("AUTHFLOW");
   if (authflow === "authorization_code" || authflow === "code") {
     authflow = "server";
+  } 
+
+  if (authflow === null) {
+    host = null;
   }
 
   if (host === null) {

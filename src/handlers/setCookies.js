@@ -1,5 +1,5 @@
 /*
-* Copyright © 2025, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+* Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
 * SPDX-License-Identifier: Apache-2.0
 */
 let uuid      = require('uuid');
@@ -8,7 +8,7 @@ let debug = require('debug')('setcookies');
 async function setCookies (req, h, options) {
     let credentials = req.auth.credentials;
     debug('setcookie', credentials);
-    // req.log('setcookie', credentials);
+    req.log('setcookie', credentials);
     if (credentials != null && req.auth.error != null) {
         debug('logon failed');
         return { status: false, error: req.auth.error };
@@ -25,13 +25,15 @@ async function setCookies (req, h, options) {
     
     
     await req.server.app.cache.set(sid, credentials, 0);
+    // Can we get away without setting cookie for this session?
+    // Need to also modify keepAlive
     if (process.env.COOKIES !== 'NO') {
         debugger;
         req.cookieAuth.set({ sid });
     };
     debug('credentials query', credentials.query);
     let redirect = (credentials.query != null && credentials.query.next != null) ? credentials.query.next : null;
-    debug('setcookie-redirect', redirect);
+    req.server.log('setcookie-redirect', redirect);
     return { status: true, error: null , redirect: redirect};
 }
 

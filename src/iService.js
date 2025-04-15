@@ -116,7 +116,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		*/
 
 		let nodeCacheOptions = {
-			stdTTL        : 1 * 24 * 60 * 60 * 1000,
+			stdTTL        : 24*60*60*1000, 
 			checkPeriod   : 3600,
 			errorOnMissing: true,
 			useClones     : false,
@@ -197,7 +197,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		}
 		hapiServer.log('Plugin', process.env.PLUGIN);
 		
-		if (process.env.PLUGIN === 'hapi-swagger' && serverMode === 'api') {
+		if (process.env.PLUGIN === 'hapi-swagger' && serverMode ==='api') {
 			let	swaggerOptions = {
 				"info": {
 					"title"      : `API for ${process.env.APPNAME}`,
