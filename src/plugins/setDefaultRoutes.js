@@ -199,7 +199,7 @@ module.exports = function setDefaultRoutes(server, options) {
         },
       },
     },
-		
+		/*
     {
       method: ["GET"],
       path: `${appName}/{param*}`,
@@ -209,6 +209,7 @@ module.exports = function setDefaultRoutes(server, options) {
         handler: getApp2,
       },
     },
+    */
 		
     {
       method: ["GET"],
@@ -237,7 +238,6 @@ module.exports = function setDefaultRoutes(server, options) {
     },
   ];
 
-  if (process.env.PROXYSERVER != null) {
     let pr = {
       method: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
       path: `${appName}/proxy/{param*}`,
@@ -253,7 +253,7 @@ module.exports = function setDefaultRoutes(server, options) {
     };
     debug(pr);
     defaultTable.push(pr);
-  }
+  
   let routeTables =
     uTable !== null ? defaultTable.concat(uTable) : defaultTable;
   server.route(routeTables);
