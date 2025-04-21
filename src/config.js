@@ -21,7 +21,7 @@
 let fs = require('fs');
 import parseDocker from './parseDocker';
 import debug from 'debug';
-let configDebug = debug('config');
+let configDebug = debug('configserver');
 
 function config(appEnv, dockerFile) {
 

@@ -8,11 +8,11 @@ let debug = require('debug')('logon');
 async function logon (req, h) {
    debugger;
    debug('.................................................in logon');
-   req.log('in logon');
+   
    
    let r = await setCookies(req, h, null);
    debug(r.redirect);
-   req.log('in logon after setcookie', r.redirect);
+   debug('in logon after setcookie', r.redirect);
    return h.redirect(r.redirect);
 }
 

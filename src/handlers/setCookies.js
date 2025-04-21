@@ -8,7 +8,7 @@ let debug = require('debug')('setcookies');
 async function setCookies (req, h, options) {
     let credentials = req.auth.credentials;
     debug('setcookie', credentials);
-    req.log('setcookie', credentials);
+    debug('setcookie', credentials);
     if (credentials != null && req.auth.error != null) {
         debug('logon failed');
         return { status: false, error: req.auth.error };
@@ -33,7 +33,7 @@ async function setCookies (req, h, options) {
     };
     debug('credentials query', credentials.query);
     let redirect = (credentials.query != null && credentials.query.next != null) ? credentials.query.next : null;
-    req.server.log('setcookie-redirect', redirect);
+    debug('setcookie-redirect', redirect);
     return { status: true, error: null , redirect: redirect};
 }
 
