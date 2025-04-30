@@ -259,49 +259,26 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 async function getCertificates () {
 
 	let tls = {};
-	debug2('Getting tls certificates');
-	debug2('tls.crt', process.env['tls.crt'] != null);
-	debug2('tls.key', process.env['tls.key'] != null);
-	debug2('TLS_PFX', process.env.TLS_PFX != null);
-	debug2('TLS_PW', process.env.TLS_PW != null);
-	debug2('TLS_CERT', process.env.TLS_CERT != null);
 	debug2('TLS_CRT', process.env.TLS_CRT != null);
 	debug2('TLS_CREATE', process.env.TLS_CREATE != null);
-	if (process.env.TLS_CERT != null && process.env.TLS_CERT.length > 0) {
-		/* backward compatability */
-		debug2('TLS set: TLS_CERT');
-		tls.cert = fs.readFileSync(process.env.TLS_CERT);
-		tls.key = fs.readFileSync(process.env.TLS_KEY);
-	} else if (process.env.TLS_PFX != null) {
-		debug2('TLS set: PFX');
-		tls.pfx = fs.readFileSync(process.env.TLS_PFX);
-		if (process.env.TLS_PW != null) {
-			tls.passphrase = process.env.TLS_PW;
+	if (process.env.TLS_CRT != null && process.env.TLS_CRT.length > 0) {
+		if (fs.existsSync(process.env.TLS_CRT) && fs.existsSync(process.env.TLS_KEY)) {
+			console.log('TLS_CRT and TLS_KEY exist');
+			tls.cert = fs.readFileSync(process.env.TLS_CRT);
+			tls.key = fs.readFileSync(process.env.TLS_KEY);
 		}
-	} else if (process.env.TLS_CRT != null && process.env.TLS_CRT.trim().length > 0) {
-		/* new key names to conform to k8s*/
-		debug2('TLS set: TLS_CRT');
-		tls.cert = process.env.TLS_CRT;
-		tls.key = process.env.TLS_KEY;
-	} else if (process.env['tls.crt'] != null) {
-		tls.cert = process.env['tls.crt'];
-		tls.key = process.env['tls.key'];
-	} else if (process.env.TLS_CREATE != null) {
+
+	} 
+	if (tls.cert == null && process.env.TLS_CREATE != null) {
 		/* unsigned certificate */
+		console.log('Creating selfsigned certificate');
 		debug2('TLS set: TLS_CREATE=', process.env.TLS_CREATE);
 		tls = await getTls();
 	}
-
-	if (process.env.TLS_CABUNDLE != null) {
-		tls.CA = fs.readFileSync(process.env.TLS_CABUNDLE);
-	}
-	debug2('TLS', tls);
-	if (Object.keys(tls).length > 0) {
-		return tls;
-	} else {
+	if (Object.keys(tls).length === 0){
 		console.log('Warning: The current host protocol is https: No TLS certificate information has been specified.');
-		return tls;
-	}
+  }
+return tls;
 }
 
 async function getTls () {
