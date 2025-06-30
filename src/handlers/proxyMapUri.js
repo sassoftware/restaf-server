@@ -22,32 +22,3 @@ async function proxyMapUri (req) {
   };
   }
 export default proxyMapUri;
-
-/*
-let qsstring = req.raw.search;
-  console.log('qsstring=', qsstring);
-  let query = req.query;
-  let newQuery = null;
- 
-  if (query != null) {
-    console.log('query=', query);
-    newQuery = {};
-    for (let key in query) {
-      let value = query[key];
-      if (value === 'true' || value === 'false') {
-        value = value === 'true';
-      }
-      newQuery[key] = value;
-      }
-      console.log('newQuery=', newQuery);
-    }
-  console.log(req.URLSearchParams);
-  let uri = path + '/' + params.param;
-  if (newQuery != null) {
-    uri = `${uri}?${new URLSearchParams(newQuery)}`;
-  }
- console.log('req.url', req.url); 
- console.log('req.url', req.url.search);
- console.log('uri=', req.uri);
- console.log('path=', req.path);
-*/

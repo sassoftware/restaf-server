@@ -125,6 +125,7 @@
 
 				console.log(LOGONPAYLOAD);
 				debugger;
+				LOGONPAYLOAD.host = 'https://localhost:8080';
 				let msg = await store.logon(LOGONPAYLOAD);
 				console.log(msg);
 
