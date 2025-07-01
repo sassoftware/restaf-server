@@ -68,17 +68,6 @@ module.exports = function setDefaultRoutes(server, options) {
   let defaultTable = [
     {
       method: ["GET"],
-      path: `/health`,
-      options: {
-        auth: false,
-        handler: async (req, h) => {
-          return h.response({ x: 1 }).code(200);
-        },
-      },
-    },
-
-    {
-      method: ["GET"],
       path: `${appName}/logon`,
       options: {
         
