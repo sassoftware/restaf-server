@@ -81,6 +81,7 @@ module.exports = function setDefaultRoutes(server, options) {
       method: ["GET"],
       path: `${appName}/logon`,
       options: {
+        
         auth: (options.authFlow === "server") ? 
         { mode: "try",  strategy: "sas" } : null,
         //https://futurestud.io/tutorials/hapi-redirect-to-previous-page-after-login
@@ -88,7 +89,10 @@ module.exports = function setDefaultRoutes(server, options) {
         plugins: {
           "hapi-auth-cookie": { redirectTo: false },
         },
-        handler: logon,
+        handler: async (req,h) => {
+          debug('logonhandler', req.auth.credentials);
+          return await logon(req,h);
+        }
       },
     },
     {
@@ -151,7 +155,7 @@ module.exports = function setDefaultRoutes(server, options) {
       path: `${appName}/appenv`,
       options: {
         auth: /*authDefault*/ false,
-        handler: (req, h) => {
+        handler: async (req, h) => {
           let allAppEnv = options.allAppEnv;
           if (options.userInfo != null) {
             let uappenv = options.userInfo("APPENV", options);
@@ -177,7 +181,7 @@ module.exports = function setDefaultRoutes(server, options) {
       path: `/appenv`,
       options: {
         auth: /*authDefault*/ false,
-        handler: (req, h) => {
+        handler: async (req, h) => {
           let allAppEnv = options.allAppEnv;
           if (options.userInfo != null) {
             let uappenv = options.userInfo("APPENV", options);

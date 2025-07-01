@@ -20,7 +20,7 @@ ENV HTTPS=true
 # ENV APPPORT=8080
 
 ENV APPNAME=appBuilder
-ENV AUTHFLOW=
+# ENV AUTHFLOW=
 ENV CLIENTID=appBuilder
 ENV CLIENTSECRET=jellico
 ENV HAPIDEBUG=NO
@@ -31,8 +31,8 @@ ENV HAPIDEBUG=NO
 ENV TLS_CREATE="C:US,ST:NC,L:Cary,O:SAS Institute,OU:STO,CN:localhost"
 
 # You can specify your own cet and key
-ENV TLS_CRT=./tls/tls.crt
-ENV TLS_KEY=./tls/tls.key
+# ENV TLS_CRT=./tls/tls.crt
+# ENV TLS_KEY=./tls/tls.key
 
 # Samesite specification
 ENV SAMESITE=None,secure

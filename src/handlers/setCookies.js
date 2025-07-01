@@ -8,8 +8,10 @@ let debug = require('debug')('setcookies');
 async function setCookies (req, h, options) {
     let credentials = req.auth.credentials;
     debug('setcookie', credentials);
-    debug('setcookie', credentials);
+ 
     if (credentials != null && req.auth.error != null) {
+        debug('setcookie credentials', credentials);
+        debug('setcookie error', req.auth.error);
         debug('logon failed');
         return { status: false, error: req.auth.error };
     }

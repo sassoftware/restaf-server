@@ -20,6 +20,8 @@ let SASauth          = require('./SASauth');
 let appCookie        = require('./appCookie');
 let token            = require('./token');
 let setDefaultRoutes = require('./setDefaultRoutes');
+let log		 = require('debug')('auth');
+
 
 /** Notes:
  * If api then register sasAuth and token - no cookies
@@ -37,7 +39,7 @@ async function setupAuth (server, options){
 			await server.register({ plugin: token });
 			def = 'token';
 		}
-		server.log('***********************Default auth', def);
+		log('***********************Default auth', def);
 		server.auth.default(def);
 		// console.log(server.registerations);
 	}

@@ -18,7 +18,7 @@ module.exports = async function appCookie (server, options){
         redirectTo  : options.redirectTo,
         appendNext  : {name: 'next'},
         validateFunc: async (req, session) => {
-            server.log('Cookie validateFunc', `path - ${req.path}`);
+            debug('Cookie validateFunc', `path - ${req.path}`);
             
             if (session == null) {
                 console.log('session is null');
@@ -38,12 +38,12 @@ module.exports = async function appCookie (server, options){
             if (credentials == null) {
                 return {valid: false};
             }
-            server.log('Cookie validateFunc', sid);
+            debug('Cookie validateFunc', sid);
             return {valid: true, credentials: credentials};
         }
     };
     // console.log('cookie options', cookieOptions);
-    server.log('Cookie Options',cookieOptions);
+    debug('Cookie Options',cookieOptions);
     server.auth.strategy('session', 'cookie', cookieOptions);
 
 };

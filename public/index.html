@@ -66,8 +66,13 @@
 	
 		<script>
 			debugger;
+			console.log(JSON.stringify(APPENV, null, 4));
 			let store = restaf.initStore({
-				casProxy: true});
+				casProxy: true,
+				options: {
+					proxyServer: APPENV.PROXYSERVER,
+				}
+			});
 			debugger;	console.log(store.config);
 
 			let session = null;
@@ -126,6 +131,7 @@
 					return 'done';
 				}
 				let msg = await store.logon(LOGONPAYLOAD);
+				console.log(store.connection());
 				console.log(msg);
 
 			//	let { identities } = await store.addServices('identities');
@@ -216,7 +222,7 @@
 				return true;
 			}
 			async function runCas(store) {
-				
+				debugger;
 				let {casManagement} = await store.addServices('casManagement');
 				let servers = await store.apiCall(
 					casManagement.links('servers')
