@@ -1,7 +1,4 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea/
 node_modules
-token
-*.log
-secrets
-tls
+
