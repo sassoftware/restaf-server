@@ -196,7 +196,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 				});
 			}
 		}
-		hapiServer.log('Plugin', process.env.PLUGIN);
+		console.log('Plugin', process.env.PLUGIN);
 		
 		if (process.env.PLUGIN === 'hapi-swagger' && serverMode ==='api') {
 			let	swaggerOptions = {
@@ -259,27 +259,25 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 
 async function getCertificates () {
 
-	let tls = {};
-	debug2('TLS_CRT', process.env.TLS_CRT != null);
-	debug2('TLS_CREATE', process.env.TLS_CREATE != null);
-	if (process.env.TLS_CRT != null && process.env.TLS_CRT.length > 0) {
-		if (fs.existsSync(process.env.TLS_CRT) && fs.existsSync(process.env.TLS_KEY)) {
-			console.log('TLS_CRT and TLS_KEY exist');
-			tls.cert = fs.readFileSync(process.env.TLS_CRT);
-			tls.key = fs.readFileSync(process.env.TLS_KEY);
+	let options = null;
+	let tlsdir = process.env.SSLCERT;
+	if (tlsdir != null  && tlsdir.trim().length > 0) {
+		console.log('ssl CERTIFICATES', tlsdir);
+		if (fs.existsSync(`${tlsdir}/key.pem`) === true) {
+			options = {};
+			options.key = fs.readFileSync(`${tlsdir}/key.pem`, { encoding: 'utf8' });
+			options.cert = fs.readFileSync(`${tlsdir}/crt.pem`, { encoding: 'utf8' });
+			if (fs.existsSync(`${tlsdir}/ca.pem`) === true) {
+			  options.ca = fs.readFileSync(`${tlsdir}/ca.pem`, { encoding: 'utf8' });
+			}
+		options.rejectUnauthorized= true;
 		}
-
-	} 
-	if (tls.cert == null && process.env.TLS_CREATE != null) {
-		/* unsigned certificate */
-		console.log('Creating selfsigned certificate');
-		debug2('TLS set: TLS_CREATE=', process.env.TLS_CREATE);
-		tls = await getTls();
+	} else {
+		console.log('No SSL certificates found, generating self-signed certificates');
+		options = await getTls();
+		options.rejectUnauthorized= false;
 	}
-	if (Object.keys(tls).length === 0){
-		console.log('Warning: The current host protocol is https: No TLS certificate information has been specified.');
-  }
-return tls;
+	return options;
 }
 
 async function getTls () {
