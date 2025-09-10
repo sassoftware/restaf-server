@@ -27,6 +27,7 @@ let NodeCache = require("node-cache-promise");
 let Vision = require('@hapi/vision');
 let inert = require('@hapi/inert');
 let selfsigned = require('selfsigned');
+import { response } from '@hapi/inert/lib/file';
 import setupAuth from './plugins/setupAuth';
 
 let os = require('os');

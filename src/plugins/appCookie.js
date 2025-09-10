@@ -7,7 +7,7 @@ module.exports = async function appCookie (server, options){
     await server.register(require('@hapi/cookie'));
     
     debug('in appCookie');
-    debug(options.redirectTo);
+    debug('redirecTo', options.redirectTo);
     let cookieOptions = {
         cookie: {
             name      : 'cookie',
@@ -18,6 +18,7 @@ module.exports = async function appCookie (server, options){
         redirectTo  : options.redirectTo,
         appendNext  : {name: 'next'},
         validateFunc: async (req, session) => {
+            debugger;
             debug('Cookie validateFunc', `path - ${req.path}`);
             
             if (session == null) {
@@ -31,6 +32,7 @@ module.exports = async function appCookie (server, options){
             } else {
                 sid = session.sid;
             }
+            console.log('appcookie sid', sid);
             if (sid != null) {
                 credentials = await req.server.app.cache.get(sid);
              }

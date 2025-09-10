@@ -5,8 +5,8 @@ async function proxyMapUri (req) {
     let sid = credentials.sid;
     console.log('sid=', sid);
   }
- 
- // let path = process.env.PROXYSERVER;
+
+  
   let path = (process.env.PROXYSERVER == null) ? process.env.VIYA_SERVER : process.env.PROXYSERVER;
   console.log('proxying to= ', path);
   let params = req.params;

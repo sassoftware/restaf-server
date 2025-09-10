@@ -40,9 +40,9 @@ module.exports = function setDefaultRoutes(server, options) {
       options.serverMode === "app"
         ? false
         : {
-            strategies: ["token", "session"],
-            mode: "required",
-          };
+          strategies: ["token", "session"],
+          mode: "required",
+        };
 
     authLogon = {
       mode: "required",
@@ -58,36 +58,36 @@ module.exports = function setDefaultRoutes(server, options) {
   console.log("Logon strategy", authLogon);
   options.authDefault = authDefault;
   options.authLogon = authLogon;
-  
+
   debug(options.userRouteTable);
   let uTable =
     options.userRouteTable !== null
       ? setupUserRoutes(options.userRouteTable, options)
       : null;
-  
+
   let defaultTable = [
     {
       method: ["GET"],
       path: `${appName}/logon`,
       options: {
-        
-        auth: (options.authFlow === "server") ? 
-        { mode: "try",  strategy: "sas" } : null,
+
+        auth: (options.authFlow === "server") ?
+          { mode: "try", strategy: "sas" } : null,
         //https://futurestud.io/tutorials/hapi-redirect-to-previous-page-after-login
         // set auth to null on all protected routes
         plugins: {
           "hapi-auth-cookie": { redirectTo: false },
         },
-        handler: async (req,h) => {
+        handler: async (req, h) => {
           debug('logonhandler', req.auth.credentials);
-          return await logon(req,h);
+          return await logon(req, h);
         }
       },
     },
     {
       method: ["GET"],
       path: `${appName}`,
-     
+
       options: {
         auth: (process.env.USELOGON === 'YES') ? null : options.serverMode === "app" ? authLogon : authDefault,
         handler: getAppb,
@@ -192,7 +192,7 @@ module.exports = function setDefaultRoutes(server, options) {
         },
       },
     },
-		/*
+    /*
     {
       method: ["GET"],
       path: `${appName}/{param*}`,
@@ -203,15 +203,18 @@ module.exports = function setDefaultRoutes(server, options) {
       },
     },
     */
-		
+
     {
       method: ["GET"],
       path: `/{param*}`,
 
       options: {
         auth: authDefault,
-        handler: getApp2,
-      },
+        handler: async (req, h) => {
+          console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>in param');
+          return getApp2(req, h);
+        }
+      }
     },
     {
       method: ["GET"],
@@ -231,22 +234,22 @@ module.exports = function setDefaultRoutes(server, options) {
     },
   ];
 
-    let pr = {
-      method: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-      path: `${appName}/proxy/{param*}`,
-      options: {
-        handler: {
-          proxy: {
-            mapUri: proxyMapUri,
-            xforward: true,
-            passThrough: true,
-          },
+  let pr = {
+    method: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    path: `${appName}/proxy/{param*}`,
+    options: {
+      handler: {
+        proxy: {
+          mapUri: proxyMapUri,
+          xforward: true,
+          passThrough: true,
         },
       },
-    };
-    debug(pr);
-    defaultTable.push(pr);
-  
+    },
+  };
+  debug(pr);
+  defaultTable.push(pr);
+
   let routeTables =
     uTable !== null ? defaultTable.concat(uTable) : defaultTable;
   server.route(routeTables);
