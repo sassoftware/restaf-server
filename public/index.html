@@ -272,14 +272,17 @@
 				'createSession'
 			);
 			let session = await store.apiCall(createSession);
-
+			let v = document.getElementById('computeInput').value;
+            console.log(v);
 			// Now run a simple data step in that session
 			let payload = {
 				data: {
-					code: [`data _null_; do i = 1 to 100; x=1; end; run; `]
+					code: [ `%let  dsname = ${v} ; data work.&dsname; do i = 1 to 20; x=1; end; run;
+						proc print; run;`
+					]
 				}
 			};
-
+			console.log(payload);
 			// Now execute the data step and wait for completion
 			let job = await store.apiCall(
 				session.links('execute'),
@@ -317,6 +320,7 @@
 		</button>
 		<br />
 		<br />
+		<input id='computeInput'> </input>
 		<button onclick="runit('compute')">
 			Press to make a call compute service
 		</button>
