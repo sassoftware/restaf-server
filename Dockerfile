@@ -19,9 +19,9 @@ ENV HTTPS=true
 # set this the same as EXPOSE here and override in env or as -p option in dockerrun
 # ENV APPPORT=8080
 
-ENV APPNAME=appBuilder
+ENV APPNAME=viyaapp
 # ENV AUTHFLOW=
-ENV CLIENTID=appbuilder
+ENV CLIENTID=viyaapp
 ENV CLIENTSECRET=jellico
 # ENV HAPIDEBUG=NO
 # ENV LOGLEVEL=info

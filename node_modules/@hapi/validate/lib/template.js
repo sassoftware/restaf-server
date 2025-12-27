@@ -1,8 +1,8 @@
 'use strict';
 
-const Assert = require('@hapi/hoek/lib/assert');
-const Clone = require('@hapi/hoek/lib/clone');
-const EscapeHtml = require('@hapi/hoek/lib/escapeHtml');
+const Assert = require('@hapi/hoek/assert');
+const Clone = require('@hapi/hoek/clone');
+const EscapeHtml = require('@hapi/hoek/escapeHtml');
 
 const Common = require('./common');
 const Ref = require('./ref');
@@ -116,7 +116,7 @@ module.exports = exports = internals.Template = class {
             else {
                 const rendered = part.ref.resolve(value, state, prefs, local, options);
                 const string = internals.stringify(rendered, prefs, options.errors);
-                const result = part.raw || (options.errors && options.errors.escapeHtml) === false ? string : EscapeHtml(string);
+                const result = (part.raw || options.errors?.escapeHtml === false) ? string : EscapeHtml(string);
                 parts.push(internals.wrap(result, part.wrapped && prefs.errors.wrap.label));
             }
         }

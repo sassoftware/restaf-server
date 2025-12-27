@@ -1,6 +1,6 @@
 'use strict';
 
-const Assert = require('@hapi/hoek/lib/assert');
+const Assert = require('@hapi/hoek/assert');
 
 const Any = require('./any');
 const Common = require('../common');
@@ -145,7 +145,7 @@ internals.perspective = function (ref, state) {
         return { perspective: state.schemas[state.schemas.length - 1].schema, path: ref.path };
     }
 
-    return { perspective: state.schemas[ref.ancestor] && state.schemas[ref.ancestor].schema, path: ref.path };
+    return { perspective: state.schemas[ref.ancestor]?.schema, path: ref.path };
 };
 
 

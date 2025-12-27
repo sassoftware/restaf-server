@@ -21,6 +21,8 @@ import "regenerator-runtime/runtime";
 import fs from "fs";
 import iService from "./iService";
 import config from "./config";
+import yargs from "yargs";
+import { hideBin } from 'yargs/helpers';
 let debug = require("debug")("startup");
 
 module.exports = function core(
@@ -30,7 +32,7 @@ module.exports = function core(
   customize,
   swaggerfcn
 ) {
-  let argv = require("yargs").argv;
+  let argv = yargs(hideBin(process.argv)).argv;
   let env = argv.env == null ? null : argv.env;
   let appenv = argv.appenv == null ? null : argv.appenv;
   let docker = argv.docker == null ? null : argv.docker;

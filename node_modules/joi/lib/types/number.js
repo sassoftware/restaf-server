@@ -1,6 +1,6 @@
 'use strict';
 
-const Assert = require('@hapi/hoek/lib/assert');
+const { assert } = require('@hapi/hoek');
 
 const Any = require('./any');
 const Common = require('../common');
@@ -251,7 +251,7 @@ module.exports = Any.extend({
         precision: {
             method(limit) {
 
-                Assert(Number.isSafeInteger(limit), 'limit must be an integer');
+                assert(Number.isSafeInteger(limit), 'limit must be an integer');
 
                 return this.$_addRule({ name: 'precision', args: { limit } });
             },
@@ -271,7 +271,7 @@ module.exports = Any.extend({
         sign: {
             method(sign) {
 
-                Assert(['negative', 'positive'].includes(sign), 'Invalid sign', sign);
+                assert(['negative', 'positive'].includes(sign), 'Invalid sign', sign);
 
                 return this.$_addRule({ name: 'sign', args: { sign } });
             },
@@ -290,7 +290,7 @@ module.exports = Any.extend({
         unsafe: {
             method(enabled = true) {
 
-                Assert(typeof enabled === 'boolean', 'enabled must be a boolean');
+                assert(typeof enabled === 'boolean', 'enabled must be a boolean');
 
                 return this.$_setFlag('unsafe', enabled);
             }

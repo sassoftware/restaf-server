@@ -1,6 +1,6 @@
 'use strict';
 
-const Assert = require('@hapi/hoek/lib/assert');
+const Assert = require('@hapi/hoek/assert');
 
 const Any = require('./any');
 const Common = require('../common');
@@ -48,8 +48,8 @@ module.exports = Any._extend({
         }
 
         if (typeof value !== 'boolean') {
-            value = schema.$_terms.truthy && schema.$_terms.truthy.has(value, null, null, !schema._flags.sensitive) ||
-                (schema.$_terms.falsy && schema.$_terms.falsy.has(value, null, null, !schema._flags.sensitive) ? false : value);
+            value = schema.$_terms.truthy?.has(value, null, null, !schema._flags.sensitive) ||
+                (schema.$_terms.falsy?.has(value, null, null, !schema._flags.sensitive) ? false : value);
         }
 
         return { value };
