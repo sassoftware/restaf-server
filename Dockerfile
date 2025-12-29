@@ -11,6 +11,7 @@ ENV APPHOST=0.0.0.0
 ENV PORT=8080
 EXPOSE 8080
 ENV HTTPS=true
+ENV VIYA_SERVER=
 # ENV APPSERVERLEVEL=v2
 #######################################################################
 # You can override these(but in container leave APPHOST as shown below)
@@ -20,19 +21,18 @@ ENV HTTPS=true
 # ENV APPPORT=8080
 
 ENV APPNAME=viyaapp
-# ENV AUTHFLOW=
+ENV AUTHFLOW=server
 ENV CLIENTID=viyaapp
 ENV CLIENTSECRET=jellico
 # ENV HAPIDEBUG=NO
 # ENV LOGLEVEL=info
 # ENV USETOKEN=YES
 
+# specify ssl/tls cert and key in a folder
+# example below
+ENV SSLCERT=c:/Users/kumar/.tls
 #sample setup for creating a temporary cert and key
 ENV TLS_CREATE="C:US,ST:NC,L:Cary,O:SAS Institute,OU:STO,CN:localhost"
-
-# You can specify your own cet and key
-# ENV TLS_CRT=./tls/tls.crt
-# ENV TLS_KEY=./tls/tls.key
 
 # Samesite specification
 ENV SAMESITE=None,secure

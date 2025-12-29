@@ -263,22 +263,35 @@ async function getCertificates () {
 	let options = null;
 	let tlsdir = process.env.SSLCERT;
 	if (tlsdir != null  && tlsdir.trim().length > 0) {
-		console.log('ssl CERTIFICATES', tlsdir);
-		if (fs.existsSync(`${tlsdir}/key.pem`) === true) {
-			options = {};
-			options.key = fs.readFileSync(`${tlsdir}/key.pem`, { encoding: 'utf8' });
-			options.cert = fs.readFileSync(`${tlsdir}/crt.pem`, { encoding: 'utf8' });
-			if (fs.existsSync(`${tlsdir}/ca.pem`) === true) {
-			  options.ca = fs.readFileSync(`${tlsdir}/ca.pem`, { encoding: 'utf8' });
-			}
-		options.rejectUnauthorized= true;
-		}
+		options = readTLS(tlsdir);
+	    options.rejectUnauthorized= true;
 	} else {
 		console.log('No SSL certificates found, generating self-signed certificates');
 		options = await getTls();
 		options.rejectUnauthorized= false;
 	}
 	return options;
+}
+
+function readTLS (tlsdir) {
+    console.log("[Note] Using TLS dir: " + tlsdir);
+    if (fs.existsSync(tlsdir) === false) {
+        console.log("[Warning] Specified TLS dir does not exist: " + tlsdir);
+        return null;
+    }
+
+    let listOfFiles = fs.readdirSync(tlsdir);
+    console.log("[Note] TLS/SSL files found: " + listOfFiles);
+    let options = {};
+    for(let i=0; i < listOfFiles.length; i++) {
+        let fname = listOfFiles[i];
+        let name = tlsdir + '/' + listOfFiles[i];
+        let key = fname.split('.')[0];
+        options[key] = fs.readFileSync(name, { encoding: 'utf8' });
+    }
+    console.log('TLS FILES', Object.keys(options));
+    return options;
+   
 }
 
 async function getTls () {
