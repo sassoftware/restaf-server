@@ -6,7 +6,7 @@
   "license": "Apache-2.0",
   "main": "./lib/index.js",
   "bin": {
-    "@sassoftware/viya-appserverjs": "cli.js"
+    "@sassoftware/viya-serverjs": "cli.js"
   },
   "keywords": [
     "restaf",
