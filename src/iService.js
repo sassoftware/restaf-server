@@ -165,6 +165,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 			redirect      : process.env.REDIRECT,
 			clientId      : process.env.CLIENTID,
 			clientSecret  : process.env.CLIENTSECRET,
+			pkce          : allAppEnv.LOGONPAYLOAD.pkce,
 			redirectTo    : `/${process.env.APPNAME}/logon`,
 			allAppEnv     : allAppEnv,
 			useHapiCookie : true,
@@ -176,7 +177,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 			userInfo      : userInfo,
 			https         : process.env.HTTPS,
 			authDefault   : false, /* set later in setDefaultRoutes */
-      authLogon     : false  /* set later in setDefaultRoutes */
+            authLogon     : false  /* set later in setDefaultRoutes */
 
 		};
 		

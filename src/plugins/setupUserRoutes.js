@@ -35,6 +35,7 @@ function setupUserRoutes (u, options) {
         } else{
           rx.options.pre.push([{method: setContext, assign: 'context'}]);
         }
+        console.log(rx.options.pre);
         if (rx.options.auth === true) {
             rx.options.auth = options.authDefault;   
         } else if (rx.options.auth === 'logon') {

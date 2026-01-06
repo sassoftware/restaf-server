@@ -32,7 +32,6 @@ module.exports = async function appCookie (server, options){
             } else {
                 sid = session.sid;
             }
-            console.log('appcookie sid', sid);
             if (sid != null) {
                 credentials = await req.server.app.cache.get(sid);
              }

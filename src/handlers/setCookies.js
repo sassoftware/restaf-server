@@ -8,7 +8,6 @@ let debug = require('debug')('setcookies');
 async function setCookies (req, h, options) {
     debugger;
     let credentials = req.auth.credentials;
-    console.log('setcookies credentials', credentials);
     debug('setcookie', credentials);
  
     if (credentials != null && req.auth.error != null) {

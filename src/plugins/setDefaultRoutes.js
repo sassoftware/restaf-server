@@ -16,6 +16,7 @@
  *
  */
 
+
 import {
   getApp,
   getApp2,
@@ -29,6 +30,7 @@ import {
   reactDev,
   proxyMapUri,
 } from "../handlers";
+import setContext from './setContext';
 let debug = require("debug")("routes");
 module.exports = function setDefaultRoutes(server, options) {
   debug("setDefaultRoutes");
@@ -51,7 +53,7 @@ module.exports = function setDefaultRoutes(server, options) {
   }
   let getAppb = getApp.bind(
     null,
-    process.env.USETOKEN === "YES" ? options : null
+    (process.env.USETOKEN != null && process.env.USETOKEN.toUpperCase() === "TRUE") ? options : null
   );
 
   console.log("Default strategy", authDefault);
@@ -249,7 +251,10 @@ module.exports = function setDefaultRoutes(server, options) {
   };
   debug(pr);
   defaultTable.push(pr);
-
+  // now set pre for all default routes
+  defaultTable.forEach((r) => {
+    r.options.pre = [{method: setContext, assign: 'context'}];
+  });
   let routeTables =
     uTable !== null ? defaultTable.concat(uTable) : defaultTable;
   server.route(routeTables);

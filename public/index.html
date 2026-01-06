@@ -66,10 +66,16 @@
 	<script>
 		debugger;
 		console.log(JSON.stringify(APPENV, null, 4));
+		let proxyServer = null;
+		if (APPENV.PROXY.toUpperCase() === 'TRUE') {
+			proxyServer = `${window.location.protocol}//${window.location.host}/${LOGONPAYLOAD.appName}/proxy`;
+
+		} 
+		console.log('Proxy Server = ' + proxyServer);
 		let store = restaf.initStore({
 			casProxy: true,
 			options: {
-				proxyServer: APPENV.PROXYSERVER,
+				proxyServer: proxyServer,
 				httpOptions: null
 			}
 		});

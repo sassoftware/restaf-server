@@ -65,11 +65,15 @@ async function iSASauth (server, options) {
         provider    : provider,
         password    : uuid.v4(),
         clientId    : options.clientId,
-        clientSecret: options.clientSecret,
+        clientSecret: (options.clientSecret == null) ? '' : options.clientSecret,
         //   isSameSite  : options.isSameSite,
         isSecure    : options.isSecure
     };
-    // console.log('SASAuth options', bellAuthOptions);
+    
+    if (options.pkce === true) {
+        bellAuthOptions.pkce = 'S256';
+    }
+   
     debug('belloptions', bellAuthOptions);
     server.log('SASAuth',bellAuthOptions);
     await server.register(bell);

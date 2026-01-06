@@ -33,7 +33,7 @@ module.exports = function core(
   swaggerfcn
 ) {
   let argv = yargs(hideBin(process.argv)).argv;
-  let env = argv.env == null ? null : argv.env;
+  let env = argv.env == null ? '.env' : argv.env;
   let appenv = argv.appenv == null ? null : argv.appenv;
   let docker = argv.docker == null ? null : argv.docker;
   //process.env.SERVERMODE = serverMode !== null ? "api" : "app";
@@ -124,20 +124,15 @@ function getAllEnv(userData) {
     host = null;
   }
 
-  /*
-  if (process.env.AUTHTYPE != null) {
-    process.env.AUTHFLOW = process.env.AUTHTYPE;
-  }
-    */ 
 
   let authflow = trimit("AUTHFLOW");
-  if (authflow === "authorization_code" || authflow === "code") {
+  let pkce = (authflow === "pkce") ? true : false;
+  if (authflow === "authorization_code" || authflow === "code" || authflow === "server" ||
+      authflow === "null" || authflow === "pkce") { 
     authflow = "server";
+    
   } 
 
-  if (authflow === null) {
-    host = null;
-  }
 
   if (host === null) {
     authflow = null;
@@ -151,7 +146,7 @@ function getAllEnv(userData) {
   let clientID = trimit("CLIENTID");
 
   // eslint-disable-next-line no-unused-vars
-  let clientSecret = trimit("CLIENTSECRET");
+  //let clientSecret = trimit("CLIENTSECRET");
   let keepAlive = trimit("KEEPALIVE");
   let appName = trimit("APPNAME");
   let ns = trimit("NAMESPACE");
@@ -164,6 +159,7 @@ function getAllEnv(userData) {
     host: host,
     clientID: clientID,
     appName: appName,
+    pkce: pkce,
 
     keepAlive: null,
     useToken: process.env.USETOKEN,
@@ -230,7 +226,7 @@ for (let key in process.env) {
     }
   }
 }
-
+userData.APPNAME = l.appName;
 env = {
   LOGONPAYLOAD: l,
   APPENV: userData,
