@@ -152,6 +152,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		});
 		*/
 		
+		//
 		// setup authentication related plugins
 		
 		let options = {

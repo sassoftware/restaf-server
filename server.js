@@ -22,7 +22,7 @@ function getCustomHandler() {
 					let hf = 'help.html';
 					return h.file(hf);
 				},
-				auth: false,
+				auth: true,
 				description: "Help",
 				notes: "Help",
 				tags: ["app"],
@@ -30,16 +30,19 @@ function getCustomHandler() {
 		},
 		{
 			method: ["GET"],
-			path: `${appName}/new`,
+			path: `/mcp`,
 			options: {
 				files: {
 					relativeTo: "./public",
 				},
 				handler: async (req, h) => {
-					console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>in new');
+					console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>in mcp');
+					console.log(req.auth.credentials);
+					debugger;
+					console.log(req.context);
 					return h.file('index.html');	
 				},
-				// auth: 'logon',
+				auth: 'logon',
 				description: "Create new application",
 				notes: "Index file created from env data",
 				tags: ["app"],

@@ -25,11 +25,7 @@ function setupUserRoutes (u, options) {
     let ux = (typeof u === 'function') ? u() : u;
     let routes = ux.map(rx => {
         //let rx = {...r};
-        /* change it to options */
-        if (rx.config != null) {
-            rx.options = {...rx.config};
-            delete rx.config;
-        }
+   
         if (rx.options.pre == null) {
           rx.options.pre = [{method: setContext, assign: 'context'}];
         } else{
@@ -41,7 +37,7 @@ function setupUserRoutes (u, options) {
         } else if (rx.options.auth === 'logon') {
             rx.options.auth = options.authLogon;
         } 
-       
+        console.log('route auth', rx.options.auth);
         return rx;
     });
     return routes;
