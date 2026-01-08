@@ -10,18 +10,17 @@ async function codeAuth (req, h, options) {
 	debug('in codeauth');
 	await setCookies(req, h, options);
 	debug(options);
+	// add support for REDIRECT env variable
 	let indexHTML = process.env.APPENTRY == null ? 'index.html' : process.env.APPENTRY;
+	let redirectPath = false;
 	if (process.env.REDIRECT != null) {
-		debug('using REDIRECT env variable', process.env.REDIRECT);
-		indexHTML = process.env.REDIRECT;
+		redirectPath = true;
+	    indexHTML = (process.env.REDIRECT != null && process.env.REDIRECT.startsWith('/') 
+	              ? `/${process.env.APPNAME}${process.env.REDIRECT}`
+				  : `/${process.env.REDIRECT}`);
 	}
-	debug('..................', indexHTML);
-	if (indexHTML.indexOf('/') === 0) {
-		// added to support create-react-restaf-viya-app cli
-		if (indexHTML !== '/develop') {
-			indexHTML = `/${process.env.APPNAME}${indexHTML}`;
-		}
-		console.log(`Redirecting to ${indexHTML}`);
+	
+	if (redirectPath) {
 		return h.redirect(indexHTML);
 	} else {
 		console.log(`Visiting ${indexHTML}`);

@@ -9,6 +9,7 @@ core(getCustomHandler, true, 'app', null);
 function getCustomHandler() {
 	let appName = `/${process.env.APPNAME}`; /* does not have to be this - your choice */
 	debugger;
+	console.log('getCustomHandler called for appName', appName);
 	let routes = [
 		{
 			method: ["GET"],
@@ -29,17 +30,17 @@ function getCustomHandler() {
 			},
 		},
 		{
-			method: ["GET"],
-			path: `/mcp`,
+			method: ["POST", "GET"],
+			path: `/imcp`,
 			options: {
 				files: {
 					relativeTo: "./public",
 				},
 				handler: async (req, h) => {
-					console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>in mcp');
-					console.log(req.auth.credentials);
+					console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>in imcp');
+					console.log('credentials', req.auth.credentials);
 					debugger;
-					console.log(req.context);
+					console.log('pre', req.pre.context);
 					return h.file('index.html');	
 				},
 				auth: 'logon',

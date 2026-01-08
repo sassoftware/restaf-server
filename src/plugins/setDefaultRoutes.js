@@ -73,15 +73,14 @@ module.exports = function setDefaultRoutes(server, options) {
       path: `${appName}/logon`,
       options: {
 
-        auth: (options.authFlow === "server") ?
-          { mode: "try", strategy: "sas" } : null,
+        auth: /*authLogon*/ (options.authFlow === "server") ?  { mode: "try", strategy: "sas" } : null,
         //https://futurestud.io/tutorials/hapi-redirect-to-previous-page-after-login
         // set auth to null on all protected routes
         plugins: {
           "hapi-auth-cookie": { redirectTo: false },
         },
         handler: async (req, h) => {
-          debug('logonhandler', req.auth.credentials);
+          console.log( 'logonhandler', req.auth.credentials);
           return await logon(req, h);
         }
       },
@@ -91,7 +90,7 @@ module.exports = function setDefaultRoutes(server, options) {
       path: `${appName}`,
 
       options: {
-        auth: (process.env.USELOGON === 'YES') ? null : options.serverMode === "app" ? authLogon : authDefault,
+        auth: (process.env.USELOGON.toUpperCase()=== 'TRUE') ? null : options.serverMode === "app" ? authLogon : authDefault,
         handler: getAppb,
       },
     },
@@ -254,6 +253,7 @@ module.exports = function setDefaultRoutes(server, options) {
   // now set pre for all default routes
   defaultTable.forEach((r) => {
     r.options.pre = [{method: setContext, assign: 'context'}];
+    console.log,('Setting pre for route', r.path,r.options.pre);
   });
   let routeTables =
     uTable !== null ? defaultTable.concat(uTable) : defaultTable;
