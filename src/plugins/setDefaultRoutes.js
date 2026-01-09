@@ -90,8 +90,8 @@ module.exports = function setDefaultRoutes(server, options) {
       path: `${appName}`,
 
       options: {
-        //auth: (process.env.USELOGON.toUpperCase() === 'TRUE') ? null : options.serverMode === "app" ? authLogon : authDefault,
-        auth: null,
+        auth: (process.env.USELOGON.toUpperCase() === 'TRUE') ? null : options.serverMode === "app" ? authLogon : authDefault,
+      //  auth: null,
         handler: async (req,h) => {
           console.log(`>>>>>>>>>>>>>>>>>>>>>>>in ${appName}`);
           return getAppb(req, h);

@@ -28,6 +28,7 @@ let Vision = require('@hapi/vision');
 let inert = require('@hapi/inert');
 let selfsigned = require('selfsigned');
 
+import { log } from 'console';
 import setupAuth from './plugins/setupAuth';
 
 let os = require('os');
@@ -89,7 +90,7 @@ function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, user
 			},
 		};
 		if (process.env.HAPIDEBUG === 'YES') {
-			sConfig.debug = { request: '*' };
+			sConfig.debug = { request: '*' ,log: '*'};
 		}
 		debug(JSON.stringify(sConfig, null, 4));
 		if (process.env.HTTPS === 'true') {
