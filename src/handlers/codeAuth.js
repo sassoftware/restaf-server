@@ -12,16 +12,17 @@ async function codeAuth (req, h, options) {
 	debug(options);
 	// add support for REDIRECT env variable
 	let indexHTML = process.env.APPENTRY == null ? 'index.html' : process.env.APPENTRY;
-	let redirectPath = false;
+	let redirectPath = null;
 	if (process.env.REDIRECT != null) {
-		redirectPath = true;
-	    indexHTML = (process.env.REDIRECT != null && process.env.REDIRECT.startsWith('/') 
+	    redirectPath = (process.env.REDIRECT != null && process.env.REDIRECT.startsWith('/') 
 	              ? `/${process.env.APPNAME}${process.env.REDIRECT}`
 				  : `/${process.env.REDIRECT}`);
 	}
-	
-	if (redirectPath) {
-		return h.redirect(indexHTML);
+	debug(indexHTML);
+	debug(redirectPath);
+	if (redirectPath !== null) {
+		debug('redirecting to', redirectPath);
+	   return h.redirect(redirectPath);
 	} else {
 		console.log(`Visiting ${indexHTML}`);
 		return h.file(indexHTML);

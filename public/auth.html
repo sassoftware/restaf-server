@@ -1,0 +1,24 @@
+
+<!DOCTYPE html>
+<html>
+  <body>
+    <script>
+      (function () {
+        try {
+          // Notify parent window that auth succeeded.
+          if (window.opener && !window.opener.closed) {
+            window.opener.postMessage(
+              { type: 'oauth:success', state: 200 },
+              '*'
+            );
+          }
+        } catch (e) {
+          // ignore
+        }
+        // Attempt to close the popup.
+        window.close();
+      })();
+    </script>
+    <p>Server is active. You can close this window.</p>
+  </body>
+</html>`;

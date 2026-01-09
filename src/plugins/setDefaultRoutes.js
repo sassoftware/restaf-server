@@ -80,7 +80,7 @@ module.exports = function setDefaultRoutes(server, options) {
           "hapi-auth-cookie": { redirectTo: false },
         },
         handler: async (req, h) => {
-          console.log( 'logonhandler', req.auth.credentials);
+          console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>in logon');
           return await logon(req, h);
         }
       },
@@ -90,10 +90,14 @@ module.exports = function setDefaultRoutes(server, options) {
       path: `${appName}`,
 
       options: {
-        auth: (process.env.USELOGON.toUpperCase()=== 'TRUE') ? null : options.serverMode === "app" ? authLogon : authDefault,
-        handler: getAppb,
-      },
-    },
+        //auth: (process.env.USELOGON.toUpperCase() === 'TRUE') ? null : options.serverMode === "app" ? authLogon : authDefault,
+        auth: null,
+        handler: async (req,h) => {
+          console.log(`>>>>>>>>>>>>>>>>>>>>>>>in ${appName}`);
+          return getAppb(req, h);
+      }
+    }
+  },
 
     {
       method: ["GET"],

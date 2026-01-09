@@ -31,7 +31,7 @@ function getCustomHandler() {
 		},
 		{
 			method: ["POST", "GET"],
-			path: `/imcp`,
+			path: `/mcp`,
 			options: {
 				files: {
 					relativeTo: "./public",
@@ -41,7 +41,7 @@ function getCustomHandler() {
 					console.log('credentials', req.auth.credentials);
 					debugger;
 					console.log('pre', req.pre.context);
-					return h.file('index.html');	
+					return h.file('help.html');	
 				},
 				auth: 'logon',
 				description: "Create new application",

@@ -27,15 +27,15 @@ let NodeCache = require("node-cache-promise");
 let Vision = require('@hapi/vision');
 let inert = require('@hapi/inert');
 let selfsigned = require('selfsigned');
-import { response } from '@hapi/inert/lib/file';
+
 import setupAuth from './plugins/setupAuth';
 
 let os = require('os');
 
-function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, userInfo) {
+function iService(userRouteTable, useDefault, asset, allAppEnv, serverMode, userInfo) {
 	// process.env.APPHOST_ADDR = process.env.APPHOST;
 	const init = async () => {
-	
+
 		if (process.env.APPHOST === '*') {
 			process.env.APPHOST = os.hostname();
 		}
@@ -48,7 +48,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		}
 		let isSameSite = 'None';
 		let isSecure = false;
-		
+
 		if (process.env.SAMESITE != null) {
 			let [s1, s2] = process.env.SAMESITE.split(',');
 			isSameSite = s1;
@@ -57,7 +57,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 				isSecure = false;
 			}
 		}
-	
+
 
 		let sConfig = {
 			port: process.env.APPPORT,
@@ -65,19 +65,19 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 
 			state: {
 				isSameSite: isSameSite,
-				isSecure  : isSecure,
+				isSecure: isSecure,
 
 			},
-	
+
 
 			routes: {
 				payload: {
 					maxBytes: maxBytes
 				},
 				cors: {
-					origin     : ['*'],
+					origin: ['*'],
 					credentials: true,
-					
+
 					"headers": ["Accept", "Authorization", "Content-Type", "If-None-Match", "Accept-language"]
 					/*
 					'Access-Control-Allow-Methods': ['GET', 'POST', 'OPTIONS'],
@@ -85,13 +85,13 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 					additionalExposedHeaders      : ['location'],
 					*/
 				}
-				
+
 			},
 		};
 		if (process.env.HAPIDEBUG === 'YES') {
 			sConfig.debug = { request: '*' };
 		}
-		debug(JSON.stringify(sConfig, null,4));
+		debug(JSON.stringify(sConfig, null, 4));
 		if (process.env.HTTPS === 'true') {
 			sConfig.tls = await getCertificates();
 			debug('Setup of SSL certificates completed');
@@ -99,7 +99,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 			debug('Running with no SSL certificates');
 		}
 		if (asset !== null) {
-			sConfig.routes.files= { relativeTo: asset };
+			sConfig.routes.files = { relativeTo: asset };
 		}
 
 		debug2(
@@ -117,10 +117,10 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		*/
 
 		let nodeCacheOptions = {
-			stdTTL        : 24*60*60*1000, 
-			checkPeriod   : 3600,
+			stdTTL: 24 * 60 * 60 * 1000,
+			checkPeriod: 3600,
 			errorOnMissing: true,
-			useClones     : false,
+			useClones: false,
 			deleteOnExpire: true,
 		};
 		let storeCache = new NodeCache(nodeCacheOptions);
@@ -128,9 +128,9 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 
 		// common plugins
 		let visionOptions = {
-			engines   : { html: require('handlebars') },
+			engines: { html: require('handlebars') },
 			relativeTo: __dirname,
-			path      : '.',
+			path: '.',
 		};
 		await hapiServer.register(Vision);
 		hapiServer.views(visionOptions);
@@ -140,7 +140,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		}
 		// register H202 for proxy handling
 		// https://hapi.dev/module/h2o2/api/?v=10.0.1
-		
+
 		await hapiServer.register(H202);
 		/*
 		await hapiServer.register({
@@ -151,86 +151,87 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 			},
 		});
 		*/
-		
+
 		//
 		// setup authentication related plugins
-		
+
 		let options = {
-			serverMode    : serverMode,
-			authFlow      : process.env.AUTHFLOW,
-			host          : process.env.VIYA_SERVER,
-			isSameSite    : isSameSite,
-			isSecure      : isSecure,
-			ns            : (allAppEnv.LOGONPAYLOAD != null) ? allAppEnv.LOGONPAYLOAD.ns : null,
-			nsHost        : (allAppEnv.LOGONPAYLOAD != null) ? allAppEnv.LOGONPAYLOAD.nsHost : null,
-			redirect      : process.env.REDIRECT,
-			clientId      : process.env.CLIENTID,
-			clientSecret  : process.env.CLIENTSECRET,
-			pkce          : allAppEnv.LOGONPAYLOAD.pkce,
-			redirectTo    : `/${process.env.APPNAME}/logon`,
-			allAppEnv     : allAppEnv,
-			useHapiCookie : true,
-			appName       : process.env.APPNAME,
-			appHost       : process.env.APPHOST,
-			appPort       : process.env.APPPORT,
+			serverMode: serverMode,
+			authFlow: process.env.AUTHFLOW,
+			host: process.env.VIYA_SERVER,
+			useLogon: (process.env.USELOGON != null && process.env.USELOGON.toUpperCase() === 'FALSE') ? false : true,
+			isSameSite: isSameSite,
+			isSecure: isSecure,
+			ns: (allAppEnv.LOGONPAYLOAD != null) ? allAppEnv.LOGONPAYLOAD.ns : null,
+			nsHost: (allAppEnv.LOGONPAYLOAD != null) ? allAppEnv.LOGONPAYLOAD.nsHost : null,
+			redirect: process.env.REDIRECT,
+			clientId: process.env.CLIENTID,
+			clientSecret: process.env.CLIENTSECRET,
+			pkce: allAppEnv.LOGONPAYLOAD.pkce,
+			redirectTo: `/${process.env.APPNAME}/logon`,
+			allAppEnv: allAppEnv,
+			useHapiCookie: true,
+			appName: process.env.APPNAME,
+			appHost: process.env.APPHOST,
+			appPort: process.env.APPPORT,
 			userRouteTable: userRouteTable,
-			useDefault    : useDefault, /* not used - left here for potential reuse */
-			userInfo      : userInfo,
-			https         : process.env.HTTPS,
-			authDefault   : false, /* set later in setDefaultRoutes */
-            authLogon     : false  /* set later in setDefaultRoutes */
+			useDefault: useDefault, /* not used - left here for potential reuse */
+			userInfo: userInfo,
+			https: process.env.HTTPS,
+			authDefault: false, /* set later in setDefaultRoutes */
+			authLogon: false  /* set later in setDefaultRoutes */
 
 		};
-		
-		debug2('Options',options);
+
+		debug2('Options', options);
 		if (process.env.AUTHFLOW != null) {
-				await setupAuth(hapiServer, options);
-				if (process.env.PREAUTH === 'YES') {
+			await setupAuth(hapiServer, options);
+			if (process.env.PREAUTH === 'YES') {
 				console.log('Preauth enabled');
 				hapiServer.ext('onPreAuth', (request, h) => {
 					debugger;
 					if (!request.auth.isAuthenticated && !request.path.startsWith(`/login`)) {
-							const redirectTo = `${request.path}?${new URLSearchParams(request.query).toString()}`;
-							console.log('Redirect to login', {redirectTo});
-							debugger;
-							return h.redirect(`/login`).takeover();
+						const redirectTo = `${request.path}?${new URLSearchParams(request.query).toString()}`;
+						console.log('Redirect to login', { redirectTo });
+						debugger;
+						return h.redirect(`/login`).takeover();
 					}
 					return h.continue;
 				});
 			}
 		}
 		console.log('Plugin', process.env.PLUGIN);
-		
-		if (process.env.PLUGIN === 'hapi-swagger' && serverMode ==='api') {
-			let	swaggerOptions = {
+
+		if (process.env.PLUGIN === 'hapi-swagger' && serverMode === 'api') {
+			let swaggerOptions = {
 				"info": {
-					"title"      : `API for ${process.env.APPNAME}`,
-					"version"    : "0.0.1",
+					"title": `API for ${process.env.APPNAME}`,
+					"version": "0.0.1",
 					"description": "This document was auto-generated at run time"
 				},
-				"schemes"          : ["http", "https"],
-				"cors"             : true,
-				"debug"            : true,
-				"jsonPath"         : `/${options.appName}/swagger.json`,
-			    "jsonRoutePath"    : `/${options.appName}/swagger.json`,
-			    "documentationPage": true,
-	    		"documentationPath": `/${options.appName}/documentation`,
-				"swaggerUI"        : true,
-				"swaggerUIPath"    : `/${options.appName}/swaggerui`,
-				auth               : options.authDefault
-				};
+				"schemes": ["http", "https"],
+				"cors": true,
+				"debug": true,
+				"jsonPath": `/${options.appName}/swagger.json`,
+				"jsonRoutePath": `/${options.appName}/swagger.json`,
+				"documentationPage": true,
+				"documentationPath": `/${options.appName}/documentation`,
+				"swaggerUI": true,
+				"swaggerUIPath": `/${options.appName}/swaggerui`,
+				auth: options.authDefault
+			};
 
 			if (userInfo != null) {
-		    	let override = userInfo(options, 'SWAGGEROPTIONS');
-				swaggerOptions = {...swaggerOptions, ...override};
+				let override = userInfo(options, 'SWAGGEROPTIONS');
+				swaggerOptions = { ...swaggerOptions, ...override };
 			}
-			
-			debug('Swagger Options:' ,swaggerOptions);
+
+			debug('Swagger Options:', swaggerOptions);
 			await hapiServer.register({ plugin: serverMode, options: swaggerOptions });
 		} else if (process.env.PLUGIN == 'hapi-openapi' && serverMode === 'api') {
 			console.log('hapi-openapi', 'coming soon');
-		} 
-		
+		}
+
 
 		//
 		// Start server
@@ -246,7 +247,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 			options.serverMode === 'app'
 				? `Visit ${hh}/${process.env.APPNAME} to access application`
 				: `Visit ${hh}/${process.env.APPNAME}/api to access swagger`;
-		console.log('\x1b[1m%s\x1b[0m',msg);
+		console.log('\x1b[1m%s\x1b[0m', msg);
 		console.log('NOTE: If running in container use the exported port');
 		process.env.APPSERVER = `${hh}/${process.env.APPNAME}`;
 		process.env.HEALTH = 'true';
@@ -260,100 +261,121 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 	init();
 }
 
-async function getCertificates () {
+async function getCertificates() {
 
 	let options = null;
 	let tlsdir = process.env.SSLCERT;
-	if (tlsdir != null  && tlsdir.trim().length > 0) {
+	console.log('Reading SSL certificates from ', tlsdir);
+	if (tlsdir != null && tlsdir.trim().length > 0) {
 		options = readTLS(tlsdir);
-	    options.rejectUnauthorized= true;
+		options.rejectUnauthorized = true;
 	} else {
 		console.log('No SSL certificates found, generating self-signed certificates');
 		options = await getTls();
-		options.rejectUnauthorized= false;
+		options.rejectUnauthorized = false;
 	}
 	return options;
 }
 
-function readTLS (tlsdir) {
-    console.log("[Note] Using TLS dir: " + tlsdir);
-    if (fs.existsSync(tlsdir) === false) {
-        console.log("[Warning] Specified TLS dir does not exist: " + tlsdir);
-        return null;
-    }
+function readTLS(tlsdir) {
+	console.log("[Note] Using TLS dir: " + tlsdir);
+	if (fs.existsSync(tlsdir) === false) {
+		console.log("[Warning] Specified TLS dir does not exist: " + tlsdir);
+		return null;
+	}
 
-    let listOfFiles = fs.readdirSync(tlsdir);
-    console.log("[Note] TLS/SSL files found: " + listOfFiles);
-    let options = {};
-    for(let i=0; i < listOfFiles.length; i++) {
-        let fname = listOfFiles[i];
-        let name = tlsdir + '/' + listOfFiles[i];
-        let key = fname.split('.')[0];
-        options[key] = fs.readFileSync(name, { encoding: 'utf8' });
-    }
-    console.log('TLS FILES', Object.keys(options));
-    return options;
-   
+	let listOfFiles = fs.readdirSync(tlsdir);
+	console.log("[Note] TLS/SSL files found: " + listOfFiles);
+	let options = {};
+	for (let i = 0; i < listOfFiles.length; i++) {
+		let fname = listOfFiles[i];
+		let name = tlsdir + '/' + listOfFiles[i];
+		let key = fname.split('.')[0];
+		options[key] = fs.readFileSync(name, { encoding: 'utf8' });
+	}
+	console.log('TLS FILES', Object.keys(options));
+	return options;
+
 }
 
-async function getTls () {
+async function getTls() {
 	let options = {
-		keySize          : 2048,
-		days             : 360,
-		algorithm        : "sha256",
+		keySize: 2048,
+		days: 360,
+		algorithm: "sha256",
 		clientCertificate: true,
-		extensions       : {}, 
+		extensions: {},
 	};
 	let subjt = process.env.TLS_CREATE.replaceAll('"', '').trim();
-	let subj  = subjt.split(',');
-	
+	let subj = subjt.split(',');
+
 	let d = {};
 	subj.map(c => {
 		let r = c.split(':');
-		d[ r[ 0 ] ] = r[ 1 ];
-		return {  value: r[ 1 ] };
+		d[r[0]] = r[1];
+		return { value: r[1] };
 	});
 
 	//  TLS_CREATE=C:US,ST:NC,L:Cary,O:SAS Institute,OU:STO,CN:localhost,ALT:na.sas.com
 	let attr = [
 		{
-			name : 'commonName',
+			name: 'commonName',
 			value: d.CN /*process.env.APPHOST*/,
 		},
 		{
-			name : 'countryName',
+			name: 'countryName',
 			value: d.C
 		}, {
 			shortName: 'ST',
-			value    : d.ST
+			value: d.ST
 		}, {
-			name : 'localityName',
+			name: 'localityName',
 			value: d.L,
 		}, {
-			name : 'organizationName',
+			name: 'organizationName',
 			value: d.O
 		},
 		{
 			shortName: 'OU',
-			value    : d.OU
+			value: d.OU
 		}
 	];
+	/*
+		options.extensions.altNames = [
+			//	{ type: 6, value: `http://${process.env.APPHOST}:${process.env.APPPORT}/${process.env.APPNAME}` },
+			{ type: 6, value: `https://${process.env.APPHOST}:${process.env.APPPORT}/${process.env.APPNAME}` },
+			{ type: 6, value: `https://${process.env.APPHOST}:${process.env.APPPORT}/${process.env.APPNAME}/api` },
+			{ type: 6, value: `https://${process.env.APPHOST}:${process.env.APPPORT}/${process.env.APPNAME}/logon` },
+			{ type: 6, value: `https://${process.env.APPHOST}/${process.env.APPNAME}` },
+			{ type: 6, value: `https://${process.env.APPHOST}/${process.env.APPNAME}/api` },
+			{ type: 6, value: `https://${process.env.APPHOST}/${process.env.APPNAME}/logon` },
+		];
+		
+		options.extensions.altNames = [
+			  { type: 2, value: 'localhost' },     // DNS
+			  { type: 7, ip: '127.0.0.1' },        // IPv4
+			  { type: 7, ip: '::1' }               // IPv6
+			];
+	*/
+	options.extensions = [
+		{
+			name: 'subjectAltName',
+			altNames: [
+				{ type: 2, value: 'localhost' },     // DNS
+				{ type: 7, ip: '127.0.0.1' },        // IPv4
+				{ type: 7, ip: '::1' }               // IPv6
 
-	options.extensions.altNames = [
-		//	{ type: 6, value: `http://${process.env.APPHOST}:${process.env.APPPORT}/${process.env.APPNAME}` },
-		{ type: 6, value: `https://${process.env.APPHOST}:${process.env.APPPORT}/${process.env.APPNAME}` },
-		{ type: 6, value: `https://${process.env.APPHOST}:${process.env.APPPORT}/${process.env.APPNAME}/api` },
-		{ type: 6, value: `https://${process.env.APPHOST}:${process.env.APPPORT}/${process.env.APPNAME}/logon` },
-		{ type: 6, value: `https://${process.env.APPHOST}/${process.env.APPNAME}` },
-		{ type: 6, value: `https://${process.env.APPHOST}/${process.env.APPNAME}/api` },
-		{ type: 6, value: `https://${process.env.APPHOST}/${process.env.APPNAME}/logon` },
+			]
+		}
+
 	];
-	debug('tls options ', JSON.stringify(options, null,4));
+	console.log('tls options ', JSON.stringify(options, null, 4));
 	let pems = selfsigned.generate(attr, options);
 	let tls = {
 		cert: pems.cert,
-		key : pems.private
+		key: pems.private
 	};
+	console.log('Self-signed certificates created', tls);
 	return tls;
 
 
