@@ -11,8 +11,9 @@ async function logon (req, h) {
    
    
    let r = await setCookies(req, h, null);
+   console.log('logon setcookie result:', r);
    debug(r.redirect);
-   debug('in logon after setcookie', r.redirect);
+   console.log('in logon after setcookie', r.redirect);
    return h.redirect(r.redirect);
 }
 

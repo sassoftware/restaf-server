@@ -8,13 +8,14 @@ let debug = require('debug')('setcookies');
 async function setCookies (req, h, options) {
     debugger;
     let credentials = req.auth.credentials;
-    debug('setcookie', credentials);
+    debug('setcookie', credentials != null);
  
     if (credentials != null && req.auth.error != null) {
-        debug('setcookie credentials', credentials);
+        console.log('setcookie credentials', credentials);
         debug('setcookie error', req.auth.error);
-        debug('logon failed');
-        return { status: false, error: req.auth.error };
+        console.log('Authentication error:', req.auth.error);
+        process.exit(0);
+       // return { status: false, error: req.auth.error, redirect: '/error' };
     }
         
     // create a cookie(sid) and save credentials in cache
@@ -23,7 +24,7 @@ async function setCookies (req, h, options) {
     if (options != null) {
         options.allAppEnv.LOGONPAYLOAD.token = credentials.token;
         options.allAppEnv.LOGONPAYLOAD.tokenType = 'bearer';
-        debug(options.allAppEnv.LOGONPAYLOAD);
+      //  debug(options.allAppEnv.LOGONPAYLOAD);
     }
     
     
