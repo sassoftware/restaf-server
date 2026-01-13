@@ -60,7 +60,13 @@ async function iSASauth (server, options) {
        
         
     };
+    // Reference: https://github.com/hapijs/bell/blob/master/lib/oauth.js
+    // for some reason the bell doc is out of date on pkce
     
+    console.log('pkce', options.pkce);
+    if (options.pkce === true) {
+        provider.pkce = 'S256';
+    }
     bellAuthOptions = {
         provider    : provider,
         password    : uuid.v4(),
@@ -70,9 +76,6 @@ async function iSASauth (server, options) {
         isSecure    : options.isSecure
     };
     
-    if (options.pkce === true) {
-        bellAuthOptions.pkce = 'S256';
-    }
    
     debug('belloptions', bellAuthOptions);
     server.log('SASAuth',bellAuthOptions);

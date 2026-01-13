@@ -8,37 +8,43 @@ RUN npm install
 
 # will auto change to localhost in non-docker environments
 ENV APPHOST=0.0.0.0
+ENV APPLOC=./public
 ENV PORT=8080
 EXPOSE 8080
 ENV HTTPS=true
-ENV VIYA_SERVER=
-# ENV APPSERVERLEVEL=v2
-#######################################################################
-# You can override these(but in container leave APPHOST as shown below)
-########################################################################
 
-# set this the same as EXPOSE here and override in env or as -p option in dockerrun
-# ENV APPPORT=8080
+ENV APPPORT=8080
+ENV APPNAME=mcpserver
+ENV AUTHFLOW=code
+ENV CLIENTID=mcpserver
+ENV CLIENTSECRET=jellico
+ENV USELOGON=FALSE
+ENV USETOKEN=TRUE
 
-ENV APPNAME=viyaapp
-ENV AUTHFLOW=server
-ENV CLIENTID=viyaapp
-ENV CLIENTSECRET=
-# ENV HAPIDEBUG=NO
-# ENV LOGLEVEL=info
-# ENV USETOKEN=YES
+ENV SSLCERT=
+ENV VIYACERT=
 
-# specify ssl/tls cert and key in a folder
-# example below
-# ENV SSLCERT=c:/Users/kumar/.tls
-#sample setup for creating a temporary cert and key
-ENV TLS_CREATE="C:US,ST:NC,L:Cary,O:SAS Institute,OU:STO,CN:localhost"
 
-# Samesite specification
-ENV SAMESITE=None,secure
+# Most modern browsers do not accept self-signed certs from localhost
+# Options:
 
-# If your Viya instance still has a unsigned certificate set this value prior to invoking the server
-# ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+# 1. provide signed certificates for localhost
+# 2. Use libraries like mkcert to create temporary trusted certs for localhost
+# 3. Use the app server as a proxy to the Viya server to avoid CORS issues.
+#    This requires that the app redirect all Viya API calls to the app server proxy endpoint
+#    Users of restaf can simply set the APPENV_PROXY env to TRUE to enable this behavior
+# 4. set USETOKEN to TRUE and use the token in the APPENV object to make the calls
+# either use the proper ssl/tsl certs or use the "proxy" method
+# to avoid CORS issues with self-signed certs
+# so run all apps thru the proxy and call Viya from there
 
-#####################################################################
-CMD ["npm", "run", "indocker"]
+ENV APPENV_PROXY=false
+
+
+# APPENV_PROXYSERVER=true
+# USETOKEN=true
+ENV SHOWENV=true
+
+ENV APPENV_XYZ=AA
+ENV APPENV_BAD=
+CMD ["npm", "start"]

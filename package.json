@@ -28,6 +28,7 @@
   },
   "unpkg": "./lib/index.js",
   "scripts": {
+   
     "build": "rimraf lib && babel src --out-dir lib",
     "test": "node cli --env=./.env --docker=./Dockerfile",
     "testbg": "cross-env APPENTRY=auth.html node cli --env=./.env --docker=./Dockerfile",
@@ -35,7 +36,8 @@
     "debug": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0  node --inspect-brk server.js --env=./.env.server --docker=./Dockerfile",
     "proxy": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0 node cli --env=./.env.proxy --docker=./Dockerfile",
     "pub": "npm publish --tag alpha --access public",
-    "lint": "npx eslint --fix src/*.js"
+    "lint": "npx eslint --fix src/*.js",
+    "indocker": "npx @sassoftware/sas-score-mcp-serverjs@alpha"
   },
   "dependencies": {
     "@hapi/bell": "^13.1.0",
