@@ -1,6 +1,6 @@
 {
   "name": "@sassoftware/viya-serverjs",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "Easy to use app server for SAS Viya applications",
   "author": "Deva Kumaraswamy <deva.kumar@sas.com>",
   "license": "Apache-2.0",
@@ -28,7 +28,6 @@
   },
   "unpkg": "./lib/index.js",
   "scripts": {
-   
     "build": "rimraf lib && babel src --out-dir lib",
     "test": "node cli --env=./.env --docker=./Dockerfile",
     "testbg": "cross-env APPENTRY=auth.html node cli --env=./.env --docker=./Dockerfile",
