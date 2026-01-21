@@ -64,7 +64,7 @@ async function iSASauth (server, options) {
     // for some reason the bell doc is out of date on pkce
     
     console.log('pkce', options.pkce);
-    if (options.pkce === true) {
+    if (options.pkce != null && options.pkce === true) {
         provider.pkce = 'S256';
     }
     bellAuthOptions = {

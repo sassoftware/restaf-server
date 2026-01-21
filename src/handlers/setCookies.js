@@ -36,7 +36,8 @@ async function setCookies (req, h, options) {
     if (process.env.COOKIES !== 'NO') {
         debugger;
         req.cookieAuth.set({ sid });
-       // req.cookieAuth.set({auth: credentials});
+       //
+        req.cookieAuth.set({auth: credentials});
     };
     debug('credentials query', credentials.query);
     let redirect = (credentials.query != null && credentials.query.next != null) ? credentials.query.next : null;

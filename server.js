@@ -41,7 +41,7 @@ function getCustomHandler() {
 					console.log('credentials', req.auth.credentials);
 					debugger;
 					console.log('pre', req.pre.context);
-					return h.file('help.html');	
+					return h.abandon;	
 				},
 				auth: 'logon',
 				description: "Create new application",
