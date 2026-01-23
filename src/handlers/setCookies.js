@@ -26,7 +26,7 @@ async function setCookies (req, h, options) {
         options.userCache = {...credentials};
         debug(options.allAppEnv.LOGONPAYLOAD);
     }
-    console.log('userCache', options.userCache);
+    debug('userCache', options.userCache);
     
     await req.server.app.cache.set(sid, credentials, 0);
     // Can we get away without setting cookie for this session?

@@ -1,23 +1,24 @@
+let debug = require('debug')('proxyMapUri');
 async function proxyMapUri (req) {
   let credentials = req.auth.credentials;
-  console.log('------------------------------------------');
+  debug('------------------------------------------');
   if (credentials != null) {
     let sid = credentials.sid;
-    console.log('sid=', sid);
+    debug('sid=', sid);
   }
  
   let path = process.env.VIYA_SERVER;
   //let path = (process.env.PROXYSERVER == null) ? process.env.VIYA_SERVER : process.env.PROXYSERVER;
-  console.log('proxying to= ', path);
+  debug('proxying to= ', path);
   let params = req.params;
-  console.log('params=', params);
+  debug('params=', params);
   let search = req.url.search;
-  console.log('query=', search);
+  debug('query=', search);
   let uri = path + '/' + params.param;
   if (search != null && search.trim().length > 0) {
     uri = uri + search;
   } 
-  console.log('destination= ',uri);
+  debug('destination= ',uri);
   return {
     uri: uri
   };

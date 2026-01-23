@@ -7,7 +7,7 @@ import codeAuth from './codeAuth';
 let debug = require('debug')('getapp');
 
 async function getApp (options, req, h) {
-    console.log('In getApp handler', options);
+    debug('In getApp handler', options);
     if (process.env.AUTHFLOW === 'implicit') {
         let x = `${process.env.VIYA_SERVER}/SASLogon/oauth/authorize?response_type=token&client_id=${process.env.CLIENTID}`;
         let redirect = `${process.env.APPNAME}/callback`;
@@ -30,18 +30,18 @@ async function getApp (options, req, h) {
         
         debug('calling codeauth');
         let r = codeAuth(req, h, options);
-        console.log(options.userCache);
+        debug(options.userCache);
         return r;
 
     } else {
         debug('default processing in  getapp');
-        console.log('Processing non authenticated use case');
+        debug('Processing non authenticated use case');
       
         let indexHTML = process.env.APPENTRY == null ? 'index.html' : process.env.APPENTRY;
         if (process.env.REDIRECT != null) {
             indexHTML = process.env.REDIRECT;
         }
-        console.log('redirecting to ', indexHTML);
+       debug('redirecting to ', indexHTML);
         if (indexHTML.startsWith('/')) {
             indexHTML = `/${process.env.APPNAME}${indexHTML}`;
             return h.redirect(indexHTML);

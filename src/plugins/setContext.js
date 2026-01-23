@@ -16,11 +16,10 @@
  *
  */
 
-
+let debug = require('debug')('context');
 async function setContext (req,h){
-   let credentials = req.auth.credentials;
-   console.log('in setContext');
-   console.log('credentials=', credentials);
+   let credentials = req.auth.credentials
+   debug(credentials);
    let context = {
         path   : req.path,
         params : req.params,

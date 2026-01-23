@@ -32,7 +32,7 @@ function getCustomHandler() {
 		},
 		{
 			method: ["GET"],
-			path: `${appName}/new`,
+			path: `/new`,
 			options: {
 				files: {
 					relativeTo: "./public",
