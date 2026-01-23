@@ -21,6 +21,7 @@ import "regenerator-runtime/runtime";
 import fs from "fs";
 import iService from "./iService";
 import config from "./config";
+import  readCerts from './readCerts';
 import yargs from "yargs";
 import { hideBin } from 'yargs/helpers';
 let debug = require("debug")("startup");
@@ -30,10 +31,10 @@ module.exports = function core(
   useDefault,
   serverMode,
   customize,
-  swaggerfcn
+  userCache
 ) {
   let argv = yargs(hideBin(process.argv)).argv;
-  let env = argv.env == null ? '.env' : argv.env;
+  let env = argv.env == null ? null : argv.env;
   let appenv = argv.appenv == null ? null : argv.appenv;
   let docker = argv.docker == null ? null : argv.docker;
   //process.env.SERVERMODE = serverMode !== null ? "api" : "app";
@@ -55,7 +56,7 @@ module.exports = function core(
           `
   );
 
-  iapp(null, env, docker, uTable, useDefault, serverMode, customize);
+  iapp(null, env, docker, uTable, useDefault, serverMode, customize,userCache);
 };
 
 function iapp(
@@ -65,7 +66,8 @@ function iapp(
   uTable,
   useDefault,
   serverMode,
-  customize
+  customize,
+  userCache
 ) {
   let asset = setup(rafEnv, dockerFile);
   if (appSrc == null) {
@@ -79,12 +81,12 @@ function iapp(
         console.log("createPayload failed");
         process.exit(1);
       } else {
-        iService(uTable, useDefault, asset, r, serverMode, customize);
+        iService(uTable, useDefault, asset, r, serverMode, customize, userCache);
       }
     });
   } else {
     let appEnv = getAllEnv({});
-    iService(uTable, useDefault, asset, appEnv, serverMode, customize);
+    iService(uTable, useDefault, asset, appEnv, serverMode, customize, userCache);
   }
 }
 
@@ -115,7 +117,7 @@ function createPayload(srcName, cb) {
   }
 }
 
-function getAllEnv(userData) {
+function getAllEnv(userInfo) {
   let env;
   let l = null;
   let host = trimit("VIYA_SERVER");
@@ -124,15 +126,20 @@ function getAllEnv(userData) {
     host = null;
   }
 
+  /*
+  if (process.env.AUTHTYPE != null) {
+    process.env.AUTHFLOW = process.env.AUTHTYPE;
+  }
+    */ 
 
   let authflow = trimit("AUTHFLOW");
-  let pkce = (authflow === "pkce") ? true : false;
-  if (authflow === "authorization_code" || authflow === "code" || authflow === "server" ||
-      authflow === "null" || authflow === "pkce") { 
+  if (authflow === "authorization_code" || authflow === "code") {
     authflow = "server";
-    
   } 
 
+  if (authflow === null) {
+    host = null;
+  }
 
   if (host === null) {
     authflow = null;
@@ -146,7 +153,7 @@ function getAllEnv(userData) {
   let clientID = trimit("CLIENTID");
 
   // eslint-disable-next-line no-unused-vars
-  //let clientSecret = trimit("CLIENTSECRET");
+  let clientSecret = trimit("CLIENTSECRET");
   let keepAlive = trimit("KEEPALIVE");
   let appName = trimit("APPNAME");
   let ns = trimit("NAMESPACE");
@@ -159,7 +166,6 @@ function getAllEnv(userData) {
     host: host,
     clientID: clientID,
     appName: appName,
-    pkce: pkce,
 
     keepAlive: null,
     useToken: process.env.USETOKEN,
@@ -219,17 +225,18 @@ for (let key in process.env) {
       if (v.startsWith('$')) {
         v = process.env[v.substring(1)];
       }
-      userData[k] = (v != null) ? v.trim() : null;
+      userInfo[k] = (v != null) ? v.trim() : null;
     } else {
-      userData[k] = null;
+      userInfo[k] = null;
 
     }
   }
 }
-userData.APPNAME = l.appName;
+userInfo.viyaCert = readCerts(process.env.VIYACERT);
+userInfo.appName = appName;
 env = {
   LOGONPAYLOAD: l,
-  APPENV: userData,
+  APPENV: userInfo,
 };
 console.log("Final APPENV configuration for the server");
 console.log(JSON.stringify(env, null, 4));
@@ -244,4 +251,10 @@ function trimit(e) {
   }
   a = a.trim();
   return a.length === 0 ? null : a;
+}
+
+function readVIYACERT(){
+  let certs = null;
+  let certfile = process.env.VIYACERT;
+
 }

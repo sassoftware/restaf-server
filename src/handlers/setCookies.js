@@ -6,16 +6,15 @@ let uuid      = require('uuid');
 let debug = require('debug')('setcookies');
 
 async function setCookies (req, h, options) {
-    debugger;
     let credentials = req.auth.credentials;
-    debug('setcookie', credentials != null);
+    
+    debug('setcookie', credentials);
  
     if (credentials != null && req.auth.error != null) {
-        console.log('setcookie credentials', credentials);
+        debug('setcookie credentials', credentials);
         debug('setcookie error', req.auth.error);
-        console.log('Authentication error:', req.auth.error);
-        process.exit(0);
-       // return { status: false, error: req.auth.error, redirect: '/error' };
+        debug('logon failed');
+        return { status: false, error: req.auth.error };
     }
         
     // create a cookie(sid) and save credentials in cache
@@ -24,20 +23,17 @@ async function setCookies (req, h, options) {
     if (options != null) {
         options.allAppEnv.LOGONPAYLOAD.token = credentials.token;
         options.allAppEnv.LOGONPAYLOAD.tokenType = 'bearer';
-      //  debug(options.allAppEnv.LOGONPAYLOAD);
+        options.userCache = {...credentials};
+        debug(options.allAppEnv.LOGONPAYLOAD);
     }
-    
+    console.log('userCache', options.userCache);
     
     await req.server.app.cache.set(sid, credentials, 0);
-    await req.server.app.cache.set('credentials', credentials, 0);  
-   
     // Can we get away without setting cookie for this session?
     // Need to also modify keepAlive
     if (process.env.COOKIES !== 'NO') {
         debugger;
         req.cookieAuth.set({ sid });
-       //
-        req.cookieAuth.set({auth: credentials});
     };
     debug('credentials query', credentials.query);
     let redirect = (credentials.query != null && credentials.query.next != null) ? credentials.query.next : null;

@@ -1,67 +1,99 @@
-# `Application server for use with SAS Viya`
+# `Application servers for use with SAS Viya`
 
-viya-serverjs is a app server designed to support user written SAS Viya applications. The applications can be written using any framework.
+This package has two servers:
 
-Key features:
+1. viya-appserverjs - Use this for developing an app server for web applications(see packages/appjs)
 
-1. Handles authentication
-2. Extendable with additional end points
+2. viya-apiserverjs - Use this to develop rest api servers(see packages/apijs)
 
 ## Usage
+
+Specify it as a dependency in your package.json just as you do with other dependencies
 
 Use npx command to start the server
 
 ```sh
-npx @sassoftware/viya-serverjs
+npx @sassoftware/viyaappserverjs
 ```
 
 ## `Basic configuration`
 
-Configure the server using a .env file
+1. Set the default settings in Dockerfile. This will ensure these are set when you build containers.
+2. The defaults can be overriden using environment variables.
 
 ### `Sample env file`
 
->[Note] Sample values shown below. See Advanced section for other ways to configure the server
+When running on a non-docker environment, you can use a .env
 
 ```env
-
-# Base setup
-# With the configuration below the app server url will be
-# https://localhost:8080/viyaapp
-#
-APPHOST=localhost
-APPPORT=8080
-HTTPS=true
+VIYA_SERVER=<your viya server>
+APPHOST=localhost < can also be dns name of your server. ex: viyaiscool.unx.sas.com>
+APPPORT=5000   <any port of your choice>
 APPNAME=viyaapp
 
-# Most modern browsers will reject self-signed certs from localhost
-# And SAS Viya might also refuse connection.
-# Supply your own SSL/TLS values in a folder. All files in this folder will be used.
-# Options:
-# 1. provide signed certificates for localhost
-# 2. Use libraries like mkcert to create temporary trusted certs for localhost
-# 3. For other options see the Advanced Section
-SSLCERT=./tls  
+CLIENTID=viyaapp
+CLIENTSECRET=secret
+```
 
-# AUTHENTICATION
-VIYA_SERVER=<viya servrer url>
+### `Sample Dockerfile`
 
-# By default it uses authorization_code flow
+```env
+FROM node:12.16.1-alpine
+LABEL maintainer="your email"
+WORKDIR /usr/src/app
+COPY . .
+RUN npm install
+# RUN npm run build (if you have to build something)
+EXPOSE 8080
+ENV APPHOST=0.0.0.0
 
-CLIENTID=<clientid>
-CLIENTSECRET=<clientSecret if present>
-AUTHFLOW=code|pkce
+AUTHFLOW=code
 
-##########################
-# Read the Advanced Section in the README before turning on these options
-#
-APPENV_PROXY=false
-USETOKEN=false
+# The following are defaults. Override them as needed
+# APPLOC - where the file specified in APPENTRY is
+# APPENTRY - the main entry of the application
+ENV APPLOC=./public
+ENV APPENTRY=index.html
+# if your app takes advantage of appenv.js to pass configuration to the web application 
+# ENV APPENV=appenv.js 
 
-APPENV_A=somevalue
-APPENV_B=somevalue
+# See notes below on running with SSL enabled
+ENV TLS_CREATE="C:US,ST:NC,L:Cary,O:yourcompany,OU:STO,CN:localhost"
+ENV SAMESITE=None,secure
+
+# It is better to set this before invoking the server
+ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+
+# set this to YES if you want access to the authentication token in the app
+ENV USETOKEN=NO
+
+CMD ["npx", "@sassoftware/viya-appserverjs"]
 
 ```
 
+### `Running with SSL enabled -- Recommended`
 
+This is the recommended setting. This will also make browsers like Chrome run with the SAMESITE settings set to Default - your users will thank you.
 
+Make sure you specify the VIYA_SERVER with a protocol of https.
+
+### `TLS certificates`
+
+- Option 1: Let server create a temporary unsigned certificate
+
+    ```env
+    ENV TLS_CREATE=C:US,ST:NC,L:Cary,O:YourCompany,OU:yourgroup,CN:localhost
+    ```
+
+- Option 2: Provide your own key and certificate key
+
+```env
+ENV TLS_KEY=../certs/self/key.pem
+ENV TLS_CERT=../certs/self/certificate.pem
+```
+
+- Option 3:  Provide key and certificate as a pfx file
+
+```env
+ENV TLS_PFX=../certs/sascert/sascert2.pfx
+```

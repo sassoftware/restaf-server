@@ -19,7 +19,8 @@
 
 async function setContext (req,h){
    let credentials = req.auth.credentials;
-   console.log('+++++++++++++++++++setContext', credentials != null);
+   console.log('in setContext');
+   console.log('credentials=', credentials);
    let context = {
         path   : req.path,
         params : req.params,
@@ -27,9 +28,9 @@ async function setContext (req,h){
         payload: req.payload,
         queryOrig: (credentials != null) ? credentials.query : {},
         token  : (credentials != null) ? `bearer ${credentials.token}` : null,
+        credentials: credentials,
         host   : process.env.VIYA_SERVER
         };
-
     return context;
 }
 export default setContext;

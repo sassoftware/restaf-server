@@ -1,12 +1,12 @@
 {
   "name": "@sassoftware/viya-serverjs",
-  "version": "0.5.5",
+  "version": "0.3.0",
   "description": "Easy to use app server for SAS Viya applications",
   "author": "Deva Kumaraswamy <deva.kumar@sas.com>",
   "license": "Apache-2.0",
   "main": "./lib/index.js",
   "bin": {
-    "@sassoftware/viya-serverjs": "cli.js"
+    "@sassoftware/viya-appserverjs": "cli.js"
   },
   "keywords": [
     "restaf",
@@ -29,14 +29,11 @@
   "unpkg": "./lib/index.js",
   "scripts": {
     "build": "rimraf lib && babel src --out-dir lib",
-    "test": "node cli --env=./.env --docker=./Dockerfile",
-    "testbg": "cross-env APPENTRY=auth.html node cli --env=./.env --docker=./Dockerfile",
-    "testmcp": "node server.js --env=./.env --docker=./Dockerfile",
-    "debug": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0  node --inspect-brk server.js --env=./.env.server --docker=./Dockerfile",
+    "test": "cross-env  node cli --env=./.env --docker=./Dockerfile",
+    "server": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0 node server.js --env=./.env.proxy --docker=./Dockerfile",
     "proxy": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0 node cli --env=./.env.proxy --docker=./Dockerfile",
-    "pub": "npm publish --tag alpha --access public",
-    "lint": "npx eslint --fix src/*.js",
-    "indocker": "npx @sassoftware/sas-score-mcp-serverjs@alpha"
+    "pub": "npm publish --tag dev --access public",
+    "lint": "npx eslint --fix src/*.js"
   },
   "dependencies": {
     "@hapi/bell": "^13.1.0",
@@ -47,7 +44,7 @@
     "@hapi/inert": "^7.1.0",
     "@hapi/vision": "^7.0.3",
     "axios": "^1.13.2",
-    "core-js": "^3.47.0",
+    "core-js": "^3.48.0",
     "cross-spawn": "^7.0.6",
     "debug": "^4.4.3",
     "docker-file-parser": "^1.0.7",
@@ -58,29 +55,25 @@
     "jwt-decode": "^4.0.0",
     "node-cache-promise": "^1.0.2",
     "only": "0.0.2",
-    "qs": "^6.14.0",
+    "qs": "^6.14.1",
     "regenerator-runtime": "^0.14.1",
     "request-debug": "^0.2.0",
-    "selfsigned": "^5.4.0",
+    "selfsigned": "^5.5.0",
     "uuid": "^13.0.0",
     "yargs": "18.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.28.3",
-    "@babel/core": "^7.28.5",
-    "@babel/eslint-parser": "7.28.5",
-    "@babel/preset-env": "^7.28.5",
+    "@babel/cli": "^7.28.6",
+    "@babel/core": "^7.28.6",
+    "@babel/eslint-parser": "7.28.6",
+    "@babel/preset-env": "^7.28.6",
     "cross-env": "^10.1.0",
     "eslint": "^9.39.2",
-    "prettier": "^3.7.4",
+    "prettier": "^3.8.1",
     "rimraf": "^6.1.2",
     "shx": "^0.4.0"
   },
   "resolutions": {
     "@babel/traverse": "7.26.10"
-  },
-  "overrides": {
-    "gopd": "1.2.0",
-    "get-intrinsic": "1.2.7"
   }
 }

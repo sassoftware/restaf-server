@@ -6,4 +6,5 @@
 
 let core = require('./lib/index.js');
 console.log('Starting the cli for @sassoftware/viya-serverjs');
-core(null, true, 'app', null);
+let userCache = {};
+core(null, true, 'app', null, userCache);

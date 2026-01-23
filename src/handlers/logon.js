@@ -5,15 +5,14 @@
 
 import setCookies from './setCookies';
 let debug = require('debug')('logon');
-async function logon (req, h) {
+async function logon (req, h, options) {
    debugger;
    debug('.................................................in logon');
    
    
-   let r = await setCookies(req, h, null);
-   console.log('logon setcookie result:', r);
+   let r = await setCookies(req, h, options);
    debug(r.redirect);
-   console.log('in logon after setcookie', r.redirect);
+   debug('in logon after setcookie', r.redirect);
    return h.redirect(r.redirect);
 }
 

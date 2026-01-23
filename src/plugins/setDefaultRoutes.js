@@ -16,7 +16,6 @@
  *
  */
 
-
 import {
   getApp,
   getApp2,
@@ -30,8 +29,8 @@ import {
   reactDev,
   proxyMapUri,
 } from "../handlers";
-import setContext from './setContext';
 let debug = require("debug")("routes");
+import setContext from "./setContext.js";
 module.exports = function setDefaultRoutes(server, options) {
   debug("setDefaultRoutes");
   let appName = "/" + options.appName;
@@ -53,7 +52,7 @@ module.exports = function setDefaultRoutes(server, options) {
   }
   let getAppb = getApp.bind(
     null,
-    (process.env.USETOKEN != null && process.env.USETOKEN.toUpperCase() === "TRUE") ? options : null
+    options // process.env.USETOKEN === "YES" ? options : null
   );
 
   console.log("Default strategy", authDefault);
@@ -73,15 +72,17 @@ module.exports = function setDefaultRoutes(server, options) {
       path: `${appName}/logon`,
       options: {
 
-        auth: /*authLogon*/ (options.authFlow === "server") ?  { mode: "try", strategy: "sas" } : null,
+        auth: (options.authFlow === "server") ?
+          { mode: "try", strategy: "sas" } : null,
         //https://futurestud.io/tutorials/hapi-redirect-to-previous-page-after-login
         // set auth to null on all protected routes
         plugins: {
           "hapi-auth-cookie": { redirectTo: false },
         },
         handler: async (req, h) => {
-          console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>in logon');
-          return await logon(req, h);
+          debug('logonhandler', req.auth.credentials);
+          console.log('In logon handler', options.authFlow);
+          return await logon(req, h, options);
         }
       },
     },
@@ -90,14 +91,10 @@ module.exports = function setDefaultRoutes(server, options) {
       path: `${appName}`,
 
       options: {
-        auth: (process.env.USELOGON.toUpperCase() === 'TRUE') ? null : options.serverMode === "app" ? authLogon : authDefault,
-      //  auth: null,
-        handler: async (req,h) => {
-          console.log(`>>>>>>>>>>>>>>>>>>>>>>>in ${appName}`);
-          return getAppb(req, h);
-      }
-    }
-  },
+        auth: (process.env.USELOGON === 'YES') ? null : options.serverMode === "app" ? authLogon : authDefault,
+        handler: getAppb,
+      },
+    },
 
     {
       method: ["GET"],
@@ -215,11 +212,8 @@ module.exports = function setDefaultRoutes(server, options) {
 
       options: {
         auth: authDefault,
-        handler: async (req, h) => {
-          console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>in param');
-          return getApp2(req, h);
-        }
-      }
+        handler: getApp2,
+      },
     },
     {
       method: ["GET"],
@@ -254,12 +248,12 @@ module.exports = function setDefaultRoutes(server, options) {
   };
   debug(pr);
   defaultTable.push(pr);
-  // now set pre for all default routes
-  defaultTable.forEach((r) => {
-    r.options.pre = [{method: setContext, assign: 'context'}];
-    console.log,('Setting pre for route', r.path,r.options.pre);
+
+  let routeTables = uTable !== null ? defaultTable.concat(uTable) : defaultTable;
+
+  routeTables.forEach((r) => {
+    r.options.pre = [{ method: setContext, assign: 'context' }];
+    console.log, ('Setting pre for route', r.path, r.options.pre);
   });
-  let routeTables =
-    uTable !== null ? defaultTable.concat(uTable) : defaultTable;
   server.route(routeTables);
 };

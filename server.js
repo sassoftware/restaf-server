@@ -4,12 +4,13 @@
  */
 let core = require('./lib/index.js');
 debugger;
-core(getCustomHandler, true, 'app', null);
+let userCache = {};
+core(getCustomHandler, true, 'app', null, userCache);
+console.log('Finished cli setup', userCache);
 
 function getCustomHandler() {
 	let appName = `/${process.env.APPNAME}`; /* does not have to be this - your choice */
 	debugger;
-	console.log('getCustomHandler called for appName', appName);
 	let routes = [
 		{
 			method: ["GET"],
@@ -23,33 +24,31 @@ function getCustomHandler() {
 					let hf = 'help.html';
 					return h.file(hf);
 				},
-				auth: true,
+				auth: false,
 				description: "Help",
 				notes: "Help",
 				tags: ["app"],
 			},
 		},
 		{
-			method: ["POST", "GET"],
-			path: `/mcp`,
+			method: ["GET"],
+			path: `${appName}/new`,
 			options: {
 				files: {
 					relativeTo: "./public",
 				},
 				handler: async (req, h) => {
-					console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>in imcp');
-					console.log('credentials', req.auth.credentials);
 					debugger;
-					console.log('pre', req.pre.context);
-					return h.abandon;	
+					console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>in new');
+					console.log({userCache});
+					console.log(req.pre.context);
+					return h.file('index.html');	
 				},
-				auth: false,
 				description: "Create new application",
 				notes: "Index file created from env data",
 				tags: ["app"],
 			},
 		}
-		
 	];
 	return routes;
 }
