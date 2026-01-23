@@ -43,7 +43,7 @@ function getCustomHandler() {
 					console.log('pre', req.pre.context);
 					return h.abandon;	
 				},
-				auth: 'logon',
+				auth: false,
 				description: "Create new application",
 				notes: "Index file created from env data",
 				tags: ["app"],
