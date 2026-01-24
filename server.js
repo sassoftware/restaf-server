@@ -42,6 +42,7 @@ function getCustomHandler() {
 					console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>in new');
 					console.log({userCache});
 					console.log(req.pre.context);
+					console.log('auth',req.auth);
 					return h.file('index.html');	
 				},
 				auth: {
