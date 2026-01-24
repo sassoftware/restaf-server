@@ -37,6 +37,7 @@ module.exports = function setDefaultRoutes(server, options) {
   let authDefault = false;
   let authLogon = false;
   if (options.authFlow === "server") {
+    /*
     authDefault =
       options.serverMode === "app"
         ? false
@@ -44,7 +45,11 @@ module.exports = function setDefaultRoutes(server, options) {
           strategies: ["token", "session"],
           mode: "required",
         };
-
+        */
+    authDefault = {
+      strategy: "session",
+      mode: "try",
+    };
     authLogon = {
       mode: "required",
       strategy: "sas",
@@ -93,26 +98,6 @@ module.exports = function setDefaultRoutes(server, options) {
       options: {
         auth: (process.env.USELOGON === 'YES') ? null : options.serverMode === "app" ? authLogon : authDefault,
         handler: getAppb,
-      },
-    },
-
-    {
-      method: ["GET"],
-      path: `${appName}/api`,
-      options: {
-        auth: authDefault,
-        handler: async (req, h) => {
-          return h.redirect(`${appName}/documentation`);
-        },
-      },
-    },
-    {
-      method: ["GET"],
-      path: `/develop`,
-      options: {
-        auth: false,
-        cors: true,
-        handler: reactDev,
       },
     },
 

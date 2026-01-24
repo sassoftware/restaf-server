@@ -33,7 +33,7 @@ async function setupAuth (server, options){
 		await server.register({plugin: SASauth,   options: options});
 		// await server.register({plugin: appCookie, options: options});
 		await appCookie(server,options);
-
+		/*
 		let def = 'session';
 		if (options.serverMode === 'api') {
 			await server.register({ plugin: token });
@@ -41,6 +41,7 @@ async function setupAuth (server, options){
 		}
 		log('***********************Default auth', def);
 		server.auth.default(def);
+		*/
 		// console.log(server.registerations);
 	}
 	setDefaultRoutes(server, options);

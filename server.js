@@ -44,6 +44,10 @@ function getCustomHandler() {
 					console.log(req.pre.context);
 					return h.file('index.html');	
 				},
+				auth: {
+					strategy: 'session',
+					mode: 'optional'
+				},
 				description: "Create new application",
 				notes: "Index file created from env data",
 				tags: ["app"],
