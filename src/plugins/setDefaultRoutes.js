@@ -51,10 +51,12 @@ module.exports = function setDefaultRoutes(server, options) {
       mode: "try",
     };
     authLogon = {
-      mode: "required",
+      mode: "try",
       strategy: "sas",
     };
   }
+  console.log("Auth Flow", options.authFlow);
+  
   let getAppb = getApp.bind(
     null,
     options // process.env.USETOKEN === "YES" ? options : null
@@ -96,8 +98,9 @@ module.exports = function setDefaultRoutes(server, options) {
       path: `${appName}`,
 
       options: {
-        auth: (process.env.USELOGON === 'YES') ? null : options.serverMode === "app" ? authLogon : authDefault,
-        handler: getAppb,
+       // auth: (process.env.USELOGON === 'YES') ? null : options.serverMode === "app" ? authLogon : authDefault,
+       auth: authLogon,
+       handler: getAppb,
       },
     },
 
@@ -130,7 +133,7 @@ module.exports = function setDefaultRoutes(server, options) {
       method: ["GET"],
       path: `${appName}/appenv`,
       options: {
-        auth: /*authDefault*/ false,
+        auth: authDefault,
         handler: async (req, h) => {
           let allAppEnv = options.allAppEnv;
           if (options.userInfo != null) {
@@ -156,7 +159,7 @@ module.exports = function setDefaultRoutes(server, options) {
       method: ["GET"],
       path: `/appenv`,
       options: {
-        auth: /*authDefault*/ false,
+        auth: authDefault,
         handler: async (req, h) => {
           let allAppEnv = options.allAppEnv;
           if (options.userInfo != null) {
@@ -221,7 +224,9 @@ module.exports = function setDefaultRoutes(server, options) {
   let pr = {
     method: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     path: `${appName}/proxy/{param*}`,
+    
     options: {
+      auth: authDefault,
       handler: {
         proxy: {
           mapUri: proxyMapUri,

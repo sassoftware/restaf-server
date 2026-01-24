@@ -16,64 +16,54 @@
  *
  */
 
-
-let bell = require('@hapi/bell');
-let uuid = require('uuid');  
+let uuid = require('uuid');
 let debug = require('debug')('sasauth');
 
-exports.plugin = {
-    name    : 'SASauth',
-    version : '1.0.0',
-    register: iSASauth
-};
+async function SASauth(server, options) {
+  debug('in iSASauth');
+  debug('options', options);
+  let bellAuthOptions;
+  let provider;
+  // test for k8s deployment
+  let host = options.host + '/SASLogon';
 
-async function iSASauth (server, options) {
-    debug('in iSASauth');
-    debug('options', options);
-    let bellAuthOptions;
-    let provider;
-    // test for k8s deployment
-    let host = options.host + '/SASLogon';
-    
 
-    if (options.ns != null) {
-        host = `https://sas-logon-app.${options.ns}.svc.cluster.local`;
-    } else if (options.nsHost != null) {
-        host = options.nsHost;
+  if (options.ns != null) {
+    host = `https://sas-logon-app.${options.ns}.svc.cluster.local`;
+  } else if (options.nsHost != null) {
+    host = options.nsHost;
+  }
+  // ...
+  debug(host);
+  provider = {
+    name: 'sas',
+    protocol: 'oauth2',
+    useParamsAuth: false,
+    auth: host + '/oauth/authorize',
+    token: host + '/oauth/token',
+
+    profileMethod: 'get',
+
+    profile: async function (credentials, params, get) {
+      server.log('SASAuth profile', credentials);
+      debug('credentials', credentials);
     }
-    // ...
-    debug(host);
-    provider = {
-        name         : 'sas',
-        protocol     : 'oauth2',
-        useParamsAuth: false,
-        auth         : host + '/oauth/authorize',
-        token        : host + '/oauth/token',
 
-        profileMethod: 'get',
-        
-        profile: async function (credentials, params, get) {  
-                     
-            server.log('SASAuth profile', credentials);
-            debug('credentials', credentials);
-        }
-       
-        
-    };
-    
-    bellAuthOptions = {
-        provider    : provider,
-        password    : uuid.v4(),
-        clientId    : options.clientId,
-        clientSecret: options.clientSecret,
-        //   isSameSite  : options.isSameSite,
-        isSecure    : options.isSecure
-    };
-    // console.log('SASAuth options', bellAuthOptions);
-    debug('belloptions', bellAuthOptions);
-    server.log('SASAuth',bellAuthOptions);
-    await server.register(bell);
-    server.auth.strategy('sas', 'bell', bellAuthOptions);
-    
-    }
-    
+
+  };
+
+  bellAuthOptions = {
+    provider: provider,
+    password: uuid.v4(),
+    clientId: options.clientId,
+    clientSecret: options.clientSecret,
+    //   isSameSite  : options.isSameSite,
+    isSecure: options.isSecure
+  };
+
+  debug('belloptions', bellAuthOptions);
+
+  server.auth.strategy('sas', 'bell', bellAuthOptions);
+
+}
+export default SASauth;

@@ -16,7 +16,7 @@
  *
  */
 
-let debug = require('debug')('context');
+let debug = require('debug')('setcontext');
 async function setContext (req,h){
    let credentials = req.auth.credentials
    debug(credentials);
@@ -26,7 +26,6 @@ async function setContext (req,h){
         query  : req.query,
         payload: req.payload,
         queryOrig: (credentials != null) ? credentials.query : {},
-        token  : (credentials != null) ? `bearer ${credentials.token}` : null,
         credentials: credentials,
         host   : process.env.VIYA_SERVER
         };

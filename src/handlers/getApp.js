@@ -30,7 +30,6 @@ async function getApp (options, req, h) {
         
         debug('calling codeauth');
         let r = codeAuth(req, h, options);
-        debug(options.userCache);
         return r;
 
     } else {

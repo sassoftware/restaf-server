@@ -8,7 +8,7 @@ let debug = require('debug')('setcookies');
 async function setCookies (req, h, options) {
     let credentials = req.auth.credentials;
     
-    debug('setcookie', credentials);
+    debug('credentials in setcookie', credentials);
  
     if (credentials != null && req.auth.error != null) {
         debug('setcookie credentials', credentials);
@@ -29,12 +29,17 @@ async function setCookies (req, h, options) {
     debug('userCache', options.userCache);
     
     await req.server.app.cache.set(sid, credentials, 0);
-    // Can we get away without setting cookie for this session?
-    // Need to also modify keepAlive
-    if (process.env.COOKIES !== 'NO') {
-        debugger;
-        req.cookieAuth.set({ sid });
-    };
+    let cookieInfo= {
+        sid: credentials.sid,
+        accessToken: credentials.token,
+        refreshToken: credentials.refreshToken,
+        expiresIn: credentials.expiresIn,
+        provider: credentials.provider,
+    }
+    debug('setting cookie', cookieInfo);
+    req.cookieAuth.set(cookieInfo);
+   
+    
     debug('credentials query', credentials.query);
     let redirect = (credentials.query != null && credentials.query.next != null) ? credentials.query.next : null;
     debug('setcookie-redirect', redirect);

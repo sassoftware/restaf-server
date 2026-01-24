@@ -39,8 +39,8 @@ function setupUserRoutes (u, options) {
             rx.options.auth = options.authDefault;   
         } else if (rx.options.auth === 'logon') {
             rx.options.auth = options.authLogon;
-        } 
-       
+        } else rx.options.auth = false;
+        console.log('route', rx.method, rx.path, rx.options.auth);
         return rx;
     });
     return routes;

@@ -7,9 +7,9 @@
 import setCookies from './setCookies';
 let debug = require('debug')('codeauth');
 async function codeAuth (req, h, options) {  
-	debug('in codeauth');
+	debug('calling setCookies in codeAuth');
 	await setCookies(req, h, options);
-	debug(options);
+	
 	let indexHTML = process.env.APPENTRY == null ? 'index.html' : process.env.APPENTRY;
 	if (process.env.REDIRECT != null) {
 		debug('using REDIRECT env variable', process.env.REDIRECT);

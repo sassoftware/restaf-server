@@ -18,9 +18,8 @@
 
 let SASauth          = require('./SASauth');
 let appCookie        = require('./appCookie');
-let token            = require('./token');
 let setDefaultRoutes = require('./setDefaultRoutes');
-let log		 = require('debug')('auth');
+let debug	 = require('debug')('auth');
 
 
 /** Notes:
@@ -29,21 +28,14 @@ let log		 = require('debug')('auth');
  */
 async function setupAuth (server, options){
 	
-	if (options.authFlow === 'server') {
-		await server.register({plugin: SASauth,   options: options});
-		// await server.register({plugin: appCookie, options: options});
-		await appCookie(server,options);
-		/*
-		let def = 'session';
-		if (options.serverMode === 'api') {
-			await server.register({ plugin: token });
-			def = 'token';
-		}
-		log('***********************Default auth', def);
-		server.auth.default(def);
-		*/
-		// console.log(server.registerations);
-	}
+	// register cookie and bell
+	await server.register(require('@hapi/cookie'));
+	await appCookie(server, options);
+
+	await server.register(require('@hapi/bell'));
+	await SASauth(server, options);
+
+	// setup default routes now that we have auth strategies
 	setDefaultRoutes(server, options);
 	return true;
 };
