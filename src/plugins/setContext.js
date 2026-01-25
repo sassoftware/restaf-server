@@ -18,15 +18,14 @@
 
 let debug = require('debug')('setcontext');
 async function setContext (req,h){
-   let credentials = req.auth.credentials
-   debug(credentials);
+   let credentials = req.auth.credentials; // use this once cookies are working properly
    let context = {
         path   : req.path,
         params : req.params,
         query  : req.query,
         payload: req.payload,
         queryOrig: (credentials != null) ? credentials.query : {},
-        credentials: credentials,
+        credentials: credentials||null,
         host   : process.env.VIYA_SERVER
         };
     return context;

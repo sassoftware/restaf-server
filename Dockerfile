@@ -35,7 +35,7 @@ ENV TLS_CREATE="C:US,ST:NC,L:Cary,O:SAS Institute,OU:STO,CN:localhost"
 # ENV TLS_KEY=./tls/tls.key
 
 # Samesite specification
-ENV SAMESITE=None,secure
+ENV SAMESITE=Lax,secure
 
 # If your Viya instance still has a unsigned certificate set this value prior to invoking the server
 # ENV NODE_TLS_REJECT_UNAUTHORIZED=0

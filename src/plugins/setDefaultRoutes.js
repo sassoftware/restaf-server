@@ -34,29 +34,18 @@ import setContext from "./setContext.js";
 module.exports = function setDefaultRoutes(server, options) {
   debug("setDefaultRoutes");
   let appName = "/" + options.appName;
-  let authDefault = false;
-  let authLogon = false;
-  if (options.authFlow === "server") {
-    /*
-    authDefault =
-      options.serverMode === "app"
-        ? false
-        : {
-          strategies: ["token", "session"],
-          mode: "required",
-        };
-        */
-    authDefault = {
-      strategy: "session",
-      mode: "try",
-    };
-    authLogon = {
-      mode: "try",
-      strategy: "sas",
-    };
-  }
+
+  let authDefault = {
+    strategy: "session",
+    mode: "try",
+  };
+  let authLogon = {
+    mode: "required",
+    strategy: "sas",
+  };
+
   console.log("Auth Flow", options.authFlow);
-  
+
   let getAppb = getApp.bind(
     null,
     options // process.env.USETOKEN === "YES" ? options : null
@@ -98,9 +87,9 @@ module.exports = function setDefaultRoutes(server, options) {
       path: `${appName}`,
 
       options: {
-       // auth: (process.env.USELOGON === 'YES') ? null : options.serverMode === "app" ? authLogon : authDefault,
-       auth: authLogon,
-       handler: getAppb,
+        // auth: (process.env.USELOGON === 'YES') ? null : options.serverMode === "app" ? authLogon : authDefault,
+        auth: authLogon,
+        handler: getAppb,
       },
     },
 
@@ -135,13 +124,8 @@ module.exports = function setDefaultRoutes(server, options) {
       options: {
         auth: authDefault,
         handler: async (req, h) => {
+          console.log('---------------------------', req.server.state); 
           let allAppEnv = options.allAppEnv;
-          if (options.userInfo != null) {
-            let uappenv = options.userInfo("APPENV", options);
-            if (uappenv != null) {
-              allAppEnv.APPENV = { ...allAppEnv.APPENV, ...uappenv };
-            }
-          }
           allAppEnv.credentials = options.credentials;
 
           let s =
@@ -161,13 +145,8 @@ module.exports = function setDefaultRoutes(server, options) {
       options: {
         auth: authDefault,
         handler: async (req, h) => {
+          console.log('---------------------------', req.server.state); 
           let allAppEnv = options.allAppEnv;
-          if (options.userInfo != null) {
-            let uappenv = options.userInfo("APPENV", options);
-            if (uappenv != null) {
-              allAppEnv.APPENV = { ...allAppEnv.APPENV, ...uappenv };
-            }
-          }
           allAppEnv.credentials = options.credentials;
 
           let s =
@@ -224,7 +203,7 @@ module.exports = function setDefaultRoutes(server, options) {
   let pr = {
     method: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     path: `${appName}/proxy/{param*}`,
-    
+
     options: {
       auth: authDefault,
       handler: {

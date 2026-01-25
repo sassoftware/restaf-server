@@ -3,13 +3,10 @@
 * SPDX-License-Identifier: Apache-2.0
 */
 
-import setCookies from './setCookies';
+import setCookies from '../plugins/setCookies';
 let debug = require('debug')('logon');
 async function logon (req, h, options) {
    debugger;
-   debug('.................................................in logon');
-   
-   
    let r = await setCookies(req, h, options);
    debug(r.redirect);
    debug('in logon after setcookie', r.redirect);

@@ -2,7 +2,7 @@
 let uuid = require('uuid');
 let debug = require('debug')('appcookie');
 
-module.exports = async function appCookie(server, options) {
+async function appCookie(server, options) {
 
   debug('in appCookie');
   debug(options.redirectTo);
@@ -27,7 +27,8 @@ module.exports = async function appCookie(server, options) {
     }
   };
   debug('session cookie options', cookieOptions);
-;
+
   server.auth.strategy('session', 'cookie', cookieOptions);
 
 };
+export default appCookie;

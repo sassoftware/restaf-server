@@ -22,12 +22,10 @@ let debug = require('debug')('sasauth');
 async function SASauth(server, options) {
   debug('in iSASauth');
   debug('options', options);
-  let bellAuthOptions;
+
   let provider;
   // test for k8s deployment
   let host = options.host + '/SASLogon';
-
-
   if (options.ns != null) {
     host = `https://sas-logon-app.${options.ns}.svc.cluster.local`;
   } else if (options.nsHost != null) {
@@ -47,17 +45,33 @@ async function SASauth(server, options) {
     profile: async function (credentials, params, get) {
       server.log('SASAuth profile', credentials);
       debug('credentials', credentials);
+      debug('params', params);
+      credentials.profile = {
+        provider: 'sas',
+        id: 'sasuser',
+        displayName: 'SAS User',
+        email: 'sasuser@sas.com',
+        raw: {
+          id: 'sasuser',
+          displayName: 'SAS User',
+          emails: [
+            {
+              value: 'sasuser@sas.com'
+            }
+          ]
+        }
+      };
     }
 
 
   };
 
-  bellAuthOptions = {
+  let bellAuthOptions = {
     provider: provider,
     password: uuid.v4(),
     clientId: options.clientId,
     clientSecret: options.clientSecret,
-    //   isSameSite  : options.isSameSite,
+    isSameSite  : options.isSameSite,
     isSecure: options.isSecure
   };
 
@@ -66,4 +80,5 @@ async function SASauth(server, options) {
   server.auth.strategy('sas', 'bell', bellAuthOptions);
 
 }
+
 export default SASauth;

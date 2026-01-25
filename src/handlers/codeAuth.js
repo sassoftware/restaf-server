@@ -4,7 +4,7 @@
  */
 'use strict';
 
-import setCookies from './setCookies';
+import setCookies from '../plugins/setCookies';
 let debug = require('debug')('codeauth');
 async function codeAuth (req, h, options) {  
 	debug('calling setCookies in codeAuth');

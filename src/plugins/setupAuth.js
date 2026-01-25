@@ -16,8 +16,8 @@
  *
  */
 
-let SASauth          = require('./SASauth');
-let appCookie        = require('./appCookie');
+import SASAuth from './SASauth.js';
+import appCookie from './appCookie.js';
 let setDefaultRoutes = require('./setDefaultRoutes');
 let debug	 = require('debug')('auth');
 
@@ -33,7 +33,7 @@ async function setupAuth (server, options){
 	await appCookie(server, options);
 
 	await server.register(require('@hapi/bell'));
-	await SASauth(server, options);
+	await SASAuth(server, options);
 
 	// setup default routes now that we have auth strategies
 	setDefaultRoutes(server, options);

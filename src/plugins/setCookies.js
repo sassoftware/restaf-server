@@ -2,34 +2,23 @@
 * Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
 * SPDX-License-Identifier: Apache-2.0
 */
-let uuid      = require('uuid');
+let uuid = require('uuid');
 let debug = require('debug')('setcookies');
 
-async function setCookies (req, h, options) {
+async function setCookies(req, h, options) {
     let credentials = req.auth.credentials;
-    
-    debug('credentials in setcookie', credentials);
- 
+
+    // protect against failed logon
     if (credentials != null && req.auth.error != null) {
         debug('setcookie credentials', credentials);
         debug('setcookie error', req.auth.error);
         debug('logon failed');
         return { status: false, error: req.auth.error };
     }
-        
-    // create a cookie(sid) and save credentials in cache
-    const sid = uuid.v4();
-    credentials.sid = sid;
-    if (options != null) {
-        options.allAppEnv.LOGONPAYLOAD.token = credentials.token;
-        options.allAppEnv.LOGONPAYLOAD.tokenType = 'bearer';
-        options.userCache = {...credentials};
-        debug(options.allAppEnv.LOGONPAYLOAD);
-    }
-    debug('userCache', options.userCache);
+
+    debug('credentials in setcookie', credentials);
     
-    await req.server.app.cache.set(sid, credentials, 0);
-    let cookieInfo= {
+    let cookieInfo = {
         sid: credentials.sid,
         accessToken: credentials.token,
         refreshToken: credentials.refreshToken,
@@ -37,13 +26,31 @@ async function setCookies (req, h, options) {
         provider: credentials.provider,
     }
     debug('setting cookie', cookieInfo);
+    debug('------------set cookie-------------', cookieInfo);
     req.cookieAuth.set(cookieInfo);
+
+    // cache the credentials
+    await req.server.app.cache.set('cookie', credentials, 0);
+
    
-    
+
+    // create a cookie(sid) and save credentials in cache
+    const sid = uuid.v4();
+    credentials.sid = sid;
+    if (options != null) {
+        options.allAppEnv.LOGONPAYLOAD.token = credentials.token;
+        options.allAppEnv.LOGONPAYLOAD.tokenType = 'bearer';
+        options.userCache = { ...credentials };
+        debug(options.allAppEnv.LOGONPAYLOAD);
+    }
+    debug('userCache', options.userCache);
+
+  
+
     debug('credentials query', credentials.query);
     let redirect = (credentials.query != null && credentials.query.next != null) ? credentials.query.next : null;
     debug('setcookie-redirect', redirect);
-    return { status: true, error: null , redirect: redirect};
+    return { status: true, error: null, redirect: redirect };
 }
 
 export default setCookies;
@@ -59,23 +66,23 @@ async function getCredentials (req) {
     };
 
     let payload = {
-		url   : `${process.env.VIYA_SERVER}/SASLogon/oauth/token`,
-		method: 'POST',
+        url   : `${process.env.VIYA_SERVER}/SASLogon/oauth/token`,
+        method: 'POST',
 
-		headers: {
-			// 'Authorization': 'Basic ' + Buffer.from(`${process.env.CLIENTID}:${process.env.CLIENTSECRET}`).toString('base64'),
-			'Accept'      : 'application/json',
-			'Content-Type': 'application/x-www-form-urlencoded'
-		},
+        headers: {
+            // 'Authorization': 'Basic ' + Buffer.from(`${process.env.CLIENTID}:${process.env.CLIENTSECRET}`).toString('base64'),
+            'Accept'      : 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
         data: qs.stringify({
             client_id    : `${process.env.CLIENTID}`,
             client_secret: `${process.env.CLIENTSECRET}`,
             redirect_uri : `${location}`,
 
-			'grant_type': 'authorization_code',
-			code        : req.query.code
-		})
-	};
+            'grant_type': 'authorization_code',
+            code        : req.query.code
+        })
+    };
     try {
         let r = await axios(payload);
         return r.data;

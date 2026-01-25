@@ -39,8 +39,10 @@ function getCustomHandler() {
 				},
 				handler: async (req, h) => {
 					debugger;
+					let r = await req.server.app.cache.get('cookie');
 					console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>in new');
-					console.log('auth',req.auth);
+					console.log('cache', r);
+					console.log('state', req.state);
 					return h.file('index.html');	
 				},
 				auth: true,
