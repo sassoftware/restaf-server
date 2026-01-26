@@ -13,9 +13,4 @@ async function logon (req, h, options) {
    return h.redirect(r.redirect);
 }
 
-
-
-
-
-
 export default logon;
