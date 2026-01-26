@@ -30,9 +30,9 @@ async function setupAuth (server, options){
 	
 	// register cookie and bell
 	await server.register(require('@hapi/cookie'));
-	await appCookie(server, options);
-
 	await server.register(require('@hapi/bell'));
+
+	await appCookie(server, options);
 	await SASAuth(server, options);
 
 	// setup default routes now that we have auth strategies

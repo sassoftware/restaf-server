@@ -2,6 +2,8 @@ let debug = require('debug')('proxyMapUri');
 async function proxyMapUri (req) {
   let credentials = req.auth.credentials;
   debug('------------------------------------------');
+  debug('serverstate', req.server.state  );
+  debug('state', req.state);
   if (credentials != null) {
     let sid = credentials.sid;
     debug('sid=', sid);

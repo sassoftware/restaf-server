@@ -8,7 +8,7 @@ async function appCookie(server, options) {
   debug(options.redirectTo);
   let cookieOptions = {
     cookie: {
-      name: 'cookie',
+      name: 'session',
       password: uuid.v4(),
       isSecure: options.isSecure,
       isSameSite: options.isSameSite
@@ -16,7 +16,7 @@ async function appCookie(server, options) {
     redirectTo: options.redirectTo,
     appendNext: { name: 'next' },
     validate: async (req, session) => {
-      console.log('validating session', session);
+      debug('validating cookie session', session);
       if (!session) {
         return { isValid: false };
       }
@@ -29,6 +29,7 @@ async function appCookie(server, options) {
   debug('session cookie options', cookieOptions);
 
   server.auth.strategy('session', 'cookie', cookieOptions);
+  server.auth.default('session');
 
 };
 export default appCookie;

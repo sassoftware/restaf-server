@@ -17,35 +17,32 @@ async function setCookies(req, h, options) {
     }
 
     debug('credentials in setcookie', credentials);
-    
+
+  // use cookieAuth to set cookies
+
     let cookieInfo = {
-        sid: credentials.sid,
+        name: 'session',
         accessToken: credentials.token,
         refreshToken: credentials.refreshToken,
         expiresIn: credentials.expiresIn,
         provider: credentials.provider,
     }
-    debug('setting cookie', cookieInfo);
-    debug('------------set cookie-------------', cookieInfo);
+    debug('------------set cookie-------------\n', cookieInfo);
+    console.log('is it there', req.cookieAuth != null);   
+    await req.server.app.cache.set('session', cookieInfo,0);
+
     req.cookieAuth.set(cookieInfo);
 
-    // cache the credentials
-    await req.server.app.cache.set('cookie', credentials, 0);
-
-   
-
-    // create a cookie(sid) and save credentials in cache
+    // set sid
+    
     const sid = uuid.v4();
     credentials.sid = sid;
     if (options != null) {
         options.allAppEnv.LOGONPAYLOAD.token = credentials.token;
         options.allAppEnv.LOGONPAYLOAD.tokenType = 'bearer';
-        options.userCache = { ...credentials };
         debug(options.allAppEnv.LOGONPAYLOAD);
     }
-    debug('userCache', options.userCache);
 
-  
 
     debug('credentials query', credentials.query);
     let redirect = (credentials.query != null && credentials.query.next != null) ? credentials.query.next : null;

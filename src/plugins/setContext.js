@@ -16,18 +16,31 @@
  *
  */
 
+
 let debug = require('debug')('setcontext');
-async function setContext (req,h){
-   let credentials = req.auth.credentials; // use this once cookies are working properly
-   let context = {
-        path   : req.path,
-        params : req.params,
-        query  : req.query,
+async function setContext(req, h) {
+    let credentials = req.auth.credentials; 
+    let cachedCredentials = null;// use this once cookies are working properly
+    debug('Set Context Credentials', req.path, credentials);
+    try {
+        cachedCredentials = await req.server.app.cache.get('session');
+        debug('Cached Credentials', cachedCredentials);
+    } catch (e) {
+        debug('No cached credentials');
+    }
+
+    let fcredentials = credentials || cachedCredentials;
+  
+    let context = {
+        path: req.path,
+        params: req.params,
+        query: req.query,
         payload: req.payload,
-        queryOrig: (credentials != null) ? credentials.query : {},
-        credentials: credentials||null,
-        host   : process.env.VIYA_SERVER
-        };
+        queryOrig: (fcredentials != null) ? fcredentials.query : {},
+        credentials: fcredentials,
+        credType: (credentials != null) ? 'auth' : 'cached',
+        host: process.env.VIYA_SERVER
+    };
     return context;
 }
 export default setContext;

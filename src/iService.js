@@ -112,10 +112,10 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		let hapiServer = Hapi.server(sConfig);
 
 		/*
-		const cache = hapiServer.cache({ segment: 'sessions', expiresIn: 3 * 24 * 60 * 60 * 1000 });
+		const cache = hapiServer.cache({ segment: 'sid', expiresIn: 3 * 24 * 60 * 60 * 1000 });
 		hapiServer.app.cache = cache;
-		*/
-
+*/
+		
 		let nodeCacheOptions = {
 			stdTTL        : 24*60*60*1000, 
 			checkPeriod   : 3600,
@@ -125,6 +125,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		};
 		let storeCache = new NodeCache(nodeCacheOptions);
 		hapiServer.app.cache = storeCache;
+		
 
 		// common plugins
 		let visionOptions = {

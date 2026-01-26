@@ -26,7 +26,6 @@ import {
   logout,
   logon,
   setupUserRoutes,
-  reactDev,
   proxyMapUri,
 } from "../handlers";
 let debug = require("debug")("routes");
@@ -40,8 +39,8 @@ module.exports = function setDefaultRoutes(server, options) {
     mode: "try",
   };
   let authLogon = {
-    mode: "required",
     strategy: "sas",
+    mode: "required"
   };
 
   console.log("Auth Flow", options.authFlow);
@@ -123,8 +122,7 @@ module.exports = function setDefaultRoutes(server, options) {
       path: `${appName}/appenv`,
       options: {
         auth: authDefault,
-        handler: async (req, h) => {
-          console.log('---------------------------', req.server.state); 
+        handler: async (req, h) => { 
           let allAppEnv = options.allAppEnv;
           allAppEnv.credentials = options.credentials;
 
@@ -145,7 +143,6 @@ module.exports = function setDefaultRoutes(server, options) {
       options: {
         auth: authDefault,
         handler: async (req, h) => {
-          console.log('---------------------------', req.server.state); 
           let allAppEnv = options.allAppEnv;
           allAppEnv.credentials = options.credentials;
 
@@ -156,27 +153,15 @@ module.exports = function setDefaultRoutes(server, options) {
             debug(options.allAppEnv);
 
           }
-          debug(s)
+        
           return s;
         },
       },
     },
-    /*
-    {
-      method: ["GET"],
-      path: `${appName}/{param*}`,
-
-      options: {
-        auth: authDefault,
-        handler: getApp2,
-      },
-    },
-    */
 
     {
       method: ["GET"],
-      path: `/{param*}`,
-
+      path: `/assets/{param*}`,
       options: {
         auth: authDefault,
         handler: getApp2,
@@ -218,11 +203,8 @@ module.exports = function setDefaultRoutes(server, options) {
   debug(pr);
   defaultTable.push(pr);
 
-  let routeTables = uTable !== null ? defaultTable.concat(uTable) : defaultTable;
+  let routeTables0= uTable !== null ? defaultTable.concat(uTable) : defaultTable;
+  let routeTables = setupUserRoutes(routeTables0, options);
 
-  routeTables.forEach((r) => {
-    r.options.pre = [{ method: setContext, assign: 'context' }];
-    console.log, ('Setting pre for route', r.path, r.options.pre);
-  });
   server.route(routeTables);
 };
