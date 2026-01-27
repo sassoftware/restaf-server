@@ -185,7 +185,7 @@ module.exports = function setDefaultRoutes(server, options) {
     }
   ];
 
-  let uTable = options.userRouteTable();
+  let uTable = (options.userRouteTable == null) ? [] :  options.userRouteTable();
   let routeTables0 = options.userRouteTable !== null ? defaultTable.concat(uTable) : defaultTable;
   let routeTables = setupUserRoutes(routeTables0, options);
 

@@ -46,14 +46,16 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		} else {
 			maxBytes = Number(process.env.PAYLOADMAXBYTES);
 		}
-		let isSameSite = 'None';
+		let isSameSite = 'Lax';
 		let isSecure = false;
+		let https = process.env.HTTPS || 'TRUE';
+		https = https.toUpperCase();
 		
 		if (process.env.SAMESITE != null) {
 			let [s1, s2] = process.env.SAMESITE.split(',');
 			isSameSite = s1;
 			isSecure = s2 === 'secure' ? true : false;
-			if (process.env.HTTPS !== 'true') {
+			if (https !== 'TRUE') {
 				isSecure = false;
 			}
 		}
@@ -92,7 +94,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 			sConfig.debug = { request: '*' };
 		}
 		debug(JSON.stringify(sConfig, null,4));
-		if (process.env.HTTPS === 'true') {
+		if (https === 'TRUE') {
 			sConfig.tls = getCertificates();
 			debug('Setup of SSL certificates completed');
 		} else {
@@ -136,7 +138,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		await hapiServer.register(Vision);
 		hapiServer.views(visionOptions);
 		await hapiServer.register(inert);
-		if (process.env.HTTPS === 'true') {
+		if (https === 'TRUE') {
 			await hapiServer.register({ plugin: require('hapi-require-https'), options: {} });
 		}
 		// register H202 for proxy handling
@@ -165,7 +167,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 			userRouteTable: userRouteTable,
 			useDefault    : useDefault, /* not used - left here for potential reuse */
 			userCache      : userCache ||{},
-			https         : process.env.HTTPS,
+			https         : https,
 			authDefault   : false, /* set later in setDefaultRoutes */
             authLogon     : false  /* set later in setDefaultRoutes */
 
