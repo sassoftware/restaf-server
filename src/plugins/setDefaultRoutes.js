@@ -29,7 +29,7 @@ import {
   proxyMapUri,
 } from "../handlers";
 let debug = require("debug")("routes");
-import setContext from "./setContext.js";
+//import setContext from "./setContext.js";
 module.exports = function setDefaultRoutes(server, options) {
   debug("setDefaultRoutes");
   let appName = "/" + options.appName;
@@ -43,8 +43,6 @@ module.exports = function setDefaultRoutes(server, options) {
     mode: "required"
   };
 
-  console.log("Auth Flow", options.authFlow);
-
   let getAppb = getApp.bind(
     null,
     options // process.env.USETOKEN === "YES" ? options : null
@@ -56,10 +54,6 @@ module.exports = function setDefaultRoutes(server, options) {
   options.authLogon = authLogon;
 
   debug(options.userRouteTable);
-  let uTable =
-    options.userRouteTable !== null
-      ? setupUserRoutes(options.userRouteTable, options)
-      : null;
 
   let defaultTable = [
     {
@@ -122,16 +116,13 @@ module.exports = function setDefaultRoutes(server, options) {
       path: `${appName}/appenv`,
       options: {
         auth: authDefault,
-        handler: async (req, h) => { 
+        handler: async (req, h) => {
           let allAppEnv = options.allAppEnv;
           allAppEnv.credentials = options.credentials;
 
           let s =
             `let LOGONPAYLOAD = ${JSON.stringify(allAppEnv.LOGONPAYLOAD)};` +
             `let APPENV = ${JSON.stringify(allAppEnv.APPENV)};`;
-          if (process.env.SHOWENV != null) {
-            console.log(s);
-          }
           debug(s);
           return s;
         },
@@ -149,11 +140,6 @@ module.exports = function setDefaultRoutes(server, options) {
           let s =
             `let LOGONPAYLOAD = ${JSON.stringify(allAppEnv.LOGONPAYLOAD)};` +
             `let APPENV = ${JSON.stringify(allAppEnv.APPENV)};`;
-          if (process.env.SHOWENV != null) {
-            debug(options.allAppEnv);
-
-          }
-        
           return s;
         },
       },
@@ -183,27 +169,24 @@ module.exports = function setDefaultRoutes(server, options) {
         handler: keepAlive2,
       },
     },
-  ];
-
-  let pr = {
-    method: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    path: `${appName}/proxy/{param*}`,
-
-    options: {
-      auth: authDefault,
-      handler: {
-        proxy: {
-          mapUri: proxyMapUri,
-          xforward: true,
-          passThrough: true,
+    {
+      method: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+      path: `${appName}/proxy/{param*}`,
+      options: {
+        auth: authDefault,
+        handler: {
+          proxy: {
+            mapUri: proxyMapUri,
+            xforward: true,
+            passThrough: true,
+          },
         },
       },
-    },
-  };
-  debug(pr);
-  defaultTable.push(pr);
+    }
+  ];
 
-  let routeTables0= uTable !== null ? defaultTable.concat(uTable) : defaultTable;
+  let uTable = options.userRouteTable();
+  let routeTables0 = options.userRouteTable !== null ? defaultTable.concat(uTable) : defaultTable;
   let routeTables = setupUserRoutes(routeTables0, options);
 
   server.route(routeTables);

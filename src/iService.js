@@ -188,7 +188,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 				});
 			}
 		}
-		console.log('Plugin', process.env.PLUGIN);
+
 		
 		//
 		// Start server

@@ -28,7 +28,6 @@ async function setCookies(req, h, options) {
         provider: credentials.provider,
     }
     debug('------------set cookie-------------\n', cookieInfo);
-    console.log('is it there', req.cookieAuth != null);   
     await req.server.app.cache.set('session', cookieInfo,0);
 
     req.cookieAuth.set(cookieInfo);

@@ -3,13 +3,16 @@
 * SPDX-License-Identifier: Apache-2.0
 */
 
-import setCookies from '../plugins/setCookies';
+// import setCookies from './setCookies';
+import codeAuth from './codeAuth.js';
 let debug = require('debug')('logon');
 async function logon (req, h, options) {
    debugger;
-   let r = await setCookies(req, h, options);
+     
+   debug('calling codeauth');
+   let r = codeAuth(req, h, options);
+   // r = await setCookies(req, h, options);
    debug(r.redirect);
-   debug('in logon after setcookie', r.redirect);
    return h.redirect(r.redirect);
 }
 

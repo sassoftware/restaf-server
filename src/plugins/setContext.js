@@ -20,7 +20,7 @@
 let debug = require('debug')('setcontext');
 async function setContext(req, h) {
     let credentials = req.auth.credentials; 
-    let cachedCredentials = null;// use this once cookies are working properly
+    let cachedCredentials = null; 
     debug('Set Context Credentials', req.path, credentials);
     try {
         cachedCredentials = await req.server.app.cache.get('session');
@@ -37,7 +37,7 @@ async function setContext(req, h) {
         query: req.query,
         payload: req.payload,
         queryOrig: (fcredentials != null) ? fcredentials.query : {},
-        credentials: fcredentials,
+        credentials: {...fcredentials, host: process.env.VIYA_SERVER},   
         credType: (credentials != null) ? 'auth' : 'cached',
         host: process.env.VIYA_SERVER
     };

@@ -17,32 +17,24 @@
  */
 import setContext from './setContext';
 
-function setupUserRoutes (u, options) {
-    if (u == null) {
-        return [];
+function setupUserRoutes(ux, options) {
+  let routes = ux.map(rx => {
+    if (rx.options.pre == null) {
+      rx.options.pre = [{ method: setContext, assign: 'context' }];
+    } else {
+      rx.options.pre.push({ method: setContext, assign: 'context' });
     }
-    
-    let ux = (typeof u === 'function') ? u() : u;
-    let routes = ux.map(rx => {
-        //let rx = {...r};
-        /* change it to options */
-        if (rx.config != null) {
-            rx.options = {...rx.config};
-            delete rx.config;
-        }
-        if (rx.options.pre == null) {
-          rx.options.pre = [{method: setContext, assign: 'context'}];
-        } else{
-          rx.options.pre.push([{method: setContext, assign: 'context'}]);
-        }
-        if (rx.options.auth === true) {
-            rx.options.auth = options.authDefault;   
-        } else if (rx.options.auth === 'logon') {
-            rx.options.auth = options.authLogon;
-        } 
-        console.log('route', rx.method, rx.path, rx.options.auth, rx.options.pre);
-        return rx;
-    });
-    return routes;
+      
+    if (rx.options.auth === true) {
+      rx.options.auth = options.authDefault;
+    } else if (rx.options.auth === 'logon') {
+      rx.options.auth = options.authLogon;
+    } else if (rx.options.auth == null) {
+      rx.options.auth = false;
+    }
+    console.log('route', rx.method, rx.path, rx.options.auth, rx.options.pre);
+  return rx;
+});
+return routes;
 }
 export default setupUserRoutes;
