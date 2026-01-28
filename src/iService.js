@@ -211,6 +211,7 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		process.env.APPSERVER = `${hh}/${process.env.APPNAME}`;
 		process.env.HEALTH = 'true';
 		console.log('====================================================================================');
+	
 	};
 
 	process.on('unhandledRejection', (err) => {
