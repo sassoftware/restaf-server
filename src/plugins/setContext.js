@@ -37,7 +37,7 @@ async function setContext(req, h) {
         query: req.query,
         payload: req.payload,
         queryOrig: (fcredentials != null) ? fcredentials.query : {},
-        credentials: {...fcredentials, host: process.env.VIYA_SERVER},   
+        credentials: (fcredentials != null) ? {...fcredentials, host: process.env.VIYA_SERVER} : null,   
         credType: (credentials != null) ? 'auth' : 'cached',
         host: process.env.VIYA_SERVER
     };
