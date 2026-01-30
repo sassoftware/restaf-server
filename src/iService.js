@@ -32,7 +32,7 @@ import readCerts from './readCerts';
 
 let os = require('os');
 
-function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, userCache) {
+async function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, userCache) {
 	// process.env.APPHOST_ADDR = process.env.APPHOST;
 	const init = async () => {
 	
@@ -218,15 +218,15 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		console.log(err);
 		process.exit(1);
 	});
-    return init()
-	.then ((r) => {
-		console.log('Server running successfully', r);
-		return r;
-	})
-	.catch((err) => {
+	try {
+      let r = await init();
+	  return r;
+	}
+	catch(err){
+
 		console.log('Error starting server', err);
 		return false;
-	});
+	};
 }
 
 function getCertificates () {

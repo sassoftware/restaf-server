@@ -26,7 +26,21 @@ import yargs from "yargs";
 import { hideBin } from 'yargs/helpers';
 let debug = require("debug")("startup");
 
-module.exports = function core(
+exports.core = function () {
+  icore()
+  .then ((r) => {
+    console.log('icore returned', r);
+    return r;
+  })
+  .catch((err) => {
+    console.log('Error in icore', err);
+    return null;
+  });
+
+}
+exports.asyncCore = icore;
+
+ async function icore (
   uTable,
   useDefault,
   serverMode,
@@ -56,10 +70,10 @@ module.exports = function core(
           `
   );
 
-  return iapp(null, env, docker, uTable, useDefault, serverMode, customize,userCache);
+  return await iapp(null, env, docker, uTable, useDefault, serverMode, customize,userCache);
 };
 
-function iapp(
+async function iapp(
   appSrc,
   rafEnv,
   dockerFile,
@@ -75,18 +89,18 @@ function iapp(
   }
   if (appSrc != null) {
     console.log("appSrc", `+${appSrc}+`);
-    createPayload(appSrc, (err, r) => {
+    createPayload(appSrc, async (err, r) => {
       if (err) {
         console.log(err);
         console.log("createPayload failed");
         process.exit(1);
       } else {
-        return iService(uTable, useDefault, asset, r, serverMode, customize, userCache);
+        return await iService(uTable, useDefault, asset, r, serverMode, customize, userCache);
       }
     });
   } else {
     let appEnv = getAllEnv({});
-    return iService(uTable, useDefault, asset, appEnv, serverMode, customize, userCache);
+    return await iService(uTable, useDefault, asset, appEnv, serverMode, customize, userCache);
   }
 }
 
@@ -253,8 +267,3 @@ function trimit(e) {
   return a.length === 0 ? null : a;
 }
 
-function readVIYACERT(){
-  let certs = null;
-  let certfile = process.env.VIYACERT;
-
-}
