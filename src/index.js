@@ -56,7 +56,7 @@ module.exports = function core(
           `
   );
 
-  iapp(null, env, docker, uTable, useDefault, serverMode, customize,userCache);
+  return iapp(null, env, docker, uTable, useDefault, serverMode, customize,userCache);
 };
 
 function iapp(
@@ -81,12 +81,12 @@ function iapp(
         console.log("createPayload failed");
         process.exit(1);
       } else {
-        iService(uTable, useDefault, asset, r, serverMode, customize, userCache);
+        return iService(uTable, useDefault, asset, r, serverMode, customize, userCache);
       }
     });
   } else {
     let appEnv = getAllEnv({});
-    iService(uTable, useDefault, asset, appEnv, serverMode, customize, userCache);
+    return iService(uTable, useDefault, asset, appEnv, serverMode, customize, userCache);
   }
 }
 

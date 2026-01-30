@@ -211,14 +211,22 @@ function iService (userRouteTable, useDefault, asset, allAppEnv, serverMode, use
 		process.env.APPSERVER = `${hh}/${process.env.APPNAME}`;
 		process.env.HEALTH = 'true';
 		console.log('====================================================================================');
-	
+		return `${hh}/${process.env.APPNAME}`
 	};
 
 	process.on('unhandledRejection', (err) => {
 		console.log(err);
 		process.exit(1);
 	});
-	init();
+    return init()
+	.then ((r) => {
+		console.log('Server running successfully', r);
+		return r;
+	})
+	.catch((err) => {
+		console.log('Error starting server', err);
+		return false;
+	});
 }
 
 function getCertificates () {
